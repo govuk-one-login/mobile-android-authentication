@@ -5,6 +5,8 @@ androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 appcompat = "1.6.1"
 material = "1.10.0"
+androidGradlePlugin = "8.2.0"
+kotlin = "1.9.20"
 
 [libraries]
 appauth = { group = "net.openid", name = "appauth", version = "0.11.1" }
@@ -17,3 +19,8 @@ material = { group = "com.google.android.material", name = "material", version.r
 
 
 [plugins]
+detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.3" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "11.6.1" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
