@@ -51,9 +51,6 @@ jobs:
 
       - name: Run gradle unit tests
         uses: ./config/actions/gradle-check
-        with:
-          version-code: ${{ steps.version-code.outputs.version-code }}
-          version-name: ${{ steps.version-name.outputs.version-name }}
 
       - name: Bundle reports folder
         uses: ./config/actions/bundle-reports
