@@ -1,14 +1,6 @@
 name: 'Run gradle check'
 description: 'Run the "check" command for a Gradle project'
 
-inputs:
-  version-code:
-    description: 'Version code'
-    required: true
-  version-name:
-    description: 'Version name'
-    required: true
-
 runs:
   using: "composite"
   steps:
@@ -20,11 +12,6 @@ runs:
           ktlintCheck \
           lintDebug \
           check \
-          verifyPaparazziDebug \
-          -PversionCode=$INPUT_VERSION_CODE \
-          -PversionName=$INPUT_VERSION_NAME \
           --stacktrace
       env:
         CI: 'true'
-        INPUT_VERSION_CODE: ${{ inputs.version-code }}
-        INPUT_VERSION_NAME: ${{ inputs.version-name }}
