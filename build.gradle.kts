@@ -1,4 +1,5 @@
 buildscript {
+    val jacocoVersion by rootProject.extra("0.8.9")
     val minAndroidVersion by rootProject.extra { 29 }
     val compileAndroidVersion by rootProject.extra { 34 }
     val androidBuildToolsVersion by rootProject.extra { "34.0.0" }

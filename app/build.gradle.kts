@@ -90,10 +90,6 @@ android {
 
 dependencies {
     listOf(
-        libs.appauth
-    ).forEach(::api)
-
-    listOf(
         libs.androidx.test.ext.junit,
         libs.espresso.core
     ).forEach(::androidTestImplementation)
@@ -101,8 +97,7 @@ dependencies {
     listOf(
         libs.androidx.core.core.ktx,
         libs.appauth,
-        libs.appcompat,
-        libs.material
+        libs.appcompat
     ).forEach(::implementation)
 
     listOf(
