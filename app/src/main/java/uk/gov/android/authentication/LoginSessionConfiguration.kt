@@ -3,6 +3,10 @@ package uk.gov.android.authentication
 import android.net.Uri
 import net.openid.appauth.ResponseTypeValues
 
+/**
+ * Class to bundle required session configuration
+ *
+ */
 data class LoginSessionConfiguration(
     val authorizeEndpoint: Uri,
     val clientId: String,
