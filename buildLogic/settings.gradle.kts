@@ -1,20 +1,23 @@
+enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
+
 pluginManagement {
     repositories {
         google()
-        mavenCentral()
         gradlePluginPortal()
+        mavenCentral()
     }
-
-    includeBuild("buildLogic")
 }
+
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
+        gradlePluginPortal()
         mavenCentral()
     }
 }
 
-rootProject.name = "mobile-android-authentication"
-include(":app")
- 
+rootProject.name = "buildLogic"
+
+include(
+    ":plugins"
+)
