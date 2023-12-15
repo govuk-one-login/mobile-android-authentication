@@ -7,6 +7,10 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.ktlint)
     id("maven-publish")
+    id("authentication.jvm-toolchains")
+    id("sonarqube-module-config")
+    id("jacoco")
+    id("jacoco-module-config")
 }
 
 apply(from = "${rootProject.extra["configDir"]}/detekt/config.gradle")
