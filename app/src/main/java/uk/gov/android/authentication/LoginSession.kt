@@ -4,14 +4,15 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.ActivityCompat
+import java.util.UUID
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
 import net.openid.appauth.AuthorizationServiceConfiguration
 import net.openid.appauth.TokenResponse
-import java.util.UUID
 
+@Suppress("TooGenericExceptionThrown")
 class LoginSession : ILoginSession {
     private var context: Context? = null
     private lateinit var authService: AuthorizationService
@@ -72,7 +73,7 @@ class LoginSession : ILoginSession {
         }
     }
 
-    override fun finalise(intent: Intent, callback: (tokens: TokenResponse) -> Unit)  {
+    override fun finalise(intent: Intent, callback: (tokens: TokenResponse) -> Unit) {
         val authorizationResponse = AuthorizationResponse.fromIntent(intent)
 
         if (authorizationResponse == null) {
