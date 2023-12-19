@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.android.kotlin)
     alias(libs.plugins.detekt)
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.kotlin.serlialization)
     id("maven-publish")
     id("authentication.jvm-toolchains")
     id("sonarqube-module-config")
@@ -101,7 +102,8 @@ dependencies {
     listOf(
         libs.androidx.core.core.ktx,
         libs.appauth,
-        libs.appcompat
+        libs.appcompat,
+        libs.kotlinx.serialization.json
     ).forEach(::implementation)
 
     listOf(
