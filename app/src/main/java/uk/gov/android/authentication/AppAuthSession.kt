@@ -87,7 +87,7 @@ class AppAuthSession : LoginSession {
             exchangeRequest
         ) { response, exception ->
             if (response == null) {
-                throw Error(exception?.message)
+                throw Exception(exception?.message)
             }
 
             callback(createFromAppAuthResponse(response))
