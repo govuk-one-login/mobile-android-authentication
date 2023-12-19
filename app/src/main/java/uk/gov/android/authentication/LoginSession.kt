@@ -2,6 +2,7 @@ package uk.gov.android.authentication
 
 import android.content.Context
 import android.content.Intent
+import java.lang.Exception
 
 /**
  * This class provides a wrapper for [net.openid.appauth](https://github.com/openid/AppAuth-Android)
@@ -30,6 +31,8 @@ interface LoginSession {
      *
      * @param intent The intent from the login activity result
      * @param callback Method to extract and handle local token usage/storage
+     * @throws [Exception] if Authorization fails
      */
+    @Throws(Exception::class)
     fun finalise(intent: Intent, callback: (tokens: TokenResponse) -> Unit)
 }
