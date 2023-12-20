@@ -1,101 +1,38 @@
 package uk.gov.android.authentication
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.core.app.ActivityCompat
-import java.util.UUID
-import net.openid.appauth.AuthorizationException
-import net.openid.appauth.AuthorizationRequest
-import net.openid.appauth.AuthorizationResponse
-import net.openid.appauth.AuthorizationService
-import net.openid.appauth.AuthorizationServiceConfiguration
-import net.openid.appauth.TokenResponse
+import java.lang.Exception
 
-@Suppress("TooGenericExceptionThrown")
-class LoginSession : ILoginSession {
-    private var context: Context? = null
-    private lateinit var authService: AuthorizationService
-
-    override fun init(
-        context: Context
-    ): ILoginSession {
-        if (this.context == null) {
-            this.context = context
-            authService = AuthorizationService(context)
-        }
-        return this
-    }
-
-    override fun present(
+/**
+ * This class provides a wrapper for [net.openid.appauth](https://github.com/openid/AppAuth-Android)
+ *
+ * Use to make OAuth standard login
+ */
+interface LoginSession {
+    /**
+     * Present the login dialog using a Chrome Custom Tab
+     *
+     * @param configuration [LoginSessionConfiguration] containing necessary session configuration
+     */
+    fun present(
         configuration: LoginSessionConfiguration
-    ) {
-        if (context == null) {
-            throw Error("Context is null, did you call init?")
-        }
+    )
 
-        with(configuration) {
-            val context = this@LoginSession.context!!
-            val nonce = UUID.randomUUID().toString()
+    /**
+     * Call after creation to create the [net.openid.appauth.AuthorizationService] instance
+     *
+     * @param context Used to create the AuthorizationService
+     */
+    fun init(context: Context): LoginSession
 
-            val serviceConfig = AuthorizationServiceConfiguration(
-                authorizeEndpoint,
-                tokenEndpoint
-            )
-
-            val builder = AuthorizationRequest.Builder(
-                serviceConfig,
-                clientId,
-                responseType,
-                redirectUri
-            ).also {
-                it.apply {
-                    setScopes(scopes)
-                    setUiLocales(locale)
-                    setNonce(nonce)
-                    setAdditionalParameters(
-                        mapOf(
-                            "vtr" to vectorsOfTrust
-                        )
-                    )
-                }
-            }
-
-            val authRequest = builder.build()
-
-            val authIntent = authService.getAuthorizationRequestIntent(authRequest)
-            ActivityCompat.startActivityForResult(
-                context as Activity,
-                authIntent,
-                REQUEST_CODE_AUTH,
-                null
-            )
-        }
-    }
-
-    override fun finalise(intent: Intent, callback: (tokens: TokenResponse) -> Unit) {
-        val authorizationResponse = AuthorizationResponse.fromIntent(intent)
-
-        if (authorizationResponse == null) {
-            val exception = AuthorizationException.fromIntent(intent)
-
-            throw Exception(exception?.message)
-        }
-
-        val exchangeRequest = authorizationResponse.createTokenExchangeRequest()
-
-        authService.performTokenRequest(
-            exchangeRequest
-        ) { response, exception ->
-            if (response == null) {
-                throw Error(exception?.message)
-            }
-
-            callback(response)
-        }
-    }
-
-    companion object {
-        const val REQUEST_CODE_AUTH = 418
-    }
+    /**
+     * Callback function to handle intent from the activity result started by [present]
+     *
+     * @param intent The intent from the login activity result
+     * @param callback Method to extract and handle local token usage/storage
+     * @throws [Exception] if Authorization fails
+     */
+    @Throws(Exception::class)
+    fun finalise(intent: Intent, callback: (tokens: TokenResponse) -> Unit)
 }
