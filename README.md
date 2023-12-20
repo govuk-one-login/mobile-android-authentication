@@ -38,7 +38,7 @@ dependencyResolutionManagement {
 }
 ```
 
-2. For local development, ensure you have a `github.properties` in the project's root which includes your username and an access token
+2. For local development, ensure you have a `github.properties` in the project's root which includes your username and an access token. **Do not commit this file to Version Control!**
 3. Add `implementation("uk.gov.android:authentication:_")` for latest version. Check packages for version information
 
 ## Package description
