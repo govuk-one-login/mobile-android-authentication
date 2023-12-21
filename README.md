@@ -57,13 +57,13 @@ Handles creating the `config` found in `LoginSession`. It requires the following
 val authorizeEndpoint: Uri
 val clientId: String
 val redirectUri: Uri
-val scopes: String
+val scopes: List<Scope>
 val tokenEndpoint: Uri
 
 // Default values
-val locale: String = "en"
+val locale: Locale = Locale.EN
 val prefersEphemeralWebSession: Boolean = true
-val responseType: String = ResponseTypeValues.CODE
+val responseType: ResponseType = ResponseType.CODE
 val vectorsOfTrust: String = "[\"Cl.Cm.P0\"]"
 ```
 
@@ -80,6 +80,15 @@ val refreshToken: String?
 val scope: String
 ```
 
+#### AuthenticationError
+
+Custom error extending [Error](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/error.html)
+
+```kotlin
+val message: String
+val type: ErrorType
+```
+
 #### AppAuthSession
 
 A class to handle the login flow with the given auth provider and conforms to the `LoginSession` protocol. 
@@ -92,14 +101,12 @@ A class to handle the login flow with the given auth provider and conforms to th
 
 ### How to use the Authentication package
 
-Don't forget to call `init` with a context before use!
-
 ```kotlin
 import uk.gov.android.authentication.LoginSession
 
 ...
 
-val loginSession: LoginSession = AppAuthSession()
+val loginSession: LoginSession = AppAuthSession(context)
 val configuration = LoginSessionConfiguration(
     authorizeEndpoint = uri,
     clietId = "clientId",
@@ -108,9 +115,7 @@ val configuration = LoginSessionConfiguration(
     tokenEdnpoint = uri
 )
 
-loginSession
-    .init(context)
-    .present(configuration)
+loginSession.present(configuration)
 
 
 ```
