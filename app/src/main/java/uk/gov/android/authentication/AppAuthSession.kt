@@ -12,29 +12,15 @@ import net.openid.appauth.AuthorizationService
 import net.openid.appauth.AuthorizationServiceConfiguration
 
 @Suppress("TooGenericExceptionThrown")
-class AppAuthSession : LoginSession {
-    private var context: Context? = null
-    private lateinit var authService: AuthorizationService
-
-    override fun init(
-        context: Context
-    ): LoginSession {
-        if (this.context == null) {
-            this.context = context
-            authService = AuthorizationService(context)
-        }
-        return this
-    }
+class AppAuthSession(
+    private val context: Context
+) : LoginSession {
+    private val authService: AuthorizationService = AuthorizationService(context)
 
     override fun present(
         configuration: LoginSessionConfiguration
     ) {
-        if (context == null) {
-            throw Error("Context is null, did you call init?")
-        }
-
         with(configuration) {
-            val context = this@AppAuthSession.context!!
             val nonce = UUID.randomUUID().toString()
 
             val serviceConfig = AuthorizationServiceConfiguration(
@@ -45,20 +31,17 @@ class AppAuthSession : LoginSession {
             val builder = AuthorizationRequest.Builder(
                 serviceConfig,
                 clientId,
-                responseType,
+                responseType.name,
                 redirectUri
-            ).also {
-                it.apply {
-                    setScopes(scopes)
-                    setUiLocales(locale)
-                    setNonce(nonce)
-                    setAdditionalParameters(
-                        mapOf(
-                            "vtr" to vectorsOfTrust
-                        )
+            )
+                .setScopes(scopes.map { it.value })
+                .setUiLocales(locale.value)
+                .setNonce(nonce)
+                .setAdditionalParameters(
+                    mapOf(
+                        "vtr" to vectorsOfTrust
                     )
-                }
-            }
+                )
 
             val authRequest = builder.build()
 
@@ -78,7 +61,10 @@ class AppAuthSession : LoginSession {
         if (authorizationResponse == null) {
             val exception = AuthorizationException.fromIntent(intent)
 
-            throw Exception(exception?.message)
+            throw AuthenticationError(
+                exception?.message ?: "Auth response was null",
+                AuthenticationError.ErrorType.OAUTH
+            )
         }
 
         val exchangeRequest = authorizationResponse.createTokenExchangeRequest()
@@ -87,7 +73,10 @@ class AppAuthSession : LoginSession {
             exchangeRequest
         ) { response, exception ->
             if (response == null) {
-                throw Exception(exception?.message)
+                throw AuthenticationError(
+                    exception?.message ?: "Failed token request",
+                    AuthenticationError.ErrorType.OAUTH
+                )
             }
 
             callback(createFromAppAuthResponse(response))
