@@ -120,22 +120,24 @@ publishing {
             // generate pom nodes for dependencies
             pom.withXml {
                 val dependenciesNode = asNode().appendNode("dependencies")
-                configurations.compileOnly.configure {
+                configurations.getByName("implementation") {
                     allDependencies.forEach { dependency ->
-                        val dependencyNode = dependenciesNode.appendNode("dependency")
-                        dependencyNode.appendNode("groupId", dependency.group)
-                        dependencyNode.appendNode("artifactId", dependency.name)
-                        dependencyNode.appendNode("version", dependency.version)
+                        if (dependency.name != "unspecified") {
+                            val dependencyNode = dependenciesNode.appendNode("dependency")
+                            dependencyNode.appendNode("groupId", dependency.group)
+                            dependencyNode.appendNode("artifactId", dependency.name)
+                            dependencyNode.appendNode("version", dependency.version)
+                        }
                     }
                 }
             }
         }
-    }
-    repositories {
-        maven("https://maven.pkg.github.com/govuk-one-login/mobile-android-authentication") {
-            credentials {
-                username = System.getenv("USERNAME")
-                password = System.getenv("TOKEN")
+        repositories {
+            maven("https://maven.pkg.github.com/govuk-one-login/mobile-android-authentication") {
+                credentials {
+                    username = System.getenv("USERNAME")
+                    password = System.getenv("TOKEN")
+                }
             }
         }
     }
