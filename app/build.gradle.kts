@@ -1,6 +1,3 @@
-import java.io.FileInputStream
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.android.kotlin)
@@ -101,8 +98,8 @@ dependencies {
 
     listOf(
         libs.androidx.core.core.ktx,
-        libs.appauth,
         libs.appcompat,
+        libs.appauth,
         libs.kotlinx.serialization.json
     ).forEach(::implementation)
 
@@ -119,25 +116,26 @@ publishing {
             version = rootProject.extra["packageVersion"] as String
 
             artifact("$buildDir/outputs/aar/${project.name}-release.aar")
+
+            // generate pom nodes for dependencies
+            pom.withXml {
+                val dependenciesNode = asNode().appendNode("dependencies")
+                configurations.compileOnly.configure {
+                    allDependencies.forEach { dependency ->
+                        val dependencyNode = dependenciesNode.appendNode("dependency")
+                        dependencyNode.appendNode("groupId", dependency.group)
+                        dependencyNode.appendNode("artifactId", dependency.name)
+                        dependencyNode.appendNode("version", dependency.version)
+                    }
+                }
+            }
         }
     }
     repositories {
         maven("https://maven.pkg.github.com/govuk-one-login/mobile-android-authentication") {
-            if (file("${rootProject.projectDir.path}/github.properties").exists()) {
-                val propsFile = File("${rootProject.projectDir.path}/github.properties")
-                val props = Properties().also { it.load(FileInputStream(propsFile)) }
-                val ghUsername = props["username"] as String?
-                val ghToken = props["token"] as String?
-
-                credentials {
-                    username = ghUsername
-                    password = ghToken
-                }
-            } else {
-                credentials {
-                    username = System.getenv("USERNAME")
-                    password = System.getenv("TOKEN")
-                }
+            credentials {
+                username = System.getenv("USERNAME")
+                password = System.getenv("TOKEN")
             }
         }
     }
