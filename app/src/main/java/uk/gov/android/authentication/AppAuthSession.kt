@@ -13,11 +13,12 @@ import net.openid.appauth.AuthorizationServiceConfiguration
 
 @Suppress("TooGenericExceptionThrown")
 class AppAuthSession(
-    private val context: Context
+    context: Context
 ) : LoginSession {
     private val authService: AuthorizationService = AuthorizationService(context)
 
     override fun present(
+        activity: Activity,
         configuration: LoginSessionConfiguration
     ) {
         with(configuration) {
@@ -47,7 +48,7 @@ class AppAuthSession(
 
             val authIntent = authService.getAuthorizationRequestIntent(authRequest)
             ActivityCompat.startActivityForResult(
-                context as Activity,
+                activity,
                 authIntent,
                 REQUEST_CODE_AUTH,
                 null

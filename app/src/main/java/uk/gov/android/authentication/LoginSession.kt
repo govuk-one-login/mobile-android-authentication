@@ -1,5 +1,6 @@
 package uk.gov.android.authentication
 
+import android.app.Activity
 import android.content.Intent
 
 /**
@@ -14,6 +15,7 @@ interface LoginSession {
      * @param configuration [LoginSessionConfiguration] containing necessary session configuration
      */
     fun present(
+        activity: Activity,
         configuration: LoginSessionConfiguration
     )
 
