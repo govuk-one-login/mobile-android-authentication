@@ -32,7 +32,7 @@ class AppAuthSession(
             val builder = AuthorizationRequest.Builder(
                 serviceConfig,
                 clientId,
-                responseType.name,
+                responseType.value,
                 redirectUri
             )
                 .setScopes(scopes.map { it.value })
@@ -95,9 +95,8 @@ class AppAuthSession(
             requireNotNull(response.accessTokenExpirationTime) {
                 "Token expiry must not be empty"
             },
-            idToken = requireNotNull(response.idToken) { "id token must not be empty" },
-            refreshToken = response.refreshToken,
-            scope = requireNotNull(response.scope) { "scope must not be empty" }
+            idToken = response.idToken,
+            refreshToken = response.refreshToken
         )
     }
 
