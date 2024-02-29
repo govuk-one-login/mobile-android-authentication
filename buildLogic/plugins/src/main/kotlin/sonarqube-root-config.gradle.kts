@@ -11,8 +11,8 @@ val packageVersion: String by rootProject.extra
 
 val rootSonarProperties by rootProject.extra(
     mapOf(
-        "sonar.host.url" to System.getProperty("uk.gov.ui.sonar.host.url"),
-        "sonar.login" to System.getProperty("uk.gov.ui.sonar.login"),
+        "sonar.host.url" to System.getProperty("uk.gov.android.authentication.sonar.host.url"),
+        "sonar.token" to System.getProperty("uk.gov.android.authentication.sonar.token"),
         "sonar.projectKey" to "mobile-android-authentication",
         "sonar.projectName" to "mobile-android-authentication",
         "sonar.projectVersion" to packageVersion,
