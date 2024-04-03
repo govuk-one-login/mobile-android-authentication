@@ -23,6 +23,11 @@ runs:
           -Dsonar.pullrequest.base=develop \
           -Dsonar.pullrequest.branch=${{ github.head_ref || github.ref_name }} \
           -Dsonar.pullrequest.key=${{ github.event.number }}
+          -Dsonar.androidLint.reportPaths="**/reports/lint-results-*.xml" \
+          -Dsonar.coverage.jacoco.xmlReportPaths="**/reports/coverage/**/*.xml","**/reports/jacoco/**/*.xml" \
+          -Dsonar.kotlin.detekt.reportPaths="**/reports/detekt/*.xml" \
+          -Dsonar.kotlin.ktlint.reportPaths="**/reports/ktlint/**/*.xml" \
+          -Dsonar.junit.reportPaths="**/reports/coverage/**/*.xml","**/reports/jacoco/**/*.xml" \
       shell: bash
       env:
         CI: true
@@ -37,6 +42,11 @@ runs:
           -Dsonar.host.url=https://sonarcloud.io \
           -Dsonar.token=$SONAR_TOKEN \
           -Dsonar.projectVersion=$PROJECT_VERSION
+          -Dsonar.androidLint.reportPaths="**/reports/lint-results-*.xml" \
+          -Dsonar.coverage.jacoco.xmlReportPaths="**/reports/coverage/**/*.xml","**/reports/jacoco/**/*.xml" \
+          -Dsonar.kotlin.detekt.reportPaths="**/reports/detekt/*.xml" \
+          -Dsonar.kotlin.ktlint.reportPaths="**/reports/ktlint/**/*.xml" \
+          -Dsonar.junit.reportPaths="**/reports/coverage/**/*.xml","**/reports/jacoco/**/*.xml" \
       shell: bash
       env:
         CI: true
