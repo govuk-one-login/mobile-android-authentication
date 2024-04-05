@@ -27,7 +27,7 @@ runs:
           -Dsonar.coverage.jacoco.xmlReportPaths="**/reports/coverage/**/*.xml","**/reports/jacoco/**/*.xml" \
           -Dsonar.kotlin.detekt.reportPaths="**/reports/detekt/*.xml" \
           -Dsonar.kotlin.ktlint.reportPaths="**/reports/ktlint/**/*.xml" \
-          -Dsonar.junit.reportPaths="**/outputs/androidTest-results/connected/flavors/*/","**/test-results"
+          -Dsonar.junit.reportPaths="**/outputs/androidTest-results/connected/flavors/*/","**/test-results","**/coverage/androidTest/**/*.html"
       shell: bash
       env:
         CI: true
