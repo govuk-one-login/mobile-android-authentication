@@ -16,6 +16,7 @@ class AppAuthSession(
     context: Context
 ) : LoginSession {
     private val authGeoffService: AuthorizationService = AuthorizationService(context)
+    private val authGeoffService2: AuthorizationService = AuthorizationService(context)
 
     override fun present(
         activity: Activity,
