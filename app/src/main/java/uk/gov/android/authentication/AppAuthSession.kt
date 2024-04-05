@@ -15,7 +15,7 @@ import net.openid.appauth.AuthorizationServiceConfiguration
 class AppAuthSession(
     context: Context
 ) : LoginSession {
-    private val authService: AuthorizationService = AuthorizationService(context)
+    private val authGeoffService: AuthorizationService = AuthorizationService(context)
 
     override fun present(
         activity: Activity,
@@ -46,7 +46,7 @@ class AppAuthSession(
 
             val authRequest = builder.build()
 
-            val authIntent = authService.getAuthorizationRequestIntent(authRequest)
+            val authIntent = authGeoffService.getAuthorizationRequestIntent(authRequest)
             ActivityCompat.startActivityForResult(
                 activity,
                 authIntent,
@@ -70,7 +70,7 @@ class AppAuthSession(
 
         val exchangeRequest = authorizationResponse.createTokenExchangeRequest()
 
-        authService.performTokenRequest(
+        authGeoffService.performTokenRequest(
             exchangeRequest
         ) { response, exception ->
             if (response == null) {
