@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<<<<<<< HEAD
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <application>
@@ -9,8 +8,5 @@
             tools:node="replace">
         </activity>
     </application>
-=======
-<manifest>
->>>>>>> 8ef62cd (Initial Commit)
 
 </manifest>
