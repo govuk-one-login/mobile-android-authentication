@@ -19,7 +19,7 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.6" }
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "12.1.0" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "12.1.1" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
