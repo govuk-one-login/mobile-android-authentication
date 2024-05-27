@@ -5,7 +5,7 @@ androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 appcompat = "1.6.1"
 androidGradlePlugin = "8.2.2"
-kotlin = "1.9.22"
+kotlin = "2.0.0"
 serialization = "1.6.2"
 
 [libraries]
