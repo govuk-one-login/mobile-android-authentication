@@ -18,7 +18,7 @@ jobs:
       version: ${{ steps.version-number.outputs.version }}
     steps:
       - name: Run checkout github action
-        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # pin@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
         with:
           lfs: 'true'
           fetch-depth: 0
@@ -68,7 +68,7 @@ jobs:
 
     steps:
       - name: Run checkout github action
-        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # pin@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
         with:
           lfs: 'true'
           fetch-depth: 0
