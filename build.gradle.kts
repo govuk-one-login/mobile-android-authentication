@@ -30,6 +30,8 @@ buildscript {
 }
 
 plugins {
+    id("uk.gov.authentication.vale-config")
+    id("uk.gov.authentication.sonarqube-root-config")
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.android.application) apply false

@@ -1,18 +1,8 @@
 import uk.gov.authentication.config.ApkConfig
 
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.detekt)
-    alias(libs.plugins.ktlint)
-    alias(libs.plugins.kotlin.serlialization)
-    id("maven-publish")
-    id("uk.gov.authentication.jvm-toolchains")
-    id("uk.gov.authentication.vale-config")
-    id("uk.gov.authentication.sonarqube-module-config")
-    id("jacoco")
-    id("uk.gov.authentication.jacoco-module-config")
-    id("uk.gov.authentication.emulator-config")
+    `maven-publish`
+    id("uk.gov.authentication.android-lib-config")
 }
 
 android {
