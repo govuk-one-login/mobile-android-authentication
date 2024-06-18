@@ -11,7 +11,6 @@ import uk.gov.authentication.ext.StringExtensions.snakeToLowerCamelCase
  * @see ManagedVirtualDevice.systemImageSource
  */
 enum class SystemImageSource(val image: String) {
-
     /**
      * Android Open Source Project (AOSP) system image. Doesn't contain google services.
      */
@@ -39,7 +38,7 @@ enum class SystemImageSource(val image: String) {
     /**
      * System image that contains google play store pre-installed.
      */
-    GOOGLE_PLAYSTORE("google_apis_playstore");
+    GOOGLE_PLAYSTORE("google_apis_playstore"), ;
 
     /**
      * Reformat the [image] property. Called to act as a prefix for device

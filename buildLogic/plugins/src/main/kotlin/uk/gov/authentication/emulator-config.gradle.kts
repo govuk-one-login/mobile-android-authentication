@@ -14,13 +14,14 @@ plugins {
     id("kotlin-android")
 }
 
-private val _hardwareProfileFilter: (String) -> Boolean = {
+private val hardwareProfileFilter: (String) -> Boolean = {
     it.contains("pixel xl", ignoreCase = true)
 }
-private val _systemImageSources = listOf(
-    GOOGLE_ATD,
-    GOOGLE_PLAYSTORE
-)
+private val systemImageSources =
+    listOf(
+        GOOGLE_ATD,
+        GOOGLE_PLAYSTORE,
+    )
 
 /**
  * Configure both app and library modules via the [BaseExtension].
@@ -37,13 +38,14 @@ configure<BaseExtension> {
     val minAndroidVersion: Int by project.extra(29)
     val targetAndroidVersion: Int by project.extra(34)
     val managedApiLevels: IntRange by project.extra((minAndroidVersion..targetAndroidVersion))
-    val hardwareProfileFilter: (String) -> Boolean by project.extra(_hardwareProfileFilter)
-    val systemImageSources: List<SystemImageSource> by project.extra(_systemImageSources)
+    val hardwareProfileFilter: (String) -> Boolean by project.extra(hardwareProfileFilter)
+    val systemImageSources: List<SystemImageSource> by project.extra(systemImageSources)
 
     val consoleOutputStream = ByteArrayOutputStream()
-    val hardwareProfilesList = rootProject.file(
-        "${rootProject.buildDir}/outputs/managedDeviceHardwareProfiles.txt"
-    )
+    val hardwareProfilesList =
+        rootProject.file(
+            "${rootProject.buildDir}/outputs/managedDeviceHardwareProfiles.txt",
+        )
     val hardwareProfilesTask = generateGetHardwareProfilesTask(project, hardwareProfilesList)
 
     if (!hardwareProfilesList.exists()) {
@@ -58,12 +60,13 @@ configure<BaseExtension> {
         }
     }
 
-    val hardwareProfileStrings: List<String> = BufferedReader(FileReader(hardwareProfilesList))
-        .readLines()
+    val hardwareProfileStrings: List<String> =
+        BufferedReader(FileReader(hardwareProfilesList))
+            .readLines()
 
     generateDeviceConfigurations(
         apiLevelRange = managedApiLevels,
         hardwareProfileStrings = hardwareProfileStrings.filter(hardwareProfileFilter),
-        systemImageSources = systemImageSources
+        systemImageSources = systemImageSources,
     )
 }
