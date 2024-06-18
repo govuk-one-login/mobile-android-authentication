@@ -6,7 +6,7 @@ import org.gradle.api.file.FileTree
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.util.PatternSet
 import org.gradle.configurationcache.extensions.capitalized
-import uk.gov.authentication.ext.ProjectExt.debugLog
+import uk.gov.authentication.ext.ProjectExtensions.debugLog
 
 /**
  * Partial implementation for obtaining a [FileTree].

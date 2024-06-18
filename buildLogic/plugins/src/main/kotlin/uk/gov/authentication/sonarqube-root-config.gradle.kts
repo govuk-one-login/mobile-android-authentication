@@ -1,3 +1,7 @@
+package uk.gov.authentication
+
+import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.extra
 import org.sonarqube.gradle.SonarExtension
 
 plugins {

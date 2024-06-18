@@ -7,11 +7,12 @@ plugins {
     alias(libs.plugins.ktlint)
     alias(libs.plugins.kotlin.serlialization)
     id("maven-publish")
-    id("authentication.jvm-toolchains")
-    id("vale-config")
-    id("sonarqube-module-config")
+    id("uk.gov.authentication.jvm-toolchains")
+    id("uk.gov.authentication.vale-config")
+    id("uk.gov.authentication.sonarqube-module-config")
     id("jacoco")
-    id("jacoco-module-config")
+    id("uk.gov.authentication.jacoco-module-config")
+    id("uk.gov.authentication.emulator-config")
 }
 
 android {

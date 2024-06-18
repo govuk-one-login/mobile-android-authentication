@@ -1,4 +1,7 @@
+package uk.gov.authentication
+
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
+import org.gradle.kotlin.dsl.configure
 
 project.plugins.apply("io.gitlab.arturbosch.detekt")
 

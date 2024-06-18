@@ -1,7 +1,12 @@
+package uk.gov.authentication
+
 import com.android.build.gradle.LibraryExtension
+import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.extra
+import org.gradle.kotlin.dsl.jacoco
 import uk.gov.authentication.ext.LibraryExtensionExt.decorateDslLibraryExtensionWithJacoco
 import uk.gov.authentication.ext.LibraryExtensionExt.decorateLibraryExtensionWithJacoco
-import uk.gov.authentication.ext.ProjectExt.debugLog
+import uk.gov.authentication.ext.ProjectExtensions.debugLog
 import uk.gov.authentication.ext.TestExt.decorateTestTasksWithJacoco
 import uk.gov.authentication.ext.generateDebugJacocoTasks
 import com.android.build.api.dsl.LibraryExtension as DslLibraryExtension

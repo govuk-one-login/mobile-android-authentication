@@ -6,7 +6,7 @@ import org.gradle.api.tasks.TaskProvider
 import org.gradle.testing.jacoco.tasks.JacocoReport
 import uk.gov.authentication.SourceSetFolder
 import uk.gov.authentication.ext.JacocoReportExt.setupReportDirectories
-import uk.gov.authentication.ext.ProjectExt.debugLog
+import uk.gov.authentication.ext.ProjectExtensions.debugLog
 import uk.gov.authentication.filetree.fetcher.FileTreeFetcher
 
 /**

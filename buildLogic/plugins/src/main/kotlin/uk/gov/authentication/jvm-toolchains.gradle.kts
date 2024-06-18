@@ -1,4 +1,8 @@
+package uk.gov.authentication
+
 import com.android.build.gradle.BaseExtension
+import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.extra
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 
 val jvmVersion by extra(11)

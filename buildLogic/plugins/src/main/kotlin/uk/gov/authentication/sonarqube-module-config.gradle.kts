@@ -1,6 +1,8 @@
+package uk.gov.authentication
+
+import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.extra
 import org.sonarqube.gradle.SonarExtension
-import uk.gov.authentication.Filters
-import uk.gov.authentication.SourceSetFolder
 
 plugins {
     id("org.sonarqube")

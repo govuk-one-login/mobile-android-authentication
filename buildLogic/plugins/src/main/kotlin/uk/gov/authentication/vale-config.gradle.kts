@@ -1,3 +1,5 @@
+package uk.gov.authentication
+
 val valeSync =
     rootProject.tasks.register("valeSync", Exec::class.java) {
         description = "Lint the project's markdown and text files with Vale."

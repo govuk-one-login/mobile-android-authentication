@@ -2,7 +2,7 @@ package uk.gov.authentication
 
 import org.gradle.api.Project
 import org.gradle.api.file.ConfigurableFileCollection
-import uk.gov.authentication.ext.ProjectExt.debugLog
+import uk.gov.authentication.ext.ProjectExtensions.debugLog
 import java.io.File
 
 /**
