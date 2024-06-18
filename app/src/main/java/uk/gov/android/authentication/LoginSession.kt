@@ -16,7 +16,7 @@ interface LoginSession {
      */
     fun present(
         activity: Activity,
-        configuration: LoginSessionConfiguration
+        configuration: LoginSessionConfiguration,
     )
 
     /**
@@ -27,5 +27,8 @@ interface LoginSession {
      * @throws [AuthenticationError] if Authorization fails
      */
     @Throws(Exception::class)
-    fun finalise(intent: Intent, callback: (tokens: TokenResponse) -> Unit)
+    fun finalise(
+        intent: Intent,
+        callback: (tokens: TokenResponse) -> Unit,
+    )
 }

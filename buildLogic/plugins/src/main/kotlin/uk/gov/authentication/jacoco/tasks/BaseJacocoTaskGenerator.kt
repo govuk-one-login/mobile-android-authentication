@@ -23,7 +23,6 @@ abstract class BaseJacocoTaskGenerator(
     protected val variant: String,
     protected val reportsDirectoryPrefix: String = "${project.buildDir}/reports/jacoco",
 ) : JacocoTaskGenerator {
-
     /**
      * TitleCase representation of the Android app or library's build variant.
      */
@@ -54,13 +53,14 @@ abstract class BaseJacocoTaskGenerator(
     /**
      * Create a [JacocoReport] task, using the [configuration] as the mechanism for doing so.
      */
-    override fun customTask(): TaskProvider<JacocoReport> = configuration
-        .generateCustomJacocoReport(
-            excludes = Filters.androidUnitTests,
-            dependencies = listOf(testTaskName, androidCoverageTaskName),
-            description = description,
-            name = name,
-            testTaskName = testTaskName,
-            reportOutputDir = reportsBaseDirectory,
-        )
+    override fun customTask(): TaskProvider<JacocoReport> =
+        configuration
+            .generateCustomJacocoReport(
+                excludes = Filters.androidUnitTests,
+                dependencies = listOf(testTaskName, androidCoverageTaskName),
+                description = description,
+                name = name,
+                testTaskName = testTaskName,
+                reportOutputDir = reportsBaseDirectory,
+            )
 }

@@ -21,11 +21,10 @@ class JavaCompileFileTreeFetcher(
     variant: String,
     capitalisedVariantFlavorName: String,
 ) : BaseFileTreeFetcher(
-    project,
-    variant,
-    capitalisedVariantFlavorName,
-) {
-
+        project,
+        variant,
+        capitalisedVariantFlavorName,
+    ) {
     override fun getBaseFileTree(): Provider<FileTree> {
         return project.provider {
             getJavaCompileFileTree(
@@ -42,9 +41,8 @@ class JavaCompileFileTreeFetcher(
         }
     }
 
-    private fun getJavaCompileFileTree(
-        name: String,
-    ): FileTree? = performOnFoundTask<JavaCompile, FileTree>(name) {
-        it.destinationDirectory.asFileTree
-    }
+    private fun getJavaCompileFileTree(name: String): FileTree? =
+        performOnFoundTask<JavaCompile, FileTree>(name) {
+            it.destinationDirectory.asFileTree
+        }
 }

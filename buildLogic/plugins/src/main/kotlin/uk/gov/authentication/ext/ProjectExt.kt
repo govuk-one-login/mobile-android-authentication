@@ -6,7 +6,6 @@ import org.gradle.api.Project
  * Wrapper object for containing functions that extend a Gradle [Project].
  */
 object ProjectExt {
-
     /**
      * Prints to a [Project]'s debug log.
      *

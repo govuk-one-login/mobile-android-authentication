@@ -1,11 +1,9 @@
-name: On Pull Request (develop/release/main)
+name: On Pull Request
 
 on:
   pull_request:
     branches:
-      - develop
       - main
-      - release/*
     types:
       - opened
       - reopened
@@ -20,56 +18,15 @@ concurrency:
 
 jobs:
   onPullRequestJob:
+    env:
+      ANDROID_HOME: ${{ github.workspace }}/bin/androidSdk
     name: Verify code base when pull request is published/updated
-    runs-on: macos-latest
-
+    runs-on: ubuntu-latest
+    #    runs-on: ubuntu-20.04-16core # Larger github runner, with KVM acceleration
     steps:
-      - name: Run checkout github action
-        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # pin@v4
+      - name: Run pull request workflow
+        uses: govuk-one-login/mobile-android-pipelines@chore/remove-environment-configuration
         with:
-          lfs: 'true'
-          fetch-depth: 0
-
-      - name: Detect Arch
-        id: detect-arch
-        uses: ./config/actions/detect-arch
-
-      - name: Setup GitHub Runner workflow
-        uses: ./config/actions/setup-runner
-
-      - name: Get latest tag
-        id: latest-tag
-        uses: ./config/actions/get-latest-tag
-        with:
-          pattern: 'v*'
-
-      - name: Generate version code
-        id: version-code
-        uses: ./config/actions/generate-version-code
-
-      - name: Generate version name
-        id: version-name
-        uses: ./config/actions/version-name
-        with:
-          version-code: ${{ steps.version-code.outputs.version-code }}
-          version-name: ${{ steps.latest-tag.outputs.current-tag }}
-
-      - name: Run gradle instrumentation tests
-        uses: ./config/actions/gradle-connected-test
-        with:
-          architecture: 'arm64-v8a'
-          device-profile: 'Nexus 6'
-        if: steps.detect-arch.outputs.arch-in-use == 'arm64'
-
-      - name: Run gradle instrumentation tests
-        uses: ./config/actions/gradle-connected-test
-        if: steps.detect-arch.outputs.arch-in-use != 'arm64'
-
-      - name: Run sonar analysis
-        uses: ./config/actions/sonar-analysis
-        with:
-          project-version: ${{ steps.version-name.outputs.version-name }}
-          sonar-token: ${{ secrets.SONAR_TOKEN }}
-
-      - name: Bundle reports folder
-        uses: ./config/actions/bundle-reports
+          action_ref: 'chore/remove-environment-configuration'
+          sonar_token: ${{ secrets.SONAR_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -21,11 +21,10 @@ class KotlinCompileFileTreeFetcher(
     variant: String,
     capitalisedVariantFlavorName: String,
 ) : BaseFileTreeFetcher(
-    project,
-    variant,
-    capitalisedVariantFlavorName,
-) {
-
+        project,
+        variant,
+        capitalisedVariantFlavorName,
+    ) {
     override fun getBaseFileTree(): Provider<FileTree> {
         return project.provider {
             getKotlinCompileFileTree(
@@ -42,9 +41,8 @@ class KotlinCompileFileTreeFetcher(
         }
     }
 
-    private fun getKotlinCompileFileTree(
-        name: String,
-    ): FileTree? = performOnFoundTask<KotlinCompile, FileTree>(name) {
-        it.destinationDirectory.asFileTree
-    }
+    private fun getKotlinCompileFileTree(name: String): FileTree? =
+        performOnFoundTask<KotlinCompile, FileTree>(name) {
+            it.destinationDirectory.asFileTree
+        }
 }

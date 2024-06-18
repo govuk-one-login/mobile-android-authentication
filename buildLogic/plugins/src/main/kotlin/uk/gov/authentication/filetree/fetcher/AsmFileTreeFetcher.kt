@@ -23,11 +23,10 @@ class AsmFileTreeFetcher(
     variant: String,
     capitalisedVariantFlavorName: String,
 ) : BaseFileTreeFetcher(
-    project,
-    variant,
-    capitalisedVariantFlavorName,
-) {
-
+        project,
+        variant,
+        capitalisedVariantFlavorName,
+    ) {
     override fun getBaseFileTree(): Provider<FileTree> {
         return project.provider {
             getAsmClassesFileTree(
@@ -44,9 +43,8 @@ class AsmFileTreeFetcher(
         }
     }
 
-    private fun getAsmClassesFileTree(
-        name: String,
-    ): FileTree? = performOnFoundTask<TransformClassesWithAsmTask, FileTree>(name) {
-        it.classesOutputDir.asFileTree
-    }
+    private fun getAsmClassesFileTree(name: String): FileTree? =
+        performOnFoundTask<TransformClassesWithAsmTask, FileTree>(name) {
+            it.classesOutputDir.asFileTree
+        }
 }

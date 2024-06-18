@@ -9,7 +9,6 @@ import org.gradle.api.provider.Provider
  * Commonly used for obtaining files defined as Gradle task output.
  */
 fun interface FileTreeFetcher {
-
     /**
      * Obtain a reference to a [FileTree] based on the implementation.
      *

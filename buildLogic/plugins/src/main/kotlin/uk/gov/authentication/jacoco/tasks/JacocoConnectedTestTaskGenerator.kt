@@ -21,10 +21,9 @@ class JacocoConnectedTestTaskGenerator(
     private val classDirectoriesFetcher: FileTreeFetcher,
     variant: String,
 ) : BaseJacocoTaskGenerator(
-    project,
-    variant,
-) {
-
+        project,
+        variant,
+    ) {
     override val androidCoverageTaskName: String =
         "create${capitalisedVariantName}AndroidTestCoverageReport"
     override val name: String =
@@ -34,9 +33,10 @@ class JacocoConnectedTestTaskGenerator(
     override val reportsBaseDirectory: String get() = "$reportsDirectoryPrefix/connected"
     override val testTaskName: String get() = "connected${capitalisedVariantName}AndroidTest"
 
-    override val configuration: JacocoCustomConfig get() = JacocoConnectedTestConfig(
-        project,
-        classDirectoriesFetcher,
-        variant.capitalized(),
-    )
+    override val configuration: JacocoCustomConfig get() =
+        JacocoConnectedTestConfig(
+            project,
+            classDirectoriesFetcher,
+            variant.capitalized(),
+        )
 }
