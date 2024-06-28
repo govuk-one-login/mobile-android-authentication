@@ -25,8 +25,7 @@ jobs:
     #    runs-on: ubuntu-20.04-16core # Larger github runner, with KVM acceleration
     steps:
       - name: Run pull request workflow
-        uses: govuk-one-login/mobile-android-pipelines@chore/remove-environment-configuration
+        uses: govuk-one-login/mobile-android-pipelines@0ced974a40b06d5a92513639e9c82f7cb2f811cc
         with:
-          action_ref: 'chore/remove-environment-configuration'
           sonar_token: ${{ secrets.SONAR_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
