@@ -1,4 +1,4 @@
-branch_whitelist = [ "main" ]
+branch_whitelist = [ "main", "ci/migrate-to-reusable-action" ]
 disable_bump_commit = true
 ignore_merge_commits = true
 tag_prefix = "v"

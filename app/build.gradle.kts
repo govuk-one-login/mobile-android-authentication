@@ -126,9 +126,10 @@ publishing {
         }
         repositories {
             maven("https://maven.pkg.github.com/govuk-one-login/mobile-android-authentication") {
+                name = "GitHubPackages"
                 credentials {
-                    username = System.getenv("USERNAME")
-                    password = System.getenv("TOKEN")
+                    username = System.getenv("GITHUB_ACTOR")
+                    password = System.getenv("GITHUB_TOKEN")
                 }
             }
         }
