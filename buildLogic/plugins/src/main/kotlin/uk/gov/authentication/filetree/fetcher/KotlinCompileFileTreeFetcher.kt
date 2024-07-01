@@ -4,7 +4,7 @@ import org.gradle.api.Project
 import org.gradle.api.file.FileTree
 import org.gradle.api.provider.Provider
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import uk.gov.authentication.ext.ProjectExt.debugLog
+import uk.gov.authentication.ext.ProjectExtensions.debugLog
 
 /**
  * [FileTreeFetcher] implementation designed to obtain the output files from compiling kotlin files
@@ -21,11 +21,10 @@ class KotlinCompileFileTreeFetcher(
     variant: String,
     capitalisedVariantFlavorName: String,
 ) : BaseFileTreeFetcher(
-    project,
-    variant,
-    capitalisedVariantFlavorName,
-) {
-
+        project,
+        variant,
+        capitalisedVariantFlavorName,
+    ) {
     override fun getBaseFileTree(): Provider<FileTree> {
         return project.provider {
             getKotlinCompileFileTree(
@@ -42,9 +41,8 @@ class KotlinCompileFileTreeFetcher(
         }
     }
 
-    private fun getKotlinCompileFileTree(
-        name: String,
-    ): FileTree? = performOnFoundTask<KotlinCompile, FileTree>(name) {
-        it.destinationDirectory.asFileTree
-    }
+    private fun getKotlinCompileFileTree(name: String): FileTree? =
+        performOnFoundTask<KotlinCompile, FileTree>(name) {
+            it.destinationDirectory.asFileTree
+        }
 }

@@ -34,9 +34,7 @@ object LibraryExtensionExt {
      *
      * @param version The Jacoco version number as a string.
      */
-    fun DslLibraryExtension.decorateDslLibraryExtensionWithJacoco(
-        version: String,
-    ) {
+    fun DslLibraryExtension.decorateDslLibraryExtensionWithJacoco(version: String) {
         testCoverage.jacocoVersion = version
         buildTypes {
             debug {

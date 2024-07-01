@@ -6,7 +6,7 @@ import org.gradle.api.tasks.TaskProvider
 import org.gradle.testing.jacoco.tasks.JacocoReport
 import uk.gov.authentication.SourceSetFolder
 import uk.gov.authentication.ext.JacocoReportExt.setupReportDirectories
-import uk.gov.authentication.ext.ProjectExt.debugLog
+import uk.gov.authentication.ext.ProjectExtensions.debugLog
 import uk.gov.authentication.filetree.fetcher.FileTreeFetcher
 
 /**
@@ -21,7 +21,6 @@ abstract class JacocoCustomConfig(
     private val project: Project,
     private val classDirectoryFetcher: FileTreeFetcher,
 ) {
-
     /**
      * Obtain the Jacoco `.exec` or `.ec` execution files to analyse, dependent on the test type.
      */
@@ -53,6 +52,7 @@ abstract class JacocoCustomConfig(
      * @param testTaskName The name of the associated test task. Appends the test task with
      * [finalizedBy][org.gradle.api.Task.finalizedBy] when not null.
      */
+    @Suppress("LongParameterList")
     fun generateCustomJacocoReport(
         excludes: List<String>,
         dependencies: Iterable<*>,
@@ -61,56 +61,57 @@ abstract class JacocoCustomConfig(
         reportOutputDir: String,
         group: String = "Jacoco",
         testTaskName: String? = null,
-        ): TaskProvider<JacocoReport> {
+    ): TaskProvider<JacocoReport> {
         val sourceSetFolder = SourceSetFolder(project)
 
         val classDirectoriesTree = classDirectoryFetcher.getProvider(excludes)
 
-        _createdTask = if (project.tasks.findByName(name) != null) {
-            project.tasks.withType(JacocoReport::class.java).named(name)
-        } else {
-            project.tasks.register(
-                name,
-                JacocoReport::class.java,
-            ) {
-                this.dependsOn(
-                    dependencies,
-                )
-                this.description = description
-                this.group = group
+        _createdTask =
+            if (project.tasks.findByName(name) != null) {
+                project.tasks.withType(JacocoReport::class.java).named(name)
+            } else {
+                project.tasks.register(
+                    name,
+                    JacocoReport::class.java,
+                ) {
+                    this.dependsOn(
+                        dependencies,
+                    )
+                    this.description = description
+                    this.group = group
 
-                this.additionalSourceDirs.from(
-                    sourceSetFolder.sourceFiles.files.map {
-                        it.absolutePath
-                    },
-                ).also {
-                    project.debugLog(
-                        "$name: Configured additional source directories: " +
-                            "${it.files}",
-                    )
-                }
-                this.classDirectories.from(classDirectoriesTree).also {
-                    project.debugLog(
-                        "$name: Configured class directories: " +
-                            "${it.files}",
-                    )
-                }
-                this.executionData.from(this@JacocoCustomConfig.getExecutionData()).also {
-                    project.debugLog(
-                        "$name: Configured execution data: " +
-                            "${it.files}",
-                    )
-                }
-                this.sourceDirectories.from(sourceSetFolder.sourceFiles.files).also {
-                    project.debugLog(
-                        "$name: Configured source directories: " +
-                            "${it.files}",
-                    )
-                }
+                    this.additionalSourceDirs.from(
+                        sourceSetFolder.sourceFiles.files.map {
+                            it.absolutePath
+                        },
+                    ).also {
+                        project.debugLog(
+                            "$name: Configured additional source directories: " +
+                                "${it.files}",
+                        )
+                    }
+                    this.classDirectories.from(classDirectoriesTree).also {
+                        project.debugLog(
+                            "$name: Configured class directories: " +
+                                "${it.files}",
+                        )
+                    }
+                    this.executionData.from(this@JacocoCustomConfig.getExecutionData()).also {
+                        project.debugLog(
+                            "$name: Configured execution data: " +
+                                "${it.files}",
+                        )
+                    }
+                    this.sourceDirectories.from(sourceSetFolder.sourceFiles.files).also {
+                        project.debugLog(
+                            "$name: Configured source directories: " +
+                                "${it.files}",
+                        )
+                    }
 
-                this.setupReportDirectories(project, reportOutputDir)
+                    this.setupReportDirectories(project, reportOutputDir)
+                }
             }
-        }
 
         testTaskName?.let {
             project.tasks.findByName(it)?.finalizedBy(createdTask)

@@ -3,7 +3,7 @@ package uk.gov.authentication.filetree.fetcher
 import org.gradle.api.Project
 import org.gradle.api.file.FileTree
 import org.gradle.api.provider.Provider
-import uk.gov.authentication.ext.ProjectExt.debugLog
+import uk.gov.authentication.ext.ProjectExtensions.debugLog
 
 /**
  * Decorator class for containing multiple [FileTreeFetcher] objects.
@@ -18,15 +18,12 @@ data class FileTreesFetcher constructor(
     private val project: Project,
     private val fetchers: Iterable<FileTreeFetcher>,
 ) : FileTreeFetcher {
-
     constructor(
         project: Project,
         vararg fetcher: FileTreeFetcher,
     ) : this(project, fetcher.toList())
 
-    override fun getProvider(
-        excludes: List<String>,
-    ): Provider<FileTree> =
+    override fun getProvider(excludes: List<String>): Provider<FileTree> =
         fetchers
             .map { it.getProvider(excludes) }
             .reduce { leftTree, rightTree ->

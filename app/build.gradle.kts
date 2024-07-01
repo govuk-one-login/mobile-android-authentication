@@ -1,28 +1,17 @@
+import uk.gov.authentication.config.ApkConfig
+
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.android.kotlin)
-    alias(libs.plugins.detekt)
-    alias(libs.plugins.ktlint)
-    alias(libs.plugins.kotlin.serlialization)
-    id("maven-publish")
-    id("authentication.jvm-toolchains")
-    id("sonarqube-module-config")
-    id("jacoco")
-    id("jacoco-module-config")
+    `maven-publish`
+    id("uk.gov.authentication.android-lib-config")
 }
 
-apply(from = "${rootProject.extra["configDir"]}/detekt/config.gradle")
-apply(from = "${rootProject.extra["configDir"]}/ktlint/config.gradle")
-
 android {
-    namespace = "${rootProject.extra["baseNamespace"]}.pages"
-    compileSdk = (rootProject.extra["compileAndroidVersion"] as Int)
-
     defaultConfig {
-        minSdk = (rootProject.extra["minAndroidVersion"] as Int)
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
+        namespace = ApkConfig.APPLICATION_ID + ".impl"
+        compileSdk = ApkConfig.COMPILE_SDK_VERSION
+        minSdk = ApkConfig.MINIMUM_SDK_VERSION
+        targetSdk = ApkConfig.TARGET_SDK_VERSION
+        testInstrumentationRunner = namespace + ".InstrumentationTestRunner"
     }
 
     buildTypes {
@@ -30,15 +19,17 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
 
     lint {
+        val configDir = "${rootProject.projectDir}/config"
+
         abortOnError = true
         absolutePaths = true
-        baseline = File("${rootProject.extra["configDir"]}/android/baseline.xml")
+        baseline = File("$configDir/android/baseline.xml")
         checkAllWarnings = true
         checkDependencies = false
         checkGeneratedSources = false
@@ -47,14 +38,14 @@ android {
             setOf(
                 "ConvertToWebp",
                 "UnusedIds",
-                "VectorPath"
-            )
+                "VectorPath",
+            ),
         )
         explainIssues = true
         htmlReport = true
         ignoreTestSources = true
         ignoreWarnings = false
-        lintConfig = File("${rootProject.extra["configDir"]}/android/lint.xml")
+        lintConfig = File("$configDir/android/lint.xml")
         noLines = false
         quiet = false
         showAll = true
@@ -68,11 +59,12 @@ android {
         animationsDisabled = true
         unitTests.all {
             it.testLogging {
-                events = setOf(
-                    org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
-                    org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
-                    org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
-                )
+                events =
+                    setOf(
+                        org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
+                        org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
+                        org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
+                    )
             }
         }
         unitTests {
@@ -93,18 +85,18 @@ android {
 dependencies {
     listOf(
         libs.androidx.test.ext.junit,
-        libs.espresso.core
+        libs.espresso.core,
     ).forEach(::androidTestImplementation)
 
     listOf(
         libs.androidx.core.core.ktx,
         libs.appcompat,
         libs.appauth,
-        libs.kotlinx.serialization.json
+        libs.kotlinx.serialization.json,
     ).forEach(::implementation)
 
     listOf(
-        libs.junit
+        libs.junit,
     ).forEach(::testImplementation)
 }
 
@@ -134,9 +126,10 @@ publishing {
         }
         repositories {
             maven("https://maven.pkg.github.com/govuk-one-login/mobile-android-authentication") {
+                name = "GitHubPackages"
                 credentials {
-                    username = System.getenv("USERNAME")
-                    password = System.getenv("TOKEN")
+                    username = System.getenv("GITHUB_ACTOR")
+                    password = System.getenv("GITHUB_TOKEN")
                 }
             }
         }

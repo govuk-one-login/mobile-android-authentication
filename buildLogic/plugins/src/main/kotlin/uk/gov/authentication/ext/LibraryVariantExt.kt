@@ -12,51 +12,54 @@ import uk.gov.authentication.jacoco.tasks.JacocoConnectedTestTaskGenerator
 import uk.gov.authentication.jacoco.tasks.JacocoTaskGenerator
 import uk.gov.authentication.jacoco.tasks.JacocoUnitTestTaskGenerator
 
-fun LibraryVariant.generateDebugJacocoTasks(
-    project: Project
-) {
+fun LibraryVariant.generateDebugJacocoTasks(project: Project) {
     val capitalisedFlavorName = flavorName.capitalized()
     if (buildType.name == "debug") {
-        val classDirectoriesFetcher = FileTreesFetcher(
-            project,
-            KotlinCompileFileTreeFetcher(
+        val classDirectoriesFetcher =
+            FileTreesFetcher(
                 project,
-                name,
-                capitalisedFlavorName,
-            ),
-            AsmFileTreeFetcher(
+                KotlinCompileFileTreeFetcher(
+                    project,
+                    name,
+                    capitalisedFlavorName,
+                ),
+                AsmFileTreeFetcher(
+                    project,
+                    name,
+                    capitalisedFlavorName,
+                ),
+                JavaCompileFileTreeFetcher(
+                    project,
+                    name,
+                    capitalisedFlavorName,
+                ),
+            )
+
+        val unitTestReportGenerator =
+            JacocoUnitTestTaskGenerator(
                 project,
+                classDirectoriesFetcher,
                 name,
-                capitalisedFlavorName,
-            ),
-            JavaCompileFileTreeFetcher(
+            )
+
+        val connectedTestReportGenerator =
+            JacocoConnectedTestTaskGenerator(
                 project,
+                classDirectoriesFetcher,
                 name,
-                capitalisedFlavorName,
-            ),
-        )
+            )
 
-        val unitTestReportGenerator = JacocoUnitTestTaskGenerator(
-            project,
-            classDirectoriesFetcher,
-            name,
-        )
-
-        val connectedTestReportGenerator = JacocoConnectedTestTaskGenerator(
-            project,
-            classDirectoriesFetcher,
-            name,
-        )
-
-        val combinedTestReportGenerator = JacocoCombinedTestTaskGenerator(
-            project = project,
-            classDirectoriesFetcher = classDirectoriesFetcher,
-            variant = name,
-            configurations = listOf(
-                unitTestReportGenerator,
-                connectedTestReportGenerator,
-            ),
-        )
+        val combinedTestReportGenerator =
+            JacocoCombinedTestTaskGenerator(
+                project = project,
+                classDirectoriesFetcher = classDirectoriesFetcher,
+                variant = name,
+                configurations =
+                    listOf(
+                        unitTestReportGenerator,
+                        connectedTestReportGenerator,
+                    ),
+            )
 
         listOf(
             unitTestReportGenerator,

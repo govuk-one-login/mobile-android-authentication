@@ -12,6 +12,8 @@ naming:
     active: true
     ignoreAnnotated:
       - 'Composable'
+      - 'Test'
+      - 'ParameterizedTest'
   TopLevelPropertyNaming:
     active: true
     # composables use TitleCase / PascalCase, with no underscore.

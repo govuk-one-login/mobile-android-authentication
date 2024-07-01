@@ -31,14 +31,14 @@ class JacocoCombinedTestTaskGenerator(
     private val reportDirectoryPrefix: String = "${project.buildDir}/reports/jacoco",
     private val configurations: Iterable<JacocoTaskGenerator>,
 ) : JacocoTaskGenerator {
-
     private val capitalisedVariantName = variant.capitalized()
 
-    override val configuration = JacocoCombinedTestConfig(
-        project,
-        classDirectoriesFetcher,
-        configurations.map { it.configuration },
-    )
+    override val configuration =
+        JacocoCombinedTestConfig(
+            project,
+            classDirectoriesFetcher,
+            configurations.map { it.configuration },
+        )
 
     override val name: String = "jacoco${capitalisedVariantName}CombinedTestReport"
 

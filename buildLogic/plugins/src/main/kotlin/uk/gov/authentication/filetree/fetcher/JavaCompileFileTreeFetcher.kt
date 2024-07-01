@@ -4,7 +4,7 @@ import org.gradle.api.Project
 import org.gradle.api.file.FileTree
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.compile.JavaCompile
-import uk.gov.authentication.ext.ProjectExt.debugLog
+import uk.gov.authentication.ext.ProjectExtensions.debugLog
 
 /**
  * [FileTreeFetcher] implementation designed to obtain the output files from compiling intermediary
@@ -21,11 +21,10 @@ class JavaCompileFileTreeFetcher(
     variant: String,
     capitalisedVariantFlavorName: String,
 ) : BaseFileTreeFetcher(
-    project,
-    variant,
-    capitalisedVariantFlavorName,
-) {
-
+        project,
+        variant,
+        capitalisedVariantFlavorName,
+    ) {
     override fun getBaseFileTree(): Provider<FileTree> {
         return project.provider {
             getJavaCompileFileTree(
@@ -42,9 +41,8 @@ class JavaCompileFileTreeFetcher(
         }
     }
 
-    private fun getJavaCompileFileTree(
-        name: String,
-    ): FileTree? = performOnFoundTask<JavaCompile, FileTree>(name) {
-        it.destinationDirectory.asFileTree
-    }
+    private fun getJavaCompileFileTree(name: String): FileTree? =
+        performOnFoundTask<JavaCompile, FileTree>(name) {
+            it.destinationDirectory.asFileTree
+        }
 }
