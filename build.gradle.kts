@@ -1,9 +1,5 @@
 buildscript {
     val jacocoVersion by rootProject.extra("0.8.9")
-    val minAndroidVersion by rootProject.extra { 29 }
-    val compileAndroidVersion by rootProject.extra { 34 }
-    val androidBuildToolsVersion by rootProject.extra { "34.0.0" }
-    val configDir by rootProject.extra { "$rootDir/config" }
     val baseNamespace by rootProject.extra { "uk.gov.android.authentication" }
 
     val localProperties = java.util.Properties()
@@ -25,19 +21,18 @@ buildscript {
     }
 
     val packageVersion by rootProject.extra { findPackageVersion() }
+
+    repositories {
+        google()
+        gradlePluginPortal()
+        mavenCentral()
+    }
 }
 
 plugins {
-    alias(libs.plugins.android.application) apply false
+    id("uk.gov.authentication.vale-config")
+    id("uk.gov.authentication.sonarqube-root-config")
+    alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.android.library) apply false
-    alias(libs.plugins.android.kotlin) apply false
-    alias(libs.plugins.detekt) apply false
-    alias(libs.plugins.ktlint) apply false
-    alias(libs.plugins.kotlin.serlialization) apply false
-    id("org.sonarqube") version "5.0.0.4638"
-    id("sonarqube-root-config")
-}
-
-apply {
-    from("$rootDir/config/styles/tasks.gradle")
+    alias(libs.plugins.android.application) apply false
 }

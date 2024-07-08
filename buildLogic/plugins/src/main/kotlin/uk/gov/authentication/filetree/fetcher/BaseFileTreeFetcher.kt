@@ -6,7 +6,7 @@ import org.gradle.api.file.FileTree
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.util.PatternSet
 import org.gradle.configurationcache.extensions.capitalized
-import uk.gov.authentication.ext.ProjectExt.debugLog
+import uk.gov.authentication.ext.ProjectExtensions.debugLog
 
 /**
  * Partial implementation for obtaining a [FileTree].
@@ -25,7 +25,6 @@ abstract class BaseFileTreeFetcher(
     val variant: String,
     val capitalisedVariantFlavorName: String,
 ) : FileTreeFetcher {
-
     /**
      * The TitleCase representation of the Android app or library's build variant.
      */
@@ -59,9 +58,7 @@ abstract class BaseFileTreeFetcher(
         }?.let(action::invoke)
     }
 
-    override fun getProvider(
-        excludes: List<String>,
-    ): Provider<FileTree> {
+    override fun getProvider(excludes: List<String>): Provider<FileTree> {
         return project.provider {
             getBaseFileTree().get().matching(PatternSet().exclude(excludes))
         }

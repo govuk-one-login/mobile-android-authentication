@@ -15,10 +15,10 @@ data class LoginSessionConfiguration(
     val responseType: ResponseType = ResponseType.CODE,
     val scopes: List<Scope>,
     val tokenEndpoint: Uri,
-    val vectorsOfTrust: String = "[\"Cl.Cm.P0\"]"
+    val vectorsOfTrust: String = "[\"Cl.Cm.P0\"]",
 ) {
     enum class ResponseType(val value: String) {
-        CODE("code")
+        CODE("code"),
     }
 
     enum class Scope(val value: String) {
@@ -26,11 +26,11 @@ data class LoginSessionConfiguration(
         EMAIL("email_address"),
         PHONE("phone_number"),
         OFFLINE_ACCESS("offline_access"),
-        STS("sts")
+        STS("sts"),
     }
 
     enum class Locale(val value: String) {
         EN("en"),
-        CY("cy")
+        CY("cy"),
     }
 }

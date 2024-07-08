@@ -12,9 +12,8 @@ data class TokenResponse(
     val accessToken: String,
     val accessTokenExpirationTime: Long,
     val idToken: String? = null,
-    val refreshToken: String? = null
+    val refreshToken: String? = null,
 ) {
-
     fun jsonSerializeString(): String {
         return Json.encodeToString(this)
     }

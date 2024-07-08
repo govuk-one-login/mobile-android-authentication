@@ -1,19 +1,25 @@
 plugins {
     `kotlin-dsl`
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.ktlint)
 }
-
-val kotlinVersion by rootProject.extra("1.9.0")
-val sonarqubeVersion by rootProject.extra("4.3.0.3225")
 
 dependencies {
     listOf(
-        "com.android.tools.build:gradle:8.0.0",
-        "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:1.9.23-1.0.20",
-        "org.jetbrains.dokka:org.jetbrains.dokka.gradle.plugin:$kotlinVersion",
-        "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion",
-        "org.jetbrains.dokka:android-documentation-plugin:$kotlinVersion",
-        "org.sonarqube:org.sonarqube.gradle.plugin:$sonarqubeVersion",
+        libs.android.build.tool,
+        libs.detekt.gradle,
+        libs.kotlin.gradle.plugin,
+        libs.ktlint.gradle,
+        libs.sonarqube.gradle,
     ).forEach { dependency ->
         implementation(dependency)
+    }
+}
+
+kotlin { jvmToolchain(17) }
+
+ktlint {
+    filter {
+        exclude { it.file.absolutePath.contains("/build/") }
     }
 }
