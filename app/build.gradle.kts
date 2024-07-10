@@ -2,6 +2,7 @@ import uk.gov.authentication.config.ApkConfig
 
 plugins {
     `maven-publish`
+    alias(libs.plugins.kotlin.serlialization)
     id("uk.gov.authentication.android-lib-config")
 }
 
@@ -11,7 +12,6 @@ android {
         compileSdk = ApkConfig.COMPILE_SDK_VERSION
         minSdk = ApkConfig.MINIMUM_SDK_VERSION
         targetSdk = ApkConfig.TARGET_SDK_VERSION
-        testInstrumentationRunner = namespace + ".InstrumentationTestRunner"
     }
 
     buildTypes {
@@ -58,6 +58,7 @@ android {
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
         animationsDisabled = true
         unitTests.all {
+            it.useJUnitPlatform()
             it.testLogging {
                 events =
                     setOf(
@@ -74,11 +75,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 }
 
@@ -86,6 +87,8 @@ dependencies {
     listOf(
         libs.androidx.test.ext.junit,
         libs.espresso.core,
+        libs.mockito.kotlin,
+        libs.mockito.android
     ).forEach(::androidTestImplementation)
 
     listOf(
@@ -96,7 +99,10 @@ dependencies {
     ).forEach(::implementation)
 
     listOf(
-        libs.junit,
+        libs.junit.jupiter,
+        libs.junit.jupiter.params,
+        libs.junit.jupiter.engine,
+        platform(libs.junit.bom),
     ).forEach(::testImplementation)
 }
 

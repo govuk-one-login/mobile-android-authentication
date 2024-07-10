@@ -1,15 +1,17 @@
 [versions]
 core-ktx = "1.12.0"
-junit = "4.13.2"
+junit = "5.10.3"
 androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 appcompat = "1.6.1"
-androidGradlePlugin = "8.4.1"
+androidGradlePlugin = "8.5.0"
 kotlin = "2.0.0"
 serialization = "1.7.1"
 detekt-gradle = "1.23.6" # https://github.com/detekt/detekt/releases/tag/v1.23.6
 sonarqube-gradle = "5.0.0.4638" # https://github.com/SonarSource/sonar-scanner-gradle/releases
 ktlint-gradle = "11.3.1" # https://github.com/JLLeitschuh/ktlint-gradle/releases
+mockito-kotlin = "5.4.0"
+mockito-android = "5.12.0"
 
 [libraries]
 android-build-tool = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
@@ -24,6 +26,12 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ktlint-gradle = { group = "org.jlleitschuh.gradle", name = "ktlint-gradle", version.ref = "ktlint-gradle" }
 sonarqube-gradle = { module = "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin", version.ref = "sonarqube-gradle" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito-kotlin" }
+mockito-android = { group = "org.mockito", name = "mockito-android", version.ref = "mockito-android" }
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt-gradle" }

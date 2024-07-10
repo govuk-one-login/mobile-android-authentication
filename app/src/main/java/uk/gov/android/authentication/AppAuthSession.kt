@@ -1,9 +1,8 @@
 package uk.gov.android.authentication
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.core.app.ActivityCompat
+import androidx.activity.result.ActivityResultLauncher
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationResponse
@@ -14,11 +13,11 @@ import java.util.UUID
 @Suppress("TooGenericExceptionThrown")
 class AppAuthSession(
     context: Context,
-) : LoginSession {
     private val authService: AuthorizationService = AuthorizationService(context)
+) : LoginSession {
 
     override fun present(
-        activity: Activity,
+        launcher: ActivityResultLauncher<Intent>,
         configuration: LoginSessionConfiguration,
     ) {
         with(configuration) {
@@ -49,12 +48,7 @@ class AppAuthSession(
             val authRequest = builder.build()
 
             val authIntent = authService.getAuthorizationRequestIntent(authRequest)
-            ActivityCompat.startActivityForResult(
-                activity,
-                authIntent,
-                REQUEST_CODE_AUTH,
-                null,
-            )
+            launcher.launch(authIntent)
         }
     }
 
