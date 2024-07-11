@@ -3,25 +3,24 @@ package uk.gov.authentication
 import com.android.build.gradle.BaseExtension
 import uk.gov.authentication.emulator.SystemImageSource
 import uk.gov.authentication.emulator.SystemImageSource.GOOGLE_ATD
-import uk.gov.authentication.emulator.SystemImageSource.GOOGLE_PLAYSTORE
 import uk.gov.authentication.ext.BaseExtensions.generateDeviceConfigurations
 import uk.gov.authentication.ext.BaseExtensions.generateGetHardwareProfilesTask
-import java.io.BufferedReader
-import java.io.ByteArrayOutputStream
 import java.io.FileReader
 
 plugins {
     id("kotlin-android")
 }
 
-private val hardwareProfileFilter: (String) -> Boolean = {
-    it.contains("pixel xl", ignoreCase = true)
-}
-private val systemImageSources =
-    listOf(
-        GOOGLE_ATD,
-        GOOGLE_PLAYSTORE,
-    )
+private val _systemImageSources = listOf(
+    GOOGLE_ATD
+)
+val managedDeviceHardwareProfiles: Provider<List<String>> by rootProject.extra(
+    rootProject.provider {
+        FileReader(rootProject.file("config/managedDeviceHardwareProfiles"))
+            .readLines()
+            .filter { !it.trim().startsWith("#") } // remove comment lines
+    }
+)
 
 /**
  * Configure both app and library modules via the [BaseExtension].
@@ -37,36 +36,19 @@ configure<BaseExtension> {
      */
     val minAndroidVersion: Int by project.extra(29)
     val targetAndroidVersion: Int by project.extra(34)
-    val managedApiLevels: IntRange by project.extra((minAndroidVersion..targetAndroidVersion))
-    val hardwareProfileFilter: (String) -> Boolean by project.extra(hardwareProfileFilter)
-    val systemImageSources: List<SystemImageSource> by project.extra(systemImageSources)
 
-    val consoleOutputStream = ByteArrayOutputStream()
-    val hardwareProfilesList =
-        rootProject.file(
-            "${rootProject.buildDir}/outputs/managedDeviceHardwareProfiles.txt",
-        )
-    val hardwareProfilesTask = generateGetHardwareProfilesTask(project, hardwareProfilesList)
-
-    if (!hardwareProfilesList.exists()) {
-        /**
-         * Call the hardware profiles task within the gradle configuration stage for the sake of
-         * building out the various hardware profiles.
-         */
-        exec {
-            commandLine = hardwareProfilesTask.get().commandLine
-            args = hardwareProfilesTask.get().args
-            standardOutput = consoleOutputStream
-        }
-    }
-
-    val hardwareProfileStrings: List<String> =
-        BufferedReader(FileReader(hardwareProfilesList))
-            .readLines()
+    /**
+     * Android versions to use with the gradle managed devices. Due to how the
+     * `createManagedDevice${variant}AndroidTestCoverageReport` task generates within google, it
+     * depends on all managed device test tasks, instead of creating a coverage report task per
+     * device ID. Therefore, this should be an [IntRange] with a single entry until fixed.
+     */
+    val managedApiLevels: IntRange by project.extra((30..30))
+    val systemImageSources: List<SystemImageSource> by project.extra(_systemImageSources)
 
     generateDeviceConfigurations(
         apiLevelRange = managedApiLevels,
-        hardwareProfileStrings = hardwareProfileStrings.filter(hardwareProfileFilter),
-        systemImageSources = systemImageSources,
+        hardwareProfileStrings = managedDeviceHardwareProfiles.get(),
+        systemImageSources = systemImageSources
     )
 }

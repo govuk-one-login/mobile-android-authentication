@@ -104,6 +104,12 @@ dependencies {
         libs.junit.jupiter.engine,
         platform(libs.junit.bom),
     ).forEach(::testImplementation)
+
+    listOf(
+        libs.androidx.test.orchestrator
+    ).forEach {
+        androidTestUtil(it)
+    }
 }
 
 publishing {
