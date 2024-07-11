@@ -35,7 +35,7 @@ configure<BaseExtension> {
      * depends on all managed device test tasks, instead of creating a coverage report task per
      * device ID. Therefore, this should be an [IntRange] with a single entry until fixed.
      */
-    val managedApiLevels: IntRange by project.extra((30..30))
+    val managedApiLevels: IntRange by project.extra((30..33))
     val systemImageSources: List<SystemImageSource> by project.extra(systemImageSources)
 
     generateDeviceConfigurations(
