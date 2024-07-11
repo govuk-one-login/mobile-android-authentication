@@ -11,15 +11,13 @@ plugins {
     id("kotlin-android")
 }
 
-private val _systemImageSources = listOf(
-    GOOGLE_ATD
-)
+private val systemImageSources = listOf(GOOGLE_ATD)
 val managedDeviceHardwareProfiles: Provider<List<String>> by rootProject.extra(
     rootProject.provider {
         FileReader(rootProject.file("config/managedDeviceHardwareProfiles"))
             .readLines()
             .filter { !it.trim().startsWith("#") } // remove comment lines
-    }
+    },
 )
 
 /**
@@ -38,11 +36,11 @@ configure<BaseExtension> {
      * device ID. Therefore, this should be an [IntRange] with a single entry until fixed.
      */
     val managedApiLevels: IntRange by project.extra((30..30))
-    val systemImageSources: List<SystemImageSource> by project.extra(_systemImageSources)
+    val systemImageSources: List<SystemImageSource> by project.extra(systemImageSources)
 
     generateDeviceConfigurations(
         apiLevelRange = managedApiLevels,
         hardwareProfileStrings = managedDeviceHardwareProfiles.get(),
-        systemImageSources = systemImageSources
+        systemImageSources = systemImageSources,
     )
 }
