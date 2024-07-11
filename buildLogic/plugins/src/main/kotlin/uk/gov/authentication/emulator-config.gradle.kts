@@ -31,12 +31,6 @@ val managedDeviceHardwareProfiles: Provider<List<String>> by rootProject.extra(
  * made.
  */
 configure<BaseExtension> {
-    /* Extra properties for the plugin. Defers to the root project values. Uses the underscored variants
-     * as the initial value if the root project has undefined values.
-     */
-    val minAndroidVersion: Int by project.extra(29)
-    val targetAndroidVersion: Int by project.extra(34)
-
     /**
      * Android versions to use with the gradle managed devices. Due to how the
      * `createManagedDevice${variant}AndroidTestCoverageReport` task generates within google, it
