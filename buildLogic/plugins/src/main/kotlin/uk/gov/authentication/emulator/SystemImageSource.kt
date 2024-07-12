@@ -1,8 +1,8 @@
 package uk.gov.authentication.emulator
 
 import com.android.build.api.dsl.ManagedVirtualDevice
-import uk.gov.authentication.ext.StringExtensions.kebabToLowerCamelCase
-import uk.gov.authentication.ext.StringExtensions.snakeToLowerCamelCase
+import uk.gov.extensions.StringExtensions.kebabToLowerCamelCase
+import uk.gov.extensions.StringExtensions.snakeToLowerCamelCase
 
 /**
  * Collection to hold applicable values for the [ManagedVirtualDevice.systemImageSource]. Look at

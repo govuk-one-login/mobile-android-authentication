@@ -1,5 +1,6 @@
-package uk.gov.authentication.ext
+package uk.gov.extensions
 
+import java.io.File
 import org.gradle.api.Project
 import org.gradle.testing.jacoco.tasks.JacocoReport
 
@@ -7,6 +8,7 @@ import org.gradle.testing.jacoco.tasks.JacocoReport
  * Wrapper object for containing functions that extend the [JacocoReport] Gradle task.
  */
 object JacocoReportExt {
+
     /**
      * Declares the folders for a given [JacocoReport] task's output.
      *
@@ -15,8 +17,10 @@ object JacocoReportExt {
      */
     fun JacocoReport.setupReportDirectories(
         project: Project,
-        reportsOutputDir: String,
+        reportsOutputDir: String
     ) {
+        this.outputs.dir(File(reportsOutputDir))
+
         this.reports {
             this.csv.apply {
                 required.set(true)

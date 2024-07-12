@@ -3,8 +3,8 @@ package uk.gov.authentication
 import com.android.build.gradle.BaseExtension
 import uk.gov.authentication.emulator.SystemImageSource
 import uk.gov.authentication.emulator.SystemImageSource.GOOGLE_ATD
-import uk.gov.authentication.ext.BaseExtensions.generateDeviceConfigurations
-import uk.gov.authentication.ext.BaseExtensions.generateGetHardwareProfilesTask
+import uk.gov.extensions.BaseExtensions.generateDeviceConfigurations
+import uk.gov.extensions.BaseExtensions.generateGetHardwareProfilesTask
 import java.io.FileReader
 
 plugins {

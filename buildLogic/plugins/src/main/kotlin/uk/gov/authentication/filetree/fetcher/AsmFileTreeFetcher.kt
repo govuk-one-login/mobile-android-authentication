@@ -4,7 +4,7 @@ import com.android.build.gradle.tasks.TransformClassesWithAsmTask
 import org.gradle.api.Project
 import org.gradle.api.file.FileTree
 import org.gradle.api.provider.Provider
-import uk.gov.authentication.ext.ProjectExtensions.debugLog
+import uk.gov.extensions.ProjectExtensions.debugLog
 
 /**
  * [FileTreeFetcher] implementation designed to obtain the output files from the
@@ -23,10 +23,10 @@ class AsmFileTreeFetcher(
     variant: String,
     capitalisedVariantFlavorName: String,
 ) : BaseFileTreeFetcher(
-        project,
-        variant,
-        capitalisedVariantFlavorName,
-    ) {
+    project,
+    variant,
+    capitalisedVariantFlavorName,
+) {
     override fun getBaseFileTree(): Provider<FileTree> {
         return project.provider {
             getAsmClassesFileTree(

@@ -1,4 +1,4 @@
-package uk.gov.authentication.ext
+package uk.gov.extensions
 
 import org.gradle.api.tasks.testing.Test
 import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
@@ -7,6 +7,7 @@ import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
  * Wrapper object for containing extension functions for Gradle's [Test] task type.
  */
 object TestExt {
+
     /**
      * Adds Jacoco exclusion rules to a Gradle library. Also includes classes that have no location
      * declared, yet still exist.

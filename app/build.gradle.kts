@@ -2,9 +2,18 @@ import uk.gov.authentication.config.ApkConfig
 
 plugins {
     `maven-publish`
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.serlialization)
-    id("uk.gov.authentication.android-lib-config")
+    alias(libs.plugins.ktlint)
+    alias(libs.plugins.detekt)
+    id("uk.gov.jacoco.library-config")
+    id("uk.gov.sonar.module-config")
+    id("uk.gov.authentication.emulator-config")
+    id("uk.gov.authentication.jvm-toolchains")
 }
+
+apply(from = "${rootProject.extra["configDir"]}/detekt/config.gradle")
+apply(from = "${rootProject.extra["configDir"]}/ktlint/config.gradle")
 
 android {
     defaultConfig {
@@ -19,7 +28,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
+                "proguard-rules.pro"
             )
         }
     }
@@ -38,8 +47,8 @@ android {
             setOf(
                 "ConvertToWebp",
                 "UnusedIds",
-                "VectorPath",
-            ),
+                "VectorPath"
+            )
         )
         explainIssues = true
         htmlReport = true
@@ -64,7 +73,7 @@ android {
                     setOf(
                         org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
                         org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
-                        org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
+                        org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
                     )
             }
         }
@@ -95,14 +104,14 @@ dependencies {
         libs.androidx.core.core.ktx,
         libs.appcompat,
         libs.appauth,
-        libs.kotlinx.serialization.json,
+        libs.kotlinx.serialization.json
     ).forEach(::implementation)
 
     listOf(
         libs.junit.jupiter,
         libs.junit.jupiter.params,
         libs.junit.jupiter.engine,
-        platform(libs.junit.bom),
+        platform(libs.junit.bom)
     ).forEach(::testImplementation)
 
     listOf(

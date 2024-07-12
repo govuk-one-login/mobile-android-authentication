@@ -15,16 +15,16 @@ class TokenResponseTest {
             "sampleRefreshToken"
         )
         val expectedJson = "{\"tokenType\":\"bearer\",\"accessToken\":\"sampleAccessToken\"," +
-                "\"accessTokenExpirationTime\":3600,\"idToken\":\"sampleIdToken\"," +
-                "\"refreshToken\":\"sampleRefreshToken\"}"
+            "\"accessTokenExpirationTime\":3600,\"idToken\":\"sampleIdToken\"," +
+            "\"refreshToken\":\"sampleRefreshToken\"}"
         assertEquals(expectedJson, tokenResponse.jsonSerializeString())
     }
 
     @Test
     fun testJsonDeserialization() {
         val json = "{\"tokenType\":\"bearer\",\"accessToken\":\"sampleAccessToken\"," +
-                "\"accessTokenExpirationTime\":3600,\"idToken\":\"sampleIdToken\"," +
-                "\"refreshToken\":\"sampleRefreshToken\"}"
+            "\"accessTokenExpirationTime\":3600,\"idToken\":\"sampleIdToken\"," +
+            "\"refreshToken\":\"sampleRefreshToken\"}"
         val expectedTokenResponse = TokenResponse(
             "bearer",
             "sampleAccessToken",

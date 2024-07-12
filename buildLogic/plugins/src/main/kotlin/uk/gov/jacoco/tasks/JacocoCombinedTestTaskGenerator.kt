@@ -1,13 +1,11 @@
-package uk.gov.authentication.jacoco.tasks
+package uk.gov.jacoco.tasks
 
 import org.gradle.api.Project
-import org.gradle.api.tasks.TaskProvider
 import org.gradle.configurationcache.extensions.capitalized
-import org.gradle.testing.jacoco.tasks.JacocoReport
 import uk.gov.authentication.Filters
 import uk.gov.authentication.filetree.fetcher.FileTreeFetcher
-import uk.gov.authentication.jacoco.config.JacocoCombinedTestConfig
-import uk.gov.authentication.jacoco.config.JacocoCustomConfig
+import uk.gov.jacoco.config.JacocoCombinedTestConfig
+import uk.gov.jacoco.config.JacocoCustomConfig
 
 /**
  * A [JacocoTaskGenerator] implementation for combining the provided [JacocoTaskGenerator]
@@ -29,25 +27,26 @@ class JacocoCombinedTestTaskGenerator(
     private val classDirectoriesFetcher: FileTreeFetcher,
     variant: String,
     private val reportDirectoryPrefix: String = "${project.buildDir}/reports/jacoco",
-    private val configurations: Iterable<JacocoTaskGenerator>,
+    private val configurations: Iterable<JacocoCustomConfig>
 ) : JacocoTaskGenerator {
+
     private val capitalisedVariantName = variant.capitalized()
 
-    override val configuration =
-        JacocoCombinedTestConfig(
-            project,
-            classDirectoriesFetcher,
-            configurations.map { it.configuration },
-        )
+    private val name: String = "jacoco${capitalisedVariantName}CombinedTestReport"
 
-    override val name: String = "jacoco${capitalisedVariantName}CombinedTestReport"
+    private val configuration = JacocoCombinedTestConfig(
+        project,
+        classDirectoriesFetcher,
+        name = name,
+        configurations
+    )
 
-    override fun customTask(): TaskProvider<JacocoReport> =
+    override fun generate() {
         configuration.generateCustomJacocoReport(
             excludes = Filters.androidUnitTests,
-            dependencies = configurations.map { it.name },
+            dependencies = configurations.map { it.testTaskName },
             description = "Create coverage report from the '$capitalisedVariantName' test reports.",
-            name = name,
-            reportOutputDir = "$reportDirectoryPrefix/combined",
+            reportOutputDir = "$reportDirectoryPrefix/combined"
         )
+    }
 }

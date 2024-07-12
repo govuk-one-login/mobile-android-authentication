@@ -17,7 +17,7 @@ interface LoginSession {
      */
     fun present(
         launcher: ActivityResultLauncher<Intent>,
-        configuration: LoginSessionConfiguration,
+        configuration: LoginSessionConfiguration
     )
 
     /**
@@ -30,6 +30,6 @@ interface LoginSession {
     @Throws(Exception::class)
     fun finalise(
         intent: Intent,
-        callback: (tokens: TokenResponse) -> Unit,
+        callback: (tokens: TokenResponse) -> Unit
     )
 }

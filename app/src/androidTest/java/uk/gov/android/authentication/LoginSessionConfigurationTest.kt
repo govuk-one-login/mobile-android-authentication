@@ -26,7 +26,10 @@ class LoginSessionConfigurationTest {
             scopes = listOf(LoginSessionConfiguration.Scope.OPENID),
             tokenEndpoint = Uri.parse("https://example.com/token")
         )
-        assertEquals(LoginSessionConfiguration.ResponseType.CODE, loginSessionConfiguration.responseType)
+        assertEquals(
+            LoginSessionConfiguration.ResponseType.CODE,
+            loginSessionConfiguration.responseType
+        )
     }
 
     @Test
