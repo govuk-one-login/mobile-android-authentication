@@ -4,8 +4,6 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
     }
-
-    includeBuild("buildLogic")
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -17,4 +15,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "mobile-android-authentication"
+includeBuild("buildLogic")
 include(":app")
+
+gradle.startParameter.excludedTaskNames.addAll(listOf(":buildLogic:plugins:testClasses"))

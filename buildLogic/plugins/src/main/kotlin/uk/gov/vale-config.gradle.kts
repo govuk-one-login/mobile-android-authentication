@@ -1,4 +1,4 @@
-package uk.gov.authentication
+package uk.gov
 
 val valeSync =
     rootProject.tasks.register("valeSync", Exec::class.java) {

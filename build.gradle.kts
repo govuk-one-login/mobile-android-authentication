@@ -80,7 +80,7 @@ buildscript {
 }
 
 plugins {
-    id("uk.gov.authentication.vale-config")
+    id("uk.gov.vale-config")
     id("uk.gov.sonar.root-config")
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.android.library) apply false
