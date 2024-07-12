@@ -38,45 +38,6 @@ buildscript {
         gradlePluginPortal()
         mavenCentral()
     }
-
-    val getVersionCode: () -> Int = {
-        val code: Int =
-            if (rootProject.hasProperty("versionCode")) {
-                rootProject.property("versionCode").toString().toInt()
-            } else if (localProperties.getProperty("versionCode") != null) {
-                localProperties.getProperty("versionCode").toString().toInt()
-            } else {
-                throw Error(
-                    "Version code was not found as a command line parameter or a local property",
-                )
-            }
-
-        println("VersionCode is set to $code")
-        code
-    }
-
-    val getVersionName: () -> String = {
-        val name: String =
-            if (rootProject.hasProperty("versionName")) {
-                rootProject.property("versionName") as String
-            } else if (localProperties.getProperty("versionName") != null) {
-                localProperties.getProperty("versionName") as String
-            } else {
-                throw Error(
-                    "Version name was not found as a command line parameter or a local property",
-                )
-            }
-
-        println("VersionName is set to $name")
-        name
-    }
-
-    val versionCode: Int by rootProject.extra(
-        getVersionCode()
-    )
-    val versionName: String by rootProject.extra(
-        getVersionName()
-    )
 }
 
 plugins {
