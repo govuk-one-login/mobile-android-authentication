@@ -1,18 +1,20 @@
-import uk.gov.authentication.config.ApkConfig
+import uk.gov.pipelines.config.ApkConfig
 
 plugins {
     `maven-publish`
-    id("uk.gov.authentication.android-lib-config")
+    id("uk.gov.pipelines.android-lib-config")
 }
 
 android {
     defaultConfig {
-        namespace = ApkConfig.APPLICATION_ID + ".impl"
-        compileSdk = ApkConfig.COMPILE_SDK_VERSION
-        minSdk = ApkConfig.MINIMUM_SDK_VERSION
-        targetSdk = ApkConfig.TARGET_SDK_VERSION
-        testInstrumentationRunner = namespace + ".InstrumentationTestRunner"
+        val apkConfig: ApkConfig by project.rootProject.extra
+        namespace = apkConfig.applicationId + ".impl"
+        compileSdk = apkConfig.sdkVersions.compile
+        minSdk = apkConfig.sdkVersions.minimum
+        targetSdk = apkConfig.sdkVersions.target
+        testInstrumentationRunner = "$namespace.InstrumentationTestRunner"
     }
+
 
     buildTypes {
         release {
@@ -100,38 +102,15 @@ dependencies {
     ).forEach(::testImplementation)
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("mobile-android-authentication") {
-            groupId = "uk.gov.android"
-            artifactId = "authentication"
-            version = rootProject.extra["packageVersion"] as String
-
-            artifact("$buildDir/outputs/aar/${project.name}-release.aar")
-
-            // generate pom nodes for dependencies
-            pom.withXml {
-                val dependenciesNode = asNode().appendNode("dependencies")
-                configurations.getByName("implementation") {
-                    allDependencies.forEach { dependency ->
-                        if (dependency.name != "unspecified") {
-                            val dependencyNode = dependenciesNode.appendNode("dependency")
-                            dependencyNode.appendNode("groupId", dependency.group)
-                            dependencyNode.appendNode("artifactId", dependency.name)
-                            dependencyNode.appendNode("version", dependency.version)
-                        }
-                    }
-                }
-            }
-        }
-        repositories {
-            maven("https://maven.pkg.github.com/govuk-one-login/mobile-android-authentication") {
-                name = "GitHubPackages"
-                credentials {
-                    username = System.getenv("GITHUB_ACTOR")
-                    password = System.getenv("GITHUB_TOKEN")
-                }
-            }
-        }
+mavenPublishingConfig {
+    mavenConfigBlock {
+        name.set(
+            "Authentication module for Android Devices"
+        )
+        description.set(
+            """
+            A Gradle module which implements OpenID Connect to return an access token for Android.
+            """.trimIndent()
+        )
     }
 }
