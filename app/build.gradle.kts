@@ -15,8 +15,6 @@ android {
         namespace = apkConfig.applicationId + ".impl"
         compileSdk = apkConfig.sdkVersions.compile
         minSdk = apkConfig.sdkVersions.minimum
-        targetSdk = apkConfig.sdkVersions.target
-        testInstrumentationRunner = "$namespace.InstrumentationTestRunner"
     }
 
     buildTypes {
@@ -91,6 +89,7 @@ android {
 dependencies {
     listOf(
         libs.androidx.test.ext.junit,
+        libs.test.core.ktx,
         libs.espresso.core,
         libs.mockito.kotlin,
         libs.mockito.android

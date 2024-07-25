@@ -5,6 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
 import net.openid.appauth.AuthorizationService
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -41,5 +43,14 @@ class AppAuthSessionTest {
         loginSession.present(mockLauncher, loginSessionConfiguration)
 
         verify(mockLauncher).launch(expectedIntent)
+    }
+
+    @Test
+    fun unsuccessfulFinaliseCallbackResponse() {
+        val error = assertThrows(AuthenticationError::class.java) {
+            loginSession.finalise(Intent()) {}
+        }
+
+        assertEquals(AuthenticationError.ErrorType.OAUTH, error.type)
     }
 }
