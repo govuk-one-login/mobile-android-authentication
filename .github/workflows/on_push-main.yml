@@ -1,7 +1,7 @@
 name: Release Mobile Android Logging
 on:
   push:
-    branches: [ main ]
+    branches: [ main, remove-build-logic ]
 
 jobs:
   bump_version:
