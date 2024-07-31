@@ -16,6 +16,7 @@ data class LoginSessionConfiguration(
     val scopes: List<Scope>,
     val tokenEndpoint: Uri,
     val vectorsOfTrust: String = "[\"Cl.Cm.P0\"]",
+    val persistentSessionId: String? = null
 ) {
     enum class ResponseType(val value: String) {
         CODE("code"),

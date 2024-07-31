@@ -43,6 +43,7 @@ class AppAuthSession(
                     .setAdditionalParameters(
                         mapOf(
                             "vtr" to vectorsOfTrust,
+                            "govuk_signin_session_id" to persistentSessionId,
                         ),
                     )
 
