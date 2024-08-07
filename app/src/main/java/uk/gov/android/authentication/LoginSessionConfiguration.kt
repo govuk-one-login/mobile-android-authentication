@@ -27,11 +27,11 @@ data class LoginSessionConfiguration(
         EMAIL("email_address"),
         PHONE("phone_number"),
         OFFLINE_ACCESS("offline_access"),
-        STS("sts"),
+        STS("sts")
     }
 
     enum class Locale(val value: String) {
         EN("en"),
-        CY("cy"),
+        CY("cy")
     }
 }

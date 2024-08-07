@@ -2,8 +2,12 @@ import uk.gov.pipelines.config.ApkConfig
 
 plugins {
     `maven-publish`
+    alias(libs.plugins.kotlin.serlialization)
     id("uk.gov.pipelines.android-lib-config")
 }
+
+apply(from = "${rootProject.extra["configDir"]}/detekt/config.gradle")
+apply(from = "${rootProject.extra["configDir"]}/ktlint/config.gradle")
 
 android {
     defaultConfig {
@@ -11,17 +15,14 @@ android {
         namespace = apkConfig.applicationId + ".impl"
         compileSdk = apkConfig.sdkVersions.compile
         minSdk = apkConfig.sdkVersions.minimum
-        targetSdk = apkConfig.sdkVersions.target
-        testInstrumentationRunner = "$namespace.InstrumentationTestRunner"
     }
-
 
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
+                "proguard-rules.pro"
             )
         }
     }
@@ -40,8 +41,8 @@ android {
             setOf(
                 "ConvertToWebp",
                 "UnusedIds",
-                "VectorPath",
-            ),
+                "VectorPath"
+            )
         )
         explainIssues = true
         htmlReport = true
@@ -60,12 +61,13 @@ android {
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
         animationsDisabled = true
         unitTests.all {
+            it.useJUnitPlatform()
             it.testLogging {
                 events =
                     setOf(
                         org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
                         org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
-                        org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
+                        org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
                     )
             }
         }
@@ -76,30 +78,42 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 }
 
 dependencies {
     listOf(
         libs.androidx.test.ext.junit,
+        libs.test.core.ktx,
         libs.espresso.core,
+        libs.mockito.kotlin,
+        libs.mockito.android
     ).forEach(::androidTestImplementation)
 
     listOf(
         libs.androidx.core.core.ktx,
         libs.appcompat,
         libs.appauth,
-        libs.kotlinx.serialization.json,
+        libs.kotlinx.serialization.json
     ).forEach(::implementation)
 
     listOf(
-        libs.junit,
+        libs.junit.jupiter,
+        libs.junit.jupiter.params,
+        libs.junit.jupiter.engine,
+        platform(libs.junit.bom)
     ).forEach(::testImplementation)
+
+    listOf(
+        libs.androidx.test.orchestrator
+    ).forEach {
+        androidTestUtil(it)
+    }
 }
 
 mavenPublishingConfig {
