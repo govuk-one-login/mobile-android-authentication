@@ -3,12 +3,8 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
-}
-
-plugins {
-    // See https://jmfayard.github.io/refreshVersions
-    id("de.fayard.refreshVersions") version "0.60.5"
 }
 
 dependencyResolutionManagement {
@@ -24,3 +20,4 @@ rootProject.name = "mobile-android-authentication"
 include(":app")
 
 includeBuild("${rootProject.projectDir}/mobile-android-pipelines/buildLogic")
+gradle.startParameter.excludedTaskNames.addAll(listOf(":buildLogic:plugins:testClasses"))
