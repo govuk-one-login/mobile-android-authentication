@@ -15,10 +15,11 @@ data class LoginSessionConfiguration(
     val responseType: ResponseType = ResponseType.CODE,
     val scopes: List<Scope>,
     val tokenEndpoint: Uri,
-    val vectorsOfTrust: String = "[\"Cl.Cm.P0\"]"
+    val vectorsOfTrust: String = "[\"Cl.Cm.P0\"]",
+    val persistentSessionId: String? = null
 ) {
     enum class ResponseType(val value: String) {
-        CODE("code")
+        CODE("code"),
     }
 
     enum class Scope(val value: String) {

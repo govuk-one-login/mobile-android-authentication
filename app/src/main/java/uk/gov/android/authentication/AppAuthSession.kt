@@ -41,7 +41,8 @@ class AppAuthSession(
                     .setNonce(nonce)
                     .setAdditionalParameters(
                         mapOf(
-                            "vtr" to vectorsOfTrust
+                            "vtr" to vectorsOfTrust,
+                            "govuk_signin_session_id" to persistentSessionId
                         )
                     )
 
