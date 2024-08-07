@@ -1,7 +1,7 @@
 package uk.gov.android.authentication
 
-import android.app.Activity
 import android.content.Intent
+import androidx.activity.result.ActivityResultLauncher
 
 /**
  * This class provides a wrapper for [net.openid.appauth](https://github.com/openid/AppAuth-Android)
@@ -12,11 +12,12 @@ interface LoginSession {
     /**
      * Present the login dialog using a Chrome Custom Tab
      *
+     * @param launcher [ActivityResultLauncher] a launcher to start the Login activity for result
      * @param configuration [LoginSessionConfiguration] containing necessary session configuration
      */
     fun present(
-        activity: Activity,
-        configuration: LoginSessionConfiguration,
+        launcher: ActivityResultLauncher<Intent>,
+        configuration: LoginSessionConfiguration
     )
 
     /**
@@ -29,6 +30,6 @@ interface LoginSession {
     @Throws(Exception::class)
     fun finalise(
         intent: Intent,
-        callback: (tokens: TokenResponse) -> Unit,
+        callback: (tokens: TokenResponse) -> Unit
     )
 }
