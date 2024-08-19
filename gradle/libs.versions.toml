@@ -5,14 +5,14 @@ androidx-test-ext-junit = "1.2.1"
 espresso-core = "3.6.1"
 appcompat = "1.7.0"
 androidGradlePlugin = "8.5.2"
-kotlin = "2.0.0"
+kotlin = "2.0.10"
 serialization = "1.7.1"
 detekt-gradle = "1.23.6" # https://github.com/detekt/detekt/releases/tag/v1.23.6
 sonarqube-gradle = "5.1.0.4882" # https://github.com/SonarSource/sonar-scanner-gradle/releases
 ktlint-gradle = "12.1.1" # https://github.com/JLLeitschuh/ktlint-gradle/releases
 mockito-kotlin = "5.4.0"
 mockito-android = "5.12.0"
-androidxTest = "1.4.2"
+androidxTest = "1.5.0"
 jacoco = "0.8.12" # https://www.jacoco.org/jacoco/trunk/doc/changes.html
 ktlint = "12.1.1"
 
@@ -22,7 +22,7 @@ detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", v
 appauth = { group = "net.openid", name = "appauth", version = "0.11.1" }
 androidx-core-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
-test-core-ktx = { group = "androidx.test", name = "core-ktx", version = "1.5.0" }
+test-core-ktx = { group = "androidx.test", name = "core-ktx", version = "1.6.1" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
