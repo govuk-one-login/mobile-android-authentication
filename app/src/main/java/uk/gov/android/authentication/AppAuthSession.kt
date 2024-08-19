@@ -29,6 +29,13 @@ class AppAuthSession(
                     tokenEndpoint
                 )
 
+            val additionalParameters = mutableMapOf(
+                "vtr" to vectorsOfTrust
+            )
+            persistentSessionId?.let {
+                additionalParameters["govuk_signin_session_id"] = it
+            }
+
             val builder =
                 AuthorizationRequest.Builder(
                     serviceConfig,
@@ -39,12 +46,7 @@ class AppAuthSession(
                     .setScopes(scopes.map { it.value })
                     .setUiLocales(locale.value)
                     .setNonce(nonce)
-                    .setAdditionalParameters(
-                        mapOf(
-                            "vtr" to vectorsOfTrust,
-                            "govuk_signin_session_id" to persistentSessionId
-                        )
-                    )
+                    .setAdditionalParameters(additionalParameters)
 
             val authRequest = builder.build()
 
@@ -98,9 +100,5 @@ class AppAuthSession(
             idToken = response.idToken,
             refreshToken = response.refreshToken
         )
-    }
-
-    companion object {
-        const val REQUEST_CODE_AUTH = 418
     }
 }
