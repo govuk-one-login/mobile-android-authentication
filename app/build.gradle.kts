@@ -15,6 +15,7 @@ android {
         namespace = apkConfig.applicationId + ".impl"
         compileSdk = apkConfig.sdkVersions.compile
         minSdk = apkConfig.sdkVersions.minimum
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -88,11 +89,11 @@ android {
 
 dependencies {
     listOf(
-        libs.androidx.test.ext.junit,
-        libs.test.core.ktx,
+        kotlin("test"),
+        kotlin("test-junit"),
+        libs.bundles.android.test,
+        libs.bundles.mockito,
         libs.espresso.core,
-        libs.mockito.kotlin,
-        libs.mockito.android
     ).forEach(::androidTestImplementation)
 
     listOf(
@@ -103,9 +104,9 @@ dependencies {
     ).forEach(::implementation)
 
     listOf(
-        libs.junit.jupiter,
-        libs.junit.jupiter.params,
-        libs.junit.jupiter.engine,
+        kotlin("test"),
+        kotlin("test-junit5"),
+        libs.bundles.test,
         platform(libs.junit.bom)
     ).forEach(::testImplementation)
 
