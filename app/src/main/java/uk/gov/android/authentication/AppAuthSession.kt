@@ -3,12 +3,12 @@ package uk.gov.android.authentication
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
-import java.util.UUID
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
 import net.openid.appauth.AuthorizationServiceConfiguration
+import java.util.UUID
 
 @Suppress("TooGenericExceptionThrown")
 class AppAuthSession(
@@ -82,23 +82,7 @@ class AppAuthSession(
                 )
             }
 
-            callback(createFromAppAuthResponse(response))
+            callback(response.toTokenResponse())
         }
-    }
-
-    private fun createFromAppAuthResponse(
-        response: net.openid.appauth.TokenResponse
-    ): TokenResponse {
-        return TokenResponse(
-            tokenType = requireNotNull(response.tokenType) { "token type must not be empty" },
-            accessToken =
-            requireNotNull(response.accessToken) { "access token must not be empty" },
-            accessTokenExpirationTime =
-            requireNotNull(response.accessTokenExpirationTime) {
-                "Token expiry must not be empty"
-            },
-            idToken = response.idToken,
-            refreshToken = response.refreshToken
-        )
     }
 }
