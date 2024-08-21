@@ -1,11 +1,11 @@
 /*
  * This file is based on work under the Apache License, Version 2.0.
- * Original code by OpenId and can be found at https://github.com/openid/AppAuth-Android.
+ * Original code is by OpenId and can be found at https://github.com/openid/AppAuth-Android.
  *
- * Modifications made by Thomas Ient on 20 August 2024.
+ * Modifications made by ThomasIent on the twentieth of August, 2024.
  * - Concatenated TestValues and AuthorisationServiceDiscoveryTest
  * - Converted from Java to Kotlin
- * - Reduced code to what is required for internal test usage
+ * - Reduced code to what's required for internal test usage
  *
  * Note this file is used for internal testing purposes only and is not for distribution.
  */

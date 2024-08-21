@@ -17,7 +17,7 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 
-/* What can't be checked here:
+/* Not checked here:
 * Full route of AppAuthSession::present
 * Full route of AppAuthSession::finalise
 * Because the real AuthorizationService has to have a browser available from the context
@@ -35,7 +35,7 @@ class AppAuthSessionTest {
 
     @Test
     fun presentCreatesAndLaunchesAuthorisationIntent() {
-        // GIVEN a mock AuthorizationService, a mock ActivityResultLauncher, and a real LoginSessionConfiguration
+        // Given a mock AuthorizationService, a mock ActivityResultLauncher, and a real LoginSessionConfiguration
         whenever(authService.getAuthorizationRequestIntent(any()))
             .thenReturn(Intent(Intent.ACTION_VIEW))
 
@@ -54,42 +54,42 @@ class AppAuthSessionTest {
             vectorsOfTrust = "[\"Cl.Cm.P0\"]",
             persistentSessionId = "persistentSessionTestId"
         )
-        // WHEN present is called
+        // When calling present
         appAuthSession.present(
             launcher = launcher,
             configuration = loginSessionConfig
         )
-        // THEN the AuthorisationIntent is created and the launcher's launch function is called
+        // Then create the AuthorisationIntent and launch
         verify(launcher).launch(any())
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun finaliseThrowsIllegalArgumentExceptionForMalformedIntentResponse() {
-        // GIVEN an intent with a malformed (empty) response data json extra
+        // Given an intent with a malformed (empty) response data JSON extra
         val intent = Intent().apply {
             putExtra(AuthorizationResponse.EXTRA_RESPONSE, "{}")
         }
-        // WHEN finalise is called
+        // When calling finalise
         appAuthSession.finalise(intent) {}
-        // THEN IllegalArgumentException is thrown
+        // Then throw an IllegalArgumentException
     }
 
     @Test
     fun finaliseThrowsAuthenticationErrorForIntentWithoutResponse() {
-        // GIVEN an (empty) intent without a response data json extra
+        // Given an (empty) intent without a response data JSON extra
         val intent = Intent()
-        // WHEN finalise is called
+        // When calling finalise
         val error = assertThrows(AuthenticationError::class.java) {
             appAuthSession.finalise(intent) {}
         }
-        // THEN an AuthenticationError is thrown
+        // Then throw an AuthenticationError
         assertEquals(AuthenticationError.ErrorType.OAUTH, error.type)
         assertEquals(AuthenticationError.NULL_AUTH_MESSAGE, error.message)
     }
 
     @Test
     fun finaliseThrowsAuthenticationErrorOnCallbackNullResponse() {
-        // GIVEN a performTokenRequest that fails with an AuthorizationException
+        // Given a performTokenRequest that fails with an AuthorizationException
         whenever(authService.performTokenRequest(any(), any())).thenAnswer {
             (it.arguments[1] as TokenResponseCallback).onTokenRequestCompleted(
                 null,
@@ -100,11 +100,11 @@ class AppAuthSessionTest {
         val intent = Intent().apply {
             putExtra(AuthorizationResponse.EXTRA_RESPONSE, TEST_EXTRA_VALUE)
         }
-        // WHEN finalise is called
+        // When calling finalise
         val error = assertThrows(AuthenticationError::class.java) {
             appAuthSession.finalise(intent) {}
         }
-        // THEN an AuthenticationError is thrown
+        // Then throw an AuthenticationError
         assertEquals(AuthenticationError.ErrorType.OAUTH, error.type)
         assertEquals(NETWORK_ERROR_MSG, error.message)
     }
