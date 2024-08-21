@@ -1,8 +1,8 @@
 package uk.gov.android.authentication
 
 import android.net.Uri
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.Test
 
 class LoginSessionConfigurationTest {
     @Test

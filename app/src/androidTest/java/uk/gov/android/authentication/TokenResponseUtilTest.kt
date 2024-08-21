@@ -1,8 +1,8 @@
 package uk.gov.android.authentication
 
 import net.openid.appauth.TokenRequest
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import uk.gov.android.authentication.openid.TestValues
 import kotlin.test.assertEquals
 
@@ -14,7 +14,7 @@ class TokenResponseUtilTest {
     private val refreshToken = "idToken"
     private lateinit var responseBuilder: net.openid.appauth.TokenResponse.Builder
 
-    @Before
+    @BeforeTest
     fun setUp() {
         val request = TokenRequest.Builder(TestValues.testServiceConfig, TestValues.TEST_CLIENT_ID)
             .setAuthorizationCode(TestValues.TEST_AUTH_CODE)

@@ -3,8 +3,8 @@ package uk.gov.android.authentication
 import android.net.Uri
 import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationServiceConfiguration
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -27,7 +27,7 @@ class LoginSessionConfigurationUtilTest {
     private val persistentSessionId: String = "persistentSessionTestId"
     private lateinit var loginSessionConfig: LoginSessionConfiguration
 
-    @Before
+    @BeforeTest
     fun setUp() {
         loginSessionConfig = LoginSessionConfiguration(
             authorizeEndpoint = authorizeEndpoint,
