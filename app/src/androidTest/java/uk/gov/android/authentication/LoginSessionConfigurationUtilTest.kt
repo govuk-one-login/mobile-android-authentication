@@ -45,10 +45,10 @@ class LoginSessionConfigurationUtilTest {
 
     @Test
     fun createRequest() {
-        // GIVEN a login session configuration
-        // WHEN the createRequest extension function is called
+        // Given a LoginSessionConfiguration
+        // When calling the createRequest() extension function
         val actual = loginSessionConfig.createRequest()
-        // THEN the AuthorizationRequest is returned with the parameters set
+        // Then return the AuthorizationRequest with the parameters set
         assertIs<AuthorizationRequest>(actual)
         assertEquals(loginSessionConfig.scopeValues.toSet(), actual.scopeSet)
         assertEquals(locale.value, actual.uiLocales)
@@ -60,10 +60,10 @@ class LoginSessionConfigurationUtilTest {
 
     @Test
     fun createAuthorizationServiceConfiguration() {
-        // GIVEN a login session configuration
-        // WHEN the createAuthorizationServiceConfiguration extension function is called
+        // Given a login session configuration
+        // When calling the createAuthorizationServiceConfiguration() extension function
         val actual = loginSessionConfig.createAuthorizationServiceConfiguration()
-        // THEN the AuthorizationServiceConfiguration is returned with authorizationEndpoint and tokenEndpoint set
+        // Then return the AuthorizationServiceConfiguration with authorizationEndpoint and tokenEndpoint set
         assertIs<AuthorizationServiceConfiguration>(actual)
         assertEquals(authorizeEndpoint, actual.authorizationEndpoint)
         assertEquals(tokenEndpoint, actual.tokenEndpoint)
@@ -71,10 +71,10 @@ class LoginSessionConfigurationUtilTest {
 
     @Test
     fun scopeValuesReturnsStringListOfScopeValues() {
-        // GIVEN a LoginSessionConfiguration
-        // WHEN the scopeValues extension parameter is called
+        // Given a LoginSessionConfiguration
+        // When calling the LoginSessionConfiguration.scopeValues extension property
         val actual = loginSessionConfig.scopeValues
-        // THEN a List of String values of the LoginSessionConfiguration.Scopes is returned
+        // Then return the List of String values of the LoginSessionConfiguration.Scopes
         assertIs<List<String>>(actual)
         assertContains(actual, LoginSessionConfiguration.Scope.OPENID.value)
         assertContains(actual, LoginSessionConfiguration.Scope.PHONE.value)
@@ -83,20 +83,20 @@ class LoginSessionConfigurationUtilTest {
 
     @Test
     fun createNonceReturnsStringNonce() {
-        // GIVEN
-        // WHEN the createNonce factory function is called
+        // Given
+        // When calling the createNonce() factory function
         val actual = createNonce()
-        // THEN a String is returned?
-        // Todo: This is currently a weak test, at least check format!
+        // Then return a String?
+        // Todo(): This is currently a weak test, at least check format
         assertIs<String>(actual)
     }
 
     @Test
     fun createAdditionalParametersReturnsMapOfVectorsOfTrustAndPersistentSessionId() {
-        // GIVEN a login session configuration with vectorsOfTrust and persistentSessionId set
-        // WHEN the createAdditionalParameters extension function is called
+        // Given a login session configuration with vectorsOfTrust and persistentSessionId set
+        // When calling the createAdditionalParameters extension function
         val actual = loginSessionConfig.createAdditionalParameters()
-        // THEN vectorsOfTrust and persistentSessionId are returned mapped to their respective Keys
+        // Then map vectorsOfTrust and persistentSessionId to their respective Keys
         assertIs<Map<String, String?>>(actual)
         assertTrue(actual.containsKey(VTR_PARAM_KEY))
         assertEquals(vectorsOfTrust, actual[VTR_PARAM_KEY])
@@ -106,11 +106,11 @@ class LoginSessionConfigurationUtilTest {
 
     @Test
     fun createAdditionalParametersReturnsWithoutPersistentSessionIdKeyWhenNull() {
-        // GIVEN a login session configuration with vectorsOfTrust set and null persistentSessionId
+        // Given a login session configuration with vectorsOfTrust set and null persistentSessionId
         loginSessionConfig = loginSessionConfig.copy(persistentSessionId = null)
-        // WHEN the createAdditionalParameters extension function is called
+        // When calling the createAdditionalParameters extension function
         val actual = loginSessionConfig.createAdditionalParameters()
-        // THEN only vectorsOfTrust is returned mapped to its respective Key
+        // Then only map vectorsOfTrust to its respective Key
         assertIs<Map<String, String?>>(actual)
         assertTrue(actual.containsKey(VTR_PARAM_KEY))
         assertEquals(vectorsOfTrust, actual[VTR_PARAM_KEY])

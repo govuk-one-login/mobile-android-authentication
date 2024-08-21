@@ -9,52 +9,52 @@ import kotlin.test.assertIs
 class AuthenticationErrorTest {
     @Test
     fun `Error construction with message and type`() {
-        // WHEN constructing AuthenticationError
+        // When constructing AuthenticationError
         val errorMessage = "Invalid credentials"
         val error = AuthenticationError(errorMessage, AuthenticationError.ErrorType.OAUTH)
-        // THEN the message and type are set
+        // Then set the message and type member variables
         assertEquals(errorMessage, error.message)
         assertEquals(AuthenticationError.ErrorType.OAUTH, error.type)
     }
 
     @Test
     fun `from(exception Intent) creates AuthenticationError`() {
-        // GIVEN an Intent that maps to an openId AuthorizationException
+        // Given an Intent that maps to an OpenId AuthorizationException
         val intent = Intent().apply {
             putExtra(AuthorizationException.EXTRA_EXCEPTION, "{}")
         }
-        // WHEN the from mapping method is called
+        // When calling the from mapping method
         val actual = AuthenticationError.from(intent)
-        // THEN an AuthenticationError is returned
+        // Then return an AuthenticationError
         assertIs<AuthenticationError>(actual)
     }
 
     @Test
     fun `from(Intent) creates AuthenticationError`() {
-        // GIVEN an Intent that doesn't map to AuthorizationException
+        // Given an Intent that doesn't map to AuthorizationException
         val intent = Intent()
-        // WHEN the from mapping method is called
+        // When calling the from mapping method
         val actual = AuthenticationError.from(intent)
-        // THEN an AuthenticationError is returned
+        // Then return an AuthenticationError
         assertIs<AuthenticationError>(actual)
     }
 
     @Test
     fun `from(AuthorizationException) creates AuthenticationError`() {
-        // GIVEN an openId AuthorizationException
+        // Given an OpenId AuthorizationException
         val networkError = AuthorizationException(0, 3, null, NETWORK_ERROR_MSG, null, null)
-        // WHEN the from mapping method is called
+        // When calling the from mapping method
         val actual = AuthenticationError.from(networkError)
-        // THEN an AuthenticationError is returned
+        // Then return an AuthenticationError
         assertIs<AuthenticationError>(actual)
         assertEquals(NETWORK_ERROR_MSG, actual.message)
     }
 
     @Test
     fun `from(null) creates AuthenticationError`() {
-        // WHEN the from mapping method is called with null
+        // When calling the from mapping method with null
         val actual = AuthenticationError.from(null)
-        // THEN an AuthenticationError is returned
+        // Then return an AuthenticationError
         assertIs<AuthenticationError>(actual)
         assertEquals(AuthenticationError.NULL_AUTH_MESSAGE, actual.message)
     }

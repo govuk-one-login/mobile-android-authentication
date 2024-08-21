@@ -25,7 +25,7 @@ class TokenResponseUtilTest {
 
     @Test
     fun toTokenResponseMapsAppAuthTokenResponseToTokenResponse() {
-        // GIVEN a net.openid.appauth.TokenResponse object
+        // Given a net.openid.appauth.TokenResponse object
         val appAuthTokenResponse = responseBuilder
             .setTokenType(tokenType)
             .setAccessToken(accessToken)
@@ -33,9 +33,9 @@ class TokenResponseUtilTest {
             .setIdToken(idToken)
             .setRefreshToken(refreshToken)
             .build()
-        // WHEN toTokenResponse is called
+        // When calling toTokenResponse
         val actual = appAuthTokenResponse.toTokenResponse()
-        // THEN the values in the net.openid.appauth.TokenResponse object are mapped to their equivalents in TokenResponse
+        // Then map the values in net.openid.appauth.TokenResponse object to their equivalents in TokenResponse
         assertEquals(tokenType, actual.tokenType)
         assertEquals(accessToken, actual.accessToken)
         assertEquals(accessTokenExpiryTime, actual.accessTokenExpirationTime)
@@ -45,43 +45,43 @@ class TokenResponseUtilTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun toTokenResponseThrowsIllegalArgumentExceptionForNullTokenType() {
-        // GIVEN a net.openid.appauth.TokenResponse object without tokenType
+        // Given a net.openid.appauth.TokenResponse object without a TokenType
         val appAuthTokenResponse = responseBuilder
             .setAccessToken(accessToken)
             .setAccessTokenExpirationTime(accessTokenExpiryTime)
             .setIdToken(idToken)
             .setRefreshToken(refreshToken)
             .build()
-        // WHEN toTokenResponse is called
+        // When calling toTokenResponse
         appAuthTokenResponse.toTokenResponse()
-        // THEN IllegalArgumentException is thrown
+        // Then throw IllegalArgumentException
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun toTokenResponseThrowsIllegalArgumentExceptionForNullAccessToken() {
-        // GIVEN a net.openid.appauth.TokenResponse object without accessToken
+        // Given a net.openid.appauth.TokenResponse object without an AccessToken
         val appAuthTokenResponse = responseBuilder
             .setTokenType(tokenType)
             .setAccessTokenExpirationTime(accessTokenExpiryTime)
             .setIdToken(idToken)
             .setRefreshToken(refreshToken)
             .build()
-        // WHEN toTokenResponse is called
+        // When calling toTokenResponse
         appAuthTokenResponse.toTokenResponse()
-        // THEN IllegalArgumentException is thrown
+        // Then throw IllegalArgumentException
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun toTokenResponseThrowsIllegalArgumentExceptionForNullAccessTokenExpiryTime() {
-        // GIVEN a net.openid.appauth.TokenResponse object without accessTokenExpiryTime
+        // Given a net.openid.appauth.TokenResponse object without an AccessTokenExpiryTime
         val appAuthTokenResponse = responseBuilder
             .setTokenType(tokenType)
             .setAccessToken(accessToken)
             .setIdToken(idToken)
             .setRefreshToken(refreshToken)
             .build()
-        // WHEN toTokenResponse is called
+        // When calling toTokenResponse
         appAuthTokenResponse.toTokenResponse()
-        // THEN IllegalArgumentException is thrown
+        // Then throw IllegalArgumentException
     }
 }
