@@ -13,8 +13,8 @@ import net.openid.appauth.AuthorizationServiceConfiguration
 @Suppress("TooGenericExceptionThrown")
 class AppAuthSession(
     context: Context,
-    private val authService: AuthorizationService = AuthorizationService(context)
 ) : LoginSession {
+    private val authService: AuthorizationService = AuthorizationService(context)
 
     override fun present(
         launcher: ActivityResultLauncher<Intent>,
