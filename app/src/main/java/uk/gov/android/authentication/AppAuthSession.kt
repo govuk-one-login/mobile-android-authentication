@@ -6,7 +6,6 @@ import androidx.activity.result.ActivityResultLauncher
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
 
-@Suppress("TooGenericExceptionThrown")
 class AppAuthSession(
     context: Context,
 ) : LoginSession {
@@ -36,6 +35,7 @@ class AppAuthSession(
     }
 
     companion object {
-        const val REQUEST_CODE_AUTH = 418 // Is this needed?
+        @Suppress("unused")
+        const val REQUEST_CODE_AUTH = 418
     }
 }
