@@ -15,7 +15,7 @@ data class LoginSessionConfiguration(
     val responseType: ResponseType = ResponseType.CODE,
     val scopes: List<Scope>,
     val tokenEndpoint: Uri,
-    val vectorsOfTrust: String = "[\"Cl.Cm.P0\"]",
+    val vectorsOfTrust: String = VTR_DEFAULT,
     val persistentSessionId: String? = null
 ) {
     enum class ResponseType(val value: String) {
@@ -33,5 +33,9 @@ data class LoginSessionConfiguration(
     enum class Locale(val value: String) {
         EN("en"),
         CY("cy")
+    }
+
+    companion object {
+        internal const val VTR_DEFAULT = "[\"Cl.Cm.P0\"]"
     }
 }

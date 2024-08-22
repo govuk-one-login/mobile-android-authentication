@@ -1,17 +1,16 @@
 package uk.gov.android.authentication
 
 import android.content.Intent
-import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
 import androidx.test.platform.app.InstrumentationRegistry
 import net.openid.appauth.AuthorizationResponse
 import org.junit.Assert.assertThrows
-import kotlin.test.BeforeTest
-import kotlin.test.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 /* Not checked here:
@@ -33,19 +32,7 @@ class AppAuthSessionTest {
         // Given a mock ActivityResultLauncher
         val launcher: ActivityResultLauncher<Intent> = mock()
         whenever(launcher.launch(any())).then {  } // take no action
-
-        val loginSessionConfig = LoginSessionConfiguration(
-            authorizeEndpoint = Uri.parse("https://auth.gov.uk/test"),
-            clientId = "clientId.Test",
-            locale = LoginSessionConfiguration.Locale.EN,
-            prefersEphemeralWebSession = true,
-            redirectUri = Uri.parse("https://redirect.gov.uk/test"),
-            responseType = LoginSessionConfiguration.ResponseType.CODE,
-            scopes = emptyList(),
-            tokenEndpoint = Uri.parse("https://token.gov.uk/test"),
-            vectorsOfTrust = "[\"Cl.Cm.P0\"]",
-            persistentSessionId = "persistentSessionTestId"
-        )
+        val loginSessionConfig = LoginSessionConfigurationTest.defaultConfig.copy()
         // When calling present
         appAuthSession.present(
             launcher = launcher,
