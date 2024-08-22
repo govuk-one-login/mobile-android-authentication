@@ -53,11 +53,13 @@ android-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.
 mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito-kotlin" }
 mockito-android = { group = "org.mockito", name = "mockito-android", version.ref = "mockito-android" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents", version.ref = "espresso-core" }
 androidx-test-orchestrator = { group = "androidx.test", name = "orchestrator", version.ref = "test-orchestrator" }
 
 [bundles]
 android-test = [ "android-test-core", "android-test-runner", "android-test-rules", "android-test-core-ktx", "android-test-ext-junit" ]
 mockito = ["mockito-kotlin", "mockito-android"]
+espresso = ["espresso-core", "espresso-intents"]
 test = [ "junit-jupiter", "junit-jupiter-params", "junit-jupiter-engine"]
 
 [plugins]
