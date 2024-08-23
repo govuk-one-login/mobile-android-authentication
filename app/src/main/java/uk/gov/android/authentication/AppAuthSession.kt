@@ -33,9 +33,4 @@ class AppAuthSession(
             )
         }
     }
-
-    companion object {
-        @Suppress("unused")
-        const val REQUEST_CODE_AUTH = 418
-    }
 }
