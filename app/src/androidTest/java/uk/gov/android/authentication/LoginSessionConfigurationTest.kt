@@ -1,31 +1,23 @@
 package uk.gov.android.authentication
 
 import android.net.Uri
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.Test
 
 class LoginSessionConfigurationTest {
     @Test
     fun testDefaultLocaleIsEn() {
-        val loginSessionConfiguration = LoginSessionConfiguration(
-            authorizeEndpoint = Uri.parse("https://example.com/authorize"),
-            clientId = "sampleClientId",
-            redirectUri = Uri.parse("https://example.com/redirect"),
-            scopes = listOf(LoginSessionConfiguration.Scope.OPENID),
-            tokenEndpoint = Uri.parse("https://example.com/token")
-        )
+        // Given the default LoginSessionConfiguration construction
+        val loginSessionConfiguration = defaultConfig.copy()
+        // Then the default Locale is Locale.EN
         assertEquals(LoginSessionConfiguration.Locale.EN, loginSessionConfiguration.locale)
     }
 
     @Test
     fun testResponseTypeIsCode() {
-        val loginSessionConfiguration = LoginSessionConfiguration(
-            Uri.parse("https://example.com/authorize"),
-            "sampleClientId",
-            redirectUri = Uri.parse("https://example.com/redirect"),
-            scopes = listOf(LoginSessionConfiguration.Scope.OPENID),
-            tokenEndpoint = Uri.parse("https://example.com/token")
-        )
+        // Given the default LoginSessionConfiguration construction
+        val loginSessionConfiguration = defaultConfig.copy()
+        // Then the default ResponseType is ResponseTypeCODE
         assertEquals(
             LoginSessionConfiguration.ResponseType.CODE,
             loginSessionConfiguration.responseType
@@ -34,13 +26,19 @@ class LoginSessionConfigurationTest {
 
     @Test
     fun testVectorsOfTrustDefault() {
-        val loginSessionConfiguration = LoginSessionConfiguration(
-            Uri.parse("https://example.com/authorize"),
-            "sampleClientId",
-            redirectUri = Uri.parse("https://example.com/redirect"),
+        // Given the default LoginSessionConfiguration construction
+        val loginSessionConfiguration = defaultConfig.copy()
+        // Then the default ResponseType is ResponseTypeCODE
+        assertEquals(LoginSessionConfiguration.VTR_DEFAULT, loginSessionConfiguration.vectorsOfTrust)
+    }
+
+    companion object {
+        val defaultConfig = LoginSessionConfiguration(
+            authorizeEndpoint = Uri.parse("https://token.build.account.gov.uk/authorize"),
+            clientId = "WCrqGT_3zu62gdo0WktPnkBPVK8",
+            redirectUri = Uri.parse("https://mobile.build.account.gov.uk/wallet-test/redirect"),
             scopes = listOf(LoginSessionConfiguration.Scope.OPENID),
-            tokenEndpoint = Uri.parse("https://example.com/token")
+            tokenEndpoint = Uri.parse("https://token.build.account.gov.uk/token")
         )
-        assertEquals("[\"Cl.Cm.P0\"]", loginSessionConfiguration.vectorsOfTrust)
     }
 }

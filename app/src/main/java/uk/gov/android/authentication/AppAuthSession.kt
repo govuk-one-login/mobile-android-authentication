@@ -3,14 +3,9 @@ package uk.gov.android.authentication
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
-import java.util.UUID
-import net.openid.appauth.AuthorizationException
-import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
-import net.openid.appauth.AuthorizationServiceConfiguration
 
-@Suppress("TooGenericExceptionThrown")
 class AppAuthSession(
     context: Context,
 ) : LoginSession {
@@ -20,85 +15,22 @@ class AppAuthSession(
         launcher: ActivityResultLauncher<Intent>,
         configuration: LoginSessionConfiguration
     ) {
-        with(configuration) {
-            val nonce = UUID.randomUUID().toString()
-
-            val serviceConfig =
-                AuthorizationServiceConfiguration(
-                    authorizeEndpoint,
-                    tokenEndpoint
-                )
-
-            val additionalParameters = mutableMapOf(
-                "vtr" to vectorsOfTrust
-            )
-            persistentSessionId?.let {
-                additionalParameters["govuk_signin_session_id"] = it
-            }
-
-            val builder =
-                AuthorizationRequest.Builder(
-                    serviceConfig,
-                    clientId,
-                    responseType.value,
-                    redirectUri
-                )
-                    .setScopes(scopes.map { it.value })
-                    .setUiLocales(locale.value)
-                    .setNonce(nonce)
-                    .setAdditionalParameters(additionalParameters)
-
-            val authRequest = builder.build()
-
-            val authIntent = authService.getAuthorizationRequestIntent(authRequest)
-            launcher.launch(authIntent)
-        }
+        val intent = authService.getAuthorizationRequestIntent(configuration.createRequest())
+        launcher.launch(intent)
     }
 
     override fun finalise(
         intent: Intent,
         callback: (tokens: TokenResponse) -> Unit
     ) {
-        val authorizationResponse = AuthorizationResponse.fromIntent(intent)
-
-        if (authorizationResponse == null) {
-            val exception = AuthorizationException.fromIntent(intent)
-
-            throw AuthenticationError(
-                exception?.message ?: "Auth response was null",
-                AuthenticationError.ErrorType.OAUTH
+        val authResponse = AuthorizationResponse.fromIntent(intent)
+        val request = authResponse?.createTokenExchangeRequest() ?: throw AuthenticationError.from(intent)
+        authService.performTokenRequest(
+            request
+        ) { response, exception ->
+            callback(
+                response?.toTokenResponse() ?: throw AuthenticationError.from(exception)
             )
         }
-
-        val exchangeRequest = authorizationResponse.createTokenExchangeRequest()
-
-        authService.performTokenRequest(
-            exchangeRequest
-        ) { response, exception ->
-            if (response == null) {
-                throw AuthenticationError(
-                    exception?.message ?: "Failed token request",
-                    AuthenticationError.ErrorType.OAUTH
-                )
-            }
-
-            callback(createFromAppAuthResponse(response))
-        }
-    }
-
-    private fun createFromAppAuthResponse(
-        response: net.openid.appauth.TokenResponse
-    ): TokenResponse {
-        return TokenResponse(
-            tokenType = requireNotNull(response.tokenType) { "token type must not be empty" },
-            accessToken =
-            requireNotNull(response.accessToken) { "access token must not be empty" },
-            accessTokenExpirationTime =
-            requireNotNull(response.accessTokenExpirationTime) {
-                "Token expiry must not be empty"
-            },
-            idToken = response.idToken,
-            refreshToken = response.refreshToken
-        )
     }
 }
