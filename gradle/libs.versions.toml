@@ -1,6 +1,6 @@
 [versions]
 core-ktx = "1.13.1"
-junit = "5.11.0"
+junit = "5.11.2"
 appcompat = "1.7.0"
 androidGradlePlugin = "8.6.0"
 kotlin = "2.0.20"
