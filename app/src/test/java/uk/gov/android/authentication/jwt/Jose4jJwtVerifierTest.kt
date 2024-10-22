@@ -2,7 +2,6 @@ package uk.gov.android.authentication.jwt
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import uk.gov.android.wallet.core.issuer.verify.jwt.Jose4jJwtVerifier
 
 class Jose4jJwtVerifierTest {
     private val encodedJwt = ClassLoader.getSystemResource("./encodedJwt.txt").readText()

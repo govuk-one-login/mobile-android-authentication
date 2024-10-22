@@ -1,4 +1,4 @@
-package uk.gov.android.wallet.core.issuer.verify.jwt
+package uk.gov.android.authentication.jwt
 
 import androidx.annotation.VisibleForTesting
 
