@@ -1,4 +1,4 @@
-package uk.gov.android.authentication
+package uk.gov.android.authentication.login
 
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
@@ -63,6 +63,6 @@ class AppAuthSessionTest {
         }
         // Then throw an AuthenticationError
         assertEquals(AuthenticationError.ErrorType.OAUTH, error.type)
-        assertEquals(AuthenticationError.NULL_AUTH_MESSAGE, error.message)
+        assertEquals(AuthenticationError.Companion.NULL_AUTH_MESSAGE, error.message)
     }
 }

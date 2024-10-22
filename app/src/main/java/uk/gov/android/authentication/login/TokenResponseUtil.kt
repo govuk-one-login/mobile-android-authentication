@@ -1,4 +1,4 @@
-package uk.gov.android.authentication
+package uk.gov.android.authentication.login
 
 typealias AppAuthTokenResponse = net.openid.appauth.TokenResponse
 

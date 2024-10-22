@@ -1,9 +1,10 @@
-package uk.gov.android.authentication
+package uk.gov.android.authentication.login
 
 import net.openid.appauth.TokenRequest
+import net.openid.appauth.TokenResponse
+import uk.gov.android.authentication.login.openid.TestValues
 import kotlin.test.BeforeTest
 import kotlin.test.Test
-import uk.gov.android.authentication.openid.TestValues
 import kotlin.test.assertEquals
 
 class TokenResponseUtilTest {
@@ -12,7 +13,7 @@ class TokenResponseUtilTest {
     private val accessTokenExpiryTime = 1000L
     private val idToken = "idToken"
     private val refreshToken = "idToken"
-    private lateinit var responseBuilder: net.openid.appauth.TokenResponse.Builder
+    private lateinit var responseBuilder: TokenResponse.Builder
 
     @BeforeTest
     fun setUp() {
@@ -20,7 +21,7 @@ class TokenResponseUtilTest {
             .setAuthorizationCode(TestValues.TEST_AUTH_CODE)
             .setRedirectUri(TestValues.TEST_APP_REDIRECT_URI)
             .build()
-        responseBuilder = net.openid.appauth.TokenResponse.Builder(request)
+        responseBuilder = TokenResponse.Builder(request)
     }
 
     @Test

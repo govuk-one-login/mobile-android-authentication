@@ -1,7 +1,8 @@
-package uk.gov.android.authentication
+package uk.gov.android.authentication.login.login
 
 import android.content.Intent
 import net.openid.appauth.AuthorizationException
+import uk.gov.android.authentication.login.AuthenticationError
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -24,7 +25,7 @@ class AuthenticationErrorTest {
             putExtra(AuthorizationException.EXTRA_EXCEPTION, "{}")
         }
         // When calling the from mapping method
-        val actual = AuthenticationError.from(intent)
+        val actual = AuthenticationError.Companion.from(intent)
         // Then return an AuthenticationError
         assertIs<AuthenticationError>(actual)
     }
@@ -34,7 +35,7 @@ class AuthenticationErrorTest {
         // Given an Intent that doesn't map to AuthorizationException
         val intent = Intent()
         // When calling the from mapping method
-        val actual = AuthenticationError.from(intent)
+        val actual = AuthenticationError.Companion.from(intent)
         // Then return an AuthenticationError
         assertIs<AuthenticationError>(actual)
     }
@@ -44,7 +45,7 @@ class AuthenticationErrorTest {
         // Given an OpenId AuthorizationException
         val networkError = AuthorizationException(0, 3, null, NETWORK_ERROR_MSG, null, null)
         // When calling the from mapping method
-        val actual = AuthenticationError.from(networkError)
+        val actual = AuthenticationError.Companion.from(networkError)
         // Then return an AuthenticationError
         assertIs<AuthenticationError>(actual)
         assertEquals(NETWORK_ERROR_MSG, actual.message)
@@ -53,10 +54,10 @@ class AuthenticationErrorTest {
     @Test
     fun `from(null) creates AuthenticationError`() {
         // When calling the from mapping method with null
-        val actual = AuthenticationError.from(null)
+        val actual = AuthenticationError.Companion.from(null)
         // Then return an AuthenticationError
         assertIs<AuthenticationError>(actual)
-        assertEquals(AuthenticationError.NULL_AUTH_MESSAGE, actual.message)
+        assertEquals(AuthenticationError.Companion.NULL_AUTH_MESSAGE, actual.message)
     }
 
     companion object {
