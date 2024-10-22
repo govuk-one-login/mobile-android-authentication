@@ -100,7 +100,9 @@ dependencies {
         libs.androidx.core.core.ktx,
         libs.appcompat,
         libs.appauth,
-        libs.kotlinx.serialization.json
+        libs.kotlinx.serialization.json,
+        libs.jose4j,
+        libs.gson
     ).forEach(::implementation)
 
     listOf(
