@@ -1,7 +1,11 @@
 package uk.gov.android.authentication.jwt
 
+import com.google.gson.JsonDeserializationContext
+import org.json.JSONException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.whenever
 
 class Jose4jJwtVerifierTest {
     private val encodedJwt = ClassLoader.getSystemResource("./encodedJwt.txt").readText()
@@ -26,5 +30,12 @@ class Jose4jJwtVerifierTest {
     fun testWithValidJwtAndInvalidJwk() {
         val actualResult = sut.verify(encodedJwt, invalidJwk)
         assertEquals(false, actualResult)
+    }
+
+    @Test
+    fun testContextIsNull() {
+        whenever(JwkDeserializer().deserialize(any(), any(), any()))
+            .thenThrow(JSONException("Json Exception"))
+        val actualResult = sut.verify(encodedJwt, invalidJwk)
     }
 }

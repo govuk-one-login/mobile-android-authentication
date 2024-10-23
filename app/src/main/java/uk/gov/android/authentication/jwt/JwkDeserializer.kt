@@ -17,11 +17,16 @@ class JwkDeserializer : JsonDeserializer<JsonWebKey> {
         val jwkParameters: Map<String, Any> = context?.deserialize(
             json,
             LinkedHashMap::class.java
-        ) ?: throw IllegalArgumentException("JsonDeserializationContext is null")
+        ) ?: throw IllegalArgumentException(NULL_CONTEXT)
         return try {
             JsonWebKey.Factory.newJwk(jwkParameters)
         } catch (e: JoseException) {
-            throw JsonParseException("Unable to create JWK Object when parsing JSON", e)
+            throw JsonParseException(JSON_FAILURE, e)
         }
+    }
+
+    companion object {
+        const val NULL_CONTEXT = "JsonDeserializationContext is null"
+        const val JSON_FAILURE = "Unable to create JWK Object when parsing JSON"
     }
 }
