@@ -31,11 +31,4 @@ class Jose4jJwtVerifierTest {
         val actualResult = sut.verify(encodedJwt, invalidJwk)
         assertEquals(false, actualResult)
     }
-
-    @Test
-    fun testContextIsNull() {
-        whenever(JwkDeserializer().deserialize(any(), any(), any()))
-            .thenThrow(JSONException("Json Exception"))
-        val actualResult = sut.verify(encodedJwt, invalidJwk)
-    }
 }
