@@ -1,4 +1,4 @@
-package uk.gov.android.authentication
+package uk.gov.android.authentication.login
 
 import android.content.Context
 import android.content.Intent
@@ -25,6 +25,7 @@ class AppAuthSession(
     ) {
         val authResponse = AuthorizationResponse.fromIntent(intent)
         val request = authResponse?.createTokenExchangeRequest() ?: throw AuthenticationError.from(intent)
+        request.additionalParameters[""] = ""
         authService.performTokenRequest(
             request
         ) { response, exception ->

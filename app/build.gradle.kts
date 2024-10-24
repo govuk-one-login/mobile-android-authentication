@@ -101,6 +101,7 @@ dependencies {
         libs.appcompat,
         libs.appauth,
         libs.kotlinx.serialization.json,
+        libs.network,
         libs.jose4j,
         libs.gson
     ).forEach(::implementation)

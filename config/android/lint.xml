@@ -4,7 +4,9 @@
         <ignore path="**/jj2000-5.2**" />
         <ignore path="**/org.jacoco/org.jacoco.agent/**" />
         <ignore path="**/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/**" />
-        <ignore path="**/io.ktor/ktor-utils-jvm/2.1.2/**"/>
+        <ignore path="**/io.ktor/ktor-utils-jvm/2.3.7/**"/>
+        <ignore path="**/ch.qos.logback/logback-core/1.2.11/**"/>
+        <ignore path="**/ch.qos.logback/logback-classic/1.2.11/**"/>
     </issue>
 
     <issue id="PermissionNamingConvention">

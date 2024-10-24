@@ -1,4 +1,4 @@
-package uk.gov.android.authentication
+package uk.gov.android.authentication.login
 
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.intent.Intents
@@ -6,6 +6,7 @@ import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.intent.matcher.UriMatchers
 import androidx.test.platform.app.InstrumentationRegistry
 import net.openid.appauth.AuthorizationManagementActivity
+import uk.gov.android.authentication.TestActivity
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test

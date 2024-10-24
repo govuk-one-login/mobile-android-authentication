@@ -9,7 +9,7 @@
  *
  * Note this file is used for internal testing purposes only and is not for distribution.
  */
-package uk.gov.android.authentication.openid
+package uk.gov.android.authentication.login.openid
 
 import android.net.Uri
 import net.openid.appauth.AuthorizationServiceConfiguration

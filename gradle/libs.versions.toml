@@ -19,6 +19,7 @@ mockito-kotlin = "5.4.0"
 mockitoCore = "5.10.0"
 mockito-android = "5.14.2"
 espresso-core = "3.6.1"
+gds-network = "0.2.8"
 jose4j = "0.9.4"
 gson = "2.10.1"
 
@@ -34,6 +35,9 @@ kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-p
 jose4j = { module = "org.bitbucket.b_c:jose4j", version.ref = "jose4j" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
+# GDS
+network = { group = "uk.gov.android", name = "network", version.ref = "gds-network" }
+
 #Code Quality
 ktlint-gradle = { group = "org.jlleitschuh.gradle", name = "ktlint-gradle", version.ref = "ktlint-gradle" }
 sonarqube-gradle = { module = "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin", version.ref = "sonarqube-gradle" }
@@ -44,6 +48,7 @@ junit-jupiter = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = 
 junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-vintage = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junit" }
 
 #Code coverage
 jacoco-agent = { module = "org.jacoco:org.jacoco.agent", version.ref = "jacoco" }
@@ -68,7 +73,7 @@ androidx-test-orchestrator = { group = "androidx.test", name = "orchestrator", v
 android-test = [ "android-test-core", "android-test-runner", "android-test-rules", "android-test-core-ktx", "android-test-ext-junit" ]
 mockito = ["mockito-kotlin", "mockito-android"]
 espresso = ["espresso-core", "espresso-intents"]
-test = [ "junit-jupiter", "junit-jupiter-params", "junit-jupiter-engine"]
+test = [ "junit-jupiter", "junit-jupiter-params", "junit-jupiter-engine", "junit-vintage"]
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt-gradle" }
