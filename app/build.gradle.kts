@@ -101,7 +101,9 @@ dependencies {
         libs.appcompat,
         libs.appauth,
         libs.kotlinx.serialization.json,
-        libs.network
+        libs.network,
+        libs.jose4j,
+        libs.gson
     ).forEach(::implementation)
 
     listOf(
@@ -109,6 +111,7 @@ dependencies {
         kotlin("test-junit5"),
         libs.bundles.test,
         platform(libs.junit.bom),
+        libs.mockito.core,
         libs.mockito.kotlin
     ).forEach(::testImplementation)
 

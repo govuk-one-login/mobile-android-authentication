@@ -14,11 +14,14 @@ test-core = "1.6.1"
 test-runner = "1.6.2"
 test-rules = "1.6.1"
 test-ext-junit = "1.2.1"
-test-orchestrator = "1.5.0"
+test-orchestrator = "1.5.1"
 mockito-kotlin = "5.4.0"
+mockitoCore = "5.10.0"
 mockito-android = "5.14.2"
 espresso-core = "3.6.1"
 gds-network = "0.2.8"
+jose4j = "0.9.4"
+gson = "2.10.1"
 
 [libraries]
 android-build-tool = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
@@ -27,6 +30,10 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 appauth = { group = "net.openid", name = "appauth", version = "0.11.1" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+#Jwt Verifier
+jose4j = { module = "org.bitbucket.b_c:jose4j", version.ref = "jose4j" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
 # GDS
 network = { group = "uk.gov.android", name = "network", version.ref = "gds-network" }
@@ -57,6 +64,7 @@ android-test-core-ktx = { group = "androidx.test", name = "core-ktx", version.re
 android-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "test-ext-junit" }
 mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito-kotlin" }
 mockito-android = { group = "org.mockito", name = "mockito-android", version.ref = "mockito-android" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents", version.ref = "espresso-core" }
 androidx-test-orchestrator = { group = "androidx.test", name = "orchestrator", version.ref = "test-orchestrator" }
