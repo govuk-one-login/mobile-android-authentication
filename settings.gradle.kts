@@ -44,7 +44,7 @@ fun fetchGithubCredentials(): Pair<String, String> {
                     "${rootDir.path}/docs/developerSetup/github-authentication.md\n",
             exception
         )
-
+        println(System.getenv("USERNAME"))
         System.getenv("USERNAME") to System.getenv("TOKEN")
     }
 }
