@@ -34,4 +34,4 @@ jobs:
         with:
           sonar_token: ${{ secrets.SONAR_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          github-actor: ${{ secrets.MODULE_FETCH_TOKEN_USERNAME }}
+          github-actor: ${{ github.actor }}
