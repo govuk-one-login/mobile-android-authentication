@@ -20,6 +20,11 @@ jobs:
   onPullRequestJob:
     env:
       ANDROID_HOME: ${{ github.workspace }}/bin/androidSdk
+    permissions:
+      # Set permissions for ${{ secrets.GITHUB_TOKEN }}
+      # https://docs.github.com/en/actions/security-guides/automatic-token-authentication
+      contents: read
+      packages: read
     name: Verify code base when pull request is published/updated
     runs-on: ubuntu-latest
     #    runs-on: ubuntu-20.04-16core # Larger github runner, with KVM acceleration
@@ -28,5 +33,5 @@ jobs:
         uses: govuk-one-login/mobile-android-pipelines@3dd3a4603b806128f9da211ea261f658b734cbfb
         with:
           sonar_token: ${{ secrets.SONAR_TOKEN }}
-          github-token: ${{ secrets.MODULE_FETCH_TOKEN }}
-          github-actor: ${{ secrets.MODULE_FETCH_TOKEN_USERNAME }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-actor: ${{ secrets.GITHUB_ACTOR }}
