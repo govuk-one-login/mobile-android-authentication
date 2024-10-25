@@ -30,12 +30,11 @@ jobs:
     #    runs-on: ubuntu-20.04-16core # Larger github runner, with KVM acceleration
     steps:
       - name: Set env
-        run: echo "USERNAME=test" >> $GITHUB_ENV
-      - name: Test
-        run: echo ${{ env.USERNAME }}
+        run: |
+          echo "USERNAME=${{ secrets.MODULE_FETCH_TOKEN_USERNAME }}" >> $GITHUB_ENV
+          echo "TOKEN=${{ secrets.MODULE_FETCH_TOKEN }}" >> $GITHUB_ENV
       - name: Run pull request workflow
         uses: govuk-one-login/mobile-android-pipelines@3dd3a4603b806128f9da211ea261f658b734cbfb
         with:
           sonar_token: ${{ secrets.SONAR_TOKEN }}
-          github-token: ${{ secrets.MODULE_FETCH_TOKEN }}
-          github-actor: ${{ secrets.MODULE_FETCH_TOKEN_USERNAME }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
