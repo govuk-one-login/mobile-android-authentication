@@ -1,4 +1,4 @@
-package uk.gov.android.authentication.login.login.appcheck.usecase
+package uk.gov.android.authentication.integrity.appcheck.usecase
 
 import kotlinx.coroutines.runBlocking
 import java.io.IOException
@@ -8,8 +8,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import uk.gov.android.authentication.integrity.appcheck.usecase.AttestationApiCallerImpl
-import uk.gov.android.authentication.integrity.appcheck.usecase.AttestationApiCaller
 import uk.gov.android.network.api.ApiRequest
 import uk.gov.android.network.api.ApiResponse
 import uk.gov.android.network.client.GenericHttpClient

@@ -1,8 +1,7 @@
-package uk.gov.android.authentication.login.login
+package uk.gov.android.authentication.login
 
 import android.content.Intent
 import net.openid.appauth.AuthorizationException
-import uk.gov.android.authentication.login.AuthenticationError
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs

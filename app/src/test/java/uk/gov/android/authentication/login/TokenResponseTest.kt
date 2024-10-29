@@ -1,10 +1,9 @@
-package uk.gov.android.authentication.login.login
+package uk.gov.android.authentication.login
 
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.assertThrows
-import uk.gov.android.authentication.login.TokenResponse
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
