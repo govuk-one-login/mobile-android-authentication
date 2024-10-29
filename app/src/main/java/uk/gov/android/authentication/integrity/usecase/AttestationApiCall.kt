@@ -1,4 +1,4 @@
-package uk.gov.android.authentication.integrity.appcheck.usecase
+package uk.gov.android.authentication.integrity.usecase
 
 import uk.gov.android.network.api.ApiRequest
 import uk.gov.android.network.api.ApiResponse

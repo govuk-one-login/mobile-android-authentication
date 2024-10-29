@@ -1,4 +1,4 @@
-package uk.gov.android.authentication.integrity.appcheck.usecase
+package uk.gov.android.authentication.integrity.usecase
 
 import kotlinx.coroutines.runBlocking
 import java.io.IOException
