@@ -8,20 +8,19 @@ import uk.gov.android.authentication.integrity.appcheck.AppChecker
 import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
 import uk.gov.android.authentication.integrity.model.AttestationResponse
 import uk.gov.android.authentication.integrity.model.SignedResponse
-import uk.gov.android.network.client.GenericHttpClient
+import uk.gov.android.authentication.integrity.usecase.AttestationClient
 import kotlin.test.assertEquals
 
 class FirebaseAppIntegrityCheckerTest {
     private lateinit var clientAttestationManager: ClientAttestationManager
 
-    private val mockHttpClient: GenericHttpClient = mock()
+    private val client: AttestationClient = mock()
     private val mockAppChecker: AppChecker = mock()
 
     @Before
     fun setup() {
         val config = AppIntegrityConfiguration(
-            mockHttpClient,
-            "url",
+            client,
             mockAppChecker
         )
 

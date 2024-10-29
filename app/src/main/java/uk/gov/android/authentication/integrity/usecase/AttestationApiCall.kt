@@ -1,31 +1,26 @@
 package uk.gov.android.authentication.integrity.usecase
 
-import uk.gov.android.network.api.ApiRequest
-import uk.gov.android.network.api.ApiResponse
-import uk.gov.android.network.client.GenericHttpClient
-
 internal fun interface AttestationApiCaller {
     suspend fun call(
-        firebaseToken: String,
-        backendUrl: String
+        signedProofOfPossession: String,
+        jwkX: String,
+        jwkY: String
     ): String
 }
 
 internal class AttestationApiCallerImpl (
-    private val httpClient: GenericHttpClient
+    private val client: AttestationClient
 ) : AttestationApiCaller {
-    override suspend fun call(firebaseToken: String, backendUrl: String): String {
-        val request = ApiRequest.Get(
-            url = backendUrl,
-            headers = listOf(
-                "X-Firebase-Token" to firebaseToken
-            )
-        )
-        val response = httpClient.makeRequest(request)
-        return if (response is ApiResponse.Success<*>) {
-            response.response.toString()
-        } else {
-            (response as ApiResponse.Failure).error.message ?: "Error"
+
+    override suspend fun call(
+        signedProofOfPossession: String,
+        jwkX: String,
+        jwkY: String
+    ): String {
+        val result = client.attest(signedProofOfPossession, JWK.makeJWK(jwkX, jwkY))
+        return when {
+            result.isSuccess -> result.getOrNull()?.jwt ?: "Empty"
+            else -> result.exceptionOrNull()?.message ?: "Error"
         }
     }
 }
