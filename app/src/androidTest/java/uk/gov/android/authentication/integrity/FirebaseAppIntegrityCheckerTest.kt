@@ -1,8 +1,8 @@
 package uk.gov.android.authentication.integrity
 
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import org.mockito.kotlin.mock
 import uk.gov.android.authentication.integrity.appcheck.AppChecker
 import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
@@ -17,7 +17,7 @@ class FirebaseAppIntegrityCheckerTest {
     private val client: AttestationClient = mock()
     private val mockAppChecker: AppChecker = mock()
 
-    @Before
+    @BeforeTest
     fun setup() {
         val config = AppIntegrityConfiguration(
             client,
@@ -33,11 +33,11 @@ class FirebaseAppIntegrityCheckerTest {
 
         assertEquals("Not yet implemented", (result as AttestationResponse.Failure).reason)
     }
+
     @Test
     fun check_failure_response_from_sign_attestation() = runBlocking {
         val result = clientAttestationManager.signAttestation("attestation")
 
         assertEquals("Not yet implemented", (result as SignedResponse.Failure).reason)
     }
-
 }

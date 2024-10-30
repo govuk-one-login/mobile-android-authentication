@@ -1,6 +1,6 @@
 package uk.gov.android.authentication.integrity
 
-import org.junit.Before
+import kotlin.test.BeforeTest
 import java.security.KeyStore
 import kotlin.test.Test
 import kotlin.test.assertTrue
@@ -9,7 +9,7 @@ class KeystoreManagerTest {
     private lateinit var keyStore: KeyStore
     private lateinit var keystoreManager: KeystoreManager
 
-    @Before
+    @BeforeTest
     fun setup() {
         keyStore = KeyStore.getInstance("AndroidKeyStore").apply {
             load(null)
