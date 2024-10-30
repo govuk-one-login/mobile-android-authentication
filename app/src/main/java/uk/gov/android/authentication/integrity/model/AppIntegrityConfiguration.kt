@@ -1,9 +1,9 @@
 package uk.gov.android.authentication.integrity.model
 
 import uk.gov.android.authentication.integrity.appcheck.AppChecker
-import uk.gov.android.authentication.integrity.usecase.AttestationClient
+import uk.gov.android.authentication.integrity.usecase.AttestationCaller
 
 data class AppIntegrityConfiguration(
-    val attestationClient: AttestationClient,
+    val attestationCaller: AttestationCaller,
     val appChecker: AppChecker
 )
