@@ -4,14 +4,16 @@ import kotlinx.coroutines.runBlocking
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import uk.gov.android.authentication.integrity.appcheck.AppChecker
+import uk.gov.android.authentication.integrity.model.AppCheckToken
 import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
 import uk.gov.android.authentication.integrity.model.AttestationResponse
 import uk.gov.android.authentication.integrity.model.SignedResponse
 import uk.gov.android.authentication.integrity.usecase.AttestationCaller
 import kotlin.test.assertEquals
 
-class FirebaseAppIntegrityCheckerTest {
+class FirebaseClientAttestationManagerTest {
     private lateinit var clientAttestationManager: ClientAttestationManager
 
     private val caller: AttestationCaller = mock()
@@ -28,10 +30,24 @@ class FirebaseAppIntegrityCheckerTest {
     }
 
     @Test
-    fun check_failure_response_from_get_attestation() = runBlocking {
+    fun check_success_response_from_get_attestation(): Unit = runBlocking {
+        whenever(mockAppChecker.getAppCheckToken())
+            .thenReturn(Result.success(AppCheckToken("Success")))
         val result = clientAttestationManager.getAttestation()
 
-        assertEquals("Not yet implemented", (result as AttestationResponse.Failure).reason)
+        assertEquals(AttestationResponse.Success("Success"),
+            result)
+    }
+
+    @Test
+    fun check_failure_response_from_get_attestation() = runBlocking {
+        whenever(mockAppChecker.getAppCheckToken()).thenReturn(
+            Result.failure(Exception("Error"))
+        )
+        val result = clientAttestationManager.getAttestation()
+
+        assertEquals(Exception("Error").toString(),
+            (result as AttestationResponse.Failure).reason)
     }
 
     @Test
