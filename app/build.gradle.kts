@@ -110,7 +110,6 @@ dependencies {
         kotlin("test-junit5"),
         libs.bundles.test,
         platform(libs.junit.bom),
-        libs.mockito.core,
         libs.mockito.kotlin
     ).forEach(::testImplementation)
 

@@ -1,11 +1,7 @@
 package uk.gov.android.authentication.jwt
 
-import com.google.gson.JsonDeserializationContext
-import org.json.JSONException
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
-import org.mockito.kotlin.any
-import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
+import kotlin.test.Test
 
 class Jose4jJwtVerifierTest {
     private val encodedJwt = ClassLoader.getSystemResource("./encodedJwt.txt").readText()

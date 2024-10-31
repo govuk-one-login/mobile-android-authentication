@@ -1,4 +1,4 @@
-package uk.gov.android.authentication
+package uk.gov.android.authentication.login
 
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher

@@ -1,4 +1,4 @@
-package uk.gov.android.authentication
+package uk.gov.android.authentication.login
 
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString

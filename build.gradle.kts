@@ -3,6 +3,7 @@ import uk.gov.pipelines.config.ApkConfig
 buildscript {
     val projectKey: String by rootProject.extra("mobile-android-authentication")
     val projectId: String by rootProject.extra("uk.gov.android.authentication")
+    val buildLogicDir: String by rootProject.extra("mobile-android-pipelines/buildLogic")
 
     dependencies {
         listOf(
