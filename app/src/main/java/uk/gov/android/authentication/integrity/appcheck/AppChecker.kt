@@ -6,5 +6,5 @@ import uk.gov.android.authentication.integrity.model.AppCheckToken
 interface AppChecker {
     fun init(context: Context)
 
-    fun getAppCheckToken(): Result<AppCheckToken>
+    suspend fun getAppCheckToken(): Result<AppCheckToken>
 }
