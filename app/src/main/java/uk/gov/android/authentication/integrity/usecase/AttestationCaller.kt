@@ -11,6 +11,6 @@ fun interface AttestationCaller {
     data class Response(val jwt: String, val expiresIn: Long)
 
     companion object {
-        protected const val FIREBASE_HEADER = "X-Firebase-AppCheck"
+        const val FIREBASE_HEADER = "X-Firebase-AppCheck"
     }
 }
