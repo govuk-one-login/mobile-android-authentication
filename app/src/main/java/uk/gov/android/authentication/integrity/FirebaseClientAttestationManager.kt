@@ -1,6 +1,5 @@
 package uk.gov.android.authentication.integrity
 
-import android.util.Log
 import uk.gov.android.authentication.integrity.appcheck.AppChecker
 import uk.gov.android.authentication.integrity.model.AppCheckToken
 import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
