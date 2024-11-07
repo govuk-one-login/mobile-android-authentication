@@ -53,6 +53,7 @@ class KeystoreManagerTest {
         assertTrue(checkInputIsBase64(actual.second))
     }
 
+    @Suppress("SwallowedException")
     private fun checkInputIsBase64(input: String): Boolean {
         return try {
             Base64.decode(input)
