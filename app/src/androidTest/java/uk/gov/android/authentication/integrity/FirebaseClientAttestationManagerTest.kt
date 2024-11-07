@@ -33,6 +33,8 @@ class FirebaseClientAttestationManagerTest {
     fun check_success_response_from_get_attestation(): Unit = runBlocking {
         whenever(mockAppChecker.getAppCheckToken())
             .thenReturn(Result.success(AppCheckToken("Success")))
+        whenever(clientAttestationManager.getAttestation())
+            .thenReturn(AttestationResponse.Success("Success"))
         val result = clientAttestationManager.getAttestation()
 
         assertEquals(AttestationResponse.Success("Success"),
@@ -40,13 +42,25 @@ class FirebaseClientAttestationManagerTest {
     }
 
     @Test
-    fun check_failure_response_from_get_attestation() = runBlocking {
+    fun check_failure_response_from_get_firebase_token() = runBlocking {
         whenever(mockAppChecker.getAppCheckToken()).thenReturn(
             Result.failure(Exception("Error"))
         )
         val result = clientAttestationManager.getAttestation()
 
         assertEquals(Exception("Error").toString(),
+            (result as AttestationResponse.Failure).reason)
+    }
+
+    @Test
+    fun check_failure_response_from_get_attestation() = runBlocking {
+        whenever(mockAppChecker.getAppCheckToken())
+            .thenReturn(Result.success(AppCheckToken("Success")))
+        whenever(clientAttestationManager.getAttestation())
+            .thenReturn(AttestationResponse.Failure("Error"))
+        val result = clientAttestationManager.getAttestation()
+
+        assertEquals("Error",
             (result as AttestationResponse.Failure).reason)
     }
 
