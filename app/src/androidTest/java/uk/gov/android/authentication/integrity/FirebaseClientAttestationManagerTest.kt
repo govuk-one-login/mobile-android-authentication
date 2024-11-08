@@ -37,11 +37,11 @@ class FirebaseClientAttestationManagerTest {
         whenever(caller.call(any(), any()))
             .thenReturn(AttestationResponse.Success(
                 "Success",
-                "0"
+                0
             ))
         val result = clientAttestationManager.getAttestation()
 
-        assertEquals(AttestationResponse.Success("Success", "0"),
+        assertEquals(AttestationResponse.Success("Success", 0),
             result)
     }
 
