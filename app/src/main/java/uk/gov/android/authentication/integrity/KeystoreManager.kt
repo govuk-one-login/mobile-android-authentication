@@ -6,7 +6,11 @@ import android.util.Log
 import java.security.KeyPairGenerator
 import java.security.KeyStore
 import java.security.PrivateKey
+import java.security.interfaces.ECPublicKey
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
+@ExperimentalEncodingApi
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 internal class KeystoreManager {
     private val ks: KeyStore = KeyStore.getInstance(KEYSTORE).apply {
@@ -27,11 +31,22 @@ internal class KeystoreManager {
     val appCheckPrivateKey: PrivateKey
         get() = ks.getKey(ALIAS, null) as PrivateKey
 
+    val appCheckPublicKey: ECPublicKey
+        get() = ks.getCertificate(ALIAS).publicKey as ECPublicKey
+
     init {
         if (!hasAppCheckKeys) {
             Log.d(this::class.simpleName, "Generating key pair")
             createNewKeys()
         }
+    }
+
+    fun getPubKeyBase64ECCoord(): Pair<String, String> {
+        val xByteArr = appCheckPublicKey.w.affineX.toByteArray()
+        val yByteArr = appCheckPublicKey.w.affineY.toByteArray()
+        val x = Base64.encode(xByteArr)
+        val y = Base64.encode(yByteArr)
+        return Pair(x, y)
     }
 
     private fun createNewKeys() {

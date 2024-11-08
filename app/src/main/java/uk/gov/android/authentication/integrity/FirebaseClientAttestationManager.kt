@@ -6,8 +6,10 @@ import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
 import uk.gov.android.authentication.integrity.model.AttestationResponse
 import uk.gov.android.authentication.integrity.model.SignedResponse
 import uk.gov.android.authentication.integrity.usecase.AttestationCaller
+import uk.gov.android.authentication.integrity.usecase.JWK
+import kotlin.io.encoding.ExperimentalEncodingApi
 
-@Suppress("UnusedPrivateProperty")
+@OptIn(ExperimentalEncodingApi::class)
 class FirebaseClientAttestationManager(
     config: AppIntegrityConfiguration
 ) : ClientAttestationManager {
@@ -21,8 +23,13 @@ class FirebaseClientAttestationManager(
             AttestationResponse.Failure(err.toString())
         }
         // If successful -> functionality to get signed attestation form Mobile back-end
+        val pubKeyECCoord = keyManager.getPubKeyBase64ECCoord()
+        val jwk = JWK.makeJWK(x = pubKeyECCoord.first, y = pubKeyECCoord.second)
         return if (token is AppCheckToken) {
-            AttestationResponse.Success(token.jwtToken)
+            attestationCaller.call(
+                token.jwtToken,
+                jwk
+            )
             // If unsuccessful -> return the failure
         } else {
             token as AttestationResponse.Failure
