@@ -10,7 +10,6 @@ import uk.gov.android.authentication.integrity.usecase.JWK
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 @OptIn(ExperimentalEncodingApi::class)
-@Suppress("UnusedPrivateProperty")
 class FirebaseClientAttestationManager(
     config: AppIntegrityConfiguration
 ) : ClientAttestationManager {
