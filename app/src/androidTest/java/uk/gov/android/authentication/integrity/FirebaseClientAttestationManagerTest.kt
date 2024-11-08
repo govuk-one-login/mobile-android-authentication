@@ -35,10 +35,13 @@ class FirebaseClientAttestationManagerTest {
         whenever(mockAppChecker.getAppCheckToken())
             .thenReturn(Result.success(AppCheckToken("Success")))
         whenever(caller.call(any(), any()))
-            .thenReturn(Result.success(AttestationResponse.Success("Success")))
+            .thenReturn(AttestationResponse.Success(
+                "Success",
+                "0"
+            ))
         val result = clientAttestationManager.getAttestation()
 
-        assertEquals(AttestationResponse.Success("Success"),
+        assertEquals(AttestationResponse.Success("Success", "0"),
             result)
     }
 
@@ -58,7 +61,7 @@ class FirebaseClientAttestationManagerTest {
         whenever(mockAppChecker.getAppCheckToken())
             .thenReturn(Result.success(AppCheckToken("Success")))
         whenever(caller.call(any(), any()))
-            .thenReturn(Result.success(AttestationResponse.Failure("Error")))
+            .thenReturn(AttestationResponse.Failure("Error"))
         val result = clientAttestationManager.getAttestation()
 
         assertEquals("Error",

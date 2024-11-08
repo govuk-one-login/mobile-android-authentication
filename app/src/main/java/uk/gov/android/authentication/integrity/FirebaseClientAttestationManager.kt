@@ -30,9 +30,7 @@ class FirebaseClientAttestationManager(
             attestationCaller.call(
                 token.jwtToken,
                 jwk
-            ).getOrElse { err ->
-                AttestationResponse.Failure(err.toString())
-            }
+            )
             // If unsuccessful -> return the failure
         } else {
             token as AttestationResponse.Failure

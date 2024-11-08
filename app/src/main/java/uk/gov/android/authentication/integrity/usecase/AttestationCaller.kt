@@ -7,7 +7,7 @@ fun interface AttestationCaller {
     suspend fun call(
         firebaseToken: String,
         jwk: JWK.JsonWebKey
-    ): Result<AttestationResponse>
+    ): AttestationResponse
 
     companion object {
         const val FIREBASE_HEADER = "X-Firebase-AppCheck"
