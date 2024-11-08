@@ -1,6 +1,7 @@
 package uk.gov.android.authentication.integrity
 
 import kotlinx.coroutines.runBlocking
+import org.mockito.kotlin.any
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import org.mockito.kotlin.mock
@@ -33,8 +34,8 @@ class FirebaseClientAttestationManagerTest {
     fun check_success_response_from_get_attestation(): Unit = runBlocking {
         whenever(mockAppChecker.getAppCheckToken())
             .thenReturn(Result.success(AppCheckToken("Success")))
-        whenever(clientAttestationManager.getAttestation())
-            .thenReturn(AttestationResponse.Success("Success"))
+        whenever(caller.call(any(), any()))
+            .thenReturn(Result.success(AttestationResponse.Success("Success")))
         val result = clientAttestationManager.getAttestation()
 
         assertEquals(AttestationResponse.Success("Success"),
@@ -56,8 +57,8 @@ class FirebaseClientAttestationManagerTest {
     fun check_failure_response_from_get_attestation() = runBlocking {
         whenever(mockAppChecker.getAppCheckToken())
             .thenReturn(Result.success(AppCheckToken("Success")))
-        whenever(clientAttestationManager.getAttestation())
-            .thenReturn(AttestationResponse.Failure("Error"))
+        whenever(caller.call(any(), any()))
+            .thenReturn(Result.success(AttestationResponse.Failure("Error")))
         val result = clientAttestationManager.getAttestation()
 
         assertEquals("Error",
