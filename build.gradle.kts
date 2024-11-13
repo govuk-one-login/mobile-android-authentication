@@ -1,4 +1,6 @@
 import uk.gov.pipelines.config.ApkConfig
+import uk.gov.pipelines.emulator.EmulatorConfig
+import uk.gov.pipelines.emulator.SystemImageSource
 
 buildscript {
     val projectKey: String by rootProject.extra("mobile-android-authentication")
@@ -56,6 +58,14 @@ val apkConfig by rootProject.extra(
             override val compile = 34
         }
     }
+)
+
+val emulatorConfig by rootProject.extra(
+    EmulatorConfig(
+        systemImageSources = setOf(SystemImageSource.GOOGLE_ATD),
+        androidApiLevels = setOf(33),
+        deviceFilters = setOf("Pixel XL"),
+    )
 )
 
 plugins {
