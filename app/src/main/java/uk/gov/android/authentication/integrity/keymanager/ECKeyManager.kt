@@ -3,7 +3,7 @@ package uk.gov.android.authentication.integrity.keymanager
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Log
-import uk.gov.android.authentication.integrity.model.ProofOfPossessionPackage
+import uk.gov.android.authentication.integrity.model.ProofOfPossessionGenerator
 import java.security.KeyPairGenerator
 import java.security.KeyStore
 import java.security.KeyStore.PrivateKeyEntry
@@ -45,8 +45,8 @@ internal class ECKeyManager : KeyStoreManager {
     override fun getPublicKey(): Pair<String, String> {
         val xByteArr = appCheckPublicKey.w.affineX.toByteArray()
         val yByteArr = appCheckPublicKey.w.affineY.toByteArray()
-        val x = ProofOfPossessionPackage.base64(xByteArr)
-        val y = ProofOfPossessionPackage.base64(yByteArr)
+        val x = ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(xByteArr)
+        val y = ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(yByteArr)
         return Pair(x, y)
     }
 

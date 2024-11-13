@@ -1,6 +1,7 @@
-package uk.gov.android.authentication.integrity
+package uk.gov.android.authentication.integrity.keymanager
 
-import uk.gov.android.authentication.integrity.keymanager.ECKeyManager
+import org.junit.Assert.assertThrows
+import org.junit.Test as JUnitTest
 import java.security.KeyStore
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
@@ -35,8 +36,19 @@ class ECKeyManagerTest {
     }
 
     @Test
-    fun check_sign() {
+    fun check_sign_success() {
+        val signature = ecKeyManager.sign("Success".toByteArray())
 
+        assertTrue(ecKeyManager.verify("Success".toByteArray(), signature))
+    }
+
+
+
+    @JUnitTest
+    fun check_verify_failure() {
+        assertThrows(ECKeyManager.SigningError.InvalidSignature::class.java) {
+            ecKeyManager.verify("Success".toByteArray(), "Success".toByteArray())
+        }
     }
 
     @Suppress("SwallowedException")
