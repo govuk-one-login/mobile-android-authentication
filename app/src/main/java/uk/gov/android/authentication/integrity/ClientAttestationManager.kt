@@ -5,5 +5,5 @@ import uk.gov.android.authentication.integrity.model.SignedResponse
 
 interface ClientAttestationManager {
     suspend fun getAttestation(): AttestationResponse
-    suspend fun signAttestation(attestation: String): SignedResponse
+    suspend fun generatePoP(iss: String, aud: String): SignedResponse
 }

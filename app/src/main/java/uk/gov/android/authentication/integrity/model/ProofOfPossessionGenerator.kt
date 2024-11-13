@@ -9,7 +9,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-object ProofOfPossessionPackage {
+object ProofOfPossessionGenerator {
     private const val ALG = "ES256"
     @OptIn(ExperimentalUuidApi::class)
     fun createBase64PoP(
@@ -31,8 +31,8 @@ object ProofOfPossessionPackage {
         val headerByteArray = Json.encodeToString(pop.header).toByteArray()
         val payloadByteArray = Json.encodeToString(pop.payload).toByteArray()
         // Get Base64 configured with UrlSafe and no padding
-        val headerBase64 = base64(headerByteArray)
-        val payloadBase64 = base64(payloadByteArray)
+        val headerBase64 = getUrlSafeNoPaddingBase64(headerByteArray)
+        val payloadBase64 = getUrlSafeNoPaddingBase64(payloadByteArray)
         Log.d("HeaderJson", headerBase64)
         Log.d("PayloadJson", payloadBase64)
         // Return the PoP
@@ -63,7 +63,7 @@ object ProofOfPossessionPackage {
     }
 
     @OptIn(ExperimentalEncodingApi::class)
-    fun base64(input: ByteArray): String {
+    fun getUrlSafeNoPaddingBase64(input: ByteArray): String {
         return Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT)
             .encode(input)
     }
