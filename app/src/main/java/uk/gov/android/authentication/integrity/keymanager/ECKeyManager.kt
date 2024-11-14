@@ -56,7 +56,8 @@ class ECKeyManager : KeyStoreManager {
             update(input)
             sign()
         }
-        verify(input, signature)
+        val verifyResult = verify(input, signature)
+        Log.d("VerifySignature", "$verifyResult")
         return signature
     }
 
