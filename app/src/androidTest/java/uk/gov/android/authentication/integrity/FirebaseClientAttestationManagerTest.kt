@@ -46,6 +46,8 @@ class FirebaseClientAttestationManagerTest {
                 "Success",
                 0
             ))
+        whenever(mockKeyStoreManager.getPublicKey())
+            .thenReturn(Pair("Success", "Success"))
         val result = clientAttestationManager.getAttestation()
 
         assertEquals(AttestationResponse.Success("Success", 0),
@@ -57,6 +59,9 @@ class FirebaseClientAttestationManagerTest {
         whenever(mockAppChecker.getAppCheckToken()).thenReturn(
             Result.failure(Exception("Error"))
         )
+        whenever(mockKeyStoreManager.getPublicKey())
+            .thenReturn(Pair("Success", "Success"))
+
         val result = clientAttestationManager.getAttestation()
 
         assertEquals(Exception("Error").toString(),
@@ -69,6 +74,8 @@ class FirebaseClientAttestationManagerTest {
             .thenReturn(Result.success(AppCheckToken("Success")))
         whenever(mockCaller.call(any(), any()))
             .thenReturn(AttestationResponse.Failure("Error"))
+        whenever(mockKeyStoreManager.getPublicKey())
+            .thenReturn(Pair("Success", "Success"))
         val result = clientAttestationManager.getAttestation()
 
         assertEquals("Error",

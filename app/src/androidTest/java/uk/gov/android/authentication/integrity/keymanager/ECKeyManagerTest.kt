@@ -1,6 +1,7 @@
 package uk.gov.android.authentication.integrity.keymanager
 
 import org.junit.Assert.assertThrows
+import uk.gov.android.authentication.integrity.model.ProofOfPossessionGenerator
 import org.junit.Test as JUnitTest
 import java.security.KeyStore
 import kotlin.io.encoding.Base64
@@ -54,7 +55,7 @@ class ECKeyManagerTest {
     @Suppress("SwallowedException")
     private fun checkInputIsBase64(input: String): Boolean {
         return try {
-            Base64.decode(input)
+            ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(input.toByteArray())
             true
         } catch (e: IllegalArgumentException) {
             false
