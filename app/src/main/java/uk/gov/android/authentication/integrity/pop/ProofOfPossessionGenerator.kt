@@ -1,4 +1,4 @@
-package uk.gov.android.authentication.integrity.model
+package uk.gov.android.authentication.integrity.pop
 
 import android.util.Log
 import kotlinx.serialization.Serializable

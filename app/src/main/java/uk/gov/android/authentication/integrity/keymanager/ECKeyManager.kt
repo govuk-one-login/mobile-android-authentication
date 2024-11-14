@@ -3,7 +3,7 @@ package uk.gov.android.authentication.integrity.keymanager
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Log
-import uk.gov.android.authentication.integrity.model.ProofOfPossessionGenerator
+import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 import java.security.KeyPairGenerator
 import java.security.KeyStore
 import java.security.KeyStore.PrivateKeyEntry

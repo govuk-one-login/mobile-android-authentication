@@ -1,4 +1,4 @@
-package uk.gov.android.authentication.integrity.model
+package uk.gov.android.authentication.integrity.pop
 
 sealed class SignedResponse {
     data class Success(val signedAttestationJwt: String) : SignedResponse()

@@ -1,7 +1,7 @@
 package uk.gov.android.authentication.integrity.keymanager
 
 import org.junit.Assert.assertThrows
-import uk.gov.android.authentication.integrity.model.ProofOfPossessionGenerator
+import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 import org.junit.Test as JUnitTest
 import java.security.KeyStore
 import kotlin.io.encoding.ExperimentalEncodingApi

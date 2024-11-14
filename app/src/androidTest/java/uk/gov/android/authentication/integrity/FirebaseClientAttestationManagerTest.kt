@@ -6,15 +6,15 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import uk.gov.android.authentication.integrity.appcheck.AppChecker
+import uk.gov.android.authentication.integrity.appcheck.usecase.AppChecker
 import uk.gov.android.authentication.integrity.keymanager.ECKeyManager
 import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
-import uk.gov.android.authentication.integrity.model.AppCheckToken
+import uk.gov.android.authentication.integrity.appcheck.model.AppCheckToken
+import uk.gov.android.authentication.integrity.appcheck.model.AttestationResponse
+import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
+import uk.gov.android.authentication.integrity.pop.SignedResponse
+import uk.gov.android.authentication.integrity.appcheck.usecase.AttestationCaller
 import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
-import uk.gov.android.authentication.integrity.model.AttestationResponse
-import uk.gov.android.authentication.integrity.model.ProofOfPossessionGenerator
-import uk.gov.android.authentication.integrity.model.SignedResponse
-import uk.gov.android.authentication.integrity.usecase.AttestationCaller
 import java.security.SignatureException
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.test.assertEquals
@@ -43,7 +43,8 @@ class FirebaseClientAttestationManagerTest {
         whenever(mockAppChecker.getAppCheckToken())
             .thenReturn(Result.success(AppCheckToken("Success")))
         whenever(mockCaller.call(any(), any()))
-            .thenReturn(AttestationResponse.Success(
+            .thenReturn(
+                AttestationResponse.Success(
                 "Success",
                 0
             ))
@@ -51,7 +52,8 @@ class FirebaseClientAttestationManagerTest {
             .thenReturn(Pair("Success", "Success"))
         val result = clientAttestationManager.getAttestation()
 
-        assertEquals(AttestationResponse.Success("Success", 0),
+        assertEquals(
+            AttestationResponse.Success("Success", 0),
             result)
     }
 
