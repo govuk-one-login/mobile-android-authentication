@@ -13,7 +13,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 
 @ExperimentalEncodingApi
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-internal class ECKeyManager : KeyStoreManager {
+class ECKeyManager : KeyStoreManager {
     private val ks: KeyStore = KeyStore.getInstance(KEYSTORE).apply {
         load(null)
     }
