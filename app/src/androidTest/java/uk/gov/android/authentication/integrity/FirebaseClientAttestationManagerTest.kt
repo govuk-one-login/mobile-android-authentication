@@ -15,6 +15,7 @@ import uk.gov.android.authentication.integrity.model.AttestationResponse
 import uk.gov.android.authentication.integrity.model.ProofOfPossessionGenerator
 import uk.gov.android.authentication.integrity.model.SignedResponse
 import uk.gov.android.authentication.integrity.usecase.AttestationCaller
+import java.security.SignatureException
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -100,13 +101,25 @@ class FirebaseClientAttestationManagerTest {
 
     @OptIn(ExperimentalEncodingApi::class)
     @Test(expected = Exception::class)
-    fun check_failure_response_from_generate_PoP() = runBlocking {
+    fun check_failure_response_from_generate_PoP_verify_signature_failure() = runBlocking {
         whenever(mockKeyStoreManager.sign(any()))
             .thenThrow(ECKeyManager.SigningError.InvalidSignature)
         val result = clientAttestationManager.generatePoP("test", "test")
 
         assertTrue(result is SignedResponse.Failure)
+        assertTrue(result.error!! is ECKeyManager.SigningError)
         assertEquals("Signature couldn't be verified.", result.reason)
+    }
+
+    @Test(expected = Exception::class)
+    fun check_failure_response_from_generate_PoP_signing_failure() = runBlocking {
+        whenever(mockKeyStoreManager.sign(any()))
+            .thenThrow(SignatureException())
+        val result = clientAttestationManager.generatePoP("test", "test")
+
+        assertTrue(result is SignedResponse.Failure)
+        assertTrue(result.error!! is SignatureException)
+        assertEquals("Signing Error", result.reason)
     }
 
     companion object {

@@ -4,7 +4,6 @@ import org.junit.Assert.assertThrows
 import uk.gov.android.authentication.integrity.model.ProofOfPossessionGenerator
 import org.junit.Test as JUnitTest
 import java.security.KeyStore
-import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.test.BeforeTest
 import kotlin.test.Test
