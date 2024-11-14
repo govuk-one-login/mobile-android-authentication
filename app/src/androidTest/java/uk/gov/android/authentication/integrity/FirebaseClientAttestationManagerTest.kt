@@ -12,7 +12,7 @@ import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
 import uk.gov.android.authentication.integrity.appcheck.model.AppCheckToken
 import uk.gov.android.authentication.integrity.appcheck.model.AttestationResponse
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
-import uk.gov.android.authentication.integrity.pop.SignedResponse
+import uk.gov.android.authentication.integrity.pop.SignedPoP
 import uk.gov.android.authentication.integrity.appcheck.usecase.AttestationCaller
 import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
 import java.security.SignatureException
@@ -94,9 +94,9 @@ class FirebaseClientAttestationManagerTest {
 
         val result = clientAttestationManager.generatePoP(MOCK_VALUE, MOCK_VALUE)
 
-        assertTrue(result is SignedResponse.Success)
+        assertTrue(result is SignedPoP.Success)
 
-        val splitJwt = result.signedAttestationJwt.split(".")
+        val splitJwt = result.popJwt.split(".")
         assertTrue(splitJwt.size == 3)
         assertEquals(mockSignature, splitJwt.last())
     }
@@ -108,7 +108,7 @@ class FirebaseClientAttestationManagerTest {
             .thenThrow(ECKeyManager.SigningError.InvalidSignature)
         val result = clientAttestationManager.generatePoP("test", "test")
 
-        assertTrue(result is SignedResponse.Failure)
+        assertTrue(result is SignedPoP.Failure)
         assertTrue(result.error!! is ECKeyManager.SigningError)
         assertEquals("Signature couldn't be verified.", result.reason)
     }
@@ -119,7 +119,7 @@ class FirebaseClientAttestationManagerTest {
             .thenThrow(SignatureException())
         val result = clientAttestationManager.generatePoP("test", "test")
 
-        assertTrue(result is SignedResponse.Failure)
+        assertTrue(result is SignedPoP.Failure)
         assertTrue(result.error!! is SignatureException)
         assertEquals("Signing Error", result.reason)
     }

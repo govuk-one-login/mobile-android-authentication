@@ -7,7 +7,7 @@ import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
 import uk.gov.android.authentication.integrity.appcheck.model.AppCheckToken
 import uk.gov.android.authentication.integrity.appcheck.model.AttestationResponse
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
-import uk.gov.android.authentication.integrity.pop.SignedResponse
+import uk.gov.android.authentication.integrity.pop.SignedPoP
 import uk.gov.android.authentication.integrity.appcheck.usecase.AttestationCaller
 import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
 import uk.gov.android.authentication.integrity.appcheck.usecase.JWK
@@ -41,7 +41,7 @@ class FirebaseClientAttestationManager(
         }
     }
 
-    override fun generatePoP(iss: String, aud: String): SignedResponse {
+    override fun generatePoP(iss: String, aud: String): SignedPoP {
         // Create Proof of Possession
         val pop = ProofOfPossessionGenerator.createBase64PoP(iss, aud)
         // Convert into ByteArray
@@ -54,11 +54,11 @@ class FirebaseClientAttestationManager(
             // Return the signed PopJwt
             val signedPop = "$pop.$signature"
             Log.d("SignedPoP", signedPop)
-            SignedResponse.Success(signedPop)
+            SignedPoP.Success(signedPop)
         } catch (e: ECKeyManager.SigningError) {
-            SignedResponse.Failure(e.message ?: VERIFF_ERROR, e)
+            SignedPoP.Failure(e.message ?: VERIFF_ERROR, e)
         } catch (e: SignatureException) {
-            SignedResponse.Failure(e.message ?: SIGN_ERROR, e)
+            SignedPoP.Failure(e.message ?: SIGN_ERROR, e)
         }
     }
 
