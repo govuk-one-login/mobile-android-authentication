@@ -10,7 +10,6 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 object ProofOfPossessionGenerator {
-    private const val ALG = "ES256"
     @OptIn(ExperimentalUuidApi::class)
     fun createBase64PoP(
         iss: String,
@@ -59,7 +58,7 @@ object ProofOfPossessionGenerator {
     )
 
     private fun getExpiryTime(): Long {
-        return (System.currentTimeMillis() + (5 * 6000))
+        return (System.currentTimeMillis() + (MINUTES * MINUTE_IN_MILLISECONDS))
     }
 
     @OptIn(ExperimentalEncodingApi::class)
@@ -67,4 +66,8 @@ object ProofOfPossessionGenerator {
         return Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT)
             .encode(input)
     }
+
+    private const val ALG = "ES256"
+    private const val MINUTES = 3
+    private const val MINUTE_IN_MILLISECONDS = 60000
 }
