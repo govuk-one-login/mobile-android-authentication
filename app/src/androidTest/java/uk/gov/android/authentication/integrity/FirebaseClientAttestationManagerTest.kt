@@ -86,7 +86,7 @@ class FirebaseClientAttestationManagerTest {
     }
 
     @Test
-    fun check_success_response_from_generate_PoP() = runBlocking {
+    fun check_success_response_from_generate_PoP() {
         val mockSignatureByte = "Success".toByteArray()
         val mockSignature = ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(mockSignatureByte)
 
@@ -103,8 +103,8 @@ class FirebaseClientAttestationManagerTest {
 
     @OptIn(ExperimentalEncodingApi::class)
     @Test(expected = Exception::class)
-    fun check_failure_response_from_generate_PoP_verify_signature_failure() = runBlocking {
-        whenever(mockKeyStoreManager.sign(any()))
+    fun check_failure_response_from_generate_PoP_verify_signature_failure() {
+        whenever(mockKeyStoreManager.verify(any(), any()))
             .thenThrow(ECKeyManager.SigningError.InvalidSignature)
         val result = clientAttestationManager.generatePoP("test", "test")
 
@@ -114,7 +114,7 @@ class FirebaseClientAttestationManagerTest {
     }
 
     @Test(expected = Exception::class)
-    fun check_failure_response_from_generate_PoP_signing_failure() = runBlocking {
+    fun check_failure_response_from_generate_PoP_signing_failure() {
         whenever(mockKeyStoreManager.sign(any()))
             .thenThrow(SignatureException())
         val result = clientAttestationManager.generatePoP("test", "test")
