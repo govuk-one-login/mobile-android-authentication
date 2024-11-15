@@ -1,6 +1,6 @@
-package uk.gov.android.authentication.integrity.usecase
+package uk.gov.android.authentication.integrity.appcheck.usecase
 
-import uk.gov.android.authentication.integrity.model.AttestationResponse
+import uk.gov.android.authentication.integrity.appcheck.model.AttestationResponse
 
 @Suppress("unused")
 fun interface AttestationCaller {

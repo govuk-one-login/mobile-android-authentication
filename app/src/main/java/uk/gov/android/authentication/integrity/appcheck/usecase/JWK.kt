@@ -1,4 +1,4 @@
-package uk.gov.android.authentication.integrity.usecase
+package uk.gov.android.authentication.integrity.appcheck.usecase
 
 import kotlinx.serialization.Serializable
 

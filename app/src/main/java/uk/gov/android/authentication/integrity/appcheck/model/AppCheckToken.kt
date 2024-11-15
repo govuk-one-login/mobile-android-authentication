@@ -1,4 +1,4 @@
-package uk.gov.android.authentication.integrity.model
+package uk.gov.android.authentication.integrity.appcheck.model
 
 import kotlinx.serialization.Serializable
 
