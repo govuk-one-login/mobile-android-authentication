@@ -38,7 +38,7 @@ class ECKeyManager : KeyStoreManager {
 
     init {
         if (!hasAppCheckKeys) {
-            Log.d(this::class.simpleName, "Generating key pair")
+            if (BuildConfig.DEBUG) { Log.d(this::class.simpleName, "Generating key pair") }
             createNewKeys()
         }
     }
@@ -58,7 +58,7 @@ class ECKeyManager : KeyStoreManager {
             sign()
         }
         val verifyResult = verify(input, signature)
-        Log.d("VerifySignature", "$verifyResult")
+        if (BuildConfig.DEBUG) { Log.d("VerifySignature", "$verifyResult") }
         return signature
     }
 
