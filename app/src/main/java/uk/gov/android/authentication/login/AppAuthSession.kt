@@ -7,7 +7,7 @@ import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
 
 class AppAuthSession(
-    context: Context,
+    context: Context
 ) : LoginSession {
     private val authService: AuthorizationService = AuthorizationService(context)
 
@@ -24,10 +24,9 @@ class AppAuthSession(
         callback: (tokens: TokenResponse) -> Unit
     ) {
         val authResponse = AuthorizationResponse.fromIntent(intent)
-        val request = authResponse?.createTokenExchangeRequest() ?: throw AuthenticationError.from(intent)
-        authService.performTokenRequest(
-            request
-        ) { response, exception ->
+        val request = authResponse?.createTokenExchangeRequest()
+            ?: throw AuthenticationError.from(intent)
+        authService.performTokenRequest(request) { response, exception ->
             callback(
                 response?.toTokenResponse() ?: throw AuthenticationError.from(exception)
             )

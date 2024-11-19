@@ -1,8 +1,6 @@
 package uk.gov.android.authentication.login
 
 import android.net.Uri
-import net.openid.appauth.AuthorizationRequest
-import net.openid.appauth.AuthorizationServiceConfiguration
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertContains
@@ -10,12 +8,14 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
+import net.openid.appauth.AuthorizationRequest
+import net.openid.appauth.AuthorizationServiceConfiguration
 
 class LoginSessionConfigurationUtilTest {
     private val scopes = listOf(
         LoginSessionConfiguration.Scope.OPENID,
         LoginSessionConfiguration.Scope.PHONE,
-        LoginSessionConfiguration.Scope.EMAIL,
+        LoginSessionConfiguration.Scope.EMAIL
     )
     private val locale = LoginSessionConfiguration.Locale.EN
     private val clientId = "clientId.Test"

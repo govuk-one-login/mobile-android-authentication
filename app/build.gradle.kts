@@ -79,11 +79,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 }
 
@@ -93,7 +93,7 @@ dependencies {
         kotlin("test-junit"),
         libs.bundles.android.test,
         libs.bundles.mockito,
-        libs.bundles.espresso,
+        libs.bundles.espresso
     ).forEach(::androidTestImplementation)
 
     listOf(

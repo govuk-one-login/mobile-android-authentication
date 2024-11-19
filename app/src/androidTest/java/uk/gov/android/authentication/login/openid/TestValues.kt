@@ -41,23 +41,29 @@ object TestValues {
     private val TEST_JSON: String = getDiscoveryDocumentJson()
 
     private fun getDiscoveryDocumentJson(): String {
-        return (("{\n"
-                + " \"issuer\": \"" + TEST_ISSUER + "\",\n"
-                + " \"authorization_endpoint\": \"" + TEST_AUTHORIZATION_ENDPOINT + "\",\n"
-                + " \"token_endpoint\": \"" + TEST_TOKEN_ENDPOINT + "\",\n"
-                + " \"userinfo_endpoint\": \"" + TEST_USERINFO_ENDPOINT + "\",\n"
-                + " \"end_session_endpoint\": \"" + TEST_END_SESSION_ENDPOINT + "\",\n"
-                + " \"registration_endpoint\": \"" + TEST_REGISTRATION_ENDPOINT + "\",\n"
-                + " \"jwks_uri\": \"" + TEST_JWKS_URI + "\",\n"
-                + " \"response_types_supported\": " + toJson(TEST_RESPONSE_TYPES_SUPPORTED) + ",\n"
-                + " \"subject_types_supported\": " + toJson(TEST_SUBJECT_TYPES_SUPPORTED) + ",\n"
-                + " \"id_token_signing_alg_values_supported\": "
-                + toJson(TEST_ID_TOKEN_SIGNING_ALG_VALUES) + ",\n"
-                + " \"scopes_supported\": " + toJson(TEST_SCOPES_SUPPORTED) + ",\n"
-                + " \"token_endpoint_auth_methods_supported\": "
-                + toJson(TEST_TOKEN_ENDPOINT_AUTH_METHODS) + ",\n"
-                + " \"claims_supported\": " + toJson(TEST_CLAIMS_SUPPORTED) + "\n"
-                + "}"))
+        return (
+            (
+                "{\n" +
+                    " \"issuer\": \"" + TEST_ISSUER + "\",\n" +
+                    " \"authorization_endpoint\": \"" + TEST_AUTHORIZATION_ENDPOINT + "\",\n" +
+                    " \"token_endpoint\": \"" + TEST_TOKEN_ENDPOINT + "\",\n" +
+                    " \"userinfo_endpoint\": \"" + TEST_USERINFO_ENDPOINT + "\",\n" +
+                    " \"end_session_endpoint\": \"" + TEST_END_SESSION_ENDPOINT + "\",\n" +
+                    " \"registration_endpoint\": \"" + TEST_REGISTRATION_ENDPOINT + "\",\n" +
+                    " \"jwks_uri\": \"" + TEST_JWKS_URI + "\",\n" +
+                    " \"response_types_supported\": " +
+                    toJson(TEST_RESPONSE_TYPES_SUPPORTED) + ",\n" +
+                    " \"subject_types_supported\": " +
+                    toJson(TEST_SUBJECT_TYPES_SUPPORTED) + ",\n" +
+                    " \"id_token_signing_alg_values_supported\": " +
+                    toJson(TEST_ID_TOKEN_SIGNING_ALG_VALUES) + ",\n" +
+                    " \"scopes_supported\": " + toJson(TEST_SCOPES_SUPPORTED) + ",\n" +
+                    " \"token_endpoint_auth_methods_supported\": " +
+                    toJson(TEST_TOKEN_ENDPOINT_AUTH_METHODS) + ",\n" +
+                    " \"claims_supported\": " + toJson(TEST_CLAIMS_SUPPORTED) + "\n" +
+                    "}"
+                )
+            )
     }
 
     private fun toJson(strings: List<String?>): String = JSONArray(strings).toString()

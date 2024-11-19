@@ -3,13 +3,14 @@ package uk.gov.android.authentication.integrity.keymanager
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Log
-import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 import java.security.KeyPairGenerator
 import java.security.KeyStore
 import java.security.KeyStore.PrivateKeyEntry
 import java.security.Signature
 import java.security.interfaces.ECPublicKey
 import kotlin.io.encoding.ExperimentalEncodingApi
+import net.openid.appauth.BuildConfig
+import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 
 @ExperimentalEncodingApi
 @Suppress("MemberVisibilityCanBePrivate", "unused")
@@ -37,7 +38,7 @@ class ECKeyManager : KeyStoreManager {
 
     init {
         if (!hasAppCheckKeys) {
-            Log.d(this::class.simpleName, "Generating key pair")
+            if (BuildConfig.DEBUG) { Log.d(this::class.simpleName, "Generating key pair") }
             createNewKeys()
         }
     }
@@ -57,10 +58,9 @@ class ECKeyManager : KeyStoreManager {
             sign()
         }
         val verifyResult = verify(input, signature)
-        Log.d("VerifySignature", "$verifyResult")
+        if (BuildConfig.DEBUG) { Log.d("VerifySignature", "$verifyResult") }
         return signature
     }
-
 
     override fun verify(data: ByteArray, signature: ByteArray): Boolean {
         val successfulSignature = Signature.getInstance(ALG).run {

@@ -1,15 +1,15 @@
 package uk.gov.android.authentication.login
 
+import java.util.UUID
 import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationServiceConfiguration
-import java.util.UUID
 
 internal fun LoginSessionConfiguration.createRequest(): AuthorizationRequest = createBuilder()
-        .setScopes(scopeValues)
-        .setUiLocales(locale.value)
-        .setNonce(createNonce())
-        .setAdditionalParameters(createAdditionalParameters())
-        .build()
+    .setScopes(scopeValues)
+    .setUiLocales(locale.value)
+    .setNonce(createNonce())
+    .setAdditionalParameters(createAdditionalParameters())
+    .build()
 
 internal fun LoginSessionConfiguration.createBuilder() =
     AuthorizationRequest.Builder(

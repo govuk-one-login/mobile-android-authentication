@@ -1,13 +1,13 @@
 package uk.gov.android.authentication.integrity.keymanager
 
-import org.junit.Assert.assertThrows
-import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
-import org.junit.Test as JUnitTest
 import java.security.KeyStore
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
+import org.junit.Assert.assertThrows
+import org.junit.Test as JUnitTest
+import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 
 @OptIn(ExperimentalEncodingApi::class)
 class ECKeyManagerTest {
@@ -41,8 +41,6 @@ class ECKeyManagerTest {
 
         assertTrue(ecKeyManager.verify("Success".toByteArray(), signature))
     }
-
-
 
     @JUnitTest
     fun check_verify_failure() {
