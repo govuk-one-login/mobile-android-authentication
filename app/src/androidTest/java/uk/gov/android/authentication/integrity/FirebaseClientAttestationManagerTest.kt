@@ -1,24 +1,24 @@
 package uk.gov.android.authentication.integrity
 
-import kotlinx.coroutines.runBlocking
-import org.mockito.kotlin.any
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
-import uk.gov.android.authentication.integrity.appcheck.usecase.AppChecker
-import uk.gov.android.authentication.integrity.keymanager.ECKeyManager
-import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
-import uk.gov.android.authentication.integrity.appcheck.model.AppCheckToken
-import uk.gov.android.authentication.integrity.appcheck.model.AttestationResponse
-import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
-import uk.gov.android.authentication.integrity.pop.SignedPoP
-import uk.gov.android.authentication.integrity.appcheck.usecase.AttestationCaller
-import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
 import java.security.SignatureException
 import kotlin.io.encoding.ExperimentalEncodingApi
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlinx.coroutines.runBlocking
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
+import uk.gov.android.authentication.integrity.appcheck.model.AppCheckToken
+import uk.gov.android.authentication.integrity.appcheck.model.AttestationResponse
+import uk.gov.android.authentication.integrity.appcheck.usecase.AppChecker
+import uk.gov.android.authentication.integrity.appcheck.usecase.AttestationCaller
+import uk.gov.android.authentication.integrity.keymanager.ECKeyManager
+import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
+import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
+import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
+import uk.gov.android.authentication.integrity.pop.SignedPoP
 
 class FirebaseClientAttestationManagerTest {
     private lateinit var clientAttestationManager: ClientAttestationManager
@@ -45,16 +45,18 @@ class FirebaseClientAttestationManagerTest {
         whenever(mockCaller.call(any(), any()))
             .thenReturn(
                 AttestationResponse.Success(
-                "Success",
-                0
-            ))
+                    "Success",
+                    0
+                )
+            )
         whenever(mockKeyStoreManager.getPublicKey())
             .thenReturn(Pair("Success", "Success"))
         val result = clientAttestationManager.getAttestation()
 
         assertEquals(
             AttestationResponse.Success("Success", 0),
-            result)
+            result
+        )
     }
 
     @Test
@@ -67,8 +69,10 @@ class FirebaseClientAttestationManagerTest {
 
         val result = clientAttestationManager.getAttestation()
 
-        assertEquals(Exception("Error").toString(),
-            (result as AttestationResponse.Failure).reason)
+        assertEquals(
+            Exception("Error").toString(),
+            (result as AttestationResponse.Failure).reason
+        )
     }
 
     @Test
@@ -81,8 +85,10 @@ class FirebaseClientAttestationManagerTest {
             .thenReturn(Pair("Success", "Success"))
         val result = clientAttestationManager.getAttestation()
 
-        assertEquals("Error",
-            (result as AttestationResponse.Failure).reason)
+        assertEquals(
+            "Error",
+            (result as AttestationResponse.Failure).reason
+        )
     }
 
     @Test

@@ -9,7 +9,9 @@ private const val NullTokenExpiryMessage = "Token expiry must not be empty"
 internal fun AppAuthTokenResponse.toTokenResponse(): TokenResponse = TokenResponse(
     tokenType = requireNotNull(tokenType) { NullTokenTypeMessage },
     accessToken = requireNotNull(accessToken) { NullAccessTokenMessage },
-    accessTokenExpirationTime = requireNotNull(accessTokenExpirationTime) { NullTokenExpiryMessage },
+    accessTokenExpirationTime = requireNotNull(accessTokenExpirationTime) {
+        NullTokenExpiryMessage
+    },
     idToken = idToken,
     refreshToken = refreshToken
 )

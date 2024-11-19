@@ -1,8 +1,8 @@
 package uk.gov.android.authentication.login
 
 import android.net.Uri
-import kotlin.test.assertEquals
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class LoginSessionConfigurationTest {
     @Test
@@ -29,7 +29,10 @@ class LoginSessionConfigurationTest {
         // Given the default LoginSessionConfiguration construction
         val loginSessionConfiguration = defaultConfig.copy()
         // Then the default ResponseType is ResponseTypeCODE
-        assertEquals(LoginSessionConfiguration.VTR_DEFAULT, loginSessionConfiguration.vectorsOfTrust)
+        assertEquals(
+            LoginSessionConfiguration.VTR_DEFAULT,
+            loginSessionConfiguration.vectorsOfTrust
+        )
     }
 
     companion object {

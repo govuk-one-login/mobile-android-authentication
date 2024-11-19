@@ -1,11 +1,11 @@
 package uk.gov.android.authentication.login
 
-import net.openid.appauth.TokenRequest
-import net.openid.appauth.TokenResponse
-import uk.gov.android.authentication.login.openid.TestValues
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import net.openid.appauth.TokenRequest
+import net.openid.appauth.TokenResponse
+import uk.gov.android.authentication.login.openid.TestValues
 
 class TokenResponseUtilTest {
     private val tokenType = "tokenType"

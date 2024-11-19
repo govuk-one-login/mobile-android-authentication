@@ -3,15 +3,15 @@ package uk.gov.android.authentication.login
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.test.platform.app.InstrumentationRegistry
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import net.openid.appauth.AuthorizationResponse
 import org.junit.Assert.assertThrows
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 /* Not checked here:
 * Full route of AppAuthSession::present
@@ -31,7 +31,7 @@ class AppAuthSessionTest {
     fun presentCreatesAndLaunchesAuthorisationIntent() {
         // Given a mock ActivityResultLauncher
         val launcher: ActivityResultLauncher<Intent> = mock()
-        whenever(launcher.launch(any())).then {  } // take no action
+        whenever(launcher.launch(any())).then { } // take no action
         val loginSessionConfig = LoginSessionConfigurationTest.defaultConfig.copy()
         // When calling present
         appAuthSession.present(

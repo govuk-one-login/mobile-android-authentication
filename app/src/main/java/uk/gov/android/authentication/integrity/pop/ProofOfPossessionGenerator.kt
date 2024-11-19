@@ -1,13 +1,13 @@
 package uk.gov.android.authentication.integrity.pop
 
 import android.util.Log
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 object ProofOfPossessionGenerator {
     @OptIn(ExperimentalUuidApi::class)
