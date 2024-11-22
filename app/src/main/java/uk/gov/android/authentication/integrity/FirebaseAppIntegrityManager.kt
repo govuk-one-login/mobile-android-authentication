@@ -1,6 +1,7 @@
 package uk.gov.android.authentication.integrity
 
 import android.util.Log
+import com.google.gson.JsonParser
 import uk.gov.android.authentication.integrity.appcheck.usecase.AppChecker
 import uk.gov.android.authentication.integrity.keymanager.ECKeyManager
 import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
@@ -12,12 +13,14 @@ import uk.gov.android.authentication.integrity.appcheck.usecase.AttestationCalle
 import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
 import uk.gov.android.authentication.integrity.appcheck.usecase.JWK
 import java.security.SignatureException
+import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
+import kotlin.text.split
 
 @OptIn(ExperimentalEncodingApi::class)
-class FirebaseClientAttestationManager(
+class FirebaseAppIntegrityManager(
     config: AppIntegrityConfiguration
-) : ClientAttestationManager {
+) : AppIntegrityManager {
     private val appChecker: AppChecker = config.appChecker
     private val attestationCaller: AttestationCaller = config.attestationCaller
     private val keyStoreManager: KeyStoreManager = config.keyStoreManager
@@ -27,7 +30,7 @@ class FirebaseClientAttestationManager(
         val token = appChecker.getAppCheckToken().getOrElse { err ->
             AttestationResponse.Failure(err.toString())
         }
-        // If successful -> functionality to get signed attestation form Mobile back-end
+        // If successful -> functionality to get signed attestation from Mobile back-end
         val pubKeyECCoord = keyStoreManager.getPublicKey()
         val jwk = JWK.makeJWK(x = pubKeyECCoord.first, y = pubKeyECCoord.second)
         return if (token is AppCheckToken) {
@@ -59,6 +62,32 @@ class FirebaseClientAttestationManager(
             SignedPoP.Failure(e.message ?: VERIFF_ERROR, e)
         } catch (e: SignatureException) {
             SignedPoP.Failure(e.message ?: SIGN_ERROR, e)
+        }
+    }
+
+    override fun verifyAttestationJwk(attestation: String): Boolean {
+        // Get JWK from attestation
+        val jwk = extractFieldFrom(attestation, "cnf")?.let {
+            JsonParser.parseString(it).asJsonObject["jwk"]?.asJsonObject
+        } ?: return false
+        // Get local cert coordinates
+        val (x, y) = keyStoreManager.getPublicKey()
+        // Compare attestation with local cert
+        return jwk["x"].asString == x && jwk["y"].asString == y
+    }
+
+    override fun getExpiry(attestation: String): Long? {
+        return extractFieldFrom(attestation, "exp")?.toLongOrNull()
+    }
+
+    @Suppress("TooGenericExceptionCaught")
+    private fun extractFieldFrom(attestation: String, field: String): String? {
+        return try {
+            val body = String(Base64.decode(attestation.split(".")[1]))
+            JsonParser.parseString(body).asJsonObject[field]?.toString()
+        } catch (e: Exception) {
+            Log.e(this::class.simpleName, e.message, e)
+            null
         }
     }
 

@@ -46,3 +46,6 @@ refreshVersions
 runBlocking
 vararg
 veriff
+JWK
+JWT
+iss

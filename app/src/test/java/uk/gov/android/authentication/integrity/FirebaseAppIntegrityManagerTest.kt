@@ -1,0 +1,225 @@
+package uk.gov.android.authentication.integrity
+
+import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.BeforeEach
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
+import uk.gov.android.authentication.integrity.appcheck.usecase.AppChecker
+import uk.gov.android.authentication.integrity.keymanager.ECKeyManager
+import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
+import uk.gov.android.authentication.integrity.appcheck.model.AppCheckToken
+import uk.gov.android.authentication.integrity.appcheck.model.AttestationResponse
+import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
+import uk.gov.android.authentication.integrity.pop.SignedPoP
+import uk.gov.android.authentication.integrity.appcheck.usecase.AttestationCaller
+import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
+import java.security.SignatureException
+import kotlin.io.encoding.ExperimentalEncodingApi
+import kotlin.test.Ignore
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
+
+class FirebaseAppIntegrityManagerTest {
+    private lateinit var appIntegrityManager: AppIntegrityManager
+
+    private val mockCaller: AttestationCaller = mock()
+    private val mockAppChecker: AppChecker = mock()
+    private val mockKeyStoreManager: KeyStoreManager = mock()
+    
+    private val exampleAttestation = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIs" +
+            "ImtpZCI6ImY2M2FlNDkxLWZjNzAtNGExNS05ZThhLTkwNWQ0OWEzZmU2ZCJ9." +
+            "eyJpc3MiOiJodHRwczovL21vYmlsZS5idWlsZC5hY2NvdW50Lmdvdi51ayIsI" +
+            "nN1YiI6ImJZcmN1UlZ2bnlsdkVnWVNTYkJqd1h6SHJ3SiIsImV4cCI6MTczMj" +
+            "EyNzMyOCwiY25mIjp7Imp3ayI6eyJrdHkiOiJFQyIsInVzZSI6InNpZyIsImN" +
+            "ydiI6IlAtMjU2IiwieCI6ImVmY1ltN3l3bUpOVkNWTmNqUnRiRm53Y1J6Z2JK" +
+            "NFl1eXlmX3J1eDFJSHciLCJ5IjoiQVBBRW51ZHRfQVNCRWNBNGdPMWdGZGpua" +
+            "UFoNE1kMXFQbnlZWlRHWHd3U0gifX19.nVnTomI-RQ0GKEqgcXzSGPSrpJdhm" +
+            "RBdXHmN0Od1Iep-360_VzhiTCKU1ZINzV4IabC_KUi0tM0NznWvLnqXiQ"
+
+    @BeforeEach
+    fun setup() {
+        val config = AppIntegrityConfiguration(
+            mockCaller,
+            mockAppChecker,
+            mockKeyStoreManager
+        )
+
+        appIntegrityManager = FirebaseAppIntegrityManager(config)
+    }
+
+    @Test
+    fun check_success_response_from_get_attestation(): Unit = runBlocking {
+        whenever(mockAppChecker.getAppCheckToken())
+            .thenReturn(Result.success(AppCheckToken("Success")))
+        whenever(mockCaller.call(any(), any()))
+            .thenReturn(
+                AttestationResponse.Success(
+                    "Success",
+                    0
+                )
+            )
+        whenever(mockKeyStoreManager.getPublicKey())
+            .thenReturn(Pair("Success", "Success"))
+        val result = appIntegrityManager.getAttestation()
+
+        assertEquals(
+            AttestationResponse.Success("Success", 0),
+            result
+        )
+    }
+
+    @Test
+    fun check_failure_response_from_get_firebase_token() = runBlocking {
+        whenever(mockAppChecker.getAppCheckToken()).thenReturn(
+            Result.failure(Exception("Error"))
+        )
+        whenever(mockKeyStoreManager.getPublicKey())
+            .thenReturn(Pair("Success", "Success"))
+
+        val result = appIntegrityManager.getAttestation()
+
+        assertEquals(
+            Exception("Error").toString(),
+            (result as AttestationResponse.Failure).reason
+        )
+    }
+
+    @Test
+    fun check_failure_response_from_get_attestation() = runBlocking {
+        whenever(mockAppChecker.getAppCheckToken())
+            .thenReturn(Result.success(AppCheckToken("Success")))
+        whenever(mockCaller.call(any(), any()))
+            .thenReturn(AttestationResponse.Failure("Error"))
+        whenever(mockKeyStoreManager.getPublicKey())
+            .thenReturn(Pair("Success", "Success"))
+        val result = appIntegrityManager.getAttestation()
+
+        assertEquals(
+            "Error",
+            (result as AttestationResponse.Failure).reason
+        )
+    }
+
+    @Test
+    fun check_success_response_from_generate_PoP() {
+        val mockSignatureByte = "Success".toByteArray()
+        val mockSignature = ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(mockSignatureByte)
+
+        whenever(mockKeyStoreManager.sign(any())).thenReturn(mockSignatureByte)
+
+        val result = appIntegrityManager.generatePoP(MOCK_VALUE, MOCK_VALUE)
+
+        assertTrue(result is SignedPoP.Success)
+
+        val splitJwt = result.popJwt.split(".")
+        assertTrue(splitJwt.size == 3)
+        assertEquals(mockSignature, splitJwt.last())
+    }
+
+    @OptIn(ExperimentalEncodingApi::class)
+    @Ignore("Using the verify method is only temporary as a manual check")
+    @Test()
+    fun check_failure_response_from_generate_PoP_verify_signature_failure() {
+        whenever(mockKeyStoreManager.verify(any(), any()))
+            .thenAnswer {
+                throw ECKeyManager.SigningError.InvalidSignature
+            }
+        val result = appIntegrityManager.generatePoP("test", "test")
+
+        assertTrue(result is SignedPoP.Failure)
+        assertTrue(result.error!! is ECKeyManager.SigningError)
+        assertEquals("Signature couldn't be verified.", result.reason)
+    }
+
+    @Test()
+    fun check_failure_response_from_generate_PoP_signing_failure() {
+        whenever(mockKeyStoreManager.sign(any()))
+            .thenAnswer {
+                throw SignatureException()
+            }
+        val result = appIntegrityManager.generatePoP("test", "test")
+
+        assertTrue(result is SignedPoP.Failure)
+        assertTrue(result.error!! is SignatureException)
+        assertEquals("Signing Error", result.reason)
+    }
+
+    @Test
+    fun testVerifyAttestationJwkSuccess() {
+        whenever(mockKeyStoreManager.getPublicKey()).thenReturn(
+            Pair(
+                "efcYm7ywmJNVCVNcjRtbFnwcRzgbJ4Yuyyf_rux1IHw",
+                "APAEnudt_ASBEcA4gO1gFdjniAh4Md1qPnyYZTGXwwSH"
+            )
+        )
+        val result =
+            appIntegrityManager.verifyAttestationJwk(exampleAttestation)
+
+        assertTrue(result)
+    }
+
+    @Test
+    fun testVerifyAttestation_Jwk_xDoesNotMatch() {
+        whenever(mockKeyStoreManager.getPublicKey()).thenReturn(
+            Pair(
+                "wrong",
+                "APAEnudt_ASBEcA4gO1gFdjniAh4Md1qPnyYZTGXwwSH"
+            )
+        )
+        val result =
+            appIntegrityManager.verifyAttestationJwk(exampleAttestation)
+
+        assertFalse(result)
+    }
+
+    @Test
+    fun testVerifyAttestation_Jwk_yDoesNotMatch() {
+        whenever(mockKeyStoreManager.getPublicKey()).thenReturn(
+            Pair(
+                "efcYm7ywmJNVCVNcjRtbFnwcRzgbJ4Yuyyf_rux1IHw",
+                "wrong"
+            )
+        )
+        val result =
+            appIntegrityManager.verifyAttestationJwk(exampleAttestation)
+
+        assertFalse(result)
+    }
+
+    @Test
+    fun testVerifyAttestation_invalidAttestationJwk() {
+        whenever(mockKeyStoreManager.getPublicKey()).thenReturn(
+            Pair(
+                "efcYm7ywmJNVCVNcjRtbFnwcRzgbJ4Yuyyf_rux1IHw",
+                "wrong"
+            )
+        )
+        val result =
+            appIntegrityManager.verifyAttestationJwk("test")
+
+        assertFalse(result)
+    }
+
+    @Test
+    fun getExpiry_success() {
+        val expected: Long = 1732127328
+        val result = appIntegrityManager.getExpiry(exampleAttestation)
+
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun getExpiry_failure() {
+        val result = appIntegrityManager.getExpiry("test")
+
+        assertNull(result)
+    }
+
+    companion object {
+        private const val MOCK_VALUE = "test"
+    }
+}

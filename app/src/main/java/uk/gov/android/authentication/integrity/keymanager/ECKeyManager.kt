@@ -3,6 +3,7 @@ package uk.gov.android.authentication.integrity.keymanager
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Log
+import net.openid.appauth.BuildConfig
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 import java.security.KeyPairGenerator
 import java.security.KeyStore
@@ -56,8 +57,10 @@ class ECKeyManager : KeyStoreManager {
             update(input)
             sign()
         }
-        val verifyResult = verify(input, signature)
-        Log.d("VerifySignature", "$verifyResult")
+        if (BuildConfig.DEBUG) {
+            val verifyResult = verify(input, signature)
+            Log.d("VerifySignature", "$verifyResult")
+        }
         return signature
     }
 
