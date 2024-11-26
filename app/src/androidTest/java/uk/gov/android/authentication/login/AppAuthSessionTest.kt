@@ -49,7 +49,7 @@ class AppAuthSessionTest {
             putExtra(AuthorizationResponse.EXTRA_RESPONSE, "{}")
         }
         // When calling finalise
-        appAuthSession.finalise(intent) {}
+        appAuthSession.finalise(intent, Pair(ATTESTATION, POP)) {}
         // Then throw an IllegalArgumentException
     }
 
@@ -59,10 +59,15 @@ class AppAuthSessionTest {
         val intent = Intent()
         // When calling finalise
         val error = assertThrows(AuthenticationError::class.java) {
-            appAuthSession.finalise(intent) {}
+            appAuthSession.finalise(intent, Pair(ATTESTATION, POP)) {}
         }
         // Then throw an AuthenticationError
         assertEquals(AuthenticationError.ErrorType.OAUTH, error.type)
         assertEquals(AuthenticationError.Companion.NULL_AUTH_MESSAGE, error.message)
+    }
+
+    companion object {
+        private const val ATTESTATION = "attestation"
+        private const val POP = "proof of possession"
     }
 }

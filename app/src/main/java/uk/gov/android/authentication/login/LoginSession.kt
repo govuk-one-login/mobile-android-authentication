@@ -30,6 +30,7 @@ interface LoginSession {
     @Throws(Exception::class)
     fun finalise(
         intent: Intent,
+        appIntegrity: Pair<String?, String?>,
         callback: (tokens: TokenResponse) -> Unit
     )
 }
