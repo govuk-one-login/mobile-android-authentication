@@ -87,6 +87,7 @@ class AppAuthSessionTest {
         }
         // Then throw an AuthenticationError
         assertEquals(AuthenticationError.ErrorType.OAUTH, error.type)
+        println("${AuthenticationError.Companion.NULL_AUTH_MESSAGE}, ${error.message}")
         assertEquals(AuthenticationError.Companion.NULL_AUTH_MESSAGE, error.message)
     }
 
