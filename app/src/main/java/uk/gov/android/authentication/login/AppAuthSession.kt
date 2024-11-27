@@ -6,10 +6,10 @@ import androidx.activity.result.ActivityResultLauncher
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
-import net.openid.appauth.ClientAuthentication
 
 class AppAuthSession(
     context: Context,
+    private val clientAuthenticationProvider: ClientAuthenticationProvider
 ) : LoginSession {
     private val authService: AuthorizationService = AuthorizationService(context)
 
@@ -37,16 +37,11 @@ class AppAuthSession(
         }
 
         // Create object that allows for additional headers/ body parameters
-        val clientAuthenticationWithExtraHeaders = object : ClientAuthentication {
-            override fun getRequestHeaders(clientId: String): MutableMap<String, String> =
-                mutableMapOf(
-                    Pair(CLIENT_ATTESTATION, appIntegrity.first ?: ""),
-                    Pair(PROOF_OF_POSSESSION, appIntegrity.second ?: "")
-                )
-
-            override fun getRequestParameters(clientId: String): MutableMap<String, String> =
-                mutableMapOf()
-        }
+        val clientAuthenticationWithExtraHeaders =
+            clientAuthenticationProvider.setCustomClientAuthentication(
+                appIntegrity.first,
+                appIntegrity.second
+            )
 
         // Create the standard request
         val request = authResponse.createTokenExchangeRequest()
@@ -59,10 +54,5 @@ class AppAuthSession(
                 response?.toTokenResponse() ?: throw AuthenticationError.from(exception)
             )
         }
-    }
-
-    companion object {
-        private const val CLIENT_ATTESTATION = "OAuth-Client-Attestation"
-        private const val PROOF_OF_POSSESSION = "OAuth-Client-Attestation-PoP"
     }
 }

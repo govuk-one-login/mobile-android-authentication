@@ -20,11 +20,13 @@ class AppAuthPresentTest {
 
     private lateinit var loginSession: LoginSession
     private lateinit var loginSessionConfig: LoginSessionConfiguration
+    private lateinit var clientAuthenticationProvider: ClientAuthenticationProvider
 
     @BeforeTest
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        loginSession = AppAuthSession(context)
+        clientAuthenticationProvider = ClientAuthenticationProviderImpl()
+        loginSession = AppAuthSession(context, clientAuthenticationProvider)
         loginSessionConfig = LoginSessionConfigurationTest.defaultConfig.copy()
         Intents.init()
     }
