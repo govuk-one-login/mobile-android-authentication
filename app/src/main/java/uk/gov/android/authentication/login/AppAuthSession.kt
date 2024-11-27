@@ -9,7 +9,7 @@ import net.openid.appauth.AuthorizationService
 
 class AppAuthSession(
     context: Context,
-    private val clientAuthenticationProvider: ClientAuthenticationProvider
+    private val clientAuthenticationProvider: ClientAuthenticationProvider = ClientAuthenticationProviderImpl()
 ) : LoginSession {
     private val authService: AuthorizationService = AuthorizationService(context)
 

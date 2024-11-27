@@ -20,11 +20,13 @@ import kotlin.test.assertEquals
 *  */
 class AppAuthSessionTest {
     private lateinit var appAuthSession: AppAuthSession
+    private lateinit var clientAuthenticationProvider: ClientAuthenticationProvider
 
     @BeforeTest
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        appAuthSession = AppAuthSession(context)
+        clientAuthenticationProvider = ClientAuthenticationProviderImpl()
+        appAuthSession = AppAuthSession(context, clientAuthenticationProvider)
     }
 
     @Test
