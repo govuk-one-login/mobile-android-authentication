@@ -2,6 +2,16 @@ package uk.gov.android.authentication.integrity.appcheck.usecase
 
 import kotlinx.serialization.Serializable
 
+/**
+ * Object to create a JWK following the required format:
+ *
+ * @param x - Elliptic Curve Point (ECPoint) x in Base64UrlEncoded format
+ *          of the public key corresponding to the private key used to sign the PoP.
+ * @param y - ECPoint y in in Base64UrlEncoded format of the public key corresponding to the private
+ *          key used to sign the PoP.
+ *
+ * @return A custom [JsonWebKey].
+ */
 @Suppress("MemberVisibilityCanBePrivate")
 object JWK {
     private const val keyTypeValue = "EC"
