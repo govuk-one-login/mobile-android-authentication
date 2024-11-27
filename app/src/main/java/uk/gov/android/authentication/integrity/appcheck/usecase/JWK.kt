@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
  *
  * @param x - Elliptic Curve Point (ECPoint) x in Base64UrlEncoded format
  *          of the public key corresponding to the private key used to sign the PoP.
- * @param y - ECPoint y in in Base64UrlEncoded format of the public key corresponding to the private
+ * @param y - ECPoint y in Base64UrlEncoded format of the public key corresponding to the private
  *          key used to sign the PoP.
  *
  * @return A custom [JsonWebKey].

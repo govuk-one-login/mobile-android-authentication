@@ -8,13 +8,11 @@ class ClientAuthenticationProviderTest {
 
     @Test
     fun `provide additional header parameters`() {
-        // WHEN
         val result = sut.setCustomClientAuthentication(
             ATTESTATION,
             POP
         )
 
-        // THEN
         assertEquals(expected, result.getRequestHeaders(""))
     }
 

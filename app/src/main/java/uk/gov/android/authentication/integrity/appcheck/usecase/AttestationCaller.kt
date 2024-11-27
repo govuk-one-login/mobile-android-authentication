@@ -15,7 +15,7 @@ fun interface AttestationCaller {
      * a AppCheckToken.
      *
      * @param token - The AppCheckToken retrieved from [AppChecker].
-     * @param jwk - The Json Web Key (public key) that the PoP will be signed with.
+     * @param jwk - The JSON Web Key (public key) that the PoP will be signed with.
      *
      * @return An [AttestationResponse] object indicating success or failure.
      *         On success, the response contains the signed attestation statement.

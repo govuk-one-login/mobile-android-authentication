@@ -4,7 +4,7 @@ import uk.gov.android.authentication.integrity.appcheck.model.AppCheckToken
 
 /**
  * Interface to perform a network request that provides an [AppCheckToken] from a provider
- * (e.g. FirebaseAppCheckFactory, custom backend AppCheck provider, etc).
+ * (for example: FirebaseAppCheckFactory, custom backend AppCheck provider, etc).
  *
  * It is used in the process of providing a ClientAttestation for the AppIntegrityCheck - allows
  * the integrity package to be encapsulated and not have any dependencies on network packages.

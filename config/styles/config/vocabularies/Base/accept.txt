@@ -46,6 +46,9 @@ refreshVersions
 runBlocking
 vararg
 veriff
-JWK
+[Jj][Ww][Kk]
 JWT
 iss
+ECPoint
+[Jj][Ss][Oo][Nn]
+JSON
