@@ -2,7 +2,6 @@ package uk.gov.android.authentication.login
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
@@ -37,6 +36,7 @@ class AppAuthSession(
             )
         }
 
+        // Create object that allows for additional headers/ body parameters
         val clientAuthenticationWithExtraHeaders = object : ClientAuthentication {
             override fun getRequestHeaders(clientId: String): MutableMap<String, String> =
                 mutableMapOf(
@@ -48,8 +48,9 @@ class AppAuthSession(
                 mutableMapOf()
         }
 
+        // Create the standard request
         val request = authResponse.createTokenExchangeRequest()
-        Log.d("TokenRequest", "${request.requestParameters}")
+
         authService.performTokenRequest(
             request,
             clientAuthenticationWithExtraHeaders
