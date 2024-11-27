@@ -30,10 +30,7 @@ class AppAuthSession(
         if (authResponse == null) {
             val exception = AuthorizationException.fromIntent(intent)
 
-            throw AuthenticationError(
-                exception?.message ?: "Auth response null",
-                AuthenticationError.ErrorType.OAUTH
-            )
+            throw AuthenticationError.from(exception)
         }
 
         // Create object that allows for additional headers/ body parameters
