@@ -35,7 +35,7 @@ class FirebaseAppIntegrityManager(
         val jwk = JWK.makeJWK(x = pubKeyECCoord.first, y = pubKeyECCoord.second)
         return if (token is AppCheckToken) {
             attestationCaller.call(
-                token.jwtToken,
+                token.jwt,
                 jwk
             )
             // If unsuccessful -> return the failure

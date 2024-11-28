@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AppCheckToken(
-    val jwtToken: String
+    val jwt: String
 )

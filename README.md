@@ -43,10 +43,14 @@ dependencyResolutionManagement {
 
 ## Package description
 
-The Authentication package authenticates a users details and enables them to log into their account securely. This is done by providing them with a login session and token.
+The Authentication package comprises three sub-packages:
+1. login - authenticates a users details and enables them to log into their account securely. This is done by providing them with a login session and token.
+2. integrity - checks the app integrity and provides a ClientAttestation and ProofOfPossession that will be used for retrieving an authentication token response.
+3. jwt - provides ability to verify a JWT with a public key adhering to the JWK specifications.
 
 The package integrates [openID](https://openid.net/developers/how-connect-works/) AppAuth and conforms to its standards, documentation can be found here [AppAuth](https://github.com/openid/AppAuth-Android)
 
+## Login
 ### Types
 
 #### LoginSessionConfiguration
@@ -128,7 +132,7 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
 
     if (requestCode == LoginSession.REQUEST_CODE_AUTH) {
         try {
-            loginSession.finalise(intent) { tokens ->
+            loginSession.finalise(intent, appIntegrityParameters) { tokens ->
                 // Do what you like with the tokens!
                 // ...
             }
@@ -138,3 +142,137 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
     }
 }
 ```
+
+## Integrity
+
+### JWK.JsonWebKey
+
+Creates a JWK that adheres to the backend format requirements:
+
+```json
+{ 
+  "jwk": {
+    "kty": "EC",
+    "use": "sig",
+    "crv": "P-256",
+    "x": "18wHLeIgW9wVN6VD1Txgpqy2LszYkMf6J8njVAibvhM",
+    "y": "-V4dS4UaLMgP_4fY4j8ir7cl1TXlFdAgcx55o7TkcSA"
+  }
+}
+```
+
+This will be used to verify the PoP when authenticating.
+
+```kotlin
+val jwk = JWK.makeJWK(
+    x = "ECPoint_x_inBase63UrlEncoded",
+    y = "ECPoint_y_inBase63UrlEncoded"
+)
+```
+
+### AppChecker and AppCheckToken
+
+The AppChecker is an interface that allows for a custom implementation on client side to provide a AppCheckToken.
+The AppCheckToken is a wrapper that allows for the AppCheckerInterface to be used with different implementations. It contains a JWT provided by a backend service.
+
+```kotlin
+class AppCheckImpl @Inject constructor(
+    appCheckFactory: AppCheckFactory, // Can be any service that the client is using (e.f. Firebase, custom backend service, etc)
+    context: Context
+) : AppChecker {
+    private val appCheck = Service.appCheck
+
+    init {
+        Service.appCheck.installAppCheckProviderFactory(
+            appCheckFactory
+        )
+        Service.initialize(context)
+    }
+
+    override suspend fun getAppCheckToken(): Result<AppCheckToken> {
+        return try {
+            Result.success(
+                AppCheckToken(appCheck.getAppCheckToken.await().token)
+            )
+        } catch (e: FirebaseException) {
+            Result.failure(e)
+        }
+    }
+}
+```
+
+### AttestationCaller and AttestationResponse
+
+The AttestationCaller is an interface that allows for custom implementation on checking the token provided from the AppChecker and returning an AttestationResponse.
+The AttestationResponse provides an attestation in JWT format and an expiry time. These will be use to confirm if a new AppCheck is required when logging in and in the process of obtaining access tokens.
+
+```kotlin
+class AttestationCallerImpl @Inject constructor(
+    @ApplicationContext
+    private val context: Context,
+    private val httpClient: GenericHttpClient 
+) : AttestationCaller {
+    override suspend fun call(
+        token: String,
+        jwk: JWK.JsonWebKey
+    ): AttestationResponse {
+        // The token and any additional parameters can be amended accordingly and provided where needed, this is just an example of a possible implementation
+        val request = ApiRequest.Post(
+            url = "https://attestation-url.co.uk/endpoint",
+            body = jwk,
+            headers = listOf(
+                "appCheckToken" to token,
+                AttestationCaller.CONTENT_TYPE to AttestationCaller.CONTENT_TYPE_VALUE
+            )
+        )
+        return when (val apiResponse = httpClient.makeRequest(request)) {
+            is ApiResponse.Success<*> -> { 
+                // Handle successful attestation response 
+            }
+            is ApiResponse.Failure -> AttestationResponse.Failure(
+                apiResponse.error.message ?: NETWORK_ERROR,
+                apiResponse.error
+            )
+            // e.g. Offline
+            else -> AttestationResponse.Failure(NETWORK_ERROR)
+        }
+    }
+    
+    companion object {
+        const val NETWORK_ERROR = "Network error"
+    }
+}
+```
+
+### ProofOfPossessionGenerator and SignedPoP
+
+The ProofOfPossessionGenerator object creates a Proof of Possession (PoP) that will be used in the authentication call, as part of a header. It adheres to the following scheme and it is a signed JWT contained within the SignedPoP. This will be used and verified by the backend to ensure the app is genuine.
+It adheres to the following requirements:
+_Header_
+```json
+{
+  "alg": "ES256"
+}
+```
+_Body_
+```json
+{
+  "iss": "<OAuth client ID",
+  "aud": "https://token.account.gov.uk",
+  "exp": 1234567890,
+  "jti": "d3e8e382-4691-4b1f-83c1-4454f75bd930"
+}
+```
+
+**Implementation**
+
+```kotlin
+val pop = ProofOfPossessionGenerator.createBase64PoP(iss, aud)
+```
+
+### AppIntegrityManager and AppIntegrityConfiguration
+
+The AppIntegrityManager combines the structures explained above and creates a provides the functionality of these into a service that retrieves a ClientAttestation and creates a Proof of Possession.
+The AppIntegrityConfiguration provides the AttestationCaller, appChecker and KeyStoreManager specific implementation to be provided to the AppIntegrityManager.
+
+An example of the AppIntegrityManager and a possible implementation is available in the [FirebaseAppIntegrityManager](app/src/main/java/uk/gov/android/authentication/integrity/FirebaseAppIntegrityManager.kt)
