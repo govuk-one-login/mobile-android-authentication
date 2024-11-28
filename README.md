@@ -165,8 +165,8 @@ This will be used to verify the PoP when authenticating.
 
 ```kotlin
 val jwk = JWK.makeJWK(
-    x = "ECPoint_x_inBase63UrlEncoded",
-    y = "ECPoint_y_inBase63UrlEncoded"
+    x = "<ECPoint_x_inBase64UrlEncoded>",
+    y = "<ECPoint_y_inBase64UrlEncoded>"
 )
 ```
 
@@ -175,24 +175,25 @@ val jwk = JWK.makeJWK(
 The AppChecker is an interface that allows for a custom implementation on client side to provide a AppCheckToken.
 The AppCheckToken is a wrapper that allows for the AppCheckerInterface to be used with different implementations. It contains a JWT provided by a backend service.
 
+**Implementation - this is a Firebase specific implementation**
 ```kotlin
 class AppCheckImpl @Inject constructor(
-    appCheckFactory: AppCheckFactory, // Can be any service that the client is using (e.f. Firebase, custom backend service, etc)
+    appCheckFactory: AppCheckProviderFactory,
     context: Context
 ) : AppChecker {
-    private val appCheck = Service.appCheck
+    private val appCheck = Firebase.appCheck
 
     init {
-        Service.appCheck.installAppCheckProviderFactory(
+        Firebase.appCheck.installAppCheckProviderFactory(
             appCheckFactory
         )
-        Service.initialize(context)
+        Firebase.initialize(context)
     }
 
     override suspend fun getAppCheckToken(): Result<AppCheckToken> {
         return try {
             Result.success(
-                AppCheckToken(appCheck.getAppCheckToken.await().token)
+                AppCheckToken(appCheck.limitedUseAppCheckToken.await().token)
             )
         } catch (e: FirebaseException) {
             Result.failure(e)

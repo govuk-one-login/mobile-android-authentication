@@ -6,12 +6,13 @@ import androidx.activity.result.ActivityResultLauncher
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
+import uk.gov.android.authentication.integrity.AppIntegrityParameters
 
 class AppAuthSession(
-    context: Context,
-    private val clientAuthenticationProvider: ClientAuthenticationProvider = ClientAuthenticationProviderImpl()
+    context: Context
 ) : LoginSession {
     private val authService: AuthorizationService = AuthorizationService(context)
+    private val clientAuthenticationProvider = ClientAuthenticationProviderImpl()
 
     override fun present(
         launcher: ActivityResultLauncher<Intent>,
@@ -23,7 +24,7 @@ class AppAuthSession(
 
     override fun finalise(
         intent: Intent,
-        appIntegrity: Pair<String?, String?>,
+        appIntegrity: AppIntegrityParameters,
         callback: (tokens: TokenResponse) -> Unit
     ) {
         val authResponse = AuthorizationResponse.fromIntent(intent)
@@ -36,8 +37,8 @@ class AppAuthSession(
         // Create object that allows for additional headers/ body parameters
         val clientAuthenticationWithExtraHeaders =
             clientAuthenticationProvider.setCustomClientAuthentication(
-                appIntegrity.first,
-                appIntegrity.second
+                appIntegrity.attestation,
+                appIntegrity.pop
             )
 
         // Create the standard request

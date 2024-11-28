@@ -26,7 +26,7 @@ class AppAuthPresentTest {
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().context
         clientAuthenticationProvider = ClientAuthenticationProviderImpl()
-        loginSession = AppAuthSession(context, clientAuthenticationProvider)
+        loginSession = AppAuthSession(context)
         loginSessionConfig = LoginSessionConfigurationTest.defaultConfig.copy()
         Intents.init()
     }

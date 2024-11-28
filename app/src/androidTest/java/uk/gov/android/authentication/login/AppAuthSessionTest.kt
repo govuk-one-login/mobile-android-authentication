@@ -9,6 +9,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import uk.gov.android.authentication.integrity.AppIntegrityParameters
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -20,7 +21,6 @@ import kotlin.test.assertEquals
 *  */
 class AppAuthSessionTest {
     private lateinit var appAuthSession: AppAuthSession
-    private lateinit var clientAuthenticationProvider: ClientAuthenticationProvider
     private var authResponse = "{\n" +
             " \"request\": {\n" +
             "    \"configuration\": {\n" +
@@ -48,8 +48,7 @@ class AppAuthSessionTest {
     @BeforeTest
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        clientAuthenticationProvider = ClientAuthenticationProviderImpl()
-        appAuthSession = AppAuthSession(context, clientAuthenticationProvider)
+        appAuthSession = AppAuthSession(context)
     }
 
     @Test
@@ -74,7 +73,7 @@ class AppAuthSessionTest {
             putExtra(AuthorizationResponse.EXTRA_RESPONSE, "{}")
         }
         // When calling finalise
-        appAuthSession.finalise(intent, Pair(ATTESTATION, POP)) {}
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP)) {}
         // Then throw an IllegalArgumentException
     }
 
@@ -84,11 +83,10 @@ class AppAuthSessionTest {
         val intent = Intent()
         // When calling finalise
         val error = assertThrows(AuthenticationError::class.java) {
-            appAuthSession.finalise(intent, Pair(ATTESTATION, POP)) {}
+            appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP)) {}
         }
         // Then throw an AuthenticationError
         assertEquals(AuthenticationError.ErrorType.OAUTH, error.type)
-        println("${AuthenticationError.Companion.NULL_AUTH_MESSAGE}, ${error.message}")
         assertEquals(AuthenticationError.Companion.NULL_AUTH_MESSAGE, error.message)
     }
 
@@ -99,7 +97,7 @@ class AppAuthSessionTest {
             putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
         }
         // When calling finalise
-        appAuthSession.finalise(intent, Pair(ATTESTATION, POP)) {}
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP)) {}
     }
 
     companion object {
