@@ -14,6 +14,15 @@ class ClientAuthenticationProviderTest {
         )
 
         assertEquals(expected, result.getRequestHeaders(""))
+        assertEquals(mutableMapOf(), result.getRequestParameters(""))
+    }
+
+    @Test
+    fun `provide additional header parameters when input null`() {
+        val result = sut.setCustomClientAuthentication(null, null)
+
+        assertEquals(expectedWhenNull, result.getRequestHeaders(""))
+        assertEquals(mutableMapOf(), result.getRequestParameters(""))
     }
 
     companion object {
@@ -22,6 +31,10 @@ class ClientAuthenticationProviderTest {
         private val expected = mutableMapOf(
             Pair("OAuth-Client-Attestation", ATTESTATION),
             Pair("OAuth-Client-Attestation-PoP", POP)
+        )
+        private val expectedWhenNull = mutableMapOf(
+            Pair("OAuth-Client-Attestation", ""),
+            Pair("OAuth-Client-Attestation-PoP", "")
         )
     }
 }
