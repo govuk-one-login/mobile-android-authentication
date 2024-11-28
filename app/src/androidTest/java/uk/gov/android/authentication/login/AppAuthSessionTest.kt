@@ -9,6 +9,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import uk.gov.android.authentication.integrity.AppIntegrityParameters
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -20,6 +21,29 @@ import kotlin.test.assertEquals
 *  */
 class AppAuthSessionTest {
     private lateinit var appAuthSession: AppAuthSession
+    private var authResponse = "{\n" +
+            " \"request\": {\n" +
+            "    \"configuration\": {\n" +
+            "      \"authorizationEndpoint\": \"https://<your-authorization-server>/authorize\",\n" +
+            "      \"tokenEndpoint\": \"https://<your-authorization-server>/token\"\n" +
+            "    },\n" +
+            "    \"responseType\": \"code\",\n" +
+            "    \"clientId\": \"your_client_id\",\n" +
+            "    \"redirectUri\": \"https://<your-authorization-server>/redirect\",\n" +
+            "    \"scopes\": [\n" +
+            "      \"openid\",\n" +
+            "      \"profile\",\n" +
+            "      \"email\"\n" +
+            "    ],\n" +
+            "    \"state\": \"your_state\",\n" +
+            "    \"codeVerifier\": \"codeV_f1ctive_openid_test_987xyz_123_thgs45-swhsjdn\",\n" +
+            "    \"additionalParameters\": {}\n" +
+            "  },\n" +
+            "  \"state\": \"your_state\",\n" +
+            "  \"code\": \"auth_f1ct1ve_openid_c0de_xyz987\",\n" +
+            "  \"codeVerifier\": \"codeV_f1ctive_openid_test_987xyz_123_thgs45-swhsjdn\",\n" +
+            "  \"additionalParameters\": {}\n" +
+            "}"
 
     @BeforeTest
     fun setUp() {
@@ -49,7 +73,7 @@ class AppAuthSessionTest {
             putExtra(AuthorizationResponse.EXTRA_RESPONSE, "{}")
         }
         // When calling finalise
-        appAuthSession.finalise(intent) {}
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP)) {}
         // Then throw an IllegalArgumentException
     }
 
@@ -59,10 +83,25 @@ class AppAuthSessionTest {
         val intent = Intent()
         // When calling finalise
         val error = assertThrows(AuthenticationError::class.java) {
-            appAuthSession.finalise(intent) {}
+            appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP)) {}
         }
         // Then throw an AuthenticationError
         assertEquals(AuthenticationError.ErrorType.OAUTH, error.type)
         assertEquals(AuthenticationError.Companion.NULL_AUTH_MESSAGE, error.message)
+    }
+
+    @Test
+    fun finaliseThrowsAuthenticationErrorForIntentWithValidResponse() {
+        // Given an intent without a response data JSON extra
+        val intent = Intent().apply {
+            putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
+        }
+        // When calling finalise
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP)) {}
+    }
+
+    companion object {
+        private const val ATTESTATION = "attestation"
+        private const val POP = "proof of possession"
     }
 }
