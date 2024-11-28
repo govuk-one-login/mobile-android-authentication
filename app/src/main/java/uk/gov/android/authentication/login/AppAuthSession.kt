@@ -27,6 +27,7 @@ class AppAuthSession(
         callback: (tokens: TokenResponse) -> Unit
     ) {
         val authResponse = AuthorizationResponse.fromIntent(intent)
+
         if (authResponse == null) {
             val exception = AuthorizationException.fromIntent(intent)
 

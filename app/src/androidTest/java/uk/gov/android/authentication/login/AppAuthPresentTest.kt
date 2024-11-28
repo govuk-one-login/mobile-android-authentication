@@ -40,15 +40,14 @@ class AppAuthPresentTest {
     fun presentLaunchesAuthorizationManagementActivity() {
         // Given a registered ActivityResultLauncher
         val scenario = ActivityScenario.launch(TestActivity::class.java)
+        intending(not(isInternal())).respondWith(
+            Instrumentation.ActivityResult(Activity.RESULT_OK, null)
+        )
         scenario.onActivity { activity ->
             val launcher = (activity as TestActivity).launcher
             // When calling present()
             loginSession.present(launcher, loginSessionConfig)
         }
-
-        intending(not(isInternal())).respondWith(
-            Instrumentation.ActivityResult(Activity.RESULT_OK, null)
-        )
 
         // Then launch an AuthorizationManagementActivity intent
         Intents.intended(IntentMatchers.hasComponent(AuthorizationManagementActivity::class.java.name))
