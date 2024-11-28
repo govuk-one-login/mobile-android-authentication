@@ -52,3 +52,4 @@ iss
 ECPoint
 [Jj][Ss][Oo][Nn]
 JSON
+[Aa]ppIntegrity
