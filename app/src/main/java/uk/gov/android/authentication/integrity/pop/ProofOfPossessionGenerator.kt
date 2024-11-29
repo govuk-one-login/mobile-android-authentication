@@ -58,7 +58,8 @@ object ProofOfPossessionGenerator {
     )
 
     private fun getExpiryTime(): Long {
-        return (System.currentTimeMillis() + (MINUTES * MINUTE_IN_MILLISECONDS))
+        val minuteUntilExpiry = (MINUTES * MINUTE_IN_MILLISECONDS)
+        return (System.currentTimeMillis() + minuteUntilExpiry) / CONVERT_TO_SECONDS
     }
 
     @OptIn(ExperimentalEncodingApi::class)
@@ -70,4 +71,5 @@ object ProofOfPossessionGenerator {
     private const val ALG = "ES256"
     private const val MINUTES = 3
     private const val MINUTE_IN_MILLISECONDS = 60000
+    private const val CONVERT_TO_SECONDS = 1000
 }
