@@ -4,8 +4,6 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Log
 import com.google.gson.JsonParseException
-import net.openid.appauth.BuildConfig
-import org.jose4j.lang.JoseException
 import uk.gov.android.authentication.integrity.AppIntegrityUtils
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 import uk.gov.android.authentication.jwt.Jose4jJwtVerifier
