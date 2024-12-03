@@ -3,13 +3,18 @@ package uk.gov.android.authentication.integrity.keymanager
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Log
+import com.google.gson.JsonParseException
 import net.openid.appauth.BuildConfig
+import org.jose4j.lang.JoseException
+import uk.gov.android.authentication.integrity.AppIntegrityUtils
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
+import uk.gov.android.authentication.jwt.Jose4jJwtVerifier
 import java.security.KeyPairGenerator
 import java.security.KeyStore
 import java.security.KeyStore.PrivateKeyEntry
 import java.security.Signature
 import java.security.interfaces.ECPublicKey
+import java.security.spec.ECGenParameterSpec
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 @ExperimentalEncodingApi
@@ -24,6 +29,8 @@ class ECKeyManager : KeyStoreManager {
         KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY
     ).run {
         setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA512)
+        setAlgorithmParameterSpec(ECGenParameterSpec("secp256r1"))
+        setUserAuthenticationRequired(false)
         build()
     }
 
@@ -34,7 +41,7 @@ class ECKeyManager : KeyStoreManager {
         get() = ks.getEntry(ALIAS, null) as PrivateKeyEntry
 
     private val appCheckPublicKey: ECPublicKey
-        get() = appCheckPrivateKeyEntry.certificate.publicKey as ECPublicKey
+        get() = ks.getCertificate(ALIAS).publicKey as ECPublicKey
 
     init {
         if (!hasAppCheckKeys) {
@@ -44,35 +51,37 @@ class ECKeyManager : KeyStoreManager {
     }
 
     override fun getPublicKey(): Pair<String, String> {
-        val xByteArr = appCheckPublicKey.w.affineX.toByteArray()
-        val yByteArr = appCheckPublicKey.w.affineY.toByteArray()
-        val x = ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(xByteArr)
-        val y = ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(yByteArr)
+        val xByteArr = appCheckPublicKey.w.affineX
+        val yByteArr = appCheckPublicKey.w.affineY
+        val xCheckedArray = AppIntegrityUtils.toFixedLengthBytes(xByteArr, 32)
+        val yCheckedArray = AppIntegrityUtils.toFixedLengthBytes(yByteArr, 32)
+        val x = ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(xCheckedArray)
+        val y = ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(yCheckedArray)
         return Pair(x, y)
     }
 
     override fun sign(input: ByteArray): ByteArray {
+        val ecSpec = appCheckPublicKey.params
         val signature = Signature.getInstance(ALG).run {
             initSign(appCheckPrivateKeyEntry.privateKey)
             update(input)
             sign()
         }
-        if (BuildConfig.DEBUG) {
-            val verifyResult = verify(input, signature)
-            Log.d("VerifySignature", "$verifyResult")
-        }
-        return signature
+
+        return KeyStoreManager.convertSignatureToASN1(signature, ecSpec)
     }
 
 
-    override fun verify(data: ByteArray, signature: ByteArray): Boolean {
-        val successfulSignature = Signature.getInstance(ALG).run {
-            initVerify(appCheckPrivateKeyEntry.certificate)
-            update(data)
-            verify(signature)
+    override fun verify(jwt: String, jwk: String): Boolean {
+        return try {
+            Jose4jJwtVerifier().verify(jwk, jwk)
+        } catch (e: JsonParseException) {
+            Log.e(this::class.simpleName, e.toString())
+            throw SigningError.InvalidSignature
+        } catch (e: IllegalArgumentException) {
+            Log.e(this::class.simpleName, e.toString())
+            throw SigningError.InvalidSignature
         }
-        if (!successfulSignature) throw SigningError.InvalidSignature
-        return true
     }
 
     private fun createNewKeys() {
@@ -81,7 +90,7 @@ class ECKeyManager : KeyStoreManager {
             KEYSTORE
         ).apply {
             initialize(parameterSpec)
-            genKeyPair()
+            generateKeyPair()
         }
     }
 

@@ -102,7 +102,9 @@ dependencies {
         libs.appauth,
         libs.kotlinx.serialization.json,
         libs.jose4j,
-        libs.gson
+        libs.joseJwt,
+        libs.gson,
+        libs.bouncy.castle
     ).forEach(::implementation)
 
     listOf(

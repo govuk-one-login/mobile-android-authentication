@@ -18,15 +18,17 @@ object JWK {
     private const val useValue = "sig"
     private const val curveValue = "P-256"
 
-    fun makeJWK(x: String, y: String): JsonWebKey = JsonWebKey(
-        jwk = JsonWebKeyFormat(
-            keyTypeValue,
-            useValue,
-            curveValue,
-            x,
-            y
+    fun makeJWK(x: String, y: String): JsonWebKey {
+        return JsonWebKey(
+            jwk = JsonWebKeyFormat(
+                keyTypeValue,
+                useValue,
+                curveValue,
+                x,
+                y
+            )
         )
-    )
+    }
 
     @Serializable
     data class JsonWebKey(

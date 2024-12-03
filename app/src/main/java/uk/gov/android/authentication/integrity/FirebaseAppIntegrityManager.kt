@@ -2,6 +2,8 @@ package uk.gov.android.authentication.integrity
 
 import android.util.Log
 import com.google.gson.JsonParser
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import uk.gov.android.authentication.integrity.appcheck.usecase.AppChecker
 import uk.gov.android.authentication.integrity.keymanager.ECKeyManager
 import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
@@ -24,6 +26,8 @@ class FirebaseAppIntegrityManager(
     private val appChecker: AppChecker = config.appChecker
     private val attestationCaller: AttestationCaller = config.attestationCaller
     private val keyStoreManager: KeyStoreManager = config.keyStoreManager
+    private val pubKeyECCoord = keyStoreManager.getPublicKey()
+    private val jwk = JWK.makeJWK(x = pubKeyECCoord.first, y = pubKeyECCoord.second)
 
     override suspend fun getAttestation(): AttestationResponse {
         // Get Firebase token
@@ -31,8 +35,6 @@ class FirebaseAppIntegrityManager(
             AttestationResponse.Failure(err.toString())
         }
         // If successful -> functionality to get signed attestation from Mobile back-end
-        val pubKeyECCoord = keyStoreManager.getPublicKey()
-        val jwk = JWK.makeJWK(x = pubKeyECCoord.first, y = pubKeyECCoord.second)
         return if (token is AppCheckToken) {
             attestationCaller.call(
                 token.jwt,
@@ -57,6 +59,10 @@ class FirebaseAppIntegrityManager(
             // Return the signed PopJwt
             val signedPop = "$pop.$signature"
             Log.d("SignedPoP", signedPop)
+            Log.d(
+                "VerifySignePoP",
+                "${keyStoreManager.verify(signedPop, Json.encodeToString(jwk.jwk))}"
+            )
             SignedPoP.Success(signedPop)
         } catch (e: ECKeyManager.SigningError) {
             SignedPoP.Failure(e.message ?: VERIFF_ERROR, e)
@@ -83,7 +89,8 @@ class FirebaseAppIntegrityManager(
     @Suppress("TooGenericExceptionCaught")
     private fun extractFieldFrom(attestation: String, field: String): String? {
         return try {
-            val body = String(Base64.decode(attestation.split(".")[1]))
+            val body = String(Base64.withPadding(Base64.PaddingOption.ABSENT)
+                .decode(attestation.split(".")[1]))
             JsonParser.parseString(body).asJsonObject[field]?.toString()
         } catch (e: Exception) {
             Log.e(this::class.simpleName, e.message, e)

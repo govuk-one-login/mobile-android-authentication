@@ -1,6 +1,5 @@
 package uk.gov.android.authentication.integrity.appcheck.usecase
 
-import uk.gov.android.authentication.integrity.appcheck.usecase.JWK
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
