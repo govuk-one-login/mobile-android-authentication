@@ -59,10 +59,6 @@ class FirebaseAppIntegrityManager(
             // Return the signed PopJwt
             val signedPop = "$pop.$signature"
             Log.d("SignedPoP", signedPop)
-            Log.d(
-                "VerifySignePoP",
-                "${keyStoreManager.verify(signedPop, Json.encodeToString(jwk.jwk))}"
-            )
             SignedPoP.Success(signedPop)
         } catch (e: ECKeyManager.SigningError) {
             SignedPoP.Failure(e.message ?: VERIFF_ERROR, e)
