@@ -21,7 +21,7 @@ interface KeyStoreManager {
             val r = (sequence.getObjectAt(0) as ASN1Integer).value
             val s = (sequence.getObjectAt(1) as ASN1Integer).value
             // Get the required length for the keys r and s
-            val keySizeBytes = spec.order.bitLength() / 8
+            val keySizeBytes = spec.order.bitLength() / TO_BYTE
             // Generate ByteArrays in correct format for r and s
             val rBytes = AppIntegrityUtils.toFixedLengthBytes(r, keySizeBytes)
             val sBytes = AppIntegrityUtils.toFixedLengthBytes(s, keySizeBytes)
@@ -31,5 +31,6 @@ interface KeyStoreManager {
             outputStream.write(sBytes)
             return outputStream.toByteArray()
         }
+        private const val TO_BYTE = 8
     }
 }

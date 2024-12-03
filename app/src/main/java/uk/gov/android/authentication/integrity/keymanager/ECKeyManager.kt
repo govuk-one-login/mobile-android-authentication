@@ -51,8 +51,10 @@ class ECKeyManager : KeyStoreManager {
     override fun getPublicKey(): Pair<String, String> {
         val xByteArr = appCheckPublicKey.w.affineX
         val yByteArr = appCheckPublicKey.w.affineY
-        val xCheckedArray = AppIntegrityUtils.toFixedLengthBytes(xByteArr, 32)
-        val yCheckedArray = AppIntegrityUtils.toFixedLengthBytes(yByteArr, 32)
+        val xCheckedArray = AppIntegrityUtils
+            .toFixedLengthBytes(xByteArr, EC_POINTS_LENGTH_REQUIREMENT)
+        val yCheckedArray = AppIntegrityUtils
+            .toFixedLengthBytes(yByteArr, EC_POINTS_LENGTH_REQUIREMENT)
         val x = ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(xCheckedArray)
         val y = ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(yCheckedArray)
         return Pair(x, y)
@@ -100,5 +102,6 @@ class ECKeyManager : KeyStoreManager {
         private const val ALIAS = "app_check_keys"
         private const val KEYSTORE = "AndroidKeyStore"
         private const val ALG = "SHA256withECDSA"
+        private const val EC_POINTS_LENGTH_REQUIREMENT = 32
     }
 }
