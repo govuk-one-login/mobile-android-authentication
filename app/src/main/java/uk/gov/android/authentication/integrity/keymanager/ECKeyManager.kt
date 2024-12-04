@@ -3,10 +3,8 @@ package uk.gov.android.authentication.integrity.keymanager
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Log
-import com.google.gson.JsonParseException
 import uk.gov.android.authentication.integrity.AppIntegrityUtils
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
-import uk.gov.android.authentication.json.jwt.Jose4jJwtVerifier
 import java.security.KeyPairGenerator
 import java.security.KeyStore
 import java.security.KeyStore.PrivateKeyEntry
@@ -75,19 +73,6 @@ class ECKeyManager : KeyStoreManager {
         return KeyStoreManager.convertSignatureToASN1(signature, ecSpec)
     }
 
-
-    override fun verify(jwt: String, jwk: String): Boolean {
-        return try {
-            Jose4jJwtVerifier().verify(jwt, jwk)
-        } catch (e: JsonParseException) {
-            Log.e(this::class.simpleName, e.toString())
-            throw SigningError.InvalidSignature
-        } catch (e: IllegalArgumentException) {
-            Log.e(this::class.simpleName, e.toString())
-            throw SigningError.InvalidSignature
-        }
-    }
-
     private fun createNewKeys() {
         KeyPairGenerator.getInstance(
             KeyProperties.KEY_ALGORITHM_EC,
@@ -96,10 +81,6 @@ class ECKeyManager : KeyStoreManager {
             initialize(parameterSpec)
             generateKeyPair()
         }
-    }
-
-    sealed class SigningError(error: String) : Exception(error) {
-        data object InvalidSignature : SigningError("Signature couldn't be verified.")
     }
 
     companion object {

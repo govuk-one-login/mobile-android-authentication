@@ -120,21 +120,6 @@ class FirebaseAppIntegrityManagerTest {
         assertEquals(mockSignature, splitJwt.last())
     }
 
-    @OptIn(ExperimentalEncodingApi::class)
-    @Ignore("Using the verify method is only temporary as a manual check")
-    @Test()
-    fun check_failure_response_from_generate_PoP_verify_signature_failure() {
-        whenever(mockKeyStoreManager.verify(any(), any()))
-            .thenAnswer {
-                throw ECKeyManager.SigningError.InvalidSignature
-            }
-        val result = appIntegrityManager.generatePoP("test", "test")
-
-        assertTrue(result is SignedPoP.Failure)
-        assertTrue(result.error!! is ECKeyManager.SigningError)
-        assertEquals("Signature couldn't be verified.", result.reason)
-    }
-
     @Test()
     fun check_failure_response_from_generate_PoP_signing_failure() {
         whenever(mockKeyStoreManager.sign(any()))

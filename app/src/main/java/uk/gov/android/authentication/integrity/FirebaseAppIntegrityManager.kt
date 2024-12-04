@@ -3,7 +3,6 @@ package uk.gov.android.authentication.integrity
 import android.util.Log
 import com.google.gson.JsonParser
 import uk.gov.android.authentication.integrity.appcheck.usecase.AppChecker
-import uk.gov.android.authentication.integrity.keymanager.ECKeyManager
 import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
 import uk.gov.android.authentication.integrity.appcheck.model.AppCheckToken
 import uk.gov.android.authentication.integrity.appcheck.model.AttestationResponse
@@ -58,8 +57,6 @@ class FirebaseAppIntegrityManager(
             val signedPop = "$pop.$signature"
             Log.d("SignedPoP", signedPop)
             SignedPoP.Success(signedPop)
-        } catch (e: ECKeyManager.SigningError) {
-            SignedPoP.Failure(e.message ?: VERIFF_ERROR, e)
         } catch (e: SignatureException) {
             SignedPoP.Failure(e.message ?: SIGN_ERROR, e)
         }
@@ -93,7 +90,6 @@ class FirebaseAppIntegrityManager(
     }
 
     companion object {
-        const val VERIFF_ERROR = "Verification Error"
         const val SIGN_ERROR = "Signing Error"
     }
 }

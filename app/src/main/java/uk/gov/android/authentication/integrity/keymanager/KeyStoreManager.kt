@@ -12,7 +12,6 @@ interface KeyStoreManager {
     fun getPublicKeyCoordinates(): Pair<String, String>
     fun getPublicKey(): ECPublicKey
     fun sign(input: ByteArray): ByteArray
-    fun verify(jwt: String, jwk: String): Boolean
 
     companion object {
         fun convertSignatureToASN1(signature: ByteArray, spec: ECParameterSpec): ByteArray {
