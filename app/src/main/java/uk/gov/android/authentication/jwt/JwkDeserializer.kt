@@ -19,6 +19,7 @@ class JwkDeserializer : JsonDeserializer<JsonWebKey> {
             LinkedHashMap::class.java
         ) ?: throw IllegalArgumentException(NULL_CONTEXT)
         return try {
+            println(jwkParameters.entries)
             JsonWebKey.Factory.newJwk(jwkParameters)
         } catch (e: JoseException) {
             throw JsonParseException(JSON_FAILURE, e)

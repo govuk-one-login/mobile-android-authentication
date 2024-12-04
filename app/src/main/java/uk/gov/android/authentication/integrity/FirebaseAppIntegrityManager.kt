@@ -2,8 +2,6 @@ package uk.gov.android.authentication.integrity
 
 import android.util.Log
 import com.google.gson.JsonParser
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import uk.gov.android.authentication.integrity.appcheck.usecase.AppChecker
 import uk.gov.android.authentication.integrity.keymanager.ECKeyManager
 import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
@@ -26,8 +24,6 @@ class FirebaseAppIntegrityManager(
     private val appChecker: AppChecker = config.appChecker
     private val attestationCaller: AttestationCaller = config.attestationCaller
     private val keyStoreManager: KeyStoreManager = config.keyStoreManager
-    private val pubKeyECCoord = keyStoreManager.getPublicKey()
-    private val jwk = JWK.makeJWK(x = pubKeyECCoord.first, y = pubKeyECCoord.second)
 
     override suspend fun getAttestation(): AttestationResponse {
         // Get Firebase token
@@ -35,6 +31,8 @@ class FirebaseAppIntegrityManager(
             AttestationResponse.Failure(err.toString())
         }
         // If successful -> functionality to get signed attestation from Mobile back-end
+        val pubKeyECCoord = keyStoreManager.getPublicKey()
+        val jwk = JWK.makeJWK(x = pubKeyECCoord.first, y = pubKeyECCoord.second)
         return if (token is AppCheckToken) {
             attestationCaller.call(
                 token.jwt,

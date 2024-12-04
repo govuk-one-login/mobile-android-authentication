@@ -16,7 +16,7 @@ import java.security.spec.ECGenParameterSpec
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 @ExperimentalEncodingApi
-@Suppress("MemberVisibilityCanBePrivate", "unused")
+@Suppress("MemberVisibilityCanBePrivate")
 class ECKeyManager : KeyStoreManager {
     private val ks: KeyStore = KeyStore.getInstance(KEYSTORE).apply {
         load(null)
@@ -74,7 +74,7 @@ class ECKeyManager : KeyStoreManager {
 
     override fun verify(jwt: String, jwk: String): Boolean {
         return try {
-            Jose4jJwtVerifier().verify(jwk, jwk)
+            Jose4jJwtVerifier().verify(jwt, jwk)
         } catch (e: JsonParseException) {
             Log.e(this::class.simpleName, e.toString())
             throw SigningError.InvalidSignature
