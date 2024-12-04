@@ -3,7 +3,6 @@ package uk.gov.android.authentication.integrity
 import android.util.Log
 import com.google.gson.JsonParser
 import uk.gov.android.authentication.integrity.appcheck.usecase.AppChecker
-import uk.gov.android.authentication.integrity.keymanager.ECKeyManager
 import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
 import uk.gov.android.authentication.integrity.appcheck.model.AppCheckToken
 import uk.gov.android.authentication.integrity.appcheck.model.AttestationResponse
@@ -11,7 +10,7 @@ import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 import uk.gov.android.authentication.integrity.pop.SignedPoP
 import uk.gov.android.authentication.integrity.appcheck.usecase.AttestationCaller
 import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
-import uk.gov.android.authentication.integrity.appcheck.usecase.JWK
+import uk.gov.android.authentication.json.jwk.JWK
 import java.security.SignatureException
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
@@ -31,8 +30,8 @@ class FirebaseAppIntegrityManager(
             AttestationResponse.Failure(err.toString())
         }
         // If successful -> functionality to get signed attestation from Mobile back-end
-        val pubKeyECCoord = keyStoreManager.getPublicKey()
-        val jwk = JWK.makeJWK(x = pubKeyECCoord.first, y = pubKeyECCoord.second)
+        val pubKeyECCoord = keyStoreManager.getPublicKeyCoordinates()
+        val jwk = JWK.generateJwk(x = pubKeyECCoord.first, y = pubKeyECCoord.second)
         return if (token is AppCheckToken) {
             attestationCaller.call(
                 token.jwt,
@@ -58,8 +57,6 @@ class FirebaseAppIntegrityManager(
             val signedPop = "$pop.$signature"
             Log.d("SignedPoP", signedPop)
             SignedPoP.Success(signedPop)
-        } catch (e: ECKeyManager.SigningError) {
-            SignedPoP.Failure(e.message ?: VERIFF_ERROR, e)
         } catch (e: SignatureException) {
             SignedPoP.Failure(e.message ?: SIGN_ERROR, e)
         }
@@ -71,7 +68,7 @@ class FirebaseAppIntegrityManager(
             JsonParser.parseString(it).asJsonObject["jwk"]?.asJsonObject
         } ?: return false
         // Get local cert coordinates
-        val (x, y) = keyStoreManager.getPublicKey()
+        val (x, y) = keyStoreManager.getPublicKeyCoordinates()
         // Compare attestation with local cert
         return jwk["x"].asString == x && jwk["y"].asString == y
     }
@@ -83,7 +80,8 @@ class FirebaseAppIntegrityManager(
     @Suppress("TooGenericExceptionCaught")
     private fun extractFieldFrom(attestation: String, field: String): String? {
         return try {
-            val body = String(Base64.decode(attestation.split(".")[1]))
+            val body = String(Base64.withPadding(Base64.PaddingOption.ABSENT)
+                .decode(attestation.split(".")[1]))
             JsonParser.parseString(body).asJsonObject[field]?.toString()
         } catch (e: Exception) {
             Log.e(this::class.simpleName, e.message, e)
@@ -92,7 +90,6 @@ class FirebaseAppIntegrityManager(
     }
 
     companion object {
-        const val VERIFF_ERROR = "Verification Error"
         const val SIGN_ERROR = "Signing Error"
     }
 }

@@ -1,6 +1,5 @@
 package uk.gov.android.authentication.integrity.pop
 
-import android.util.Log
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -32,8 +31,6 @@ object ProofOfPossessionGenerator {
         // Get Base64 configured with UrlSafe and no padding
         val headerBase64 = getUrlSafeNoPaddingBase64(headerByteArray)
         val payloadBase64 = getUrlSafeNoPaddingBase64(payloadByteArray)
-        Log.d("HeaderJson", headerBase64)
-        Log.d("PayloadJson", payloadBase64)
         // Return the PoP
         return "$headerBase64.$payloadBase64"
     }

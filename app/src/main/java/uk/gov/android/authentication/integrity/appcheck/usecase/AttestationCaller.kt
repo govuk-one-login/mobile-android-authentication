@@ -1,6 +1,7 @@
 package uk.gov.android.authentication.integrity.appcheck.usecase
 
 import uk.gov.android.authentication.integrity.appcheck.model.AttestationResponse
+import uk.gov.android.authentication.json.jwk.JWK
 
 /**
  * Interface to perform a network request that provides an Attestation from a custom or standard 

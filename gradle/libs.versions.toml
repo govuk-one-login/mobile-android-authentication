@@ -20,6 +20,7 @@ mockito-android = "5.14.2"
 espresso-core = "3.6.1"
 jose4j = "0.9.6"
 gson = "2.11.0"
+bouncyCastle = "1.73"
 
 [libraries]
 android-build-tool = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
@@ -32,6 +33,7 @@ kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-p
 #Jwt Verifier
 jose4j = { module = "org.bitbucket.b_c:jose4j", version.ref = "jose4j" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+bouncy-castle = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bouncyCastle"}
 
 #Code Quality
 ktlint-gradle = { group = "org.jlleitschuh.gradle", name = "ktlint-gradle", version.ref = "ktlint-gradle" }

@@ -1,9 +1,12 @@
 package uk.gov.android.authentication.integrity.keymanager
 
-import org.junit.Assert.assertThrows
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import uk.gov.android.authentication.json.jwk.JWK
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
-import org.junit.Test as JUnitTest
+import uk.gov.android.authentication.json.jwt.Jose4jJwtVerifier
 import java.security.KeyStore
+import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -13,6 +16,15 @@ import kotlin.test.assertTrue
 class ECKeyManagerTest {
     private lateinit var keyStore: KeyStore
     private lateinit var ecKeyManager: ECKeyManager
+    private val jwtVerifier = Jose4jJwtVerifier()
+
+    private val headerAndBody = "eyJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJiWXJjdVJWdm55bHZFZ1lTU2JCandYekhyd0oiLCJ" +
+            "hdWQiOiJodHRwczovL3Rva2VuLmJ1aWxkLmFjY291bnQuZ292LnVrIiwiZXhwIjoxNzMzMjYxNjI2LC" +
+            "JqdGkiOiIxM2YxZTA3NC1jMmY4LTRlZDktYjk1NC1lYjZjMjAwZjVjMGUifQ"
+    private val jwt = "eyJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJiWXJjdVJWdm55bHZFZ1lTU2JCandYekhyd0oiLCJ" +
+            "hdWQiOiJodHRwczovL3Rva2VuLmJ1aWxkLmFjY291bnQuZ292LnVrIiwiZXhwIjoxNzMzMjYxNjI2LC" +
+            "JqdGkiOiIxM2YxZTA3NC1jMmY4LTRlZDktYjk1NC1lYjZjMjAwZjVjMGUifQ.oAgdAcHuaQyS7s3QMhk" +
+            "GdUwTlwJBBnCyee4NuXVK9a0g4fDQRO6h_VlwfWenJr_ydcA5M4a4f2ARcQP3iCQgmA"
 
     @BeforeTest
     fun setup() {
@@ -28,8 +40,8 @@ class ECKeyManagerTest {
     }
 
     @Test
-    fun check_getPublicKey() {
-        val actual = ecKeyManager.getPublicKey()
+    fun check_getPublicKeyCoordinates() {
+        val actual = ecKeyManager.getPublicKeyCoordinates()
 
         assertTrue(checkInputIsBase64(actual.first))
         assertTrue(checkInputIsBase64(actual.second))
@@ -37,24 +49,23 @@ class ECKeyManagerTest {
 
     @Test
     fun check_sign_success() {
-        val signature = ecKeyManager.sign("Success".toByteArray())
+        // When signing data
+        val result = ecKeyManager.sign(headerAndBody.toByteArray())
+        // And creating the JWT
+        val jwt = "$headerAndBody.${ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(result)}"
 
-        assertTrue(ecKeyManager.verify("Success".toByteArray(), signature))
-    }
+        // And get public key in JWK format
+        val ecPoints = ecKeyManager.getPublicKeyCoordinates()
+        val jwk = JWK.generateJwk(ecPoints.first, ecPoints.second)
 
-
-
-    @JUnitTest
-    fun check_verify_failure() {
-        assertThrows(ECKeyManager.SigningError.InvalidSignature::class.java) {
-            ecKeyManager.verify("Success".toByteArray(), "Success".toByteArray())
-        }
+        // Then
+        assertTrue(jwtVerifier.verify(jwt, Json.encodeToString(jwk.jwk)))
     }
 
     @Suppress("SwallowedException")
     private fun checkInputIsBase64(input: String): Boolean {
         return try {
-            ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(input.toByteArray())
+            Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT).decode(input.toByteArray())
             true
         } catch (e: IllegalArgumentException) {
             false
