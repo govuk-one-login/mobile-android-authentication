@@ -7,7 +7,6 @@ import uk.gov.android.authentication.json.jwk.JWK
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 import org.junit.Test as JUnitTest
 import java.security.KeyStore
-import java.security.interfaces.ECPublicKey
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.test.BeforeTest
