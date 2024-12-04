@@ -1,6 +1,8 @@
-package uk.gov.android.authentication.integrity.appcheck.usecase
+package uk.gov.android.authentication.json.jwk
 
 import kotlinx.serialization.Serializable
+import org.jose4j.jwk.JsonWebKey
+import java.security.Key
 
 /**
  * Object to create a JWK following the required format:
@@ -12,13 +14,20 @@ import kotlinx.serialization.Serializable
  *
  * @return A custom [JsonWebKey].
  */
-@Suppress("MemberVisibilityCanBePrivate")
+@Suppress("MemberVisibilityCanBePrivate", "unused")
 object JWK {
     private const val keyTypeValue = "EC"
     private const val useValue = "sig"
     private const val curveValue = "P-256"
 
-    fun makeJWK(x: String, y: String): JsonWebKey {
+    /**
+     * Method to get a PublicKey in JWK format that includes "use" field.
+     * **Used in One Login app**
+     * @param x - ECPoint in Base64Url format with no padding - 32 bits
+     * @param y - ECPoint in Base64Url format with no padding - 32 bits
+     * @return [JsonWebKey]
+     */
+    fun generateJwk(x: String, y: String): JsonWebKey {
         return JsonWebKey(
             jwk = JsonWebKeyFormat(
                 keyTypeValue,
@@ -28,6 +37,16 @@ object JWK {
                 y
             )
         )
+    }
+
+    /**
+     * Method to get a PublicKey in JWK format that uses the Jose library.
+     * **To be used in Wallet**
+     * @param key - ECPublicKey
+     * @return [org.jose4j.jwk.JsonWebKey]
+     */
+    fun generateJwk(key: Key): org.jose4j.jwk.JsonWebKey {
+        return org.jose4j.jwk.JsonWebKey.Factory.newJwk(key)
     }
 
     @Serializable

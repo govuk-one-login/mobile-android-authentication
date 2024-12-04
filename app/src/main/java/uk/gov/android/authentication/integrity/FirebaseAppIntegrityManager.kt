@@ -11,7 +11,7 @@ import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 import uk.gov.android.authentication.integrity.pop.SignedPoP
 import uk.gov.android.authentication.integrity.appcheck.usecase.AttestationCaller
 import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
-import uk.gov.android.authentication.integrity.appcheck.usecase.JWK
+import uk.gov.android.authentication.json.jwk.JWK
 import java.security.SignatureException
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
@@ -31,8 +31,8 @@ class FirebaseAppIntegrityManager(
             AttestationResponse.Failure(err.toString())
         }
         // If successful -> functionality to get signed attestation from Mobile back-end
-        val pubKeyECCoord = keyStoreManager.getPublicKey()
-        val jwk = JWK.makeJWK(x = pubKeyECCoord.first, y = pubKeyECCoord.second)
+        val pubKeyECCoord = keyStoreManager.getPublicKeyCoordinates()
+        val jwk = JWK.generateJwk(x = pubKeyECCoord.first, y = pubKeyECCoord.second)
         return if (token is AppCheckToken) {
             attestationCaller.call(
                 token.jwt,
@@ -71,7 +71,7 @@ class FirebaseAppIntegrityManager(
             JsonParser.parseString(it).asJsonObject["jwk"]?.asJsonObject
         } ?: return false
         // Get local cert coordinates
-        val (x, y) = keyStoreManager.getPublicKey()
+        val (x, y) = keyStoreManager.getPublicKeyCoordinates()
         // Compare attestation with local cert
         return jwk["x"].asString == x && jwk["y"].asString == y
     }

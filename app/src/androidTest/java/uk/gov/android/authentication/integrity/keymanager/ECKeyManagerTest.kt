@@ -3,10 +3,12 @@ package uk.gov.android.authentication.integrity.keymanager
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.junit.Assert.assertThrows
-import uk.gov.android.authentication.integrity.appcheck.usecase.JWK
+import uk.gov.android.authentication.json.jwk.JWK
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 import org.junit.Test as JUnitTest
 import java.security.KeyStore
+import java.security.interfaces.ECPublicKey
+import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -46,8 +48,8 @@ class ECKeyManagerTest {
     }
 
     @Test
-    fun check_getPublicKey() {
-        val actual = ecKeyManager.getPublicKey()
+    fun check_getPublicKeyCoordinates() {
+        val actual = ecKeyManager.getPublicKeyCoordinates()
 
         assertTrue(checkInputIsBase64(actual.first))
         assertTrue(checkInputIsBase64(actual.second))
@@ -61,8 +63,8 @@ class ECKeyManagerTest {
         val jwt = "$headerAndBody.${ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(result)}"
 
         // And get public key in JWK format
-        val ecPoints = ecKeyManager.getPublicKey()
-        val jwk = JWK.makeJWK(ecPoints.first, ecPoints.second)
+        val ecPoints = ecKeyManager.getPublicKeyCoordinates()
+        val jwk = JWK.generateJwk(ecPoints.first, ecPoints.second)
 
         // Then
         assertTrue(ecKeyManager.verify(jwt, Json.encodeToString(jwk.jwk)))
@@ -78,7 +80,7 @@ class ECKeyManagerTest {
     @Suppress("SwallowedException")
     private fun checkInputIsBase64(input: String): Boolean {
         return try {
-            ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(input.toByteArray())
+            Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT).decode(input.toByteArray())
             true
         } catch (e: IllegalArgumentException) {
             false

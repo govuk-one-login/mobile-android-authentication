@@ -1,4 +1,4 @@
-package uk.gov.android.authentication.jwt
+package uk.gov.android.authentication.json.jwt
 
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer

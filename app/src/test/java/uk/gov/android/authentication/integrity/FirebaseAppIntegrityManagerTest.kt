@@ -62,7 +62,7 @@ class FirebaseAppIntegrityManagerTest {
                     0
                 )
             )
-        whenever(mockKeyStoreManager.getPublicKey())
+        whenever(mockKeyStoreManager.getPublicKeyCoordinates())
             .thenReturn(Pair("Success", "Success"))
         val result = appIntegrityManager.getAttestation()
 
@@ -77,7 +77,7 @@ class FirebaseAppIntegrityManagerTest {
         whenever(mockAppChecker.getAppCheckToken()).thenReturn(
             Result.failure(Exception("Error"))
         )
-        whenever(mockKeyStoreManager.getPublicKey())
+        whenever(mockKeyStoreManager.getPublicKeyCoordinates())
             .thenReturn(Pair("Success", "Success"))
 
         val result = appIntegrityManager.getAttestation()
@@ -94,7 +94,7 @@ class FirebaseAppIntegrityManagerTest {
             .thenReturn(Result.success(AppCheckToken("Success")))
         whenever(mockCaller.call(any(), any()))
             .thenReturn(AttestationResponse.Failure("Error"))
-        whenever(mockKeyStoreManager.getPublicKey())
+        whenever(mockKeyStoreManager.getPublicKeyCoordinates())
             .thenReturn(Pair("Success", "Success"))
         val result = appIntegrityManager.getAttestation()
 
@@ -150,7 +150,7 @@ class FirebaseAppIntegrityManagerTest {
 
     @Test
     fun testVerifyAttestationJwkSuccess() {
-        whenever(mockKeyStoreManager.getPublicKey()).thenReturn(
+        whenever(mockKeyStoreManager.getPublicKeyCoordinates()).thenReturn(
             Pair(
                 "efcYm7ywmJNVCVNcjRtbFnwcRzgbJ4Yuyyf_rux1IHw",
                 "APAEnudt_ASBEcA4gO1gFdjniAh4Md1qPnyYZTGXwwSH"
@@ -164,7 +164,7 @@ class FirebaseAppIntegrityManagerTest {
 
     @Test
     fun testVerifyAttestation_Jwk_xDoesNotMatch() {
-        whenever(mockKeyStoreManager.getPublicKey()).thenReturn(
+        whenever(mockKeyStoreManager.getPublicKeyCoordinates()).thenReturn(
             Pair(
                 "wrong",
                 "APAEnudt_ASBEcA4gO1gFdjniAh4Md1qPnyYZTGXwwSH"
@@ -178,7 +178,7 @@ class FirebaseAppIntegrityManagerTest {
 
     @Test
     fun testVerifyAttestation_Jwk_yDoesNotMatch() {
-        whenever(mockKeyStoreManager.getPublicKey()).thenReturn(
+        whenever(mockKeyStoreManager.getPublicKeyCoordinates()).thenReturn(
             Pair(
                 "efcYm7ywmJNVCVNcjRtbFnwcRzgbJ4Yuyyf_rux1IHw",
                 "wrong"
@@ -192,7 +192,7 @@ class FirebaseAppIntegrityManagerTest {
 
     @Test
     fun testVerifyAttestation_invalidAttestationJwk() {
-        whenever(mockKeyStoreManager.getPublicKey()).thenReturn(
+        whenever(mockKeyStoreManager.getPublicKeyCoordinates()).thenReturn(
             Pair(
                 "efcYm7ywmJNVCVNcjRtbFnwcRzgbJ4Yuyyf_rux1IHw",
                 "wrong"

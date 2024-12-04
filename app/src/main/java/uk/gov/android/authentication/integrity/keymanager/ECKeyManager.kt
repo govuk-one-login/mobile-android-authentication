@@ -6,7 +6,7 @@ import android.util.Log
 import com.google.gson.JsonParseException
 import uk.gov.android.authentication.integrity.AppIntegrityUtils
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
-import uk.gov.android.authentication.jwt.Jose4jJwtVerifier
+import uk.gov.android.authentication.json.jwt.Jose4jJwtVerifier
 import java.security.KeyPairGenerator
 import java.security.KeyStore
 import java.security.KeyStore.PrivateKeyEntry
@@ -48,7 +48,7 @@ class ECKeyManager : KeyStoreManager {
         }
     }
 
-    override fun getPublicKey(): Pair<String, String> {
+    override fun getPublicKeyCoordinates(): Pair<String, String> {
         val xByteArr = appCheckPublicKey.w.affineX
         val yByteArr = appCheckPublicKey.w.affineY
         val xCheckedArray = AppIntegrityUtils
@@ -58,6 +58,10 @@ class ECKeyManager : KeyStoreManager {
         val x = ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(xCheckedArray)
         val y = ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(yCheckedArray)
         return Pair(x, y)
+    }
+
+    override fun getPublicKey(): ECPublicKey {
+        return appCheckPublicKey
     }
 
     override fun sign(input: ByteArray): ByteArray {
