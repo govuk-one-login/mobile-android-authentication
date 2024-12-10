@@ -1,11 +1,11 @@
 package uk.gov.android.authentication.login
 
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.assertThrows
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class TokenResponseTest {
     @Test
@@ -28,7 +28,7 @@ class TokenResponseTest {
         val tokenResponse = TokenResponse(
             "bearer",
             "sampleAccessToken",
-            3600,
+            3600
         )
         val expectedJson = "{\"tokenType\":\"bearer\",\"accessToken\":\"sampleAccessToken\"," +
             "\"accessTokenExpirationTime\":3600}"
@@ -53,11 +53,11 @@ class TokenResponseTest {
     @Test
     fun `de-serialise TokenResponse from JSON with defaults`() {
         val json = "{\"tokenType\":\"bearer\",\"accessToken\":\"sampleAccessToken\"," +
-                "\"accessTokenExpirationTime\":3600}"
+            "\"accessTokenExpirationTime\":3600}"
         val expectedTokenResponse = TokenResponse(
             "bearer",
             "sampleAccessToken",
-            3600,
+            3600
         )
         assertEquals(expectedTokenResponse, jsonDeserialize(json))
     }

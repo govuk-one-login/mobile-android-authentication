@@ -3,8 +3,6 @@ package uk.gov.android.authentication.integrity.keymanager
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Log
-import uk.gov.android.authentication.integrity.AppIntegrityUtils
-import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 import java.security.KeyPairGenerator
 import java.security.KeyStore
 import java.security.KeyStore.PrivateKeyEntry
@@ -12,6 +10,8 @@ import java.security.Signature
 import java.security.interfaces.ECPublicKey
 import java.security.spec.ECGenParameterSpec
 import kotlin.io.encoding.ExperimentalEncodingApi
+import uk.gov.android.authentication.integrity.AppIntegrityUtils
+import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 
 @ExperimentalEncodingApi
 @Suppress("MemberVisibilityCanBePrivate")

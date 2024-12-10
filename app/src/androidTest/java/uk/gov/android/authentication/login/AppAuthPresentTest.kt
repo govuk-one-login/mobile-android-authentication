@@ -9,12 +9,12 @@ import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.intent.matcher.IntentMatchers.isInternal
 import androidx.test.espresso.intent.matcher.UriMatchers
 import androidx.test.platform.app.InstrumentationRegistry
-import net.openid.appauth.AuthorizationManagementActivity
-import org.hamcrest.CoreMatchers.not
-import uk.gov.android.authentication.TestActivity
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import net.openid.appauth.AuthorizationManagementActivity
+import org.hamcrest.CoreMatchers.not
+import uk.gov.android.authentication.TestActivity
 
 class AppAuthPresentTest {
 
@@ -50,7 +50,9 @@ class AppAuthPresentTest {
         }
 
         // Then launch an AuthorizationManagementActivity intent
-        Intents.intended(IntentMatchers.hasComponent(AuthorizationManagementActivity::class.java.name))
+        Intents.intended(
+            IntentMatchers.hasComponent(AuthorizationManagementActivity::class.java.name)
+        )
         // Aimed at the host, path, and scheme set by the LoginSessionConfiguration.authorizeEndpoint
         val host = loginSessionConfig.authorizeEndpoint.host
         val path = loginSessionConfig.authorizeEndpoint.path

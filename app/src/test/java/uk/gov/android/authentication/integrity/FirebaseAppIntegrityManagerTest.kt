@@ -1,27 +1,24 @@
 package uk.gov.android.authentication.integrity
 
-import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.BeforeEach
-import org.mockito.kotlin.any
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
-import uk.gov.android.authentication.integrity.appcheck.usecase.AppChecker
-import uk.gov.android.authentication.integrity.keymanager.ECKeyManager
-import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
-import uk.gov.android.authentication.integrity.appcheck.model.AppCheckToken
-import uk.gov.android.authentication.integrity.appcheck.model.AttestationResponse
-import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
-import uk.gov.android.authentication.integrity.pop.SignedPoP
-import uk.gov.android.authentication.integrity.appcheck.usecase.AttestationCaller
-import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
 import java.security.SignatureException
-import kotlin.io.encoding.ExperimentalEncodingApi
-import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.BeforeEach
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
+import uk.gov.android.authentication.integrity.appcheck.model.AppCheckToken
+import uk.gov.android.authentication.integrity.appcheck.model.AttestationResponse
+import uk.gov.android.authentication.integrity.appcheck.usecase.AppChecker
+import uk.gov.android.authentication.integrity.appcheck.usecase.AttestationCaller
+import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
+import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
+import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
+import uk.gov.android.authentication.integrity.pop.SignedPoP
 
 class FirebaseAppIntegrityManagerTest {
     private lateinit var appIntegrityManager: AppIntegrityManager
@@ -29,16 +26,16 @@ class FirebaseAppIntegrityManagerTest {
     private val mockCaller: AttestationCaller = mock()
     private val mockAppChecker: AppChecker = mock()
     private val mockKeyStoreManager: KeyStoreManager = mock()
-    
+
     private val exampleAttestation = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIs" +
-            "ImtpZCI6ImY2M2FlNDkxLWZjNzAtNGExNS05ZThhLTkwNWQ0OWEzZmU2ZCJ9." +
-            "eyJpc3MiOiJodHRwczovL21vYmlsZS5idWlsZC5hY2NvdW50Lmdvdi51ayIsI" +
-            "nN1YiI6ImJZcmN1UlZ2bnlsdkVnWVNTYkJqd1h6SHJ3SiIsImV4cCI6MTczMj" +
-            "EyNzMyOCwiY25mIjp7Imp3ayI6eyJrdHkiOiJFQyIsInVzZSI6InNpZyIsImN" +
-            "ydiI6IlAtMjU2IiwieCI6ImVmY1ltN3l3bUpOVkNWTmNqUnRiRm53Y1J6Z2JK" +
-            "NFl1eXlmX3J1eDFJSHciLCJ5IjoiQVBBRW51ZHRfQVNCRWNBNGdPMWdGZGpua" +
-            "UFoNE1kMXFQbnlZWlRHWHd3U0gifX19.nVnTomI-RQ0GKEqgcXzSGPSrpJdhm" +
-            "RBdXHmN0Od1Iep-360_VzhiTCKU1ZINzV4IabC_KUi0tM0NznWvLnqXiQ"
+        "ImtpZCI6ImY2M2FlNDkxLWZjNzAtNGExNS05ZThhLTkwNWQ0OWEzZmU2ZCJ9." +
+        "eyJpc3MiOiJodHRwczovL21vYmlsZS5idWlsZC5hY2NvdW50Lmdvdi51ayIsI" +
+        "nN1YiI6ImJZcmN1UlZ2bnlsdkVnWVNTYkJqd1h6SHJ3SiIsImV4cCI6MTczMj" +
+        "EyNzMyOCwiY25mIjp7Imp3ayI6eyJrdHkiOiJFQyIsInVzZSI6InNpZyIsImN" +
+        "ydiI6IlAtMjU2IiwieCI6ImVmY1ltN3l3bUpOVkNWTmNqUnRiRm53Y1J6Z2JK" +
+        "NFl1eXlmX3J1eDFJSHciLCJ5IjoiQVBBRW51ZHRfQVNCRWNBNGdPMWdGZGpua" +
+        "UFoNE1kMXFQbnlZWlRHWHd3U0gifX19.nVnTomI-RQ0GKEqgcXzSGPSrpJdhm" +
+        "RBdXHmN0Od1Iep-360_VzhiTCKU1ZINzV4IabC_KUi0tM0NznWvLnqXiQ"
 
     @BeforeEach
     fun setup() {

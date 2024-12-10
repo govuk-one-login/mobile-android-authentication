@@ -1,12 +1,12 @@
 package uk.gov.android.authentication.integrity.keymanager
 
+import java.io.ByteArrayInputStream
+import java.security.interfaces.ECPublicKey
+import java.security.spec.ECParameterSpec
 import org.bouncycastle.asn1.ASN1InputStream
 import org.bouncycastle.asn1.ASN1Integer
 import org.bouncycastle.asn1.ASN1Sequence
 import uk.gov.android.authentication.integrity.AppIntegrityUtils
-import java.io.ByteArrayInputStream
-import java.security.interfaces.ECPublicKey
-import java.security.spec.ECParameterSpec
 
 interface KeyStoreManager {
     fun getPublicKeyCoordinates(): Pair<String, String>

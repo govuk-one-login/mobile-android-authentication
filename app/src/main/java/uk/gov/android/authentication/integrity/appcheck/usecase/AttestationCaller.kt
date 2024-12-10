@@ -4,7 +4,7 @@ import uk.gov.android.authentication.integrity.appcheck.model.AttestationRespons
 import uk.gov.android.authentication.json.jwk.JWK
 
 /**
- * Interface to perform a network request that provides an Attestation from a custom or standard 
+ * Interface to perform a network request that provides an Attestation from a custom or standard
  * backend service.
  *
  * It is used in the process of providing a ClientAttestation for the AppIntegrityCheck - allows

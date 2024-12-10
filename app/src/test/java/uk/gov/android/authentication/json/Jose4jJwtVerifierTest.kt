@@ -1,8 +1,8 @@
 package uk.gov.android.authentication.json
 
-import uk.gov.android.authentication.json.jwt.Jose4jJwtVerifier
-import kotlin.test.assertEquals
 import kotlin.test.Test
+import kotlin.test.assertEquals
+import uk.gov.android.authentication.json.jwt.Jose4jJwtVerifier
 
 class Jose4jJwtVerifierTest {
     private val encodedJwt = ClassLoader.getSystemResource("./encodedJwt.txt").readText()

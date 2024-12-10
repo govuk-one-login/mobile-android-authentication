@@ -1,18 +1,12 @@
 package uk.gov.android.authentication.integrity.appcheck.usecase
 
-import androidx.appcompat.widget.ThemedSpinnerAdapter.Helper
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import org.jose4j.jwk.JsonWebKey
-import uk.gov.android.authentication.json.jwk.JWK
-import uk.gov.android.authentication.json.jwt.JwkDeserializer
-import java.math.BigInteger
-import java.security.Key
 import java.security.KeyFactory
 import java.security.PublicKey
 import java.security.spec.X509EncodedKeySpec
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import org.jose4j.jwk.JsonWebKey
+import uk.gov.android.authentication.json.jwk.JWK
 
 class JWKTest {
     @Test

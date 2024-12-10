@@ -3,6 +3,9 @@ package uk.gov.android.authentication.login
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.test.platform.app.InstrumentationRegistry
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import net.openid.appauth.AuthorizationResponse
 import org.junit.Assert.assertThrows
 import org.mockito.kotlin.any
@@ -10,9 +13,6 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import uk.gov.android.authentication.integrity.AppIntegrityParameters
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 /* Not checked here:
 * Full route of AppAuthSession::present
@@ -22,28 +22,28 @@ import kotlin.test.assertEquals
 class AppAuthSessionTest {
     private lateinit var appAuthSession: AppAuthSession
     private var authResponse = "{\n" +
-            " \"request\": {\n" +
-            "    \"configuration\": {\n" +
-            "      \"authorizationEndpoint\": \"https://<your-authorization-server>/authorize\",\n" +
-            "      \"tokenEndpoint\": \"https://<your-authorization-server>/token\"\n" +
-            "    },\n" +
-            "    \"responseType\": \"code\",\n" +
-            "    \"clientId\": \"your_client_id\",\n" +
-            "    \"redirectUri\": \"https://<your-authorization-server>/redirect\",\n" +
-            "    \"scopes\": [\n" +
-            "      \"openid\",\n" +
-            "      \"profile\",\n" +
-            "      \"email\"\n" +
-            "    ],\n" +
-            "    \"state\": \"your_state\",\n" +
-            "    \"codeVerifier\": \"codeV_f1ctive_openid_test_987xyz_123_thgs45-swhsjdn\",\n" +
-            "    \"additionalParameters\": {}\n" +
-            "  },\n" +
-            "  \"state\": \"your_state\",\n" +
-            "  \"code\": \"auth_f1ct1ve_openid_c0de_xyz987\",\n" +
-            "  \"codeVerifier\": \"codeV_f1ctive_openid_test_987xyz_123_thgs45-swhsjdn\",\n" +
-            "  \"additionalParameters\": {}\n" +
-            "}"
+        " \"request\": {\n" +
+        "    \"configuration\": {\n" +
+        "      \"authorizationEndpoint\": \"https://<your-authorization-server>/authorize\",\n" +
+        "      \"tokenEndpoint\": \"https://<your-authorization-server>/token\"\n" +
+        "    },\n" +
+        "    \"responseType\": \"code\",\n" +
+        "    \"clientId\": \"your_client_id\",\n" +
+        "    \"redirectUri\": \"https://<your-authorization-server>/redirect\",\n" +
+        "    \"scopes\": [\n" +
+        "      \"openid\",\n" +
+        "      \"profile\",\n" +
+        "      \"email\"\n" +
+        "    ],\n" +
+        "    \"state\": \"your_state\",\n" +
+        "    \"codeVerifier\": \"codeV_f1ctive_openid_test_987xyz_123_thgs45-swhsjdn\",\n" +
+        "    \"additionalParameters\": {}\n" +
+        "  },\n" +
+        "  \"state\": \"your_state\",\n" +
+        "  \"code\": \"auth_f1ct1ve_openid_c0de_xyz987\",\n" +
+        "  \"codeVerifier\": \"codeV_f1ctive_openid_test_987xyz_123_thgs45-swhsjdn\",\n" +
+        "  \"additionalParameters\": {}\n" +
+        "}"
 
     @BeforeTest
     fun setUp() {
@@ -55,7 +55,7 @@ class AppAuthSessionTest {
     fun presentCreatesAndLaunchesAuthorisationIntent() {
         // Given a mock ActivityResultLauncher
         val launcher: ActivityResultLauncher<Intent> = mock()
-        whenever(launcher.launch(any())).then {  } // take no action
+        whenever(launcher.launch(any())).then { } // take no action
         val loginSessionConfig = LoginSessionConfigurationTest.defaultConfig.copy()
         // When calling present
         appAuthSession.present(
