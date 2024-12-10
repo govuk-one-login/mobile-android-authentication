@@ -7,7 +7,7 @@ buildscript {
     val configDir by rootProject.extra { "${rootProject.rootDir}/config" }
     // Github packages publishing configuration
     val githubRepositoryName: String by rootProject.extra("mobile-android-authentication")
-    val mavenGroupId: String by rootProject.extra("uk.gov.android")
+    val mavenGroupId: String by rootProject.extra("uk.gov.android.authentication")
     // Sonar configuration
     val sonarProperties: Map<String, String> by rootProject.extra(
         mapOf(
