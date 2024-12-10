@@ -1,43 +1,20 @@
 import uk.gov.pipelines.config.ApkConfig
+import uk.gov.pipelines.emulator.EmulatorConfig
+import uk.gov.pipelines.emulator.SystemImageSource
 
 buildscript {
-    val projectKey: String by rootProject.extra("mobile-android-authentication")
-    val projectId: String by rootProject.extra("uk.gov.android.authentication")
     val buildLogicDir: String by rootProject.extra("mobile-android-pipelines/buildLogic")
-
-    dependencies {
-        listOf(
-            libs.jacoco.agent,
-            libs.jacoco.ant,
-            libs.jacoco.core,
-            libs.jacoco.report,
-        ).forEach {
-            classpath(it)
-        }
-    }
-
-    val baseNamespace by rootProject.extra { "uk.gov.android.authentication" }
     val configDir by rootProject.extra { "${rootProject.rootDir}/config" }
-
-    val localProperties = java.util.Properties()
-    if (rootProject.file("local.properties").exists()) {
-        println(localProperties)
-        localProperties.load(java.io.FileInputStream(rootProject.file("local.properties")))
-    }
-
-    fun findPackageVersion(): String {
-        var version = "1.0.0"
-
-        if (rootProject.hasProperty("packageVersion")) {
-            version = rootProject.property("packageVersion") as String
-        } else if (localProperties.getProperty("packageVersion") != null) {
-            version = localProperties.getProperty("packageVersion") as String
-        }
-
-        return version
-    }
-
-    val packageVersion by rootProject.extra { findPackageVersion() }
+    // Github packages publishing configuration
+    val githubRepositoryName: String by rootProject.extra("mobile-android-authentication")
+    val mavenGroupId: String by rootProject.extra("uk.gov.android")
+    // Sonar configuration
+    val sonarProperties: Map<String, String> by rootProject.extra(
+        mapOf(
+            "sonar.projectKey" to "mobile-android-authentication",
+            "sonar.projectName" to "mobile-android-authentication"
+        )
+    )
 
     repositories {
         google()
@@ -56,6 +33,14 @@ val apkConfig by rootProject.extra(
             override val compile = 34
         }
     }
+)
+
+val emulatorConfig by rootProject.extra(
+    EmulatorConfig(
+        systemImageSources = setOf(SystemImageSource.GOOGLE_ATD),
+        androidApiLevels = setOf(33),
+        deviceFilters = setOf("Pixel XL"),
+    )
 )
 
 plugins {
