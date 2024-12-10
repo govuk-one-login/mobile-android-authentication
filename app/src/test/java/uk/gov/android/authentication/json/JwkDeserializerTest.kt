@@ -3,8 +3,8 @@ package uk.gov.android.authentication.json
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonParseException
 import com.google.gson.JsonParser
-import org.jose4j.jwk.JsonWebKey
 import kotlin.test.Test
+import org.jose4j.jwk.JsonWebKey
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -16,8 +16,8 @@ class JwkDeserializerTest {
     private val sut = JwkDeserializer()
 
     private val jwk = "{\"crv\":\"P-256\",\"kid\":\"key-0\",\"kty\":\"EC\",\"x\":\"Shc8mJ6fcZik" +
-            "hWM4ofHGSwXTkdqXM8GbPtRzPa7LttA=\",\"y\":\"OIhg/7rhWfmnWQEgAXzU8fCTggGrS3zj5x76a0l" +
-            "rzJM=\"}"
+        "hWM4ofHGSwXTkdqXM8GbPtRzPa7LttA=\",\"y\":\"OIhg/7rhWfmnWQEgAXzU8fCTggGrS3zj5x76a0l" +
+        "rzJM=\"}"
 
     private val jsonValidObj = JsonParser.parseString(jwk).asJsonObject
 

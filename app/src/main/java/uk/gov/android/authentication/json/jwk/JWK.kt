@@ -1,8 +1,8 @@
 package uk.gov.android.authentication.json.jwk
 
+import java.security.Key
 import kotlinx.serialization.Serializable
 import org.jose4j.jwk.JsonWebKey
-import java.security.Key
 
 /**
  * Object to create a JWK following the required format:

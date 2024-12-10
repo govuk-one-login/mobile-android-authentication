@@ -1,10 +1,10 @@
 package uk.gov.android.authentication.login
 
 import android.content.Intent
-import net.openid.appauth.AuthorizationException
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import net.openid.appauth.AuthorizationException
 
 class AuthenticationErrorTest {
     @Test

@@ -19,7 +19,7 @@ data class LoginSessionConfiguration(
     val persistentSessionId: String? = null
 ) {
     enum class ResponseType(val value: String) {
-        CODE("code"),
+        CODE("code")
     }
 
     enum class Scope(val value: String) {
