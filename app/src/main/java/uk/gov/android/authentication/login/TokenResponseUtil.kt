@@ -4,6 +4,7 @@ typealias AppAuthTokenResponse = net.openid.appauth.TokenResponse
 
 private const val NullTokenTypeMessage = "Token type must not be empty"
 private const val NullAccessTokenMessage = "Access token must not be empty"
+private const val NullIdTokenMessage = "ID token must not be empty"
 private const val NullTokenExpiryMessage = "Token expiry must not be empty"
 
 internal fun AppAuthTokenResponse.toTokenResponse(): TokenResponse = TokenResponse(
@@ -12,6 +13,6 @@ internal fun AppAuthTokenResponse.toTokenResponse(): TokenResponse = TokenRespon
     accessTokenExpirationTime = requireNotNull(accessTokenExpirationTime) {
         NullTokenExpiryMessage
     },
-    idToken = idToken,
+    idToken = requireNotNull(idToken) { NullIdTokenMessage },
     refreshToken = refreshToken
 )

@@ -7,6 +7,6 @@ data class TokenResponse(
     val tokenType: String,
     val accessToken: String,
     val accessTokenExpirationTime: Long,
-    val idToken: String? = null,
+    val idToken: String,
     val refreshToken: String? = null
 )

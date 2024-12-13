@@ -28,10 +28,11 @@ class TokenResponseTest {
         val tokenResponse = TokenResponse(
             "bearer",
             "sampleAccessToken",
-            3600
+            3600,
+            "sampleIdToken"
         )
         val expectedJson = "{\"tokenType\":\"bearer\",\"accessToken\":\"sampleAccessToken\"," +
-            "\"accessTokenExpirationTime\":3600}"
+            "\"accessTokenExpirationTime\":3600,\"idToken\":\"sampleIdToken\"}"
         assertEquals(expectedJson, jsonSerialize(tokenResponse))
     }
 
@@ -53,11 +54,12 @@ class TokenResponseTest {
     @Test
     fun `de-serialise TokenResponse from JSON with defaults`() {
         val json = "{\"tokenType\":\"bearer\",\"accessToken\":\"sampleAccessToken\"," +
-            "\"accessTokenExpirationTime\":3600}"
+            "\"accessTokenExpirationTime\":3600,\"idToken\":\"sampleIdToken\"}"
         val expectedTokenResponse = TokenResponse(
             "bearer",
             "sampleAccessToken",
-            3600
+            3600,
+            "sampleIdToken"
         )
         assertEquals(expectedTokenResponse, jsonDeserialize(json))
     }
