@@ -20,7 +20,7 @@ mockito-android = "5.14.2"
 espresso-core = "3.6.1"
 jose4j = "0.9.6"
 gson = "2.11.0"
-bouncyCastle = "1.73"
+bouncyCastle = "1.79"
 
 [libraries]
 android-build-tool = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
