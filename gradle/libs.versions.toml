@@ -21,6 +21,7 @@ espresso-core = "3.6.1"
 jose4j = "0.9.6"
 gson = "2.11.0"
 bouncyCastle = "1.79"
+sonar = "5.0.0.4638"
 
 [libraries]
 android-build-tool = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
@@ -77,3 +78,4 @@ android-library = { id = "com.android.library", version.ref = "androidGradlePlug
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serlialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+sonarqube = { id = "org.sonarqube", version.ref = "sonar" }
