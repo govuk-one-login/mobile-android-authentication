@@ -21,7 +21,7 @@ espresso-core = "3.6.1"
 jose4j = "0.9.6"
 gson = "2.11.0"
 bouncyCastle = "1.79"
-sonar = "5.0.0.4638"
+sonar = "6.0.1.5171"
 
 [libraries]
 android-build-tool = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
