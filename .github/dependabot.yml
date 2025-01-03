@@ -1,18 +1,35 @@
-# Set update schedule for GitHub actions and other package managers
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 
 version: 2
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      # Check for updates to GitHub Actions every week
       interval: "weekly"
-  - package-ecosystem: "gradle"
-    directory: "/"
+    open-pull-requests-limit: 5
+    groups:
+      github-actions:
+        applies-to: version-updates
+        patterns:
+          - "*"
+    commit-message:
+      prefix: "ci"
+
+  - package-ecosystem: "gradle" # See documentation for possible values
+    directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    commit-message:
+      prefix: "build"
+
   - package-ecosystem: "gitsubmodule"
     directory: "/"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "build"
