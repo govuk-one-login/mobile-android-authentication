@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Run deployment workflow
-        uses: govuk-one-login/mobile-android-pipelines@52195ad1a564b1c8f9ed52eb83f5aa4dc919193d
+        uses: govuk-one-login/mobile-android-pipelines@DCMAW-10665-enable-post-merge-workflow
         with:
           sonar_token: ${{ secrets.SONAR_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
