@@ -20,7 +20,7 @@ mockito-android = "5.15.2"
 espresso-core = "3.6.1"
 jose4j = "0.9.6"
 gson = "2.11.0"
-bouncyCastle = "1.79"
+bouncyCastle = "1.80"
 sonar = "6.0.1.5171"
 
 [libraries]

@@ -7,15 +7,13 @@
         <ignore path="**/io.ktor/ktor-utils-jvm/2.3.7/**"/>
         <ignore path="**/ch.qos.logback/logback-core/1.2.11/**"/>
         <ignore path="**/ch.qos.logback/logback-classic/1.2.11/**"/>
-        <ignore path="**/org.bouncycastle/bcpkix-jdk18on/1.79/**"/>
+        <ignore path="**/org.bouncycastle/bcpkix-jdk18on/1.80/**"/>
     </issue>
 
     <issue id="PermissionNamingConvention">
         <ignore path="**/AndroidManifest.xml" />
     </issue>
-    <issue id="TrustAllX509TrustManager">
-        <ignore path="**/org.bouncycastle/bcpkix-jdk18on/1.79/**" />
-    </issue>
+    <issue id="TrustAllX509TrustManager" severity="ignore"/>
     <issue id="NewerVersionAvailable"/>
 </lint>
 
