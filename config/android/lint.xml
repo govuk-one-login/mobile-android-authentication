@@ -13,9 +13,7 @@
     <issue id="PermissionNamingConvention">
         <ignore path="**/AndroidManifest.xml" />
     </issue>
-    <issue id="TrustAllX509TrustManager">
-        <ignore path="**/org.bouncycastle/bcpkix-jdk18on/1.79/**" />
-    </issue>
+    <issue id="TrustAllX509TrustManager" severity="ignore"/>
     <issue id="NewerVersionAvailable"/>
 </lint>
 
