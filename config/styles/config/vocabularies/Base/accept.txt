@@ -6,6 +6,7 @@
 (?i)JIRA
 (?i)Zsh
 (?i)ktlint
+(?i)JWT
 APIs
 (?i)ASM
 DAD
@@ -53,7 +54,6 @@ runBlocking
 vararg
 veriff
 [Jj][Ww][Kk]
-JWT
 iss
 ECPoint
 [Jj][Ss][Oo][Nn]
