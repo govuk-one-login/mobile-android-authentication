@@ -38,7 +38,7 @@ dependencyResolutionManagement {
 }
 ```
 
-2. For local development, ensure you have a `github.properties` in the project's root which includes your username and an access token. **Do not commit this file to Version Control!**
+2. For local development, ensure you have a `github.properties` in the project's root which includes your username and an access token. **Do not commit this file to Version Control**
 3. Add `implementation("uk.gov.android:authentication:_")` for latest version. Check packages for version information
 
 ## Package description
@@ -274,7 +274,7 @@ val pop = ProofOfPossessionGenerator.createBase64PoP(iss, aud)
 ### AppIntegrityManager and AppIntegrityConfiguration
 
 The AppIntegrityManager combines the structures explained above and creates a provides the functionality of these into a service that retrieves a ClientAttestation and creates a Proof of Possession.
-The AppIntegrityConfiguration provides the AttestationCaller, appChecker and KeyStoreManager specific implementation to be provided to the AppIntegrityManager.
+The AppIntegrityConfiguration provides the AttestationCaller, AppChecker, and KeyStoreManager specific implementation to be provided to the AppIntegrityManager.
 
 An example of the AppIntegrityManager and a possible implementation is available in the [FirebaseAppIntegrityManager](app/src/main/java/uk/gov/android/authentication/integrity/FirebaseAppIntegrityManager.kt)
 
