@@ -6,6 +6,8 @@ import androidx.test.platform.app.InstrumentationRegistry
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import net.openid.appauth.AuthorizationException
+import net.openid.appauth.AuthorizationException.AuthorizationRequestErrors
 import net.openid.appauth.AuthorizationResponse
 import org.junit.Assert.assertThrows
 import org.mockito.kotlin.any
@@ -75,6 +77,29 @@ class AppAuthSessionTest {
         // When calling finalise
         appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP)) {}
         // Then throw an IllegalArgumentException
+    }
+
+    @Test
+    fun finaliseThrowsAuthenticationErrorOfAccessDenied() {
+        val exception = AuthorizationException(
+            AuthorizationException.TYPE_OAUTH_AUTHORIZATION_ERROR,
+            AuthorizationRequestErrors.ACCESS_DENIED.code,
+            AuthorizationRequestErrors.ACCESS_DENIED.error,
+            AuthorizationRequestErrors.ACCESS_DENIED.errorDescription,
+            AuthorizationRequestErrors.ACCESS_DENIED.errorUri,
+            AuthorizationRequestErrors.ACCESS_DENIED.cause
+        )
+        // Given an intent with a malformed (empty) response data JSON extra
+        val intent = Intent().putExtra(
+            AuthorizationException.EXTRA_EXCEPTION,
+            exception.toJsonString()
+        )
+        // When calling finalise
+        val result = assertThrows(AuthenticationError::class.java) {
+            appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP)) {}
+        }
+        // Then throw an IllegalArgumentException
+        assertEquals(AuthenticationError.ErrorType.ACCESS_DENIED, result.type)
     }
 
     @Test

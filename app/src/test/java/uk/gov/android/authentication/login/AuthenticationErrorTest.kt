@@ -5,13 +5,15 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import net.openid.appauth.AuthorizationException
+import net.openid.appauth.AuthorizationException.AuthorizationRequestErrors
+import uk.gov.android.authentication.login.AuthenticationError.ErrorType
 
 class AuthenticationErrorTest {
     @Test
     fun `Error construction with message and type`() {
         // When constructing AuthenticationError
         val errorMessage = "Invalid credentials"
-        val error = AuthenticationError(errorMessage, AuthenticationError.ErrorType.OAUTH)
+        val error = AuthenticationError(errorMessage, ErrorType.OAUTH)
         // Then set the message and type member variables
         assertEquals(errorMessage, error.message)
         assertEquals(AuthenticationError.ErrorType.OAUTH, error.type)
@@ -27,6 +29,23 @@ class AuthenticationErrorTest {
         val actual = AuthenticationError.Companion.from(intent)
         // Then return an AuthenticationError
         assertIs<AuthenticationError>(actual)
+    }
+
+    @Test
+    fun `from(exception Exception) creates AuthenticationError of type access_denied`() {
+        // Given an Intent that doesn't map to AuthorizationException
+        val exception = AuthorizationException(
+            AuthorizationException.TYPE_OAUTH_AUTHORIZATION_ERROR,
+            AuthorizationRequestErrors.ACCESS_DENIED.code,
+            AuthorizationRequestErrors.ACCESS_DENIED.error,
+            AuthorizationRequestErrors.ACCESS_DENIED.errorDescription,
+            AuthorizationRequestErrors.ACCESS_DENIED.errorUri,
+            AuthorizationRequestErrors.ACCESS_DENIED.cause
+        )
+        // When calling the from mapping method
+        val actual = AuthenticationError.Companion.from(exception)
+        // Then return an AuthenticationError
+        assertEquals(ErrorType.ACCESS_DENIED, actual.type)
     }
 
     @Test

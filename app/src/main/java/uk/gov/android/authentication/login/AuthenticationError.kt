@@ -2,6 +2,7 @@ package uk.gov.android.authentication.login
 
 import android.content.Intent
 import net.openid.appauth.AuthorizationException
+import net.openid.appauth.AuthorizationException.AuthorizationRequestErrors
 
 class AuthenticationError(
     override val message: String,
@@ -9,7 +10,7 @@ class AuthenticationError(
 ) : Error() {
     enum class ErrorType {
         OAUTH,
-        NETWORK
+        ACCESS_DENIED
     }
 
     companion object {
@@ -17,9 +18,18 @@ class AuthenticationError(
 
         fun from(intent: Intent) = from(AuthorizationException.fromIntent(intent))
 
-        fun from(exception: AuthorizationException?) = AuthenticationError(
-            message = exception?.message ?: NULL_AUTH_MESSAGE,
-            type = ErrorType.OAUTH
-        )
+        fun from(exception: AuthorizationException?): AuthenticationError {
+            return when (exception) {
+                AuthorizationRequestErrors.ACCESS_DENIED -> AuthenticationError(
+                    message = exception.message ?: NULL_AUTH_MESSAGE,
+                    type = ErrorType.ACCESS_DENIED
+                )
+
+                else -> AuthenticationError(
+                    message = exception?.message ?: NULL_AUTH_MESSAGE,
+                    type = ErrorType.OAUTH
+                )
+            }
+        }
     }
 }
