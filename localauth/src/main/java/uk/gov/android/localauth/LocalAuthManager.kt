@@ -8,6 +8,6 @@ interface LocalAuthManager {
     suspend fun enforceAndSet(
         localAuhRequired: Boolean,
         activity: FragmentActivity,
-        callbackHandler : LocalAuthManagerCallbackHandler
+        callbackHandler: LocalAuthManagerCallbackHandler
     )
 }
