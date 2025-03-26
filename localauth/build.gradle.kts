@@ -53,12 +53,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = "21"
+        jvmTarget = "17"
     }
 
     packaging {
@@ -68,12 +68,8 @@ android {
 
 dependencies {
     listOf(
-        libs.bundles.test,
-        platform(libs.junit.bom),
-        libs.mockito.kotlin
-    ).forEach(::testImplementation)
-
-    listOf(
+        kotlin("test"),
+        kotlin("test-junit"),
         libs.android.test.ext.junit,
         libs.espresso.core
     ).forEach(::androidTestImplementation)
@@ -83,6 +79,15 @@ dependencies {
         libs.appcompat,
         libs.material
     ).forEach(::implementation)
+
+    listOf(
+        kotlin("test"),
+        kotlin("test-junit5"),
+        libs.bundles.test,
+        platform(libs.junit.bom),
+        libs.mockito.kotlin,
+        libs.junit.vintage.engine,
+    ).forEach(::testImplementation)
 
     listOf(
         libs.androidx.test.orchestrator

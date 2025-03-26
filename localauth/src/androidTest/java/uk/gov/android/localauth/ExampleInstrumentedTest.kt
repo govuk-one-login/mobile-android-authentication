@@ -17,6 +17,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("uk.gov.android.localauth.test", appContext.packageName)
+        assertEquals("uk.gov.android.authentication.localauth.test", appContext.packageName)
     }
 }
