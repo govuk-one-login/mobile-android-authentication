@@ -86,7 +86,7 @@ dependencies {
         libs.bundles.test,
         platform(libs.junit.bom),
         libs.mockito.kotlin,
-        libs.junit.vintage.engine,
+        libs.junit.vintage.engine
     ).forEach(::testImplementation)
 
     listOf(
