@@ -1,7 +1,7 @@
 package uk.gov.android.localauth
 
-import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+import org.junit.jupiter.api.Test
 
 // Remove this test after Impl is added on this https://govukverify.atlassian.net/browse/DCMAW-12057
 class LocalAuthPreferenceTest {
