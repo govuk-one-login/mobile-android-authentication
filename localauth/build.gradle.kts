@@ -32,7 +32,7 @@ android {
                     setOf(
                         org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
                         org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
-                        org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
+                        org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
                     )
             }
         }
@@ -57,13 +57,13 @@ dependencies {
         kotlin("test"),
         kotlin("test-junit"),
         libs.android.test.ext.junit,
-        libs.espresso.core
+        libs.espresso.core,
     ).forEach(::androidTestImplementation)
 
     listOf(
         libs.androidx.core.core.ktx,
         libs.appcompat,
-        libs.material
+        libs.material,
     ).forEach(::implementation)
 
     listOf(
@@ -75,7 +75,7 @@ dependencies {
     ).forEach(::testImplementation)
 
     listOf(
-        libs.androidx.test.orchestrator
+        libs.androidx.test.orchestrator,
     ).forEach {
         androidTestUtil(it)
     }
@@ -86,13 +86,13 @@ dependencies {
 mavenPublishingConfig {
     mavenConfigBlock {
         name.set(
-            "Local Authentication (secure device) module for Android Devices"
+            "Local Authentication (secure device) module for Android Devices",
         )
         description.set(
             """
             A Gradle module which implements the local authentication (passcode/ biometrics) based on
             a combination of device security and privacy settings and user choice of how to secure the application.
-            """.trimIndent()
+            """.trimIndent(),
         )
     }
 }
