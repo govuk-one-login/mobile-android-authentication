@@ -21,3 +21,4 @@ include(":app")
 
 includeBuild("${rootProject.projectDir}/mobile-android-pipelines/buildLogic")
 gradle.startParameter.excludedTaskNames.addAll(listOf(":buildLogic:plugins:testClasses"))
+include(":localauth")
