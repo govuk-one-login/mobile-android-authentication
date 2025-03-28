@@ -5,9 +5,6 @@ plugins {
     id("uk.gov.pipelines.android-lib-config")
 }
 
-apply(from = "${rootProject.extra["configDir"]}/detekt/config.gradle")
-apply(from = "${rootProject.extra["configDir"]}/ktlint/config.gradle")
-
 android {
     namespace = "uk.gov.android.localauth"
 
@@ -23,13 +20,6 @@ android {
         release {
             isMinifyEnabled = false
         }
-    }
-
-    lint {
-        val configDir = "${rootProject.projectDir}/config"
-
-        baseline = File("$configDir/android/baseline.xml")
-        lintConfig = File("$configDir/android/lint.xml")
     }
 
     testOptions {
@@ -60,10 +50,6 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-
-    packaging {
-        resources.excludes.add("META-INF/versions/9/OSGI-INF/MANIFEST.MF")
-    }
 }
 
 dependencies {
@@ -86,7 +72,6 @@ dependencies {
         libs.bundles.test,
         platform(libs.junit.bom),
         libs.mockito.kotlin,
-        libs.junit.vintage.engine
     ).forEach(::testImplementation)
 
     listOf(
@@ -94,6 +79,8 @@ dependencies {
     ).forEach {
         androidTestUtil(it)
     }
+
+    testRuntimeOnly(libs.junit.vintage.engine)
 }
 
 mavenPublishingConfig {
