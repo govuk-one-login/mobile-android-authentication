@@ -1,5 +1,6 @@
 package uk.gov.android.localauth
 
+import uk.gov.android.localauth.preference.LocalAuthPreference
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

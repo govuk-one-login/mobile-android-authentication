@@ -24,6 +24,8 @@ bouncyCastle = "1.80"
 sonar = "6.0.1.5171"
 junitVersion = "4.13.2"
 material = "1.12.0"
+androidxBiometric = "1.1.0"
+activity = "1.10.1"
 
 [libraries]
 android-build-tool = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
@@ -32,6 +34,10 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 appauth = { group = "net.openid", name = "appauth", version = "0.11.1" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+# Local Auth
+androidx-biometric = { group = "androidx.biometric", name = "biometric", version.ref = "androidxBiometric" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity"}
 
 #Jwt Verifier
 jose4j = { module = "org.bitbucket.b_c:jose4j", version.ref = "jose4j" }

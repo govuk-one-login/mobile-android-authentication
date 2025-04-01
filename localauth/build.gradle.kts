@@ -64,6 +64,8 @@ dependencies {
         libs.androidx.core.core.ktx,
         libs.appcompat,
         libs.material,
+        libs.androidx.biometric,
+        libs.androidx.activity
     ).forEach(::implementation)
 
     listOf(
