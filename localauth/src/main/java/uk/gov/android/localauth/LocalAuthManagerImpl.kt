@@ -5,19 +5,21 @@ import uk.gov.android.localauth.devicesecurity.DeviceSecurityManager
 import uk.gov.android.localauth.devicesecurity.DeviceSecurityStatus
 import uk.gov.android.localauth.preference.LocalAuthPreference
 import uk.gov.android.localauth.preference.LocalAuthPreferenceHandler
+import uk.gov.android.localauth.ui.DialogManager
 
 class LocalAuthManagerImpl(
     private val localAuthPrefHandler: LocalAuthPreferenceHandler,
-    private val deviceSecurityManager: DeviceSecurityManager
+    private val deviceSecurityManager: DeviceSecurityManager,
 ) : LocalAuthManager {
-    private var _localAuthPref: LocalAuthPreference? = localAuthPrefHandler.getBioPref()
+    private val uiManager = DialogManager()
+    private var _localAuthPreference: LocalAuthPreference? = localAuthPrefHandler.getBioPref()
     override val localAuthPreference: LocalAuthPreference?
-        get() = _localAuthPref
+        get() = _localAuthPreference
 
     override suspend fun enforceAndSet(
         localAuhRequired: Boolean,
         activity: FragmentActivity,
-        callbackHandler: LocalAuthManagerCallbackHandler
+        callbackHandler: LocalAuthManagerCallbackHandler,
     ) {
         // Check is local auth preference is not set yet
         if (localAuthPreference == null) {
@@ -36,7 +38,7 @@ class LocalAuthManagerImpl(
     private fun localAuthFlowRequired(
         callbackHandler: LocalAuthManagerCallbackHandler,
         activity: FragmentActivity,
-        localAuhRequired: Boolean
+        localAuhRequired: Boolean,
     ) {
         // Check if device is secure (any passcode and/ or any biometrics)
         if (deviceSecurityManager.isDeviceSecure()) {
@@ -52,15 +54,19 @@ class LocalAuthManagerImpl(
     private fun handleUnsecuredDevice(
         localAuhRequired: Boolean,
         activity: FragmentActivity,
-        callbackHandler: LocalAuthManagerCallbackHandler
+        callbackHandler: LocalAuthManagerCallbackHandler,
     ) {
         if (localAuhRequired) {
             // Request/ Direct user to set some level of security
-            activity
-            // TODO: Display "Go To Settings Page"
-            callbackHandler.onFailure()
+            uiManager.displayGoToSettingsPage(
+                activity = activity,
+                onBack = {
+                    // TODO: At the moment it will be disabled because we are overriding the BackHandler with this function
+                },
+                onGoToSettings = { callbackHandler.onFailure() },
+            )
         } else {
-            // This si treated as success as it's not needed for the acton to be performed
+            // This is treated as success as it's not needed for the acton to be performed
             localAuthPrefHandler.setBioPref(LocalAuthPreference.Disabled)
             callbackHandler.onSuccess()
         }
@@ -68,12 +74,22 @@ class LocalAuthManagerImpl(
 
     private fun handleSecureDevice(
         callbackHandler: LocalAuthManagerCallbackHandler,
-        activity: FragmentActivity
+        activity: FragmentActivity,
     ) {
         when (deviceSecurityManager.getCredentialStatus()) {
             DeviceSecurityStatus.SUCCESS -> {
-                activity
-                // TODO: Show Bio Opt In Screen here
+                uiManager.displayBioOptIn(
+                    activity = activity,
+                    onBack = {
+                        // TODO: At the moment it will be disabled because we are overriding the BackHandler with this function
+                    },
+                    onBiometricsOptIn = {
+                        localAuthPrefHandler.setBioPref(LocalAuthPreference.Enabled(true))
+                    },
+                    onBiometricsOptOut = {
+                        localAuthPrefHandler.setBioPref(LocalAuthPreference.Enabled(false))
+                    },
+                )
                 callbackHandler.onSuccess()
             }
 

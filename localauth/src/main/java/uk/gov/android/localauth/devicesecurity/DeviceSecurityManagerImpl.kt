@@ -6,12 +6,12 @@ import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 
 class DeviceSecurityManagerImpl(
     private val biometricManager: BiometricManager,
-    private val kgm: KeyguardManager
-): DeviceSecurityManager {
+    private val kgm: KeyguardManager,
+) : DeviceSecurityManager {
     override fun isDeviceSecure() = kgm.isDeviceSecure
 
     override fun getCredentialStatus(): DeviceSecurityStatus =
         DeviceSecurityStatus.fromBiometricManager(
-            biometricManager.canAuthenticate(BIOMETRIC_STRONG)
+            biometricManager.canAuthenticate(BIOMETRIC_STRONG),
         )
 }

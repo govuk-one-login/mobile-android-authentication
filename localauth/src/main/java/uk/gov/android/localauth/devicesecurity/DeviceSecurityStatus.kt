@@ -7,7 +7,8 @@ enum class DeviceSecurityStatus {
     NO_HARDWARE,
     HARDWARE_UNAVAILABLE,
     NOT_ENROLLED,
-    UNKNOWN;
+    UNKNOWN,
+    ;
 
     companion object {
         fun fromBiometricManager(statusCode: Int): DeviceSecurityStatus =

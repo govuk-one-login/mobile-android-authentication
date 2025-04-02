@@ -2,6 +2,7 @@ import uk.gov.pipelines.config.ApkConfig
 
 plugins {
     `maven-publish`
+    alias(libs.plugins.compose.compiler)
     id("uk.gov.pipelines.android-lib-config")
 }
 
@@ -47,8 +48,16 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    buildFeatures {
+        compose = true
+    }
+
     kotlinOptions {
         jvmTarget = "17"
+    }
+
+    ktlint {
+        version = libs.versions.ktlint.cli.get()
     }
 }
 
@@ -65,7 +74,12 @@ dependencies {
         libs.appcompat,
         libs.material,
         libs.androidx.biometric,
-        libs.androidx.activity
+        libs.androidx.ui,
+        libs.androidx.material3,
+        libs.androidx.ui.tooling.preview,
+        libs.androidx.navigation,
+        libs.bundles.gov.uk,
+        libs.kotlinx.collections.immutable,
     ).forEach(::implementation)
 
     listOf(
