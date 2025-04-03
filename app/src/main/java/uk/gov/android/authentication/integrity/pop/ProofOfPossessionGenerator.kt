@@ -5,7 +5,6 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 object ProofOfPossessionGenerator {
@@ -17,7 +16,10 @@ object ProofOfPossessionGenerator {
         jti: String = Uuid.random().toString()
     ): String {
         val pop = ProofOfPossession(
-            header = Header(alg = ALG),
+            header = Header(
+                alg = ALG,
+                typ = TYP
+            ),
             payload = Payload(
                 iss = iss,
                 aud = aud,
@@ -43,7 +45,8 @@ object ProofOfPossessionGenerator {
 
     @Serializable
     data class Header(
-        val alg: String
+        val alg: String,
+        val typ: String
     )
 
     @Serializable
@@ -66,6 +69,7 @@ object ProofOfPossessionGenerator {
     }
 
     private const val ALG = "ES256"
+    private const val TYP = "oauth-client-attestation-pop+jwt"
     private const val MINUTES = 3
     private const val MINUTE_IN_MILLISECONDS = 60000
     private const val CONVERT_TO_SECONDS = 1000
