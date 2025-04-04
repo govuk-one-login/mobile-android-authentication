@@ -1,4 +1,4 @@
-package uk.gov.android.localauth
+package uk.gov.android.localauth.preference
 
 sealed class LocalAuthPreference {
     data object Disabled : LocalAuthPreference()
