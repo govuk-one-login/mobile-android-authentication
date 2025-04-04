@@ -2,7 +2,7 @@ package uk.gov.android.localauth.devicesecurity
 
 import androidx.biometric.BiometricManager
 
-enum class DeviceSecurityStatus {
+enum class DeviceBiometricsStatus {
     SUCCESS,
     NO_HARDWARE,
     HARDWARE_UNAVAILABLE,
@@ -11,7 +11,7 @@ enum class DeviceSecurityStatus {
     ;
 
     companion object {
-        fun fromBiometricManager(statusCode: Int): DeviceSecurityStatus =
+        fun fromBiometricManager(statusCode: Int): DeviceBiometricsStatus =
             when (statusCode) {
                 BiometricManager.BIOMETRIC_SUCCESS -> SUCCESS
                 BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> NO_HARDWARE

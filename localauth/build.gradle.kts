@@ -3,6 +3,7 @@ import uk.gov.pipelines.config.ApkConfig
 plugins {
     `maven-publish`
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.paparazzi)
     id("uk.gov.pipelines.android-lib-config")
 }
 
@@ -85,9 +86,16 @@ dependencies {
     listOf(
         kotlin("test"),
         kotlin("test-junit5"),
-        libs.bundles.test,
+        libs.junit.jupiter.launcher,
+        libs.junit.jupiter.params,
         platform(libs.junit.bom),
         libs.mockito.kotlin,
+        libs.androidx.compose.ui.junit4,
+        libs.junit,
+        libs.robolectric,
+        libs.bundles.test,
+        libs.espresso.core,
+        libs.espresso.intents,
     ).forEach(::testImplementation)
 
     listOf(
@@ -95,6 +103,11 @@ dependencies {
     ).forEach {
         androidTestUtil(it)
     }
+
+    listOf(
+        libs.androidx.compose.ui.tooling,
+        libs.androidx.compose.ui.test.manifest,
+    ).forEach(::debugImplementation)
 
     testRuntimeOnly(libs.junit.vintage.engine)
 }

@@ -2,12 +2,12 @@
 <resources>
     <!-- Biometrics Opt In Screen -->
     <string name="bio_opt_in_image_content_description">Placeholder content description</string>
-    <string name="bio_opt_in_image_title">Unlock the app with biometrics</string>
-    <string name="bio_opt_in_image_body1">You can unlock the app with your face, fingerprint or iris within 30 minutes of signing in with GOV.UK One Login.</string>
-    <string name="bio_opt_in_image_body2">If you do not want to use your biometrics, you can unlock the app with your phone’s pin or pattern instead.</string>
-    <string name="bio_opt_in_image_body3">Anyone who can unlock your phone with their biometrics or with your phone’s pin or pattern might be able to access your app.</string>
-    <string name="bio_opt_in_image_bio_button">Use biometrics</string>
-    <string name="bio_opt_in_image_passcode_button">Use pin or pattern instead</string>
+    <string name="bio_opt_in_title">Unlock the app with biometrics</string>
+    <string name="bio_opt_in_body1">You can unlock the app with your face, fingerprint or iris within 30 minutes of signing in with GOV.UK One Login.</string>
+    <string name="bio_opt_in_body2">If you do not want to use your biometrics, you can unlock the app with your phone’s pin or pattern instead.</string>
+    <string name="bio_opt_in_body3">Anyone who can unlock your phone with their biometrics or with your phone’s pin or pattern might be able to access your app.</string>
+    <string name="bio_opt_in_bio_button">Use biometrics</string>
+    <string name="bio_opt_in_passcode_button">Use pin or pattern instead</string>
 
     <!-- Go To Settings Screen -->
     <string name="go_to_settings_title">You need to update your phone\'s settings</string>

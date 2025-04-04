@@ -34,3 +34,4 @@ fun setGithubCredentials(): MavenArtifactRepository.() -> Unit = {
         password = providers.gradleProperty("gpr.token").get()
     }
 }
+include(":test")

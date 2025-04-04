@@ -15,9 +15,11 @@ test-runner = "1.6.2"
 test-rules = "1.6.1"
 test-ext-junit = "1.2.1"
 test-orchestrator = "1.5.1"
+test-services = "1.5.0"
 mockito-kotlin = "5.4.0"
-mockito-android = "5.16.1"
+mockito-android = "5.16.0"
 espresso-core = "3.6.1"
+compose-ui-junit4 = "1.7.8"
 jose4j = "0.9.6"
 gson = "2.12.1"
 bouncyCastle = "1.80"
@@ -29,6 +31,7 @@ androidx-ui = "1.7.8"
 material3 = "1.3.1"
 ktlint-cli = "0.49.1"
 govuk-ui = "7.17.0"
+paparazzi = "1.3.5"
 
 [libraries]
 android-build-tool = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
@@ -71,6 +74,10 @@ junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", vers
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junit-jupiter-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+androidx-compose-ui-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "compose-ui-junit4" }
+robolectric = { group = "org.robolectric", name = "robolectric", version = "4.14.1" }
+androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 
 #Code coverage
 jacoco-agent = { module = "org.jacoco:org.jacoco.agent", version.ref = "jacoco" }
@@ -108,3 +115,4 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serlialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 sonarqube = { id = "org.sonarqube", version.ref = "sonar" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
