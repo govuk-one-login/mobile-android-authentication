@@ -20,8 +20,8 @@ jobs:
   onPullRequestJob:
     env:
       ANDROID_HOME: ${{ github.workspace }}/bin/androidSdk
-      GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR}}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_ACTOR }}
+      GITHUB_ACTOR: ${{ secrets.MODULE_FETCH_TOKEN_USERNAME}}
+      GITHUB_TOKEN: ${{ secrets.MODULE_FETCH_TOKEN }}
     name: Verify code base when pull request is published/updated
     runs-on: ubuntu-22.04
     #    runs-on: ubuntu-20.04-16core # Larger github runner, with KVM acceleration
@@ -31,6 +31,3 @@ jobs:
         with:
           sonar_token: ${{ secrets.SONAR_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-        env:
-          GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR}}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_ACTOR }}
