@@ -5,7 +5,6 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
@@ -21,20 +20,9 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
     private var onGoToSettings = false
     private var onDismiss = 0
 
-    @Before
-    fun setup() {
-        composeTestRule.setContent {
-            GoToSettingsScreen(
-                analyticsLogger = analyticsLogger,
-                onBack = { onBack = !onBack },
-                onGoToSettings = { onGoToSettings = !onGoToSettings },
-                onDismiss = { onDismiss++ },
-            )
-        }
-    }
-
     @Test
     fun `test UI`() {
+        setup()
         composeTestRule.apply {
             onNodeWithText(
                 context.getString(R.string.go_to_settings_title),
@@ -76,6 +64,7 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
 
     @Test
     fun `test bio opt in button`() {
+        setup()
         composeTestRule.apply {
             onNodeWithText(
                 context.getString(R.string.go_to_settings_button),
@@ -87,6 +76,7 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
 
     @Test
     fun `test back press`() {
+        setup()
         composeTestRule.apply {
             onNodeWithText(
                 context.getString(R.string.go_to_settings_title),
@@ -97,6 +87,62 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
             }
 
             assertTrue(onBack)
+        }
+    }
+
+    @Test
+    fun `test preview`() {
+        composeTestRule.apply {
+            setContent {
+                GoToSettingsPreview()
+            }
+
+            onNodeWithText(
+                context.getString(R.string.go_to_settings_title),
+            ).assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.go_to_settings_body1),
+            ).assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.go_to_settings_body2),
+            ).assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.go_to_settings_numbered_list_title),
+            ).assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.go_to_settings_numbered_list_step1),
+            ).performScrollTo().assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.go_to_settings_numbered_list_step2),
+            ).performScrollTo().assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.go_to_settings_numbered_list_step3),
+            ).performScrollTo().assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.go_to_settings_numbered_list_step4),
+            ).performScrollTo().assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.go_to_settings_button),
+            ).assertIsDisplayed()
+        }
+    }
+
+    private fun setup() {
+        composeTestRule.setContent {
+            GoToSettingsScreen(
+                analyticsLogger = analyticsLogger,
+                onBack = { onBack = !onBack },
+                onGoToSettings = { onGoToSettings = !onGoToSettings },
+                onDismiss = { onDismiss++ },
+            )
         }
     }
 }
