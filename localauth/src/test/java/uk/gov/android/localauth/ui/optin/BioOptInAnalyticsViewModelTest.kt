@@ -9,7 +9,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.verify
 import uk.gov.android.authentication.localauth.R
-import uk.gov.android.localauth.TestUtils
+import uk.gov.android.localauth.utils.TestUtils
 import uk.gov.logging.api.analytics.extensions.getEnglishString
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 import uk.gov.logging.api.analytics.parameters.data.TaxonomyLevel2
@@ -80,7 +80,7 @@ class BioOptInAnalyticsViewModelTest {
                 text = backBtn,
             ),
         ).forEach {
-            val result = executeTrackEventTestCase(it, requiredParameters)
+            val result = TestUtils.executeTrackEventTestCase(it, requiredParameters)
 
             verify(logger).logEventV3Dot1(result)
         }

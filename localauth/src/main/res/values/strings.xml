@@ -10,7 +10,7 @@
     <string name="bio_opt_in_passcode_button">Use pin or pattern instead</string>
 
     <!-- Go To Settings Screen -->
-    <string name="go_to_settings_title">You need to update your phone\'s settings</string>
+    <string name="go_to_settings_title">You need to update your phone’s settings</string>
     <string name="go_to_settings_body1">You can only add documents to your GOV.UK Wallet if your phone is protected with a pin or pattern.</string>
     <string name="go_to_settings_body2">This is to make sure no one else can view or add documents to your wallet.</string>
     <string name="go_to_settings_numbered_list_title">You need to:</string>
@@ -19,7 +19,7 @@
     <string name="go_to_settings_numbered_list_step3">Follow the instructions.</string>
     <string name="go_to_settings_numbered_list_step4">Come back to continue using your GOV.UK Wallet</string>
     <string name="go_to_settings_link_text">If you need help, contact the GOV.UK One Login team</string>
-    <string name="go_to_settings_link_icon_content_description">If you need help, contact the GOV.UK One Login team</string>
+    <string name="go_to_settings_link_icon_content_description">Opens device settings</string>
     <string name="go_to_settings_button">Go to phone settings</string>
 
     <!-- Analytics default values -->
