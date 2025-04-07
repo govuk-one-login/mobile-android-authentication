@@ -1,7 +1,7 @@
 package uk.gov.android.localauth
 
-interface LocalAuthManagerCallbackHandler {
-    fun onSuccess(): Unit
+abstract class LocalAuthManagerCallbackHandler {
+    abstract fun onSuccess(): Unit
 
-    fun onFailure(): Unit
+    abstract fun onFailure(): Unit
 }

@@ -1,19 +1,21 @@
-package uk.gov.android.localauth.ui
+package uk.gov.android.localauth.ui.optin
 
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.mock
 import uk.gov.android.authentication.localauth.R
 import uk.gov.android.localauth.utils.FragmentActivityTestCase
+import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 import kotlin.test.assertTrue
 
 @RunWith(AndroidJUnit4::class)
 class BioOptInScreenTest : FragmentActivityTestCase(false) {
+    private val analyticsLogger: AnalyticsLogger = mock()
     private var onBack = false
     private var onBioOptIn = false
     private var onBioOptOut = false
@@ -23,6 +25,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
     fun setup() {
         composeTestRule.setContent {
             BioOptInScreen(
+                analyticsLogger = analyticsLogger,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
                 onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
@@ -67,10 +70,6 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
                 context.getString(R.string.bio_opt_in_bio_button),
             ).performClick()
 
-            onNodeWithText(
-                context.getString(R.string.bio_opt_in_title),
-            ).assertIsNotDisplayed()
-
             assertTrue(onBioOptIn)
         }
     }
@@ -81,10 +80,6 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
             onNodeWithText(
                 context.getString(R.string.bio_opt_in_passcode_button),
             ).performClick()
-
-            onNodeWithText(
-                context.getString(R.string.bio_opt_in_title),
-            ).assertIsNotDisplayed()
 
             assertTrue(onBioOptOut)
         }

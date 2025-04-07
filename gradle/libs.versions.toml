@@ -31,6 +31,7 @@ androidx-ui = "1.7.8"
 material3 = "1.3.1"
 ktlint-cli = "0.49.1"
 govuk-ui = "7.17.0"
+govuk-logging = "0.20.0"
 paparazzi = "1.3.5"
 
 [libraries]
@@ -54,6 +55,7 @@ kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collec
 componentsv2 = { group = "uk.gov.android", name = "componentsv2", version.ref = "govuk-ui" }
 patterns = { group = "uk.gov.android", name = "patterns", version.ref = "govuk-ui" }
 theme = { group = "uk.gov.android", name = "theme", version.ref = "govuk-ui" }
+logging = { group = "uk.gov.logging", name = "logging-impl", version.ref = "govuk-logging" }
 
 #Jwt Verifier
 jose4j = { module = "org.bitbucket.b_c:jose4j", version.ref = "jose4j" }
@@ -104,7 +106,7 @@ android-test = [ "android-test-core", "android-test-runner", "android-test-rules
 mockito = ["mockito-kotlin", "mockito-android"]
 espresso = ["espresso-core", "espresso-intents"]
 test = [ "junit-jupiter", "junit-jupiter-params", "junit-jupiter-engine"]
-gov-uk = [ "componentsv2", "patterns", "theme" ]
+gov-uk = [ "componentsv2", "patterns", "theme", "logging" ]
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt-gradle" }

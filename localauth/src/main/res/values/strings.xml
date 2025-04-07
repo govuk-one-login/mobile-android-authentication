@@ -21,4 +21,7 @@
     <string name="go_to_settings_link_text">If you need help, contact the GOV.UK One Login team</string>
     <string name="go_to_settings_link_icon_content_description">If you need help, contact the GOV.UK One Login team</string>
     <string name="go_to_settings_button">Go to phone settings</string>
+
+    <!-- Analytics default values -->
+    <string name="system_backButton" translatable="false">Back - System</string>
 </resources>

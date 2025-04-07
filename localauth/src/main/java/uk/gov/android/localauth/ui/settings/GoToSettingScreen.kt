@@ -1,11 +1,9 @@
-package uk.gov.android.localauth.ui
+package uk.gov.android.localauth.ui.settings
 
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,9 +18,11 @@ import uk.gov.android.ui.patterns.errorscreen.ErrorScreen
 import uk.gov.android.ui.patterns.errorscreen.ErrorScreenIcon
 import uk.gov.android.ui.theme.m3.GdsTheme
 import uk.gov.android.ui.theme.meta.ScreenPreview
+import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 
 @Composable
 fun GoToSettingsScreen(
+    analyticsLogger: AnalyticsLogger,
     onBack: () -> Unit,
     onGoToSettings: () -> Unit,
     onDismiss: () -> Unit,
@@ -35,11 +35,10 @@ fun GoToSettingsScreen(
         onDismissRequest = onDismiss,
         title = "",
         content = {
-            GoToSettingsContent(
-                onDismiss = onDismiss,
-            ) {
+            GoToSettingsContent {
                 onGoToSettings()
                 // Add the intent to open settings here
+                onDismiss()
             }
         },
     )
@@ -47,7 +46,6 @@ fun GoToSettingsScreen(
 
 @Composable
 private fun GoToSettingsContent(
-    onDismiss: () -> Unit,
     onGoToSettings: () -> Unit,
 ) {
     val body1 = stringResource(R.string.go_to_settings_body1)
@@ -81,7 +79,6 @@ private fun GoToSettingsContent(
             text = stringResource(R.string.go_to_settings_button),
             onClick = {
                 onGoToSettings()
-                onDismiss()
             },
         ),
     )
@@ -92,6 +89,6 @@ private fun GoToSettingsContent(
 @Composable
 internal fun GoToSettingsPreview() {
     GdsTheme {
-        GoToSettingsContent({}, {})
+        GoToSettingsContent {}
     }
 }

@@ -7,7 +7,11 @@ import org.junit.Rule
 
 abstract class FragmentActivityTestCase(setContent: Boolean) {
     @get:Rule(order = 1)
-    val composeTestRule = if (setContent) createAndroidComposeRule<TestActivity>() else createAndroidComposeRule<TestActivityNoContent>()
+    val composeTestRule = if (setContent) {
+        createAndroidComposeRule<TestActivity>()
+    } else {
+        createAndroidComposeRule<TestActivityNoContent>()
+    }
 
     protected val context: Context = ApplicationProvider.getApplicationContext()
 }

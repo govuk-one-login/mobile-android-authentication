@@ -27,11 +27,26 @@ include(":app")
 includeBuild("${rootProject.projectDir}/mobile-android-pipelines/buildLogic")
 gradle.startParameter.excludedTaskNames.addAll(listOf(":buildLogic:plugins:testClasses"))
 include(":localauth")
+include(":test")
 
 fun setGithubCredentials(): MavenArtifactRepository.() -> Unit = {
+    val (credUser, credToken) = fetchGithubCredentials()
     credentials {
-        username = providers.gradleProperty("gpr.user").get()
-        password = providers.gradleProperty("gpr.token").get()
+        username = credUser
+        password = credToken
     }
 }
-include(":test")
+
+fun fetchGithubCredentials(): Pair<String, String> {
+    val gprUser = System.getenv("GITHUB_ACTOR")
+    val gprToken = System.getenv("GITHUB_TOKEN")
+
+    if (!gprUser.isNullOrEmpty() && !gprToken.isNullOrEmpty()) {
+        return Pair(gprUser, gprToken)
+    }
+
+    val gprUserProperty = providers.gradleProperty("gpr.user")
+    val gprTokenProperty = providers.gradleProperty("gpr.token")
+
+    return gprUserProperty.get() to gprTokenProperty.get()
+}

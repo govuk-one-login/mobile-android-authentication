@@ -3,8 +3,12 @@ package uk.gov.android.localauth.ui
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.FragmentActivity
+import uk.gov.android.localauth.ui.optin.BioOptInScreen
+import uk.gov.android.localauth.ui.settings.GoToSettingsScreen
+import uk.gov.android.ui.theme.m3.GdsTheme
+import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 
-interface DialogManager {
+interface DialogUiManager {
     fun displayBioOptIn(
         activity: FragmentActivity,
         onBack: () -> Unit,
@@ -20,8 +24,8 @@ interface DialogManager {
 }
 
 class BiometricsUiManager(
-    // TODO: require analytics logger
-) : DialogManager {
+    private val analyticsLogger: AnalyticsLogger,
+) : DialogUiManager {
     override fun displayBioOptIn(
         activity: FragmentActivity,
         onBack: () -> Unit,
@@ -31,8 +35,10 @@ class BiometricsUiManager(
         val dialogView =
             ComposeView(activity).apply {
                 setContent {
-                    BioOptInScreen(onBack, onBiometricsOptIn, onBiometricsOptOut) {
-                        (parent as? ViewGroup)?.removeView(this)
+                    GdsTheme {
+                        BioOptInScreen(analyticsLogger, onBack, onBiometricsOptIn, onBiometricsOptOut) {
+                            (parent as? ViewGroup)?.removeView(this)
+                        }
                     }
                 }
             }
@@ -53,8 +59,10 @@ class BiometricsUiManager(
         val dialogView =
             ComposeView(activity).apply {
                 setContent {
-                    GoToSettingsScreen(onBack, onGoToSettings) {
-                        (parent as? ViewGroup)?.removeView(this)
+                    GdsTheme {
+                        GoToSettingsScreen(analyticsLogger, onBack, onGoToSettings) {
+                            (parent as? ViewGroup)?.removeView(this)
+                        }
                     }
                 }
             }

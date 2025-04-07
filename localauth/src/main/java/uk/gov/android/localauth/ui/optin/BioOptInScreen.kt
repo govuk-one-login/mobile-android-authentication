@@ -1,4 +1,4 @@
-package uk.gov.android.localauth.ui
+package uk.gov.android.localauth.ui.optin
 
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
@@ -13,12 +13,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -33,14 +32,17 @@ import uk.gov.android.ui.theme.m3.GdsTheme
 import uk.gov.android.ui.theme.meta.ScreenPreview
 import uk.gov.android.ui.theme.smallPadding
 import uk.gov.android.ui.theme.util.UnstableDesignSystemAPI
+import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 
 @Composable
 fun BioOptInScreen(
+    analyticsLogger: AnalyticsLogger,
     onBack: () -> Unit,
     onBiometricsOptIn: () -> Unit,
     onBiometricsOptOut: () -> Unit,
     onDismiss: () -> Unit,
 ) {
+    val analyticsViewModel = BioOptInAnalyticsViewModel(LocalContext.current, analyticsLogger)
     BackHandler {
         onBack()
         onDismiss()
@@ -51,7 +53,18 @@ fun BioOptInScreen(
             // Not needed
         },
         content = {
-            BioOptInContent(onBiometricsOptIn, onBiometricsOptOut, onDismiss)
+            BioOptInContent(
+                onBiometricsOptIn = {
+                    onBiometricsOptIn()
+                    onDismiss()
+                    analyticsViewModel.trackBiometricsButton()
+                },
+                onBiometricsOptOut = {
+                    onBiometricsOptOut()
+                    onDismiss()
+                    analyticsViewModel.trackPasscodeButton()
+                },
+            )
         },
     )
 }
@@ -60,7 +73,6 @@ fun BioOptInScreen(
 private fun BioOptInContent(
     onBiometricsOptIn: () -> Unit,
     onBiometricsOptOut: () -> Unit,
-    onDismissRequest: () -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -80,7 +92,7 @@ private fun BioOptInContent(
         ) {
             BioOptInText()
         }
-        BioOptInButtons(onBiometricsOptIn, onBiometricsOptOut, onDismissRequest)
+        BioOptInButtons(onBiometricsOptIn, onBiometricsOptOut)
     }
 }
 
@@ -109,7 +121,6 @@ private fun BioOptInText() {
 private fun BioOptInButtons(
     onBiometricsOptIn: () -> Unit,
     onBiometricsOptOut: () -> Unit,
-    onDismissRequest: () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.Bottom,
@@ -118,19 +129,13 @@ private fun BioOptInButtons(
         GdsButton(
             text = stringResource(R.string.bio_opt_in_bio_button),
             buttonType = ButtonType.Primary,
-            onClick = {
-                onBiometricsOptIn()
-                onDismissRequest()
-            },
+            onClick = onBiometricsOptIn,
             modifier = Modifier.fillMaxWidth(),
         )
         GdsButton(
             text = stringResource(R.string.bio_opt_in_passcode_button),
             buttonType = ButtonType.Quaternary,
-            onClick = {
-                onBiometricsOptOut()
-                onDismissRequest()
-            },
+            onClick = onBiometricsOptOut,
             modifier = Modifier.fillMaxWidth(),
         )
     }
@@ -150,6 +155,6 @@ private fun CustomText(text: String) {
 @Composable
 internal fun BioOptInPreview() {
     GdsTheme {
-        BioOptInContent({}, {}, {})
+        BioOptInContent({}, {})
     }
 }

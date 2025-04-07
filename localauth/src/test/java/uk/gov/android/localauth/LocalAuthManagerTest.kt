@@ -19,6 +19,7 @@ import uk.gov.android.localauth.preference.LocalAuthPreference
 import uk.gov.android.localauth.preference.LocalAuthPreferenceRepository
 import uk.gov.android.localauth.utils.FragmentActivityTestCase
 import uk.gov.android.localauth.utils.TestActivity
+import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 
 @RunWith(AndroidJUnit4::class)
 class LocalAuthManagerTest : FragmentActivityTestCase(true) {
@@ -26,6 +27,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
     private lateinit var deviceBiometricsManager: DeviceBiometricsManager
     private lateinit var callbackHandler: LocalAuthManagerCallbackHandler
     private lateinit var localAuthManager: LocalAuthManagerImpl
+    private lateinit var analyticsLogger: AnalyticsLogger
     private lateinit var activity: FragmentActivity
 
     @Before
@@ -33,7 +35,12 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         localAuthPreferenceRepository = mock()
         deviceBiometricsManager = mock()
         callbackHandler = mock()
-        localAuthManager = LocalAuthManagerImpl(localAuthPreferenceRepository, deviceBiometricsManager)
+        analyticsLogger = mock()
+        localAuthManager = LocalAuthManagerImpl(
+            localAuthPreferenceRepository,
+            deviceBiometricsManager,
+            analyticsLogger,
+        )
         activity = TestActivity()
     }
 
