@@ -10,6 +10,7 @@ import uk.gov.android.localauth.ui.BiometricsUiManager
 import uk.gov.android.localauth.ui.optin.BioOptInAnalyticsViewModel
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 
+@Suppress("ForbiddenComment")
 class LocalAuthManagerImpl(
     private val localAuthPrefHandler: LocalAuthPreferenceRepository,
     private val deviceBiometricsManager: DeviceBiometricsManager,

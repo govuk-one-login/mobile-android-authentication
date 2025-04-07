@@ -21,6 +21,7 @@ import uk.gov.android.ui.theme.meta.ScreenPreview
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 
 @Composable
+@Suppress("UnusedParameter")
 fun GoToSettingsScreen(
     analyticsLogger: AnalyticsLogger,
     onBack: () -> Unit,
