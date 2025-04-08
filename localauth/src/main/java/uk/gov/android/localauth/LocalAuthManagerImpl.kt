@@ -56,6 +56,7 @@ class LocalAuthManagerImpl(
                 activity = activity,
                 onBack = {
                     // TODO: Additional behaviour (if required) + Analytics
+                    callbackHandler.onBack()
                     callbackHandler.onFailure()
                     localAuthPrefHandler.setLocalAuthPref(LocalAuthPreference.Disabled)
                 },
@@ -89,6 +90,7 @@ class LocalAuthManagerImpl(
                         localAuthPrefHandler.setLocalAuthPref(
                             LocalAuthPreference.Enabled(false),
                         )
+                        callbackHandler.onBack()
                         callbackHandler.onSuccess()
                         analyticsViewModel.trackBackButton()
                     },

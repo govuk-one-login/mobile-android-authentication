@@ -4,4 +4,6 @@ interface LocalAuthManagerCallbackHandler {
     fun onSuccess()
 
     fun onFailure()
+
+    fun onBack()
 }

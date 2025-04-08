@@ -154,6 +154,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             }
 
             verify(callbackHandler).onSuccess()
+            verify(callbackHandler).onBack()
             verify(localAuthPreferenceRepository).getLocalAuthPref()
             verify(localAuthPreferenceRepository)
                 .setLocalAuthPref(LocalAuthPreference.Enabled(false))
@@ -177,6 +178,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             }
 
             verify(callbackHandler).onSuccess()
+            verify(callbackHandler).onBack()
             verify(localAuthPreferenceRepository).getLocalAuthPref()
             verify(localAuthPreferenceRepository)
                 .setLocalAuthPref(LocalAuthPreference.Enabled(false))
@@ -360,6 +362,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         }
 
         verify(callbackHandler).onFailure()
+        verify(callbackHandler).onBack()
         verify(localAuthPreferenceRepository).setLocalAuthPref(LocalAuthPreference.Disabled)
     }
 
@@ -378,6 +381,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         }
 
         verify(callbackHandler).onFailure()
+        verify(callbackHandler).onBack()
         verify(localAuthPreferenceRepository).setLocalAuthPref(LocalAuthPreference.Disabled)
     }
 }
