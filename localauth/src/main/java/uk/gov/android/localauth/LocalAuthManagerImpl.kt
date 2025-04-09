@@ -12,14 +12,13 @@ import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 
 @Suppress("ForbiddenComment")
 class LocalAuthManagerImpl(
-    private val localAuthPrefHandler: LocalAuthPreferenceRepository,
+    private val localAuthPrefRepo: LocalAuthPreferenceRepository,
     private val deviceBiometricsManager: DeviceBiometricsManager,
     private val analyticsLogger: AnalyticsLogger,
 ) : LocalAuthManager {
     private val uiManager = BiometricsUiManager(analyticsLogger)
-    private var _localAuthPreference: LocalAuthPreference? = localAuthPrefHandler.getLocalAuthPref()
     override val localAuthPreference: LocalAuthPreference?
-        get() = _localAuthPreference
+        get() = localAuthPrefRepo.getLocalAuthPref()
 
     override suspend fun enforceAndSet(
         localAuhRequired: Boolean,
@@ -58,16 +57,16 @@ class LocalAuthManagerImpl(
                     // TODO: Additional behaviour (if required) + Analytics
                     callbackHandler.onBack()
                     callbackHandler.onFailure()
-                    localAuthPrefHandler.setLocalAuthPref(LocalAuthPreference.Disabled)
+                    localAuthPrefRepo.setLocalAuthPref(LocalAuthPreference.Disabled)
                 },
                 onGoToSettings = {
                     callbackHandler.onFailure()
-                    localAuthPrefHandler.setLocalAuthPref(LocalAuthPreference.Disabled)
+                    localAuthPrefRepo.setLocalAuthPref(LocalAuthPreference.Disabled)
                 },
             )
         } else {
             // This is treated as success as it's not needed for the acton to be performed
-            localAuthPrefHandler.setLocalAuthPref(LocalAuthPreference.Disabled)
+            localAuthPrefRepo.setLocalAuthPref(LocalAuthPreference.Disabled)
             callbackHandler.onSuccess()
         }
     }
@@ -87,22 +86,22 @@ class LocalAuthManagerImpl(
                 uiManager.displayBioOptIn(
                     activity = activity,
                     onBack = {
-                        localAuthPrefHandler.setLocalAuthPref(
+                        localAuthPrefRepo.setLocalAuthPref(
                             LocalAuthPreference.Enabled(false),
                         )
-                        callbackHandler.onBack()
                         callbackHandler.onSuccess()
+                        callbackHandler.onBack()
                         analyticsViewModel.trackBackButton()
                     },
                     onBiometricsOptIn = {
-                        localAuthPrefHandler.setLocalAuthPref(
+                        localAuthPrefRepo.setLocalAuthPref(
                             LocalAuthPreference.Enabled(true),
                         )
                         callbackHandler.onSuccess()
                         analyticsViewModel.trackBiometricsButton()
                     },
                     onBiometricsOptOut = {
-                        localAuthPrefHandler.setLocalAuthPref(
+                        localAuthPrefRepo.setLocalAuthPref(
                             LocalAuthPreference.Enabled(false),
                         )
                         callbackHandler.onSuccess()
@@ -114,7 +113,7 @@ class LocalAuthManagerImpl(
             else -> {
                 // Set passcode as default (this is enabled because of the .isDeviceSecure()
                 // called above
-                localAuthPrefHandler
+                localAuthPrefRepo
                     .setLocalAuthPref(LocalAuthPreference.Enabled(false))
                 callbackHandler.onSuccess()
             }
