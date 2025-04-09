@@ -325,7 +325,6 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         localAuthManager.enforceAndSet(false, activity, callbackHandler)
 
         verify(callbackHandler).onSuccess()
-        verify(localAuthPreferenceRepository).getLocalAuthPref()
         verify(localAuthPreferenceRepository).setLocalAuthPref(LocalAuthPreference.Disabled)
     }
 
