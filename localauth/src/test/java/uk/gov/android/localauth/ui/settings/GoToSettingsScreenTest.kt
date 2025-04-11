@@ -4,6 +4,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -82,9 +83,7 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
                 context.getString(R.string.go_to_settings_title),
             ).assertIsDisplayed()
 
-            activityRule.scenario.onActivity { activity ->
-                activity.onBackPressedDispatcher.onBackPressed()
-            }
+            Espresso.pressBack()
 
             assertTrue(onBack)
         }

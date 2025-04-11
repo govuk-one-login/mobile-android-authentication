@@ -6,6 +6,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.fragment.app.FragmentActivity
+import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Before
 import org.junit.Test
@@ -127,9 +128,7 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
                 context.getString(R.string.bio_opt_in_title),
             ).assertIsDisplayed()
 
-            activityRule.scenario.onActivity { activity ->
-                activity.onBackPressedDispatcher.onBackPressed()
-            }
+            Espresso.pressBack()
 
             onNodeWithText(
                 context.getString(R.string.bio_opt_in_title),
@@ -220,9 +219,7 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
                 context.getString(R.string.go_to_settings_title),
             ).assertIsDisplayed()
 
-            activityRule.scenario.onActivity { activity ->
-                activity.onBackPressedDispatcher.onBackPressed()
-            }
+            Espresso.pressBack()
 
             onNodeWithText(
                 context.getString(R.string.bio_opt_in_title),

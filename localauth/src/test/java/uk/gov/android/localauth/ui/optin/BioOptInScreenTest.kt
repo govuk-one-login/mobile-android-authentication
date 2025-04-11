@@ -3,6 +3,7 @@ package uk.gov.android.localauth.ui.optin
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -78,9 +79,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
     fun `test back press`() {
         setup()
         composeTestRule.apply {
-            activityRule.scenario.onActivity { activity ->
-                activity.onBackPressedDispatcher.onBackPressed()
-            }
+            Espresso.pressBack()
 
             assertTrue(onBack)
         }
