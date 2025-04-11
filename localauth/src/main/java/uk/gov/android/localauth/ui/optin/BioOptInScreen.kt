@@ -1,7 +1,6 @@
 package uk.gov.android.localauth.ui.optin
 
 import android.content.res.Configuration
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -20,12 +19,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import uk.gov.android.authentication.localauth.R
 import uk.gov.android.ui.componentsv2.button.ButtonType
 import uk.gov.android.ui.componentsv2.button.GdsButton
 import uk.gov.android.ui.componentsv2.heading.GdsHeading
+import uk.gov.android.ui.componentsv2.heading.GdsHeadingStyle
 import uk.gov.android.ui.componentsv2.images.GdsVectorImage
 import uk.gov.android.ui.patterns.dialog.FullScreenDialogue
 import uk.gov.android.ui.theme.m3.GdsTheme
@@ -43,26 +42,27 @@ fun BioOptInScreen(
     onDismiss: () -> Unit,
 ) {
     val analyticsViewModel = BioOptInAnalyticsViewModel(LocalContext.current, analyticsLogger)
-    BackHandler {
-        onBack()
-        onDismiss()
-    }
+    analyticsViewModel.trackBioOptInScreen()
     FullScreenDialogue(
         onDismissRequest = onDismiss,
         topAppBar = {
             // Not needed
         },
+        onBack = {
+            onBack()
+            onDismiss()
+        },
         content = {
             BioOptInContent(
                 onBiometricsOptIn = {
                     onBiometricsOptIn()
-                    onDismiss()
                     analyticsViewModel.trackBiometricsButton()
+                    onDismiss()
                 },
                 onBiometricsOptOut = {
                     onBiometricsOptOut()
-                    onDismiss()
                     analyticsViewModel.trackPasscodeButton()
+                    onDismiss()
                 },
             )
         },
@@ -108,8 +108,7 @@ private fun BioOptInText() {
     )
     GdsHeading(
         text = stringResource(R.string.bio_opt_in_title),
-        style = MaterialTheme.typography.displaySmall,
-        textAlign = TextAlign.Center,
+        style = GdsHeadingStyle.Title1,
         modifier = Modifier.padding(bottom = smallPadding),
     )
     CustomText(text = stringResource(R.string.bio_opt_in_body1))

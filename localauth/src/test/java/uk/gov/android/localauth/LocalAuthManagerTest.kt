@@ -4,6 +4,7 @@ import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.fragment.app.FragmentActivity
+import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -61,7 +62,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 ).performClick()
             }
 
-            verify(callbackHandler).onSuccess()
+            verify(callbackHandler).onSuccess(false)
             verify(localAuthPreferenceRepository).getLocalAuthPref()
             verify(localAuthPreferenceRepository)
                 .setLocalAuthPref(LocalAuthPreference.Enabled(true))
@@ -84,7 +85,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 ).performClick()
             }
 
-            verify(callbackHandler).onSuccess()
+            verify(callbackHandler).onSuccess(false)
             verify(localAuthPreferenceRepository).getLocalAuthPref()
             verify(localAuthPreferenceRepository)
                 .setLocalAuthPref(LocalAuthPreference.Enabled(true))
@@ -107,7 +108,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 ).performClick()
             }
 
-            verify(callbackHandler).onSuccess()
+            verify(callbackHandler).onSuccess(false)
             verify(localAuthPreferenceRepository).getLocalAuthPref()
             verify(localAuthPreferenceRepository)
                 .setLocalAuthPref(LocalAuthPreference.Enabled(false))
@@ -130,7 +131,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 ).performClick()
             }
 
-            verify(callbackHandler).onSuccess()
+            verify(callbackHandler).onSuccess(false)
             verify(localAuthPreferenceRepository).getLocalAuthPref()
             verify(localAuthPreferenceRepository)
                 .setLocalAuthPref(LocalAuthPreference.Enabled(false))
@@ -148,13 +149,10 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 onNodeWithText(
                     context.getString(R.string.bio_opt_in_title),
                 ).isDisplayed()
-                activityRule.scenario.onActivity { activity ->
-                    activity.onBackPressedDispatcher.onBackPressed()
-                }
+                Espresso.pressBack()
             }
 
-            verify(callbackHandler).onSuccess()
-            verify(callbackHandler).onBack()
+            verify(callbackHandler).onSuccess(true)
             verify(localAuthPreferenceRepository).getLocalAuthPref()
             verify(localAuthPreferenceRepository)
                 .setLocalAuthPref(LocalAuthPreference.Enabled(false))
@@ -172,13 +170,10 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 onNodeWithText(
                     context.getString(R.string.bio_opt_in_title),
                 ).isDisplayed()
-                activityRule.scenario.onActivity { activity ->
-                    activity.onBackPressedDispatcher.onBackPressed()
-                }
+                Espresso.pressBack()
             }
 
-            verify(callbackHandler).onSuccess()
-            verify(callbackHandler).onBack()
+            verify(callbackHandler).onSuccess(true)
             verify(localAuthPreferenceRepository).getLocalAuthPref()
             verify(localAuthPreferenceRepository)
                 .setLocalAuthPref(LocalAuthPreference.Enabled(false))
@@ -193,7 +188,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
             localAuthManager.enforceAndSet(false, activity, callbackHandler)
 
-            verify(callbackHandler).onSuccess()
+            verify(callbackHandler).onSuccess(false)
             verify(localAuthPreferenceRepository)
                 .setLocalAuthPref(LocalAuthPreference.Enabled(false))
         }
@@ -207,7 +202,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
             localAuthManager.enforceAndSet(false, activity, callbackHandler)
 
-            verify(callbackHandler).onSuccess()
+            verify(callbackHandler).onSuccess(false)
             verify(localAuthPreferenceRepository)
                 .setLocalAuthPref(LocalAuthPreference.Enabled(false))
         }
@@ -221,7 +216,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
             localAuthManager.enforceAndSet(false, activity, callbackHandler)
 
-            verify(callbackHandler).onSuccess()
+            verify(callbackHandler).onSuccess(false)
             verify(localAuthPreferenceRepository)
                 .setLocalAuthPref(LocalAuthPreference.Enabled(false))
         }
@@ -235,7 +230,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
             localAuthManager.enforceAndSet(false, activity, callbackHandler)
 
-            verify(callbackHandler).onSuccess()
+            verify(callbackHandler).onSuccess(false)
             verify(localAuthPreferenceRepository)
                 .setLocalAuthPref(LocalAuthPreference.Enabled(false))
         }
@@ -259,7 +254,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 ).performClick()
             }
 
-            verify(callbackHandler).onSuccess()
+            verify(callbackHandler).onSuccess(false)
             verify(localAuthPreferenceRepository)
                 .setLocalAuthPref(LocalAuthPreference.Enabled(false))
         }
@@ -283,7 +278,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 ).performClick()
             }
 
-            verify(callbackHandler).onSuccess()
+            verify(callbackHandler).onSuccess(false)
             verify(localAuthPreferenceRepository)
                 .setLocalAuthPref(LocalAuthPreference.Enabled(false))
         }
@@ -301,7 +296,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
             verify(localAuthPreferenceRepository)
                 .setLocalAuthPref(LocalAuthPreference.Enabled(false))
-            verify(callbackHandler).onSuccess()
+            verify(callbackHandler).onSuccess(false)
         }
 
     @Test
@@ -315,7 +310,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
             localAuthManager.enforceAndSet(false, activity, callbackHandler)
 
-            verify(callbackHandler).onSuccess()
+            verify(callbackHandler).onSuccess(false)
         }
 
     @Test
@@ -324,7 +319,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         whenever(localAuthPreferenceRepository.getLocalAuthPref()).thenReturn(null)
         localAuthManager.enforceAndSet(false, activity, callbackHandler)
 
-        verify(callbackHandler).onSuccess()
+        verify(callbackHandler).onSuccess(false)
         verify(localAuthPreferenceRepository).setLocalAuthPref(LocalAuthPreference.Disabled)
     }
 
@@ -342,7 +337,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             ).performClick()
         }
 
-        verify(callbackHandler).onFailure()
+        verify(callbackHandler).onFailure(false)
         verify(localAuthPreferenceRepository).setLocalAuthPref(LocalAuthPreference.Disabled)
     }
 
@@ -355,13 +350,10 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             onNodeWithText(
                 context.getString(R.string.go_to_settings_title),
             ).isDisplayed()
-            activityRule.scenario.onActivity { activity ->
-                activity.onBackPressedDispatcher.onBackPressed()
-            }
+            Espresso.pressBack()
         }
 
-        verify(callbackHandler).onFailure()
-        verify(callbackHandler).onBack()
+        verify(callbackHandler).onFailure(true)
         verify(localAuthPreferenceRepository).setLocalAuthPref(LocalAuthPreference.Disabled)
     }
 
@@ -374,13 +366,10 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             onNodeWithText(
                 context.getString(R.string.go_to_settings_title),
             ).isDisplayed()
-            activityRule.scenario.onActivity { activity ->
-                activity.onBackPressedDispatcher.onBackPressed()
-            }
+            Espresso.pressBack()
         }
 
-        verify(callbackHandler).onFailure()
-        verify(callbackHandler).onBack()
+        verify(callbackHandler).onFailure(true)
         verify(localAuthPreferenceRepository).setLocalAuthPref(LocalAuthPreference.Disabled)
     }
 }

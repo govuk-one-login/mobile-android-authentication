@@ -1,7 +1,6 @@
 package uk.gov.android.localauth.ui.settings
 
 import android.content.res.Configuration
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -28,13 +27,16 @@ fun GoToSettingsScreen(
     onGoToSettings: () -> Unit,
     onDismiss: () -> Unit,
 ) {
-    BackHandler {
-        onBack()
-        onDismiss()
-    }
     FullScreenDialogue(
-        onDismissRequest = onDismiss,
+        onDismissRequest = {
+            onBack()
+            onDismiss()
+        },
         title = "",
+        onBack = {
+            onBack()
+            onDismiss()
+        },
         content = {
             GoToSettingsContent {
                 onGoToSettings()

@@ -1,17 +1,27 @@
 package uk.gov.android.localauth
 
-import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import uk.gov.android.localauth.devicesecurity.DeviceBiometricsManager
 import uk.gov.android.localauth.devicesecurity.DeviceBiometricsStatus
 import uk.gov.android.localauth.preference.LocalAuthPreference
 import uk.gov.android.localauth.preference.LocalAuthPreferenceRepository
 import uk.gov.android.localauth.ui.BiometricsUiManager
-import uk.gov.android.localauth.ui.optin.BioOptInAnalyticsViewModel
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 
+/**
+ * [LocalAuthManagerImpl] checks if the device is secure and based on that maps the local authentication preferences accordingly
+ * and stores them in memory.
+ *
+ * @param localAuthPrefRepo Stores the [localAuthPreference]
+ * @param deviceBiometricsManager Checks for device is secured and/ or biometrics are available and enabled
+ * @param analyticsLogger Provides analytics logger for GA4 events for the [BiometricsUiManager]
+ *
+ * * The functionality is based on the [enforceAndSet]:
+ *
+ *
+ */
 @Suppress("ForbiddenComment")
-class LocalAuthManagerImpl(
+open class LocalAuthManagerImpl(
     private val localAuthPrefRepo: LocalAuthPreferenceRepository,
     private val deviceBiometricsManager: DeviceBiometricsManager,
     private val analyticsLogger: AnalyticsLogger,
@@ -29,7 +39,8 @@ class LocalAuthManagerImpl(
         if (deviceBiometricsManager.isDeviceSecure()) {
             when {
                 // LocalAuthPref already set and saved (passcode/ biometrics) -- continue onSuccess
-                (localAuthPreference is LocalAuthPreference.Enabled) -> callbackHandler.onSuccess()
+                (localAuthPreference is LocalAuthPreference.Enabled)
+                -> callbackHandler.onSuccess(false)
                 else -> {
                     // Go through the local auth flow
                     handleSecureDevice(callbackHandler, activity)
@@ -48,26 +59,21 @@ class LocalAuthManagerImpl(
         callbackHandler: LocalAuthManagerCallbackHandler,
     ) {
         if (localAuhRequired) {
-            // TODO: GA4 analytics for screen event to be implemented
-            // Set pref to Disabled since there's no local auth and the user would now become a
-            // returning user
             uiManager.displayGoToSettingsPage(
                 activity = activity,
                 onBack = {
-                    // TODO: Additional behaviour (if required) + Analytics
-                    callbackHandler.onBack()
-                    callbackHandler.onFailure()
+                    callbackHandler.onFailure(true)
                     localAuthPrefRepo.setLocalAuthPref(LocalAuthPreference.Disabled)
                 },
                 onGoToSettings = {
-                    callbackHandler.onFailure()
+                    callbackHandler.onFailure(false)
                     localAuthPrefRepo.setLocalAuthPref(LocalAuthPreference.Disabled)
                 },
             )
         } else {
             // This is treated as success as it's not needed for the acton to be performed
             localAuthPrefRepo.setLocalAuthPref(LocalAuthPreference.Disabled)
-            callbackHandler.onSuccess()
+            callbackHandler.onSuccess(false)
         }
     }
 
@@ -77,35 +83,25 @@ class LocalAuthManagerImpl(
     ) {
         when (deviceBiometricsManager.getCredentialStatus()) {
             DeviceBiometricsStatus.SUCCESS -> {
-                val analyticsViewModel = BioOptInAnalyticsViewModel(
-                    activity as Context,
-                    analyticsLogger,
-                )
-                // Track GA4 analytics screen event
-                analyticsViewModel.trackBioOptInScreen()
                 uiManager.displayBioOptIn(
                     activity = activity,
                     onBack = {
                         localAuthPrefRepo.setLocalAuthPref(
                             LocalAuthPreference.Enabled(false),
                         )
-                        callbackHandler.onSuccess()
-                        callbackHandler.onBack()
-                        analyticsViewModel.trackBackButton()
+                        callbackHandler.onSuccess(true)
                     },
                     onBiometricsOptIn = {
                         localAuthPrefRepo.setLocalAuthPref(
                             LocalAuthPreference.Enabled(true),
                         )
-                        callbackHandler.onSuccess()
-                        analyticsViewModel.trackBiometricsButton()
+                        callbackHandler.onSuccess(false)
                     },
                     onBiometricsOptOut = {
                         localAuthPrefRepo.setLocalAuthPref(
                             LocalAuthPreference.Enabled(false),
                         )
-                        callbackHandler.onSuccess()
-                        analyticsViewModel.trackPasscodeButton()
+                        callbackHandler.onSuccess(false)
                     },
                 )
             }
@@ -115,7 +111,7 @@ class LocalAuthManagerImpl(
                 // called above
                 localAuthPrefRepo
                     .setLocalAuthPref(LocalAuthPreference.Enabled(false))
-                callbackHandler.onSuccess()
+                callbackHandler.onSuccess(false)
             }
         }
     }
