@@ -62,12 +62,12 @@ open class LocalAuthManagerImpl(
             uiManager.displayGoToSettingsPage(
                 activity = activity,
                 onBack = {
-                    callbackHandler.onFailure(true)
                     localAuthPrefRepo.setLocalAuthPref(LocalAuthPreference.Disabled)
+                    callbackHandler.onFailure(true)
                 },
                 onGoToSettings = {
-                    callbackHandler.onFailure(false)
                     localAuthPrefRepo.setLocalAuthPref(LocalAuthPreference.Disabled)
+                    callbackHandler.onFailure(false)
                 },
             )
         } else {
