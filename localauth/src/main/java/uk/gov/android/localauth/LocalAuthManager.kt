@@ -19,9 +19,7 @@ interface LocalAuthManager {
      * This method allows to checks if local authentication is available on the device and saves the
      * local auth preference.
      *
-     * @param localAuhRequired enforces local authentication on the device - when this is set to true, it requires
-     *  the device to be secure. If the device is not secure, [LocalAuthManagerCallbackHandler.onFailure] is returned.
-     *  When this si set to false, [LocalAuthManagerCallbackHandler.onSuccess] is returned.
+     * @param localAuhRequired enforces local authentication on the device - when this is set to true, it requires the device to be secure.
      * @param activity is required to allow the [BiometricsUiManager] to display dialogs on top of the consumer underlying activity
      * @param callbackHandler allows the consumer to provide implementation for success or failure results/ outcomes
      */

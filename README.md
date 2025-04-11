@@ -281,7 +281,7 @@ An example of the AppIntegrityManager and a possible implementation is available
 
 ## Local Authentication Manager
 The LocalAuthManager allows a consumer to check the device security level and what is **available** and **enabled** (e.g. biometrics, passcode, etc). Based on this, it will save preferences accordingly.
-It requires a `DeviceBiometricsManager` and a `LocalAuthPreferenceRepo` which allows for the device checks and storing/ updating teh reference accordingly.
+It requires a `DeviceBiometricsManager` and a `LocalAuthPreferenceRepo` which allows for the device checks and storing/ updating the reference accordingly.
 
 ```kotlin
 val biometricManager = BiometricManager.from(context)
