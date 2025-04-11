@@ -16,9 +16,16 @@ import uk.gov.logging.api.analytics.logging.AnalyticsLogger
  * @param deviceBiometricsManager Checks for device is secured and/ or biometrics are available and enabled
  * @param analyticsLogger Provides analytics logger for GA4 events for the [BiometricsUiManager]
  *
- * * The functionality is based on the [enforceAndSet]:
+ * The functionality is based on the [enforceAndSet]:
+ * * when [localAuthRequired] -> requires minimum of passcode/ pattern **enabled** on the
+ * * when the device is secured, it checks if biometrics are available
  *
+ * ** if yes, then it will display the [BioOptInScreen] which allows the suer to set a preference for either biometrics or passcode/ pattern
  *
+ * ** if no, then it will default to passcode as preference which will be stored and then referenced - this will only change if the device becomes unsecure
+ *
+ * * when the device is unsecure - if [localAuthRequired] is true, then it will land on the [GoToSettingScreen]
+ * to enable any security on the device
  */
 @Suppress("ForbiddenComment")
 open class LocalAuthManagerImpl(
