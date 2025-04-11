@@ -47,6 +47,7 @@ The Authentication package comprises three sub-packages:
 1. login - authenticates a users details and enables them to log into their account securely. This is done by providing them with a login session and token.
 2. integrity - checks the app integrity and provides a ClientAttestation and ProofOfPossession that will be used for retrieving an authentication token response.
 3. jwt - provides ability to verify a JWT with a public key adhering to the JWK specifications.
+4. localauth - provides functionality for checking the device security level/ type and saving this as a local authentication preference.
 
 The package integrates [openID](https://openid.net/developers/how-connect-works/) AppAuth and conforms to its standards, documentation can be found here [AppAuth](https://github.com/openid/AppAuth-Android)
 
@@ -277,6 +278,41 @@ The AppIntegrityManager combines the structures explained above and creates a pr
 The AppIntegrityConfiguration provides the AttestationCaller, AppChecker, and KeyStoreManager specific implementation to be provided to the AppIntegrityManager.
 
 An example of the AppIntegrityManager and a possible implementation is available in the [FirebaseAppIntegrityManager](app/src/main/java/uk/gov/android/authentication/integrity/FirebaseAppIntegrityManager.kt)
+
+## Local Authentication Manager
+The LocalAuthManager allows a consumer to check the device security level and what is **available** and **enabled** (e.g. biometrics, passcode, etc). Based on this, it will save preferences accordingly.
+It requires a `DeviceBiometricsManager` and a `LocalAuthPreferenceRepo` which allows for the device checks and storing/ updating the reference accordingly.
+
+```kotlin
+val biometricManager = BiometricManager.from(context)
+val kgm = context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+DeviceBiometricsManagerImpl(biometricManager, kgm)
+```
+
+Example of `LocalAuthPreferenceRepo` implementation
+```agsl
+class LocalAuthPreferenceRepositoryImpl(private val context: Context) : LocalAuthPreferenceRepo {
+    private val sharedPrefs = context.getSharedPreferences(
+        SHARED_PREFS_ID,
+        Context.MODE_PRIVATE
+    )
+
+    override fun setLocalAuthPref(pref: LocalAuthPreference) {
+        with(sharedPrefs.edit()) {
+            putString(BIO_PREF, pref.toString())
+            apply()
+        }
+    }
+
+    override fun getLocalAuthPref(): LocalAuthPreference? {
+        return when (sharedPrefs.getString(BIO_PREF, null)) {
+            LocalAuthPreference.Enabled(true).toString() -> LocalAuthPreference.Enabled(true)
+            LocalAuthPreference.Enabled(false).toString() -> LocalAuthPreference.Enabled(false)
+            LocalAuthPreference.Disabled.toString() -> LocalAuthPreference.Disabled
+            else -> null
+        }
+    }
+```
 
 ## Updating gradle-wrapper
 

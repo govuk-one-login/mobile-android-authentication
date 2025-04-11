@@ -20,12 +20,14 @@ jobs:
   onPullRequestJob:
     env:
       ANDROID_HOME: ${{ github.workspace }}/bin/androidSdk
+      GITHUB_ACTOR: ${{ secrets.MODULE_FETCH_TOKEN_USERNAME}}
+      GITHUB_TOKEN: ${{ secrets.MODULE_FETCH_TOKEN }}
     name: Verify code base when pull request is published/updated
     runs-on: ubuntu-22.04
     #    runs-on: ubuntu-20.04-16core # Larger github runner, with KVM acceleration
     steps:
       - name: Run pull request workflow
-        uses: govuk-one-login/mobile-android-pipelines@4bae5f390135e3f7d60fcd646376b198de8c467e
+        uses: govuk-one-login/mobile-android-pipelines@054d9fc244475f76a4f9149636ac9fccfd05d3d1
         with:
           sonar_token: ${{ secrets.SONAR_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
