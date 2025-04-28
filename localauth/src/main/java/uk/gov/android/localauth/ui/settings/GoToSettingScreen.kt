@@ -11,6 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.persistentListOf
 import uk.gov.android.authentication.localauth.R
+import uk.gov.android.ui.componentsv2.list.ListItem
 import uk.gov.android.ui.componentsv2.list.ListTitle
 import uk.gov.android.ui.componentsv2.list.TitleType
 import uk.gov.android.ui.patterns.centrealignedscreen.CentreAlignedScreenBodyContent
@@ -65,7 +66,7 @@ private fun GoToSettingsContent(
     val body1 = stringResource(R.string.app_localAuthManagerErrorBody1)
     val body2 = stringResource(R.string.app_localAuthManagerErrorBody2)
     val numberedListTitle = stringResource(R.string.app_localAuthManagerErrorBody3)
-    val numberedListStep1 = stringResource(R.string.app_localAuthManagerErrorNumberedList1)
+    val numberedListStep1 = R.string.app_localAuthManagerErrorNumberedList1
     val numberedListStep2 = stringResource(R.string.app_localAuthManagerErrorNumberedList2)
     val numberedListStep3 = stringResource(R.string.app_localAuthManagerErrorNumberedList3)
     ErrorScreen(
@@ -78,11 +79,10 @@ private fun GoToSettingsContent(
             CentreAlignedScreenBodyContent.Text(body2),
             CentreAlignedScreenBodyContent.NumberedList(
                 title = ListTitle(numberedListTitle, TitleType.Text),
-                items =
-                persistentListOf(
-                    numberedListStep1,
-                    numberedListStep2,
-                    numberedListStep3,
+                items = persistentListOf(
+                    ListItem(spannableText = numberedListStep1),
+                    ListItem(numberedListStep2),
+                    ListItem(numberedListStep3),
                 ),
             ),
         ),
