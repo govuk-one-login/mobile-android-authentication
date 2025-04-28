@@ -148,39 +148,35 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
             )
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_title),
+                context.getString(R.string.app_localAuthManagerErrorTitle),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_body1),
+                context.getString(R.string.app_localAuthManagerErrorBody1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_body2),
+                context.getString(R.string.app_localAuthManagerErrorBody2),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_numbered_list_title),
+                context.getString(R.string.app_localAuthManagerErrorBody3),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_numbered_list_step1),
+                context.getString(R.string.app_localAuthManagerErrorNumberedList1),
             ).performScrollTo().assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_numbered_list_step2),
+                context.getString(R.string.app_localAuthManagerErrorNumberedList2),
             ).performScrollTo().assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_numbered_list_step3),
+                context.getString(R.string.app_localAuthManagerErrorNumberedList3),
             ).performScrollTo().assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_numbered_list_step4),
-            ).performScrollTo().assertIsDisplayed()
-
-            onNodeWithText(
-                context.getString(R.string.go_to_settings_button),
+                context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton),
             ).assertIsDisplayed()
         }
     }
@@ -195,11 +191,11 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
             )
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_button),
+                context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton),
             ).performClick()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_title),
+                context.getString(R.string.app_localAuthManagerErrorTitle),
             ).assertIsNotDisplayed()
 
             assertTrue(onGoToSettings)
@@ -216,7 +212,7 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
             )
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_title),
+                context.getString(R.string.app_localAuthManagerErrorTitle),
             ).assertIsDisplayed()
 
             Espresso.pressBack()

@@ -15,5 +15,6 @@
     </issue>
     <issue id="TrustAllX509TrustManager" severity="ignore"/>
     <issue id="NewerVersionAvailable"/>
+    <issue id="TypographyQuotes" severity="ignore"/>
 </lint>
 

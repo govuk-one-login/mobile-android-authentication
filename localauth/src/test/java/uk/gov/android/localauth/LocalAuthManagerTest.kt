@@ -330,10 +330,10 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         composeTestRule.apply {
             localAuthManager.enforceAndSet(true, activity, callbackHandler)
             onNodeWithText(
-                context.getString(R.string.go_to_settings_title),
+                context.getString(R.string.app_localAuthManagerErrorTitle),
             ).isDisplayed()
             onNodeWithText(
-                context.getString(R.string.go_to_settings_button),
+                context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton),
             ).performClick()
         }
 
@@ -348,7 +348,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         composeTestRule.apply {
             localAuthManager.enforceAndSet(true, activity, callbackHandler)
             onNodeWithText(
-                context.getString(R.string.go_to_settings_title),
+                context.getString(R.string.app_localAuthManagerErrorTitle),
             ).isDisplayed()
             Espresso.pressBack()
         }
@@ -364,7 +364,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         composeTestRule.apply {
             localAuthManager.enforceAndSet(true, activity, callbackHandler)
             onNodeWithText(
-                context.getString(R.string.go_to_settings_title),
+                context.getString(R.string.app_localAuthManagerErrorTitle),
             ).isDisplayed()
             Espresso.pressBack()
         }
