@@ -17,5 +17,5 @@
     <string name="app_localAuthManagerErrorNumberedList1">Dod o hyd i\'r opsiwn i sefydlu pin neu batrwm i ddatgloi\'ch ffôn - mae hyn fel arfer yn <b>Device unlock</b> neu <b>Lock screen</b>.</string>
     <string name="app_localAuthManagerErrorNumberedList2">Dilyn y cyfarwyddiadau.</string>
     <string name="app_localAuthManagerErrorNumberedList3">Dod yn ôl i barhau i ddefnyddio\' ch GOV.UK Wallet.</string>
-    <string name="app_localAuthManagerErrorGoToSettingsButton">Go to phone settings</string>
+    <string name="app_localAuthManagerErrorGoToSettingsButton">Ewch i osodiadau ffôn</string>
 </resources>

@@ -35,6 +35,7 @@ fun GoToSettingsScreen(
         context,
         analyticsLogger,
     )
+    analyticsViewModel.trackScreen()
     FullScreenDialogue(
         onDismissRequest = {
             analyticsViewModel.trackBackButton()
