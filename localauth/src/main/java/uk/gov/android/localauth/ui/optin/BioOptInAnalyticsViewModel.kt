@@ -19,12 +19,12 @@ class BioOptInAnalyticsViewModel(
     private val screenEvent = makeScreenEvent(context)
     private val biometricsBtnEvent = makeButtonEvent(
         context,
-        R.string.bio_opt_in_bio_button,
+        R.string.app_enableBiometricsButton,
     )
     private val passcodeBtnEvent =
         makeButtonEvent(
             context,
-            R.string.bio_opt_in_passcode_button,
+            R.string.app_enablePasscodeOrPatternButton,
         )
     private val backBtnEvent = makeBackButtonEvent(context)
 
@@ -47,7 +47,7 @@ class BioOptInAnalyticsViewModel(
     companion object {
         internal fun makeScreenEvent(context: Context) = with(context) {
             ViewEvent.Screen(
-                name = getEnglishString(R.string.bio_opt_in_title),
+                name = getEnglishString(R.string.app_enableBiometricsTitle),
                 id = getEnglishString(R.string.bio_opt_in_screen_page_id),
                 params = requiredParams,
             )

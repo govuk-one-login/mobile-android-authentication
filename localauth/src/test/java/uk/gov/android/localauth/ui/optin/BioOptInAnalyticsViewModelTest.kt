@@ -37,10 +37,10 @@ class BioOptInAnalyticsViewModelTest {
             taxonomyLevel2 = TaxonomyLevel2.LOGIN,
             taxonomyLevel3 = TaxonomyLevel3.BIOMETRICS,
         )
-        name = context.getEnglishString(R.string.bio_opt_in_title)
+        name = context.getEnglishString(R.string.app_enableBiometricsTitle)
         id = context.getEnglishString(R.string.bio_opt_in_screen_page_id)
-        passcodeBtn = context.getEnglishString(R.string.bio_opt_in_passcode_button)
-        biometricsBtn = context.getEnglishString(R.string.bio_opt_in_bio_button)
+        passcodeBtn = context.getEnglishString(R.string.app_enablePasscodeOrPatternButton)
+        biometricsBtn = context.getEnglishString(R.string.app_enableBiometricsButton)
         backBtn = context.getEnglishString(R.string.system_backButton)
         viewModel = BioOptInAnalyticsViewModel(context, logger)
     }

@@ -26,27 +26,27 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
         setup()
         composeTestRule.apply {
             onNodeWithText(
-                context.getString(R.string.bio_opt_in_title),
+                context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.bio_opt_in_body1),
+                context.getString(R.string.app_wallet_enableBiometricsBody1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.bio_opt_in_body2),
+                context.getString(R.string.app_wallet_enableBiometricsBullet1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.bio_opt_in_body3),
+                context.getString(R.string.app_wallet_enableBiometricsBullet2),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.bio_opt_in_bio_button),
+                context.getString(R.string.app_enableBiometricsButton),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.bio_opt_in_passcode_button),
+                context.getString(R.string.app_enablePasscodeOrPatternButton),
             ).assertIsDisplayed()
         }
     }
@@ -56,7 +56,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
         setup()
         composeTestRule.apply {
             onNodeWithText(
-                context.getString(R.string.bio_opt_in_bio_button),
+                context.getString(R.string.app_enableBiometricsButton),
             ).performClick()
 
             assertTrue(onBioOptIn)
@@ -68,7 +68,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
         setup()
         composeTestRule.apply {
             onNodeWithText(
-                context.getString(R.string.bio_opt_in_passcode_button),
+                context.getString(R.string.app_enablePasscodeOrPatternButton),
             ).performClick()
 
             assertTrue(onBioOptOut)
@@ -92,27 +92,27 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
                 BioOptInPreview()
             }
             onNodeWithText(
-                context.getString(R.string.bio_opt_in_title),
+                context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.bio_opt_in_body1),
+                context.getString(R.string.app_wallet_enableBiometricsBody1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.bio_opt_in_body2),
+                context.getString(R.string.app_wallet_enableBiometricsBullet1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.bio_opt_in_body3),
+                context.getString(R.string.app_wallet_enableBiometricsBullet2),
             ).assertExists()
 
             onNodeWithText(
-                context.getString(R.string.bio_opt_in_bio_button),
+                context.getString(R.string.app_enableBiometricsButton),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.bio_opt_in_passcode_button),
+                context.getString(R.string.app_enablePasscodeOrPatternButton),
             ).assertIsDisplayed()
         }
     }

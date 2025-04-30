@@ -55,10 +55,10 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             composeTestRule.apply {
                 localAuthManager.enforceAndSet(false, activity, callbackHandler)
                 onNodeWithText(
-                    context.getString(R.string.bio_opt_in_title),
+                    context.getString(R.string.app_enableBiometricsTitle),
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.bio_opt_in_bio_button),
+                    context.getString(R.string.app_enableBiometricsButton),
                 ).performClick()
             }
 
@@ -78,10 +78,10 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             composeTestRule.apply {
                 localAuthManager.enforceAndSet(true, activity, callbackHandler)
                 onNodeWithText(
-                    context.getString(R.string.bio_opt_in_title),
+                    context.getString(R.string.app_enableBiometricsTitle),
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.bio_opt_in_bio_button),
+                    context.getString(R.string.app_enableBiometricsButton),
                 ).performClick()
             }
 
@@ -101,10 +101,10 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             composeTestRule.apply {
                 localAuthManager.enforceAndSet(false, activity, callbackHandler)
                 onNodeWithText(
-                    context.getString(R.string.bio_opt_in_title),
+                    context.getString(R.string.app_enableBiometricsTitle),
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.bio_opt_in_passcode_button),
+                    context.getString(R.string.app_enablePasscodeOrPatternButton),
                 ).performClick()
             }
 
@@ -124,10 +124,10 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             composeTestRule.apply {
                 localAuthManager.enforceAndSet(true, activity, callbackHandler)
                 onNodeWithText(
-                    context.getString(R.string.bio_opt_in_title),
+                    context.getString(R.string.app_enableBiometricsTitle),
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.bio_opt_in_passcode_button),
+                    context.getString(R.string.app_enablePasscodeOrPatternButton),
                 ).performClick()
             }
 
@@ -147,7 +147,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             composeTestRule.apply {
                 localAuthManager.enforceAndSet(false, activity, callbackHandler)
                 onNodeWithText(
-                    context.getString(R.string.bio_opt_in_title),
+                    context.getString(R.string.app_enableBiometricsTitle),
                 ).isDisplayed()
                 Espresso.pressBack()
             }
@@ -168,7 +168,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             composeTestRule.apply {
                 localAuthManager.enforceAndSet(true, activity, callbackHandler)
                 onNodeWithText(
-                    context.getString(R.string.bio_opt_in_title),
+                    context.getString(R.string.app_enableBiometricsTitle),
                 ).isDisplayed()
                 Espresso.pressBack()
             }
@@ -247,10 +247,10 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             composeTestRule.apply {
                 localAuthManager.enforceAndSet(true, activity, callbackHandler)
                 onNodeWithText(
-                    context.getString(R.string.bio_opt_in_title),
+                    context.getString(R.string.app_enableBiometricsTitle),
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.bio_opt_in_passcode_button),
+                    context.getString(R.string.app_enablePasscodeOrPatternButton),
                 ).performClick()
             }
 
@@ -271,10 +271,10 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             composeTestRule.apply {
                 localAuthManager.enforceAndSet(false, activity, callbackHandler)
                 onNodeWithText(
-                    context.getString(R.string.bio_opt_in_title),
+                    context.getString(R.string.app_enableBiometricsTitle),
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.bio_opt_in_passcode_button),
+                    context.getString(R.string.app_enablePasscodeOrPatternButton),
                 ).performClick()
             }
 

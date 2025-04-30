@@ -107,13 +107,13 @@ private fun BioOptInText() {
         modifier = Modifier.padding(vertical = smallPadding),
     )
     GdsHeading(
-        text = stringResource(R.string.bio_opt_in_title),
+        text = stringResource(R.string.app_enableBiometricsTitle),
         style = GdsHeadingStyle.Title1,
         modifier = Modifier.padding(bottom = smallPadding),
     )
-    CustomText(text = stringResource(R.string.bio_opt_in_body1))
-    CustomText(text = stringResource(R.string.bio_opt_in_body2))
-    CustomText(text = stringResource(R.string.bio_opt_in_body3))
+    CustomText(text = stringResource(R.string.app_wallet_enableBiometricsBody1))
+    CustomText(text = stringResource(R.string.app_wallet_enableBiometricsBullet1))
+    CustomText(text = stringResource(R.string.app_wallet_enableBiometricsBullet2))
 }
 
 @Composable
@@ -126,13 +126,13 @@ private fun BioOptInButtons(
         modifier = Modifier.padding(bottom = smallPadding),
     ) {
         GdsButton(
-            text = stringResource(R.string.bio_opt_in_bio_button),
+            text = stringResource(R.string.app_enableBiometricsButton),
             buttonType = ButtonType.Primary,
             onClick = onBiometricsOptIn,
             modifier = Modifier.fillMaxWidth(),
         )
         GdsButton(
-            text = stringResource(R.string.bio_opt_in_passcode_button),
+            text = stringResource(R.string.app_enablePasscodeOrPatternButton),
             buttonType = ButtonType.Quaternary,
             onClick = onBiometricsOptOut,
             modifier = Modifier.fillMaxWidth(),
