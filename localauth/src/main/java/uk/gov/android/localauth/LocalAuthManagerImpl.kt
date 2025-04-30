@@ -38,6 +38,7 @@ open class LocalAuthManagerImpl(
         get() = localAuthPrefRepo.getLocalAuthPref()
 
     override suspend fun enforceAndSet(
+        walletEnabled: Boolean,
         localAuhRequired: Boolean,
         activity: FragmentActivity,
         callbackHandler: LocalAuthManagerCallbackHandler,
@@ -50,7 +51,7 @@ open class LocalAuthManagerImpl(
                 -> callbackHandler.onSuccess(false)
                 else -> {
                     // Go through the local auth flow
-                    handleSecureDevice(callbackHandler, activity)
+                    handleSecureDevice(callbackHandler, activity, walletEnabled)
                 }
             }
         } else {
@@ -87,11 +88,13 @@ open class LocalAuthManagerImpl(
     private fun handleSecureDevice(
         callbackHandler: LocalAuthManagerCallbackHandler,
         activity: FragmentActivity,
+        walletEnabled: Boolean
     ) {
         when (deviceBiometricsManager.getCredentialStatus()) {
             DeviceBiometricsStatus.SUCCESS -> {
                 uiManager.displayBioOptIn(
                     activity = activity,
+                    walletEnabled = walletEnabled,
                     onBack = {
                         localAuthPrefRepo.setLocalAuthPref(
                             LocalAuthPreference.Enabled(false),

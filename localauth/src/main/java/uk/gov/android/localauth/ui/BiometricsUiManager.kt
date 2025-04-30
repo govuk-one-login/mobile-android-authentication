@@ -11,6 +11,7 @@ import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 interface DialogUiManager {
     fun displayBioOptIn(
         activity: FragmentActivity,
+        walletEnabled: Boolean,
         onBack: () -> Unit,
         onBiometricsOptIn: () -> Unit,
         onBiometricsOptOut: () -> Unit,
@@ -28,6 +29,7 @@ class BiometricsUiManager(
 ) : DialogUiManager {
     override fun displayBioOptIn(
         activity: FragmentActivity,
+        walletEnabled: Boolean,
         onBack: () -> Unit,
         onBiometricsOptIn: () -> Unit,
         onBiometricsOptOut: () -> Unit,
@@ -36,7 +38,13 @@ class BiometricsUiManager(
             ComposeView(activity).apply {
                 setContent {
                     GdsTheme {
-                        BioOptInScreen(analyticsLogger, onBack, onBiometricsOptIn, onBiometricsOptOut) {
+                        BioOptInScreen(
+                            analyticsLogger,
+                            walletEnabled,
+                            onBack,
+                            onBiometricsOptIn,
+                            onBiometricsOptOut
+                        ) {
                             (parent as? ViewGroup)?.removeView(this)
                         }
                     }
