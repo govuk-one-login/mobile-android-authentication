@@ -1,6 +1,7 @@
 package uk.gov.android.localauth.ui.settings
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -9,9 +10,16 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import uk.gov.android.authentication.localauth.R
 import uk.gov.android.localauth.utils.FragmentActivityTestCase
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
+import uk.gov.logging.api.analytics.parameters.data.TaxonomyLevel2
+import uk.gov.logging.api.analytics.parameters.data.TaxonomyLevel3
+import uk.gov.logging.api.v3dot1.logger.logEventV3Dot1
+import uk.gov.logging.api.v3dot1.model.RequiredParameters
+import uk.gov.logging.api.v3dot1.model.TrackEvent
+import uk.gov.logging.api.v3dot1.model.ViewEvent
 import kotlin.test.assertTrue
 
 @RunWith(AndroidJUnit4::class)
@@ -19,60 +27,93 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
     private val analyticsLogger: AnalyticsLogger = mock()
     private var onBack = false
     private var onGoToSettings = false
-    private var onDismiss = 0
+    private var onDismiss = false
+
+    private val requiredParams = RequiredParameters(
+        taxonomyLevel2 = TaxonomyLevel2.ONBOARDING,
+        taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
+    )
 
     @Test
     fun `test UI`() {
         setup()
         composeTestRule.apply {
             onNodeWithText(
-                context.getString(R.string.go_to_settings_title),
+                context.getString(R.string.app_localAuthManagerErrorTitle),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_body1),
+                context.getString(R.string.app_localAuthManagerErrorBody1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_body2),
+                context.getString(R.string.app_localAuthManagerErrorBody2),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_numbered_list_title),
+                context.getString(R.string.app_localAuthManagerErrorBody3),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_numbered_list_step1),
+                context.getString(R.string.app_localAuthManagerErrorNumberedList1),
             ).performScrollTo().assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_numbered_list_step2),
+                context.getString(R.string.app_localAuthManagerErrorNumberedList2),
             ).performScrollTo().assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_numbered_list_step3),
+                context.getString(R.string.app_localAuthManagerErrorNumberedList3),
             ).performScrollTo().assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_numbered_list_step4),
-            ).performScrollTo().assertIsDisplayed()
-
-            onNodeWithText(
-                context.getString(R.string.go_to_settings_button),
+                context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton),
             ).assertIsDisplayed()
         }
+        verify(analyticsLogger).logEventV3Dot1(
+            ViewEvent.Screen(
+                name = context.getString(R.string.app_localAuthManagerErrorTitle),
+                id = context.getString(R.string.go_settings_screen_page_id),
+                params = requiredParams,
+            ),
+        )
     }
 
     @Test
-    fun `test bio opt in button`() {
+    fun `test primary button`() {
         setup()
         composeTestRule.apply {
             onNodeWithText(
-                context.getString(R.string.go_to_settings_button),
+                context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton),
             ).performClick()
 
             assertTrue(onGoToSettings)
         }
+        verify(analyticsLogger).logEventV3Dot1(
+            TrackEvent.Button(
+                text = context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton),
+                params = requiredParams,
+            ),
+        )
+    }
+
+    @Test
+    fun `test close button`() {
+        setup()
+        composeTestRule.apply {
+            onNodeWithContentDescription(
+                "Close Button",
+            ).performClick()
+
+            assertTrue(onBack)
+            assertTrue(onDismiss)
+        }
+        verify(analyticsLogger).logEventV3Dot1(
+            TrackEvent.Button(
+                text = context.getString(R.string.system_backButton),
+                params = requiredParams,
+            ),
+        )
     }
 
     @Test
@@ -80,13 +121,20 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
         setup()
         composeTestRule.apply {
             onNodeWithText(
-                context.getString(R.string.go_to_settings_title),
+                context.getString(R.string.app_localAuthManagerErrorTitle),
             ).assertIsDisplayed()
 
             Espresso.pressBack()
 
             assertTrue(onBack)
+            assertTrue(onDismiss)
         }
+        verify(analyticsLogger).logEventV3Dot1(
+            TrackEvent.Button(
+                text = context.getString(R.string.system_backButton),
+                params = requiredParams,
+            ),
+        )
     }
 
     @Test
@@ -97,39 +145,35 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
             }
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_title),
+                context.getString(R.string.app_localAuthManagerErrorTitle),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_body1),
+                context.getString(R.string.app_localAuthManagerErrorBody1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_body2),
+                context.getString(R.string.app_localAuthManagerErrorBody2),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_numbered_list_title),
+                context.getString(R.string.app_localAuthManagerErrorBody3),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_numbered_list_step1),
+                context.getString(R.string.app_localAuthManagerErrorNumberedList1),
             ).performScrollTo().assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_numbered_list_step2),
+                context.getString(R.string.app_localAuthManagerErrorNumberedList2),
             ).performScrollTo().assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_numbered_list_step3),
+                context.getString(R.string.app_localAuthManagerErrorNumberedList3),
             ).performScrollTo().assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.go_to_settings_numbered_list_step4),
-            ).performScrollTo().assertIsDisplayed()
-
-            onNodeWithText(
-                context.getString(R.string.go_to_settings_button),
+                context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton),
             ).assertIsDisplayed()
         }
     }
@@ -140,7 +184,7 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
                 analyticsLogger = analyticsLogger,
                 onBack = { onBack = !onBack },
                 onGoToSettings = { onGoToSettings = !onGoToSettings },
-                onDismiss = { onDismiss++ },
+                onDismiss = { onDismiss = !onDismiss },
             )
         }
     }

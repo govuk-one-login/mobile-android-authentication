@@ -10,18 +10,15 @@
     <string name="bio_opt_in_passcode_button">Use pin or pattern instead</string>
 
     <!-- Go To Settings Screen -->
-    <string name="go_to_settings_title">You need to update your phone’s settings</string>
-    <string name="go_to_settings_body1">You can only add documents to your GOV.UK Wallet if your phone is protected with a pin or pattern.</string>
-    <string name="go_to_settings_body2">This is to make sure no one else can view or add documents to your wallet.</string>
-    <string name="go_to_settings_numbered_list_title">You need to:</string>
-    <string name="go_to_settings_numbered_list_step1">Go to Security and Privacy in your phone’s settings.</string>
-    <string name="go_to_settings_numbered_list_step2">Find the option to set up a pin or pattern to unlock your phone - this is usually under Device unlock or Lock screen.</string>
-    <string name="go_to_settings_numbered_list_step3">Follow the instructions.</string>
-    <string name="go_to_settings_numbered_list_step4">Come back to continue using your GOV.UK Wallet</string>
-    <string name="go_to_settings_link_text">If you need help, contact the GOV.UK One Login team</string>
-    <string name="go_to_settings_link_icon_content_description">Opens device settings</string>
-    <string name="go_to_settings_button">Go to phone settings</string>
+    <string name="app_localAuthManagerErrorTitle">You need to update your phone settings</string>
+    <string name="app_localAuthManagerErrorBody1">To add documents to your GOV.UK Wallet, you need to protect your phone with a pin or a pattern.</string>
+    <string name="app_localAuthManagerErrorBody2">This is to make sure no one else can view or add documents to your wallet.</string>
+    <string name="app_localAuthManagerErrorBody3">You need to go to your phone settings and:</string>
+    <string name="app_localAuthManagerErrorNumberedList1">Find the option to set up a pin or pattern to unlock your phone - this is usually in <b>Device unlock</b> or <b>Lock screen</b>.</string>
+    <string name="app_localAuthManagerErrorNumberedList2">Follow the instructions.</string>
+    <string name="app_localAuthManagerErrorNumberedList3">Come back to continue using your GOV.UK Wallet.</string>
+    <string name="app_localAuthManagerErrorGoToSettingsButton">Go to phone settings</string>
 
     <!-- Analytics default values -->
-    <string name="system_backButton" translatable="false">Back - System</string>
+    <string name="system_backButton" translatable="false">back - system</string>
 </resources>
