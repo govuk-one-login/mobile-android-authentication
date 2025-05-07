@@ -20,6 +20,7 @@ import uk.gov.logging.api.v3dot1.logger.logEventV3Dot1
 import uk.gov.logging.api.v3dot1.model.RequiredParameters
 import uk.gov.logging.api.v3dot1.model.TrackEvent
 import uk.gov.logging.api.v3dot1.model.ViewEvent
+import uk.gov.android.ui.componentsv2.R as ComponentsR
 import kotlin.test.assertTrue
 
 @RunWith(AndroidJUnit4::class)
@@ -102,7 +103,7 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
         setup()
         composeTestRule.apply {
             onNodeWithContentDescription(
-                "Close Button",
+                context.getString(ComponentsR.string.close_button),
             ).performClick()
 
             assertTrue(onBack)
