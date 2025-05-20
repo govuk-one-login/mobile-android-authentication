@@ -28,4 +28,16 @@ interface LocalAuthManager {
         activity: FragmentActivity,
         callbackHandler: LocalAuthManagerCallbackHandler,
     )
+
+    /**
+     * This method allows to check if biometrics are available and enabled on the device
+     *
+     * @return **true** if the device has the hardware and the user enabled this (existing biometrics on device) and **false** if biometrics are **NOT** enabled or the device does not support it
+     */
+    fun biometricsAvailable(): Boolean
+
+    /**
+     * This method allows to change the biometrics preference from enabled to disabled, and otherwise.
+     */
+    fun toggleBiometrics()
 }

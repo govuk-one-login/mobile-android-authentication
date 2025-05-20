@@ -60,6 +60,24 @@ open class LocalAuthManagerImpl(
         }
     }
 
+    override fun biometricsAvailable(): Boolean {
+        return deviceBiometricsManager.getCredentialStatus() == DeviceBiometricsStatus.SUCCESS
+    }
+
+    override fun toggleBiometrics() {
+        // Check if device secured
+        if (deviceBiometricsManager.isDeviceSecure()) {
+            // If biometrics available but not saved as local auth preference
+            if (biometricsAvailable() && localAuthPreference != LocalAuthPreference.Enabled(true)) {
+                // Then save pref as biometrics
+                localAuthPrefRepo.setLocalAuthPref(LocalAuthPreference.Enabled(true))
+            } else {
+                // Otherwise save pref as disabled
+                localAuthPrefRepo.setLocalAuthPref(LocalAuthPreference.Enabled(false))
+            }
+        }
+    }
+
     private fun handleUnsecuredDevice(
         localAuhRequired: Boolean,
         activity: FragmentActivity,

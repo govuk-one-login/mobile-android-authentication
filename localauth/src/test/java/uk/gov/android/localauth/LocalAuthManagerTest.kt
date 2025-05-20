@@ -21,6 +21,8 @@ import uk.gov.android.localauth.preference.LocalAuthPreferenceRepository
 import uk.gov.android.localauth.utils.FragmentActivityTestCase
 import uk.gov.android.localauth.utils.TestActivity
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 @RunWith(AndroidJUnit4::class)
 class LocalAuthManagerTest : FragmentActivityTestCase(true) {
@@ -371,5 +373,97 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
         verify(callbackHandler).onFailure(true)
         verify(localAuthPreferenceRepository).setLocalAuthPref(LocalAuthPreference.Disabled)
+    }
+
+    @Test
+    fun `check biometrics enabled - SUCCESS`() = runBlocking {
+        whenever(deviceBiometricsManager.getCredentialStatus())
+            .thenReturn(DeviceBiometricsStatus.SUCCESS)
+
+        val result = localAuthManager.biometricsAvailable()
+
+        assertTrue(result)
+    }
+
+    @Test
+    fun `check biometrics enabled - UNKNOWN`() = runBlocking {
+        whenever(deviceBiometricsManager.getCredentialStatus())
+            .thenReturn(DeviceBiometricsStatus.UNKNOWN)
+
+        val result = localAuthManager.biometricsAvailable()
+
+        assertFalse(result)
+    }
+
+    @Test
+    fun `check biometrics enabled - NOT_ENROLLED`() = runBlocking {
+        whenever(deviceBiometricsManager.getCredentialStatus())
+            .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
+
+        val result = localAuthManager.biometricsAvailable()
+
+        assertFalse(result)
+    }
+
+    @Test
+    fun `check biometrics enabled - NO_HARDWARE`() = runBlocking {
+        whenever(deviceBiometricsManager.getCredentialStatus())
+            .thenReturn(DeviceBiometricsStatus.NO_HARDWARE)
+
+        val result = localAuthManager.biometricsAvailable()
+
+        assertFalse(result)
+    }
+
+    @Test
+    fun `check biometrics enabled - HARDWARE_UNAVAILABLE`() = runBlocking {
+        whenever(deviceBiometricsManager.getCredentialStatus())
+            .thenReturn(DeviceBiometricsStatus.HARDWARE_UNAVAILABLE)
+
+        val result = localAuthManager.biometricsAvailable()
+
+        assertFalse(result)
+    }
+
+    @Test
+    fun `device secure - toggle biometrics - disable biometrics`() = runBlocking {
+        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+        whenever(deviceBiometricsManager.getCredentialStatus())
+            .thenReturn(DeviceBiometricsStatus.SUCCESS)
+        whenever(localAuthPreferenceRepository.getLocalAuthPref())
+            .thenReturn(LocalAuthPreference.Enabled(true))
+
+        localAuthManager.toggleBiometrics()
+
+        verify(localAuthPreferenceRepository)
+            .setLocalAuthPref(LocalAuthPreference.Enabled(false))
+    }
+
+    @Test
+    fun `device secure - toggle biometrics - enable biometrics from passcode`() = runBlocking {
+        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+        whenever(deviceBiometricsManager.getCredentialStatus())
+            .thenReturn(DeviceBiometricsStatus.SUCCESS)
+        whenever(localAuthPreferenceRepository.getLocalAuthPref())
+            .thenReturn(LocalAuthPreference.Enabled(false))
+
+        localAuthManager.toggleBiometrics()
+
+        verify(localAuthPreferenceRepository)
+            .setLocalAuthPref(LocalAuthPreference.Enabled(true))
+    }
+
+    @Test
+    fun `device secure - toggle biometrics - enable biometrics from disabled`() = runBlocking {
+        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+        whenever(deviceBiometricsManager.getCredentialStatus())
+            .thenReturn(DeviceBiometricsStatus.SUCCESS)
+        whenever(localAuthPreferenceRepository.getLocalAuthPref())
+            .thenReturn(LocalAuthPreference.Disabled)
+
+        localAuthManager.toggleBiometrics()
+
+        verify(localAuthPreferenceRepository)
+            .setLocalAuthPref(LocalAuthPreference.Enabled(true))
     }
 }
