@@ -11,6 +11,8 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
+import org.mockito.kotlin.any
+import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import uk.gov.android.authentication.localauth.R
@@ -465,5 +467,27 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
         verify(localAuthPreferenceRepository)
             .setLocalAuthPref(LocalAuthPreference.Enabled(true))
+    }
+
+    @Test
+    fun `device secure - toggle biometrics - biometrics unavailable - NOT ENROLLED`() = runBlocking {
+        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+        whenever(deviceBiometricsManager.getCredentialStatus())
+            .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
+
+        localAuthManager.toggleBiometrics()
+
+        verify(localAuthPreferenceRepository)
+            .setLocalAuthPref(LocalAuthPreference.Enabled(false))
+    }
+
+    @Test
+    fun `device not secure - toggle biometrics`() = runBlocking {
+        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(false)
+
+        localAuthManager.toggleBiometrics()
+
+        verify(localAuthPreferenceRepository, times(0))
+            .setLocalAuthPref(any())
     }
 }
