@@ -72,7 +72,7 @@ open class LocalAuthManagerImpl(
                 // Then save pref as biometrics
                 localAuthPrefRepo.setLocalAuthPref(LocalAuthPreference.Enabled(true))
             } else {
-                // Otherwise save pref as disabled
+                // Otherwise save biometrics as false
                 localAuthPrefRepo.setLocalAuthPref(LocalAuthPreference.Enabled(false))
             }
         }
