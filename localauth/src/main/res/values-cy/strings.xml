@@ -16,7 +16,7 @@
     <string name="app_enableBiometricsButton">Defnyddiwch biometreg</string>
     <string name="app_enablePasscodeOrPatternButton">Osgoi</string>
     <string name="app_enableBiometricsBody2">Os ydych yn defnyddio biometreg gyda\'r ap hwn, gallai unrhyw un sy\'n gallu dadgloi eich ffôn gyda biometreg neu gyda phin neu batrwm eich ffôn gael mynediad iddo.</string>
-    <string name="app_enableBiometricsBody3">Gallwch droi biometreg i ffwrdd unrhyw bryd yng ngosodiadau'r ap.</string>
+    <string name="app_enableBiometricsBody3">Gallwch droi biometreg i ffwrdd unrhyw bryd yng ngosodiadau\'r ap.</string>
     <!-- Wallet Copy -->
     <string name="app_wallet_enableBiometricsBody1">Defnyddiwch eich wyneb, eich olion bysedd neu\'ch iris i:</string>
     <string name="app_wallet_enableBiometricsBullet1">ddatgloi\'r ap o fewn 30 munud ar ôl mewngofnodi gyda GOV.UK One Login</string>
