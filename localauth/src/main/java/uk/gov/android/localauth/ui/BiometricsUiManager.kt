@@ -43,7 +43,7 @@ class BiometricsUiManager(
                             walletEnabled,
                             onBack,
                             onBiometricsOptIn,
-                            onBiometricsOptOut
+                            onBiometricsOptOut,
                         ) {
                             (parent as? ViewGroup)?.removeView(this)
                         }

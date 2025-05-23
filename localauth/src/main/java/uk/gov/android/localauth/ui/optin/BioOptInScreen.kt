@@ -33,6 +33,7 @@ import uk.gov.android.ui.componentsv2.list.GdsBulletedList
 import uk.gov.android.ui.componentsv2.list.ListTitle
 import uk.gov.android.ui.componentsv2.list.TitleType
 import uk.gov.android.ui.patterns.dialog.FullScreenDialogue
+import uk.gov.android.ui.patterns.dialog.FullScreenDialogueTopAppBar
 import uk.gov.android.ui.theme.m3.GdsTheme
 import uk.gov.android.ui.theme.meta.ScreenPreview
 import uk.gov.android.ui.theme.smallPadding
@@ -50,14 +51,27 @@ fun BioOptInScreen(
     onDismiss: () -> Unit,
 ) {
     val analyticsViewModel = BioOptInAnalyticsViewModel(LocalContext.current, analyticsLogger)
-    analyticsViewModel.trackBioOptInScreen()
+    if (walletEnabled) {
+        analyticsViewModel.trackBioOptInWalletScreen()
+    } else {
+        analyticsViewModel.trackBioOptInNoWalletScreen()
+    }
     FullScreenDialogue(
         onDismissRequest = onDismiss,
         topAppBar = {
-            // Not needed
+            FullScreenDialogueTopAppBar(
+                onCloseClick = {
+                    analyticsViewModel.trackCloseIconButton()
+                    onBiometricsOptOut()
+                    onDismiss()
+                },
+            ) {
+                // Nothing here
+            }
         },
         onBack = {
             onBack()
+            analyticsViewModel.trackBackButton()
             onDismiss()
         },
         content = {
@@ -132,9 +146,9 @@ private fun WalletCopyText() {
         title = ListTitle(text = title, titleType = TitleType.Text),
         bulletListItems = persistentListOf(
             bulletItemOne,
-            bulletItemTwo
+            bulletItemTwo,
         ),
-        modifier = Modifier.padding(bottom = smallPadding)
+        modifier = Modifier.padding(bottom = smallPadding),
     )
     CustomText(text = stringResource(R.string.app_enableBiometricsBody2))
     CustomText(text = stringResource(R.string.app_enableBiometricsBody3))
@@ -190,24 +204,48 @@ private fun CustomText(text: String) {
         text = text,
         color = MaterialTheme.colorScheme.onBackground,
         modifier = Modifier.padding(bottom = smallPadding),
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @ScreenPreview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 internal fun BioOptInPreviewWallet() {
     GdsTheme {
-        BioOptInContent(true, {}, {})
+        FullScreenDialogue(
+            onDismissRequest = {},
+            topAppBar = {
+                FullScreenDialogueTopAppBar({}) {
+                    // Nothing here
+                }
+            },
+            onBack = {},
+            content = {
+                BioOptInContent(true, {}, {})
+            },
+        )
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @ScreenPreview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 internal fun BioOptInPreview() {
     GdsTheme {
-        BioOptInContent(false, {}, {})
+        FullScreenDialogue(
+            onDismissRequest = {},
+            topAppBar = {
+                FullScreenDialogueTopAppBar({}) {
+                    // Nothing here
+                }
+            },
+            onBack = {},
+            content = {
+                BioOptInContent(false, {}, {})
+            },
+        )
     }
 }

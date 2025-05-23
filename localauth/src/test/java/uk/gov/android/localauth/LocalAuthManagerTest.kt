@@ -57,7 +57,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 .thenReturn(DeviceBiometricsStatus.SUCCESS)
 
             composeTestRule.apply {
-                localAuthManager.enforceAndSet(false, activity, callbackHandler)
+                localAuthManager.enforceAndSet(false, false, activity, callbackHandler)
                 onNodeWithText(
                     context.getString(R.string.app_enableBiometricsTitle),
                 ).isDisplayed()
@@ -80,7 +80,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 .thenReturn(DeviceBiometricsStatus.SUCCESS)
 
             composeTestRule.apply {
-                localAuthManager.enforceAndSet(true, activity, callbackHandler)
+                localAuthManager.enforceAndSet(false, true, activity, callbackHandler)
                 onNodeWithText(
                     context.getString(R.string.app_enableBiometricsTitle),
                 ).isDisplayed()
@@ -103,7 +103,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 .thenReturn(DeviceBiometricsStatus.SUCCESS)
 
             composeTestRule.apply {
-                localAuthManager.enforceAndSet(false, activity, callbackHandler)
+                localAuthManager.enforceAndSet(false, false, activity, callbackHandler)
                 onNodeWithText(
                     context.getString(R.string.app_enableBiometricsTitle),
                 ).isDisplayed()
@@ -115,7 +115,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             verify(callbackHandler).onSuccess(false)
             verify(localAuthPreferenceRepository).getLocalAuthPref()
             verify(localAuthPreferenceRepository)
-                .setLocalAuthPref(LocalAuthPreference.Enabled(false))
+                .setLocalAuthPref(LocalAuthPreference.Disabled)
         }
 
     @Test
@@ -126,7 +126,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 .thenReturn(DeviceBiometricsStatus.SUCCESS)
 
             composeTestRule.apply {
-                localAuthManager.enforceAndSet(true, activity, callbackHandler)
+                localAuthManager.enforceAndSet(false, true, activity, callbackHandler)
                 onNodeWithText(
                     context.getString(R.string.app_enableBiometricsTitle),
                 ).isDisplayed()
@@ -138,7 +138,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             verify(callbackHandler).onSuccess(false)
             verify(localAuthPreferenceRepository).getLocalAuthPref()
             verify(localAuthPreferenceRepository)
-                .setLocalAuthPref(LocalAuthPreference.Enabled(false))
+                .setLocalAuthPref(LocalAuthPreference.Disabled)
         }
 
     @Test
@@ -149,7 +149,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 .thenReturn(DeviceBiometricsStatus.SUCCESS)
 
             composeTestRule.apply {
-                localAuthManager.enforceAndSet(false, activity, callbackHandler)
+                localAuthManager.enforceAndSet(false, false, activity, callbackHandler)
                 onNodeWithText(
                     context.getString(R.string.app_enableBiometricsTitle),
                 ).isDisplayed()
@@ -159,7 +159,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             verify(callbackHandler).onSuccess(true)
             verify(localAuthPreferenceRepository).getLocalAuthPref()
             verify(localAuthPreferenceRepository)
-                .setLocalAuthPref(LocalAuthPreference.Enabled(false))
+                .setLocalAuthPref(LocalAuthPreference.Disabled)
         }
 
     @Test
@@ -170,7 +170,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 .thenReturn(DeviceBiometricsStatus.SUCCESS)
 
             composeTestRule.apply {
-                localAuthManager.enforceAndSet(true, activity, callbackHandler)
+                localAuthManager.enforceAndSet(false, true, activity, callbackHandler)
                 onNodeWithText(
                     context.getString(R.string.app_enableBiometricsTitle),
                 ).isDisplayed()
@@ -180,7 +180,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             verify(callbackHandler).onSuccess(true)
             verify(localAuthPreferenceRepository).getLocalAuthPref()
             verify(localAuthPreferenceRepository)
-                .setLocalAuthPref(LocalAuthPreference.Enabled(false))
+                .setLocalAuthPref(LocalAuthPreference.Disabled)
         }
 
     @Test
@@ -190,7 +190,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             whenever(deviceBiometricsManager.getCredentialStatus())
                 .thenReturn(DeviceBiometricsStatus.NO_HARDWARE)
 
-            localAuthManager.enforceAndSet(false, activity, callbackHandler)
+            localAuthManager.enforceAndSet(false, false, activity, callbackHandler)
 
             verify(callbackHandler).onSuccess(false)
             verify(localAuthPreferenceRepository)
@@ -204,7 +204,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             whenever(deviceBiometricsManager.getCredentialStatus())
                 .thenReturn(DeviceBiometricsStatus.HARDWARE_UNAVAILABLE)
 
-            localAuthManager.enforceAndSet(false, activity, callbackHandler)
+            localAuthManager.enforceAndSet(false, false, activity, callbackHandler)
 
             verify(callbackHandler).onSuccess(false)
             verify(localAuthPreferenceRepository)
@@ -218,7 +218,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             whenever(deviceBiometricsManager.getCredentialStatus())
                 .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
 
-            localAuthManager.enforceAndSet(false, activity, callbackHandler)
+            localAuthManager.enforceAndSet(false, false, activity, callbackHandler)
 
             verify(callbackHandler).onSuccess(false)
             verify(localAuthPreferenceRepository)
@@ -232,7 +232,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             whenever(deviceBiometricsManager.getCredentialStatus())
                 .thenReturn(DeviceBiometricsStatus.UNKNOWN)
 
-            localAuthManager.enforceAndSet(false, activity, callbackHandler)
+            localAuthManager.enforceAndSet(false, false, activity, callbackHandler)
 
             verify(callbackHandler).onSuccess(false)
             verify(localAuthPreferenceRepository)
@@ -249,7 +249,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 .thenReturn(LocalAuthPreference.Disabled)
 
             composeTestRule.apply {
-                localAuthManager.enforceAndSet(true, activity, callbackHandler)
+                localAuthManager.enforceAndSet(false, true, activity, callbackHandler)
                 onNodeWithText(
                     context.getString(R.string.app_enableBiometricsTitle),
                 ).isDisplayed()
@@ -260,7 +260,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
             verify(callbackHandler).onSuccess(false)
             verify(localAuthPreferenceRepository)
-                .setLocalAuthPref(LocalAuthPreference.Enabled(false))
+                .setLocalAuthPref(LocalAuthPreference.Disabled)
         }
 
     @Test
@@ -273,7 +273,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 .thenReturn(LocalAuthPreference.Disabled)
 
             composeTestRule.apply {
-                localAuthManager.enforceAndSet(false, activity, callbackHandler)
+                localAuthManager.enforceAndSet(false, false, activity, callbackHandler)
                 onNodeWithText(
                     context.getString(R.string.app_enableBiometricsTitle),
                 ).isDisplayed()
@@ -284,7 +284,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
             verify(callbackHandler).onSuccess(false)
             verify(localAuthPreferenceRepository)
-                .setLocalAuthPref(LocalAuthPreference.Enabled(false))
+                .setLocalAuthPref(LocalAuthPreference.Disabled)
         }
 
     @Test
@@ -296,7 +296,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             whenever(localAuthPreferenceRepository.getLocalAuthPref())
                 .thenReturn(LocalAuthPreference.Disabled)
 
-            localAuthManager.enforceAndSet(true, activity, callbackHandler)
+            localAuthManager.enforceAndSet(false, true, activity, callbackHandler)
 
             verify(localAuthPreferenceRepository)
                 .setLocalAuthPref(LocalAuthPreference.Enabled(false))
@@ -312,7 +312,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             whenever(localAuthPreferenceRepository.getLocalAuthPref())
                 .thenReturn(LocalAuthPreference.Disabled)
 
-            localAuthManager.enforceAndSet(false, activity, callbackHandler)
+            localAuthManager.enforceAndSet(false, false, activity, callbackHandler)
 
             verify(callbackHandler).onSuccess(false)
         }
@@ -321,7 +321,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
     fun `device unsecure - first time user - local auth not required`() = runBlocking {
         whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(false)
         whenever(localAuthPreferenceRepository.getLocalAuthPref()).thenReturn(null)
-        localAuthManager.enforceAndSet(false, activity, callbackHandler)
+        localAuthManager.enforceAndSet(false, false, activity, callbackHandler)
 
         verify(callbackHandler).onSuccess(false)
         verify(localAuthPreferenceRepository).setLocalAuthPref(LocalAuthPreference.Disabled)
@@ -332,7 +332,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(false)
 
         composeTestRule.apply {
-            localAuthManager.enforceAndSet(true, activity, callbackHandler)
+            localAuthManager.enforceAndSet(false, true, activity, callbackHandler)
             onNodeWithText(
                 context.getString(R.string.app_localAuthManagerErrorTitle),
             ).isDisplayed()
@@ -350,7 +350,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(false)
 
         composeTestRule.apply {
-            localAuthManager.enforceAndSet(true, activity, callbackHandler)
+            localAuthManager.enforceAndSet(false, true, activity, callbackHandler)
             onNodeWithText(
                 context.getString(R.string.app_localAuthManagerErrorTitle),
             ).isDisplayed()
@@ -366,7 +366,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(false)
 
         composeTestRule.apply {
-            localAuthManager.enforceAndSet(true, activity, callbackHandler)
+            localAuthManager.enforceAndSet(false, true, activity, callbackHandler)
             onNodeWithText(
                 context.getString(R.string.app_localAuthManagerErrorTitle),
             ).isDisplayed()

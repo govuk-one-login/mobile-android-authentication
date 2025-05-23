@@ -2,6 +2,7 @@ package uk.gov.android.localauth.ui
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -12,10 +13,15 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
+import org.mockito.kotlin.verify
 import uk.gov.android.authentication.localauth.R
+import uk.gov.android.localauth.ui.optin.BioOptInScreenTest.Companion.makeCloseBackEvent
+import uk.gov.android.localauth.ui.optin.BioOptInScreenTest.Companion.makeNoWalletScreenEvent
+import uk.gov.android.localauth.ui.optin.BioOptInScreenTest.Companion.makeWalletScreenEvent
 import uk.gov.android.localauth.utils.FragmentActivityTestCase
 import uk.gov.android.localauth.utils.TestActivity
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
+import uk.gov.logging.api.v3dot1.logger.logEventV3Dot1
 import kotlin.test.assertTrue
 
 @RunWith(AndroidJUnit4::class)
@@ -36,14 +42,16 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
     }
 
     @Test
-    fun `display bio opt in screen`() {
+    fun `display bio opt in screen with wallet`() {
         composeTestRule.apply {
             uiManager.displayBioOptIn(
                 activity,
+                walletEnabled = true,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
                 onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
             )
+
             onNodeWithText(
                 context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsDisplayed()
@@ -58,7 +66,7 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
 
             onNodeWithText(
                 context.getString(R.string.app_wallet_enableBiometricsBullet2),
-            ).assertIsDisplayed()
+            ).performScrollTo().assertExists()
 
             onNodeWithText(
                 context.getString(R.string.app_enableBiometricsButton),
@@ -66,8 +74,56 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
 
             onNodeWithText(
                 context.getString(R.string.app_enablePasscodeOrPatternButton),
+            )
+
+            onNodeWithContentDescription(
+                context.getString(R.string.bio_opt_in_image_content_description),
             ).assertIsDisplayed()
         }
+
+        verify(analyticsLogger).logEventV3Dot1(makeWalletScreenEvent(context))
+    }
+
+    @Test
+    fun `display bio opt in screen without wallet`() {
+        composeTestRule.apply {
+            uiManager.displayBioOptIn(
+                activity,
+                walletEnabled = false,
+                onBack = { onBack = !onBack },
+                onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
+                onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
+            )
+            onNodeWithText(
+                context.getString(R.string.app_enableBiometricsTitle),
+            ).assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.app_enableBiometricsBody1),
+            ).assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.app_enableBiometricsBody2),
+            ).assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.app_enableBiometricsBody3),
+            ).performScrollTo().assertExists()
+
+            onNodeWithText(
+                context.getString(R.string.app_enableBiometricsButton),
+            ).assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.app_enablePasscodeOrPatternButton),
+            )
+
+            onNodeWithContentDescription(
+                context.getString(R.string.bio_opt_in_image_content_description),
+            ).assertIsDisplayed()
+        }
+
+        verify(analyticsLogger).logEventV3Dot1(makeNoWalletScreenEvent(context))
     }
 
     @Test
@@ -75,6 +131,7 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
         composeTestRule.apply {
             uiManager.displayBioOptIn(
                 activity,
+                walletEnabled = false,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
                 onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
@@ -97,6 +154,7 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
         composeTestRule.apply {
             uiManager.displayBioOptIn(
                 activity,
+                walletEnabled = false,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
                 onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
@@ -119,6 +177,7 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
         composeTestRule.apply {
             uiManager.displayBioOptIn(
                 activity,
+                walletEnabled = false,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
                 onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
@@ -136,6 +195,26 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
 
             assertTrue(onBack)
         }
+    }
+
+    @Test
+    fun `test close button`() {
+        composeTestRule.apply {
+            uiManager.displayBioOptIn(
+                activity,
+                walletEnabled = false,
+                onBack = { onBack = !onBack },
+                onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
+                onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
+            )
+
+            onNodeWithContentDescription(
+                context.getString(uk.gov.android.ui.componentsv2.R.string.close_button),
+            ).assertIsDisplayed().performClick()
+        }
+
+        assertTrue(onBioOptOut)
+        verify(analyticsLogger).logEventV3Dot1(makeCloseBackEvent(context))
     }
 
     @Test

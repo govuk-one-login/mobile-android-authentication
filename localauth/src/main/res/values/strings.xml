@@ -26,4 +26,5 @@
 
     <!-- Analytics default values -->
     <string name="system_backButton" translatable="false">back - system</string>
+    <string name="icon_backButton" translatable="false">Back</string>
 </resources>

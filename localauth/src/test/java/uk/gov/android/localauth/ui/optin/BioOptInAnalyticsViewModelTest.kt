@@ -38,7 +38,7 @@ class BioOptInAnalyticsViewModelTest {
             taxonomyLevel3 = TaxonomyLevel3.BIOMETRICS,
         )
         name = context.getEnglishString(R.string.app_enableBiometricsTitle)
-        id = context.getEnglishString(R.string.bio_opt_in_screen_page_id)
+        id = context.getEnglishString(R.string.bio_opt_in_screen_wallet_page_id)
         passcodeBtn = context.getEnglishString(R.string.app_enablePasscodeOrPatternButton)
         biometricsBtn = context.getEnglishString(R.string.app_enableBiometricsButton)
         backBtn = context.getEnglishString(R.string.system_backButton)
@@ -46,14 +46,14 @@ class BioOptInAnalyticsViewModelTest {
     }
 
     @Test
-    fun trackBioOptInScreen() {
+    fun trackBioOptInWalletScreen() {
         val event = ViewEvent.Screen(
             name = name,
             id = id,
             params = requiredParameters,
         )
 
-        viewModel.trackBioOptInScreen()
+        viewModel.trackBioOptInWalletScreen()
 
         verify(logger).logEventV3Dot1(event)
     }
@@ -94,7 +94,7 @@ class BioOptInAnalyticsViewModelTest {
             params = requiredParameters,
         )
 
-        viewModel.trackBioOptInScreen()
+        viewModel.trackBioOptInWalletScreen()
 
         verify(logger).logEventV3Dot1(event)
     }
