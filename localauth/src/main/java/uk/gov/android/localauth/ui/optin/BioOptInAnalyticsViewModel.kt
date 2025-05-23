@@ -11,25 +11,32 @@ import uk.gov.logging.api.v3dot1.logger.logEventV3Dot1
 import uk.gov.logging.api.v3dot1.model.RequiredParameters
 import uk.gov.logging.api.v3dot1.model.TrackEvent
 import uk.gov.logging.api.v3dot1.model.ViewEvent
+import uk.gov.android.ui.componentsv2.R as componentsR
 
 class BioOptInAnalyticsViewModel(
     context: Context,
     private val analyticsLogger: AnalyticsLogger,
 ) : ViewModel() {
-    private val screenEvent = makeScreenEvent(context)
+    private val walletScreenEvent = makeWalletScreenEvent(context)
+    private val noWalletScreenEvent = makeNoWalletScreenEvent(context)
+    private val closeIconEvent = makeCloseBackEvent(context)
     private val biometricsBtnEvent = makeButtonEvent(
         context,
-        R.string.bio_opt_in_bio_button,
+        R.string.app_enableBiometricsButton,
     )
     private val passcodeBtnEvent =
         makeButtonEvent(
             context,
-            R.string.bio_opt_in_passcode_button,
+            R.string.app_enablePasscodeOrPatternButton,
         )
     private val backBtnEvent = makeBackButtonEvent(context)
 
-    fun trackBioOptInScreen() {
-        analyticsLogger.logEventV3Dot1(screenEvent)
+    fun trackBioOptInWalletScreen() {
+        analyticsLogger.logEventV3Dot1(walletScreenEvent)
+    }
+
+    fun trackBioOptInNoWalletScreen() {
+        analyticsLogger.logEventV3Dot1(noWalletScreenEvent)
     }
 
     fun trackBiometricsButton() {
@@ -40,15 +47,27 @@ class BioOptInAnalyticsViewModel(
         analyticsLogger.logEventV3Dot1(passcodeBtnEvent)
     }
 
+    fun trackCloseIconButton() {
+        analyticsLogger.logEventV3Dot1(closeIconEvent)
+    }
+
     fun trackBackButton() {
         analyticsLogger.logEventV3Dot1(backBtnEvent)
     }
 
     companion object {
-        internal fun makeScreenEvent(context: Context) = with(context) {
+        internal fun makeWalletScreenEvent(context: Context) = with(context) {
             ViewEvent.Screen(
-                name = getEnglishString(R.string.bio_opt_in_title),
-                id = getEnglishString(R.string.bio_opt_in_screen_page_id),
+                name = getEnglishString(R.string.app_enableBiometricsTitle),
+                id = getEnglishString(R.string.bio_opt_in_screen_wallet_page_id),
+                params = requiredParams,
+            )
+        }
+
+        internal fun makeNoWalletScreenEvent(context: Context) = with(context) {
+            ViewEvent.Screen(
+                name = getEnglishString(R.string.app_enableBiometricsTitle),
+                id = getEnglishString(R.string.bio_opt_in_screen_no_wallet_page_id),
                 params = requiredParams,
             )
         }
@@ -56,6 +75,13 @@ class BioOptInAnalyticsViewModel(
         internal fun makeButtonEvent(context: Context, text: Int) = with(context) {
             TrackEvent.Button(
                 text = getEnglishString(text),
+                params = requiredParams,
+            )
+        }
+
+        internal fun makeCloseBackEvent(context: Context) = with(context) {
+            TrackEvent.Icon(
+                text = getEnglishString(componentsR.string.close_button),
                 params = requiredParams,
             )
         }
