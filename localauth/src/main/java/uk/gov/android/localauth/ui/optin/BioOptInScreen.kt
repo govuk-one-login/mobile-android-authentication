@@ -204,7 +204,7 @@ private fun CustomText(text: String) {
     Text(
         text = text,
         color = MaterialTheme.colorScheme.onBackground,
-        modifier = Modifier.padding(bottom = smallPadding),
+        modifier = Modifier.padding(bottom = smallPadding).fillMaxWidth(),
         textAlign = TextAlign.Center,
     )
 }
