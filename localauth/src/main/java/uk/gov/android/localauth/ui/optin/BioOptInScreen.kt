@@ -1,6 +1,7 @@
 package uk.gov.android.localauth.ui.optin
 
 import android.content.res.Configuration
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -15,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -131,12 +133,12 @@ private fun WalletCopyText() {
     val title = stringResource(R.string.app_wallet_enableBiometricsBody1)
     val bulletItemOne = stringResource(R.string.app_wallet_enableBiometricsBullet1)
     val bulletItemTwo = stringResource(R.string.app_wallet_enableBiometricsBullet2)
-    GdsVectorImage(
-        image = ImageVector.vectorResource(R.drawable.bio_opt_in),
-        contentDescription = stringResource(R.string.bio_opt_in_image_content_description),
-        color = MaterialTheme.colorScheme.onBackground,
-        scale = ContentScale.Fit,
-        modifier = Modifier.padding(vertical = smallPadding),
+    Image(
+        imageVector = ImageVector.vectorResource(R.drawable.bio_opt_in),
+        contentDescription = null,
+        contentScale = ContentScale.Fit,
+        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
+        modifier = Modifier.padding(vertical = smallPadding).fillMaxWidth(),
     )
     GdsHeading(
         text = stringResource(R.string.app_enableBiometricsTitle),
