@@ -39,6 +39,11 @@ jobs:
       - name: Setup GitHub Runner workflow
         uses: ./mobile-android-pipelines/actions/setup-runner
 
+      - name: Show disk memory
+        run: |
+          df -h
+          sudo du -h --max-depth=3
+
       - name: Verify Conventional commit standards against latest git tag
         uses: ./mobile-android-pipelines/actions/verify-conventional-commit
 
