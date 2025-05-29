@@ -3,6 +3,7 @@ package uk.gov.android.localauth.ui.optin
 import android.content.Context
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -62,8 +63,8 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
                 context.getString(R.string.app_enablePasscodeOrPatternButton),
             )
 
-            onNodeWithContentDescription(
-                context.getString(R.string.bio_opt_in_image_content_description),
+            onNodeWithTag(
+                context.getString(R.string.app_enableBiometricsImageTestTag),
             ).assertIsDisplayed()
         }
 
@@ -98,8 +99,8 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
                 context.getString(R.string.app_enablePasscodeOrPatternButton),
             )
 
-            onNodeWithContentDescription(
-                context.getString(R.string.bio_opt_in_image_content_description),
+            onNodeWithTag(
+                context.getString(R.string.app_enableBiometricsImageTestTag),
             ).assertIsDisplayed()
         }
 
@@ -187,6 +188,10 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
             onNodeWithText(
                 context.getString(R.string.app_enablePasscodeOrPatternButton),
             ).assertIsDisplayed()
+
+            onNodeWithTag(
+                context.getString(R.string.app_enableBiometricsImageTestTag),
+            ).assertIsDisplayed()
         }
     }
 
@@ -220,8 +225,8 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
                 context.getString(R.string.app_enablePasscodeOrPatternButton),
             )
 
-            onNodeWithContentDescription(
-                context.getString(R.string.bio_opt_in_image_content_description),
+            onNodeWithTag(
+                context.getString(R.string.app_enableBiometricsImageTestTag),
             ).assertIsDisplayed()
         }
     }

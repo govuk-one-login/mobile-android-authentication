@@ -20,8 +20,11 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.persistentListOf
@@ -30,7 +33,6 @@ import uk.gov.android.ui.componentsv2.button.ButtonType
 import uk.gov.android.ui.componentsv2.button.GdsButton
 import uk.gov.android.ui.componentsv2.heading.GdsHeading
 import uk.gov.android.ui.componentsv2.heading.GdsHeadingStyle
-import uk.gov.android.ui.componentsv2.images.GdsVectorImage
 import uk.gov.android.ui.componentsv2.list.GdsBulletedList
 import uk.gov.android.ui.componentsv2.list.ListItem
 import uk.gov.android.ui.componentsv2.list.ListTitle
@@ -63,13 +65,16 @@ fun BioOptInScreen(
         onDismissRequest = onDismiss,
         topAppBar = {
             FullScreenDialogueTopAppBar(
+                modifier = Modifier.semantics(true) {
+                    this.traversalIndex = CLOSE_INDEX
+                },
                 onCloseClick = {
                     analyticsViewModel.trackCloseIconButton()
                     onBiometricsOptOut()
                     onDismiss()
                 },
             ) {
-                // Nothing here
+                // Nothing here (no title)
             }
         },
         onBack = {
@@ -138,12 +143,15 @@ private fun WalletCopyText() {
         contentDescription = null,
         contentScale = ContentScale.Fit,
         colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
-        modifier = Modifier.padding(vertical = smallPadding).fillMaxWidth(),
+        modifier = Modifier.padding(vertical = smallPadding)
+            .fillMaxWidth()
+            .testTag(stringResource(R.string.app_enableBiometricsImageTestTag)),
     )
     GdsHeading(
         text = stringResource(R.string.app_enableBiometricsTitle),
         style = GdsHeadingStyle.Title1,
-        modifier = Modifier.padding(bottom = smallPadding),
+        modifier = Modifier.padding(bottom = smallPadding)
+            .semantics { this.traversalIndex = TITLE_INDEX },
     )
     GdsBulletedList(
         title = ListTitle(text = title, titleType = TitleType.Text),
@@ -152,29 +160,33 @@ private fun WalletCopyText() {
             ListItem(bulletItemTwo),
         ),
         modifier = Modifier.padding(bottom = smallPadding),
+        accessibilityIndex = LIST_INDEX,
     )
-    CustomText(text = stringResource(R.string.app_enableBiometricsBody2))
-    CustomText(text = stringResource(R.string.app_enableBiometricsBody3))
+    CustomText(text = stringResource(R.string.app_enableBiometricsBody2), CONTENT1_INDEX)
+    CustomText(text = stringResource(R.string.app_enableBiometricsBody3), CONTENT2_INDEX)
 }
 
 @OptIn(UnstableDesignSystemAPI::class)
 @Composable
 private fun NoWalletCopyText() {
-    GdsVectorImage(
-        image = ImageVector.vectorResource(R.drawable.bio_opt_in),
-        contentDescription = stringResource(R.string.bio_opt_in_image_content_description),
-        color = MaterialTheme.colorScheme.onBackground,
-        scale = ContentScale.Fit,
-        modifier = Modifier.padding(vertical = smallPadding),
+    Image(
+        imageVector = ImageVector.vectorResource(R.drawable.bio_opt_in),
+        contentDescription = null,
+        contentScale = ContentScale.Fit,
+        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
+        modifier = Modifier.padding(vertical = smallPadding)
+            .fillMaxWidth()
+            .testTag(stringResource(R.string.app_enableBiometricsImageTestTag)),
     )
     GdsHeading(
         text = stringResource(R.string.app_enableBiometricsTitle),
         style = GdsHeadingStyle.Title1,
-        modifier = Modifier.padding(bottom = smallPadding),
+        modifier = Modifier.padding(bottom = smallPadding)
+            .semantics { this.traversalIndex = TITLE_INDEX },
     )
-    CustomText(text = stringResource(R.string.app_enableBiometricsBody1))
-    CustomText(text = stringResource(R.string.app_enableBiometricsBody2))
-    CustomText(text = stringResource(R.string.app_enableBiometricsBody3))
+    CustomText(text = stringResource(R.string.app_enableBiometricsBody1), LIST_INDEX)
+    CustomText(text = stringResource(R.string.app_enableBiometricsBody2), CONTENT1_INDEX)
+    CustomText(text = stringResource(R.string.app_enableBiometricsBody3), CONTENT2_INDEX)
 }
 
 @Composable
@@ -202,11 +214,13 @@ private fun BioOptInButtons(
 }
 
 @Composable
-private fun CustomText(text: String) {
+private fun CustomText(text: String, accessibilityIndex: Float) {
     Text(
         text = text,
         color = MaterialTheme.colorScheme.onBackground,
-        modifier = Modifier.padding(bottom = smallPadding).fillMaxWidth(),
+        modifier = Modifier.padding(bottom = smallPadding)
+            .fillMaxWidth()
+            .semantics { this.traversalIndex = accessibilityIndex },
         textAlign = TextAlign.Center,
     )
 }
@@ -252,3 +266,11 @@ internal fun BioOptInPreview() {
         )
     }
 }
+
+private const val CLOSE_INDEX = -15f
+private const val TITLE_INDEX = -14f
+private const val LIST_INDEX = -12f
+private const val CONTENT1_INDEX = -11f
+private const val CONTENT2_INDEX = -10f
+private const val PRIMARY_BTN_INDEX = -9f
+private const val SEC_BTN_INDEX = -8f
