@@ -56,16 +56,6 @@ jobs:
       - name: Bundle reports folder
         uses: ./mobile-android-pipelines/actions/bundle-reports
 
-      - name: Increment the release version using Conventional Commits
-        id: versioning
-        if: ${{ github.event_name != 'pull_request' }}
-        uses: ./mobile-android-pipelines/actions/increment-version
-
-      - name: Publish release tags
-        if: ${{ github.event_name != 'pull_request'
-          && steps.versioning.outputs.current_version != steps.versioning.outputs.new_version }}
-        uses: ./mobile-android-pipelines/actions/publish-release-tag
-
       - name: Test local publish
         if: ${{ github.event_name == 'pull_request' }}
         uses: ./mobile-android-pipelines/actions/maven-publish-local
