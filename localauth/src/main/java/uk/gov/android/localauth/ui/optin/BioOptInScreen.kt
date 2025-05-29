@@ -272,5 +272,3 @@ private const val TITLE_INDEX = -14f
 private const val LIST_INDEX = -12f
 private const val CONTENT1_INDEX = -11f
 private const val CONTENT2_INDEX = -10f
-private const val PRIMARY_BTN_INDEX = -9f
-private const val SEC_BTN_INDEX = -8f

@@ -11,7 +11,6 @@
     <string name="app_localAuthManagerErrorGoToSettingsButton">Ewch i osodiadau ffôn</string>
 
     <!-- Biometrics Opt In Screen -->
-    <string name="bio_opt_in_image_content_description">Placeholder content description</string>
     <string name="app_enableBiometricsTitle">Defnyddiwch biometreg gyda\'r ap</string>
     <string name="app_enableBiometricsButton">Defnyddiwch biometreg</string>
     <string name="app_enablePasscodeOrPatternButton">Osgoi</string>
