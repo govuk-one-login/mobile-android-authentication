@@ -51,13 +51,8 @@ jobs:
         uses: ./mobile-android-pipelines/actions/lint
 
       - name: Run gradle testing suite
-        uses: |
-          ./gradlew \
-          googleAtdPixelXLApi33DebugAndroidTest \
-          testDebugUnitTest \
-          --continue \
-          --stacktrace \
-          -Pandroid.testoptions.manageddevices.emulator.gpu=swiftshader_indirect
+        run: ./.github/runTestingSuite.sh
+        shell: bash
 
       - name: Sonar scan
         uses: ./mobile-android-pipelines/actions/sonar-scan
