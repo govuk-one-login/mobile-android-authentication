@@ -20,7 +20,7 @@ import uk.gov.logging.api.analytics.logging.AnalyticsLogger
  * * when [localAuthRequired] -> requires minimum of passcode/ pattern **enabled** on the
  * * when the device is secured, it checks if biometrics are available
  *
- * ** if yes, then it will display the [BioOptInScreen] which allows the suer to set a preference for either biometrics or passcode/ pattern
+ * ** if yes, then it will display the [BioOptInScreen] which allows the user to set a preference for either biometrics or passcode/ pattern
  *
  * ** if no, then it will default to passcode as preference which will be stored and then referenced - this will only change if the device becomes unsecure
  *
@@ -38,6 +38,7 @@ open class LocalAuthManagerImpl(
         get() = localAuthPrefRepo.getLocalAuthPref()
 
     override suspend fun enforceAndSet(
+        walletEnabled: Boolean,
         localAuhRequired: Boolean,
         activity: FragmentActivity,
         callbackHandler: LocalAuthManagerCallbackHandler,
@@ -50,7 +51,7 @@ open class LocalAuthManagerImpl(
                 -> callbackHandler.onSuccess(false)
                 else -> {
                     // Go through the local auth flow
-                    handleSecureDevice(callbackHandler, activity)
+                    handleSecureDevice(callbackHandler, activity, walletEnabled)
                 }
             }
         } else {
@@ -105,14 +106,16 @@ open class LocalAuthManagerImpl(
     private fun handleSecureDevice(
         callbackHandler: LocalAuthManagerCallbackHandler,
         activity: FragmentActivity,
+        walletEnabled: Boolean,
     ) {
         when (deviceBiometricsManager.getCredentialStatus()) {
             DeviceBiometricsStatus.SUCCESS -> {
                 uiManager.displayBioOptIn(
                     activity = activity,
+                    walletEnabled = walletEnabled,
                     onBack = {
                         localAuthPrefRepo.setLocalAuthPref(
-                            LocalAuthPreference.Enabled(false),
+                            LocalAuthPreference.Disabled,
                         )
                         callbackHandler.onSuccess(true)
                     },
@@ -124,7 +127,7 @@ open class LocalAuthManagerImpl(
                     },
                     onBiometricsOptOut = {
                         localAuthPrefRepo.setLocalAuthPref(
-                            LocalAuthPreference.Enabled(false),
+                            LocalAuthPreference.Disabled,
                         )
                         callbackHandler.onSuccess(false)
                     },
