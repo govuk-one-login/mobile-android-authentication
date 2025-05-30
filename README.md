@@ -250,12 +250,15 @@ class AttestationCallerImpl @Inject constructor(
 
 The ProofOfPossessionGenerator object creates a Proof of Possession (PoP) that will be used in the authentication call, as part of a header. It adheres to the following scheme and it is a signed JWT contained within the SignedPoP. This will be used and verified by the backend to ensure the app is genuine.
 It adheres to the following requirements:
+
 _Header_
+
 ```json
 {
   "alg": "ES256"
 }
 ```
+
 _Body_
 ```json
 {
