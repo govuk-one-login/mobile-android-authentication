@@ -45,7 +45,9 @@ jobs:
           sudo du -h --max-depth=3
 
       - name: Remove pipelines test
-        run: rm -rf ./mobile-android-pipelines/test-project
+        run: |
+          sudo rm -f /user/local/lib/android
+          df -h
 
       - name: Show disk memory
         run: |
