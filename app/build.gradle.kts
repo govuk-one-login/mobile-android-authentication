@@ -25,36 +25,6 @@ android {
         }
     }
 
-    lint {
-        val configDir = "${rootProject.projectDir}/config"
-
-        abortOnError = true
-        absolutePaths = true
-        baseline = File("$configDir/android/baseline.xml")
-        checkAllWarnings = true
-        checkDependencies = false
-        checkGeneratedSources = false
-        checkReleaseBuilds = true
-        disable.addAll(
-            setOf(
-                "ConvertToWebp",
-                "UnusedIds",
-                "VectorPath",
-            ),
-        )
-        explainIssues = true
-        htmlReport = true
-        ignoreTestSources = true
-        ignoreWarnings = false
-        lintConfig = File("$configDir/android/lint.xml")
-        noLines = false
-        quiet = false
-        showAll = true
-        textReport = true
-        warningsAsErrors = true
-        xmlReport = true
-    }
-
     testOptions {
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
         animationsDisabled = true
@@ -79,10 +49,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
     packaging {
         resources.excludes.add("META-INF/versions/9/OSGI-INF/MANIFEST.MF")
     }
