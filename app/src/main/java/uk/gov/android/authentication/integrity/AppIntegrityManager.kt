@@ -8,7 +8,6 @@ import uk.gov.android.authentication.integrity.pop.SignedPoP
  * journey.
  */
 interface AppIntegrityManager {
-
     /**
      * Retrieves a signed attestation statement from the Mobile backend.
      *
@@ -33,7 +32,10 @@ interface AppIntegrityManager {
      * @return A [SignedPoP] object indicating success or failure.
      *         On success, the response contains the signed PoP JWT.
      */
-    fun generatePoP(iss: String, aud: String): SignedPoP
+    fun generatePoP(
+        iss: String,
+        aud: String,
+    ): SignedPoP
 
     /**
      * Verifies the JSON Web Key (JWK) in the attestation statement.

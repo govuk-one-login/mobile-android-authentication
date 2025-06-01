@@ -7,5 +7,5 @@ import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
 data class AppIntegrityConfiguration(
     val attestationCaller: AttestationCaller,
     val appChecker: AppChecker,
-    val keyStoreManager: KeyStoreManager
+    val keyStoreManager: KeyStoreManager,
 )

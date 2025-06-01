@@ -3,7 +3,10 @@ package uk.gov.android.authentication.integrity
 import java.math.BigInteger
 
 object AppIntegrityUtils {
-    fun toFixedLengthBytes(value: BigInteger, length: Int): ByteArray {
+    fun toFixedLengthBytes(
+        value: BigInteger,
+        length: Int,
+    ): ByteArray {
         val valueBytes = value.toByteArray()
         return if (valueBytes.size > length) {
             valueBytes.copyOfRange(valueBytes.size - length, valueBytes.size)

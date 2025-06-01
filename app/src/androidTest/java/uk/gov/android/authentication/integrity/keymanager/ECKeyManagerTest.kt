@@ -1,16 +1,16 @@
 package uk.gov.android.authentication.integrity.keymanager
 
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
+import uk.gov.android.authentication.json.jwk.JWK
+import uk.gov.android.authentication.json.jwt.Jose4jJwtVerifier
 import java.security.KeyStore
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
-import uk.gov.android.authentication.json.jwk.JWK
-import uk.gov.android.authentication.json.jwt.Jose4jJwtVerifier
 
 @OptIn(ExperimentalEncodingApi::class)
 class ECKeyManagerTest {
@@ -22,16 +22,18 @@ class ECKeyManagerTest {
         "eyJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJiWXJjdVJWdm55bHZFZ1lTU2JCandYekhyd0oiLCJ" +
             "hdWQiOiJodHRwczovL3Rva2VuLmJ1aWxkLmFjY291bnQuZ292LnVrIiwiZXhwIjoxNzMzMjYxNjI2LC" +
             "JqdGkiOiIxM2YxZTA3NC1jMmY4LTRlZDktYjk1NC1lYjZjMjAwZjVjMGUifQ"
-    private val jwt = "eyJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJiWXJjdVJWdm55bHZFZ1lTU2JCandYekhyd0oiLCJ" +
-        "hdWQiOiJodHRwczovL3Rva2VuLmJ1aWxkLmFjY291bnQuZ292LnVrIiwiZXhwIjoxNzMzMjYxNjI2LC" +
-        "JqdGkiOiIxM2YxZTA3NC1jMmY4LTRlZDktYjk1NC1lYjZjMjAwZjVjMGUifQ.oAgdAcHuaQyS7s3QMhk" +
-        "GdUwTlwJBBnCyee4NuXVK9a0g4fDQRO6h_VlwfWenJr_ydcA5M4a4f2ARcQP3iCQgmA"
+    private val jwt =
+        "eyJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJiWXJjdVJWdm55bHZFZ1lTU2JCandYekhyd0oiLCJ" +
+            "hdWQiOiJodHRwczovL3Rva2VuLmJ1aWxkLmFjY291bnQuZ292LnVrIiwiZXhwIjoxNzMzMjYxNjI2LC" +
+            "JqdGkiOiIxM2YxZTA3NC1jMmY4LTRlZDktYjk1NC1lYjZjMjAwZjVjMGUifQ.oAgdAcHuaQyS7s3QMhk" +
+            "GdUwTlwJBBnCyee4NuXVK9a0g4fDQRO6h_VlwfWenJr_ydcA5M4a4f2ARcQP3iCQgmA"
 
     @BeforeTest
     fun setup() {
-        keyStore = KeyStore.getInstance("AndroidKeyStore").apply {
-            load(null)
-        }
+        keyStore =
+            KeyStore.getInstance("AndroidKeyStore").apply {
+                load(null)
+            }
         ecKeyManager = ECKeyManager()
     }
 
@@ -64,12 +66,11 @@ class ECKeyManagerTest {
     }
 
     @Suppress("SwallowedException")
-    private fun checkInputIsBase64(input: String): Boolean {
-        return try {
+    private fun checkInputIsBase64(input: String): Boolean =
+        try {
             Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT).decode(input.toByteArray())
             true
         } catch (e: IllegalArgumentException) {
             false
         }
-    }
 }

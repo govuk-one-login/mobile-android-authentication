@@ -20,7 +20,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -39,8 +39,8 @@ android {
             setOf(
                 "ConvertToWebp",
                 "UnusedIds",
-                "VectorPath"
-            )
+                "VectorPath",
+            ),
         )
         explainIssues = true
         htmlReport = true
@@ -65,7 +65,7 @@ android {
                     setOf(
                         org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
                         org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
-                        org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
+                        org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
                     )
             }
         }
@@ -94,7 +94,7 @@ dependencies {
         kotlin("test-junit"),
         libs.bundles.android.test,
         libs.bundles.mockito,
-        libs.bundles.espresso
+        libs.bundles.espresso,
     ).forEach(::androidTestImplementation)
 
     listOf(
@@ -104,7 +104,7 @@ dependencies {
         libs.kotlinx.serialization.json,
         libs.jose4j,
         libs.gson,
-        libs.bouncy.castle
+        libs.bouncy.castle,
     ).forEach(::implementation)
 
     listOf(
@@ -112,11 +112,11 @@ dependencies {
         kotlin("test-junit5"),
         libs.bundles.test,
         platform(libs.junit.bom),
-        libs.mockito.kotlin
+        libs.mockito.kotlin,
     ).forEach(::testImplementation)
 
     listOf(
-        libs.androidx.test.orchestrator
+        libs.androidx.test.orchestrator,
     ).forEach {
         androidTestUtil(it)
     }
@@ -125,12 +125,12 @@ dependencies {
 mavenPublishingConfig {
     mavenConfigBlock {
         name.set(
-            "Authentication module for Android Devices"
+            "Authentication module for Android Devices",
         )
         description.set(
             """
             A Gradle module which implements OpenID Connect to return an access token for Android.
-            """.trimIndent()
+            """.trimIndent(),
         )
     }
 }

@@ -9,14 +9,14 @@ import net.openid.appauth.AuthorizationService
 import uk.gov.android.authentication.integrity.AppIntegrityParameters
 
 class AppAuthSession(
-    context: Context
+    context: Context,
 ) : LoginSession {
     private val authService: AuthorizationService = AuthorizationService(context)
     private val clientAuthenticationProvider = ClientAuthenticationProviderImpl()
 
     override fun present(
         launcher: ActivityResultLauncher<Intent>,
-        configuration: LoginSessionConfiguration
+        configuration: LoginSessionConfiguration,
     ) {
         val intent = authService.getAuthorizationRequestIntent(configuration.createRequest())
         launcher.launch(intent)
@@ -25,7 +25,7 @@ class AppAuthSession(
     override fun finalise(
         intent: Intent,
         appIntegrity: AppIntegrityParameters,
-        callback: (tokens: TokenResponse) -> Unit
+        callback: (tokens: TokenResponse) -> Unit,
     ) {
         val authResponse = AuthorizationResponse.fromIntent(intent)
         if (authResponse == null) {
@@ -38,7 +38,7 @@ class AppAuthSession(
         val clientAuthenticationWithExtraHeaders =
             clientAuthenticationProvider.setCustomClientAuthentication(
                 appIntegrity.attestation,
-                appIntegrity.pop
+                appIntegrity.pop,
             )
 
         // Create the standard request
@@ -46,10 +46,10 @@ class AppAuthSession(
 
         authService.performTokenRequest(
             request,
-            clientAuthenticationWithExtraHeaders
+            clientAuthenticationWithExtraHeaders,
         ) { response, exception ->
             callback(
-                response?.toTokenResponse() ?: throw AuthenticationError.from(exception)
+                response?.toTokenResponse() ?: throw AuthenticationError.from(exception),
             )
         }
     }

@@ -1,11 +1,11 @@
 package uk.gov.android.authentication.integrity.pop
 
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 
 object ProofOfPossessionGenerator {
     @OptIn(ExperimentalUuidApi::class)
@@ -13,20 +13,23 @@ object ProofOfPossessionGenerator {
         iss: String,
         aud: String,
         exp: Long = getExpiryTime(),
-        jti: String = Uuid.random().toString()
+        jti: String = Uuid.random().toString(),
     ): String {
-        val pop = ProofOfPossession(
-            header = Header(
-                alg = ALG,
-                typ = TYP
-            ),
-            payload = Payload(
-                iss = iss,
-                aud = aud,
-                exp = exp,
-                jti = jti
+        val pop =
+            ProofOfPossession(
+                header =
+                    Header(
+                        alg = ALG,
+                        typ = TYP,
+                    ),
+                payload =
+                    Payload(
+                        iss = iss,
+                        aud = aud,
+                        exp = exp,
+                        jti = jti,
+                    ),
             )
-        )
         // Convert into ByteArray
         val headerByteArray = Json.encodeToString(pop.header).toByteArray()
         val payloadByteArray = Json.encodeToString(pop.payload).toByteArray()
@@ -40,13 +43,13 @@ object ProofOfPossessionGenerator {
     @Serializable
     data class ProofOfPossession(
         val header: Header,
-        val payload: Payload
+        val payload: Payload,
     )
 
     @Serializable
     data class Header(
         val alg: String,
-        val typ: String
+        val typ: String,
     )
 
     @Serializable
@@ -54,7 +57,7 @@ object ProofOfPossessionGenerator {
         val iss: String,
         val aud: String,
         val exp: Long,
-        val jti: String
+        val jti: String,
     )
 
     private fun getExpiryTime(): Long {
@@ -63,10 +66,10 @@ object ProofOfPossessionGenerator {
     }
 
     @OptIn(ExperimentalEncodingApi::class)
-    fun getUrlSafeNoPaddingBase64(input: ByteArray): String {
-        return Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT)
+    fun getUrlSafeNoPaddingBase64(input: ByteArray): String =
+        Base64.UrlSafe
+            .withPadding(Base64.PaddingOption.ABSENT)
             .encode(input)
-    }
 
     private const val ALG = "ES256"
     private const val TYP = "oauth-client-attestation-pop+jwt"

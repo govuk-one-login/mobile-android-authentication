@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AppIntegrityParameters(
     val attestation: String,
-    val pop: String
+    val pop: String,
 )

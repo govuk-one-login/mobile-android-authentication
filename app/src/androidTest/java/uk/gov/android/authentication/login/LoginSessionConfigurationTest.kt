@@ -20,7 +20,7 @@ class LoginSessionConfigurationTest {
         // Then the default ResponseType is ResponseTypeCODE
         assertEquals(
             LoginSessionConfiguration.ResponseType.CODE,
-            loginSessionConfiguration.responseType
+            loginSessionConfiguration.responseType,
         )
     }
 
@@ -31,17 +31,18 @@ class LoginSessionConfigurationTest {
         // Then the default ResponseType is ResponseTypeCODE
         assertEquals(
             LoginSessionConfiguration.VTR_DEFAULT,
-            loginSessionConfiguration.vectorsOfTrust
+            loginSessionConfiguration.vectorsOfTrust,
         )
     }
 
     companion object {
-        val defaultConfig = LoginSessionConfiguration(
-            authorizeEndpoint = Uri.parse("https://token.build.account.gov.uk/authorize"),
-            clientId = "WCrqGT_3zu62gdo0WktPnkBPVK8",
-            redirectUri = Uri.parse("https://mobile.build.account.gov.uk/wallet-test/redirect"),
-            scopes = listOf(LoginSessionConfiguration.Scope.OPENID),
-            tokenEndpoint = Uri.parse("https://token.build.account.gov.uk/token")
-        )
+        val defaultConfig =
+            LoginSessionConfiguration(
+                authorizeEndpoint = Uri.parse("https://token.build.account.gov.uk/authorize"),
+                clientId = "WCrqGT_3zu62gdo0WktPnkBPVK8",
+                redirectUri = Uri.parse("https://mobile.build.account.gov.uk/wallet-test/redirect"),
+                scopes = listOf(LoginSessionConfiguration.Scope.OPENID),
+                tokenEndpoint = Uri.parse("https://token.build.account.gov.uk/token"),
+            )
     }
 }
