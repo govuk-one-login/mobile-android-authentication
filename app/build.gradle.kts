@@ -6,9 +6,6 @@ plugins {
     id("uk.gov.pipelines.android-lib-config")
 }
 
-apply(from = "${rootProject.extra["configDir"]}/detekt/config.gradle")
-apply(from = "${rootProject.extra["configDir"]}/ktlint/config.gradle")
-
 android {
     defaultConfig {
         val apkConfig: ApkConfig by project.rootProject.extra

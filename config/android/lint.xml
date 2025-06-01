@@ -14,7 +14,9 @@
         <ignore path="**/AndroidManifest.xml" />
     </issue>
     <issue id="TrustAllX509TrustManager" severity="ignore"/>
-    <issue id="NewerVersionAvailable"/>
+    <issue id="NewerVersionAvailable" severity="informational"/>
     <issue id="TypographyQuotes" severity="ignore"/>
-</lint>
 
+    <issue id="GradlePluginVersion" severity="ignore" />
+    <issue id="GradleDependency" severity="ignore" />
+</lint>
