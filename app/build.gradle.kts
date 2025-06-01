@@ -76,10 +76,18 @@ dependencies {
     listOf(
         kotlin("test"),
         kotlin("test-junit5"),
-        libs.bundles.test,
         platform(libs.junit.bom),
+        libs.bundles.test,
         libs.mockito.kotlin,
     ).forEach(::testImplementation)
+
+    listOf(
+        libs.junit.jupiter.engine,
+        libs.junit.vintage.engine,
+        libs.junit.platform.launcher,
+    ).forEach { dependency ->
+        testRuntimeOnly(dependency)
+    }
 
     listOf(
         libs.androidx.test.orchestrator,

@@ -54,15 +54,13 @@ jose4j = { module = "org.bitbucket.b_c:jose4j", version.ref = "jose4j" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 bouncy-castle = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bouncyCastle"}
 
-#Test
-junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junit" }
-
 #Unit Test
-junit-jupiter = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
-junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit" }
-junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
-junit-jupiter-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter-api"}
+junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
+junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine" }
+junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher" }
 androidx-compose-ui-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "compose-ui-junit4" }
 robolectric = { group = "org.robolectric", name = "robolectric", version = "4.14.1" }
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
@@ -86,7 +84,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 android-test = [ "android-test-core", "android-test-runner", "android-test-rules", "android-test-core-ktx", "android-test-ext-junit" ]
 mockito = ["mockito-kotlin", "mockito-android"]
 espresso = ["espresso-core", "espresso-intents"]
-test = [ "junit-jupiter", "junit-jupiter-params", "junit-jupiter-engine"]
+test = [ "junit-jupiter", "junit-jupiter-params"]
 gov-uk = [ "componentsv2", "patterns", "theme", "logging" ]
 
 [plugins]

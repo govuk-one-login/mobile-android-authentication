@@ -82,8 +82,6 @@ dependencies {
     listOf(
         kotlin("test"),
         kotlin("test-junit5"),
-        libs.junit.jupiter.launcher,
-        libs.junit.jupiter.params,
         platform(libs.junit.bom),
         libs.mockito.kotlin,
         libs.androidx.compose.ui.junit4,
@@ -95,6 +93,14 @@ dependencies {
     ).forEach(::testImplementation)
 
     listOf(
+        libs.junit.jupiter.engine,
+        libs.junit.vintage.engine,
+        libs.junit.platform.launcher,
+    ).forEach { dependency ->
+        testRuntimeOnly(dependency)
+    }
+
+    listOf(
         libs.androidx.test.orchestrator,
     ).forEach {
         androidTestUtil(it)
@@ -104,8 +110,6 @@ dependencies {
         libs.androidx.compose.ui.tooling,
         libs.androidx.compose.ui.test.manifest,
     ).forEach(::debugImplementation)
-
-    testRuntimeOnly(libs.junit.vintage.engine)
 }
 
 mavenPublishingConfig {
