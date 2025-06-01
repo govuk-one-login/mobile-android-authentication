@@ -3,7 +3,6 @@ import uk.gov.pipelines.config.ApkConfig
 plugins {
     `maven-publish`
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.paparazzi)
     id("uk.gov.pipelines.android-lib-config")
 }
 
