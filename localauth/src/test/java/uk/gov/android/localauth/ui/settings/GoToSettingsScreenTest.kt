@@ -1,18 +1,21 @@
 package uk.gov.android.localauth.ui.settings
 
+import android.content.Context
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import uk.gov.android.authentication.localauth.R
-import uk.gov.android.localauth.utils.FragmentActivityTestCase
+import uk.gov.android.localauth.utils.DebugOnlyRobolectricTestRunner
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 import uk.gov.logging.api.analytics.parameters.data.TaxonomyLevel2
 import uk.gov.logging.api.analytics.parameters.data.TaxonomyLevel3
@@ -23,8 +26,12 @@ import uk.gov.logging.api.v3dot1.model.ViewEvent
 import kotlin.test.assertTrue
 import uk.gov.android.ui.componentsv2.R as ComponentsR
 
-@RunWith(AndroidJUnit4::class)
-class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
+@RunWith(DebugOnlyRobolectricTestRunner::class)
+class GoToSettingsScreenTest {
+    @get:Rule
+    val composeTestRule = createComposeRule()
+
+    private val context: Context = ApplicationProvider.getApplicationContext()
     private val analyticsLogger: AnalyticsLogger = mock()
     private var onBack = false
     private var onGoToSettings = false

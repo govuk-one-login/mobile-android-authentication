@@ -1,13 +1,17 @@
 package uk.gov.android.localauth
 
+import android.content.Context
 import androidx.compose.ui.test.isDisplayed
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.fragment.app.FragmentActivity
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
@@ -20,14 +24,17 @@ import uk.gov.android.localauth.devicesecurity.DeviceBiometricsManager
 import uk.gov.android.localauth.devicesecurity.DeviceBiometricsStatus
 import uk.gov.android.localauth.preference.LocalAuthPreference
 import uk.gov.android.localauth.preference.LocalAuthPreferenceRepository
-import uk.gov.android.localauth.utils.FragmentActivityTestCase
 import uk.gov.android.localauth.utils.TestActivity
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 @RunWith(AndroidJUnit4::class)
-class LocalAuthManagerTest : FragmentActivityTestCase(true) {
+class LocalAuthManagerTest {
+    @get:Rule
+    val composeTestRule = createAndroidComposeRule<TestActivity>()
+
+    private val context: Context = ApplicationProvider.getApplicationContext()
     private lateinit var localAuthPreferenceRepository: LocalAuthPreferenceRepository
     private lateinit var deviceBiometricsManager: DeviceBiometricsManager
     private lateinit var callbackHandler: LocalAuthManagerCallbackHandler
