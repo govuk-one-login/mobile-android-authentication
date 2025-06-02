@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Biometrics Opt In Screen -->
-    <string name="bio_opt_in_image_content_description">Placeholder content description</string>
-    <string name="bio_opt_in_title">Unlock the app with biometrics</string>
-    <string name="bio_opt_in_body1">You can unlock the app with your face, fingerprint or iris within 30 minutes of signing in with GOV.UK One Login.</string>
-    <string name="bio_opt_in_body2">If you do not want to use your biometrics, you can unlock the app with your phone’s pin or pattern instead.</string>
-    <string name="bio_opt_in_body3">Anyone who can unlock your phone with their biometrics or with your phone’s pin or pattern might be able to access your app.</string>
-    <string name="bio_opt_in_bio_button">Use biometrics</string>
-    <string name="bio_opt_in_passcode_button">Use pin or pattern instead</string>
+    <string name="app_enableBiometricsTitle">Use biometrics with this app</string>
+    <string name="app_enableBiometricsButton">Use biometrics</string>
+    <string name="app_enablePasscodeOrPatternButton">Skip</string>
+    <string name="app_enableBiometricsBody2">If you use biometrics with this app, it could be accessed by anyone who can unlock your phone with their biometrics or with your phone\'s pin or pattern.</string>
+    <string name="app_enableBiometricsBody3">You can turn off biometrics anytime in the app settings.</string>
+    <string name="app_enableBiometricsImageTestTag" translatable="false">Decorative image test tag</string>
+    <!-- Wallet Copy -->
+    <string name="app_wallet_enableBiometricsBody1">Use your face, fingerprint or iris to:</string>
+    <string name="app_wallet_enableBiometricsBullet1">unlock the app within 30 minutes of signing in with Welcome to GOV.UK  One Login</string>
+    <string name="app_wallet_enableBiometricsBullet2">view and add documents</string>
+    <!-- No Wallet Copy -->
+    <string name="app_enableBiometricsBody1">You can unlock the app with your face, fingerprint or iris within 30 minutes of signing in with GOV.UK One Login.</string>
 
     <!-- Go To Settings Screen -->
     <string name="app_localAuthManagerErrorTitle">You need to update your phone settings</string>
@@ -21,4 +26,5 @@
 
     <!-- Analytics default values -->
     <string name="system_backButton" translatable="false">back - system</string>
+    <string name="icon_backButton" translatable="false">Back</string>
 </resources>
