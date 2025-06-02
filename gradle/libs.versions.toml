@@ -85,5 +85,5 @@ test = [ "junit-jupiter", "junit-jupiter-params"]
 gov-uk = [ "componentsv2", "patterns", "theme", "logging" ]
 
 [plugins]
-kotlin-serlialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

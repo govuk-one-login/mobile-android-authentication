@@ -3,8 +3,10 @@ import uk.gov.pipelines.emulator.EmulatorConfig
 import uk.gov.pipelines.emulator.SystemImageSource
 
 buildscript {
+    val configDir by rootProject.extra { "$rootDir/config" }
+    val composeKotlinCompilerVersion by rootProject.extra { "1.5.0" }
     val buildLogicDir: String by rootProject.extra("mobile-android-pipelines/buildLogic")
-    val configDir by rootProject.extra { "${rootProject.rootDir}/config" }
+
     // Github packages publishing configuration
     val githubRepositoryName: String by rootProject.extra("mobile-android-authentication")
     val mavenGroupId: String by rootProject.extra("uk.gov.android.authentication")
@@ -51,4 +53,6 @@ val emulatorConfig by rootProject.extra(
 plugins {
     id("uk.gov.pipelines.vale-config")
     id("uk.gov.pipelines.sonarqube-root-config")
+    alias(libs.plugins.compose.compiler) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
 }

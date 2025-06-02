@@ -1,14 +1,11 @@
 import uk.gov.pipelines.config.ApkConfig
 
 plugins {
-    `maven-publish`
-    alias(libs.plugins.compose.compiler)
     id("uk.gov.pipelines.android-lib-config")
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
-    namespace = "uk.gov.android.localauth"
-
     defaultConfig {
         val apkConfig: ApkConfig by project.rootProject.extra
         namespace = apkConfig.applicationId + ".localauth"
@@ -20,9 +17,18 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
+        }
+        debug {
+            enableAndroidTestCoverage = true
+            enableUnitTestCoverage = true
         }
     }
 
+    @Suppress("UnstableApiUsage")
     testOptions {
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
         animationsDisabled = true
@@ -43,13 +49,15 @@ android {
         }
     }
 
+    buildFeatures {
+        compose = true
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-
-    buildFeatures {
-        compose = true
+    kotlinOptions {
+        jvmTarget = "17"
     }
 
     ktlint {

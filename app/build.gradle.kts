@@ -1,15 +1,14 @@
 import uk.gov.pipelines.config.ApkConfig
 
 plugins {
-    `maven-publish`
-    alias(libs.plugins.kotlin.serlialization)
     id("uk.gov.pipelines.android-lib-config")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
     defaultConfig {
         val apkConfig: ApkConfig by project.rootProject.extra
-        namespace = apkConfig.applicationId + ".impl"
+        namespace = apkConfig.applicationId + ".app"
         compileSdk = apkConfig.sdkVersions.compile
         minSdk = apkConfig.sdkVersions.minimum
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -23,8 +22,13 @@ android {
                 "proguard-rules.pro",
             )
         }
+        debug {
+            enableAndroidTestCoverage = true
+            enableUnitTestCoverage = true
+        }
     }
 
+    @Suppress("UnstableApiUsage")
     testOptions {
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
         animationsDisabled = true
@@ -44,10 +48,12 @@ android {
             isIncludeAndroidResources = true
         }
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
     }
     packaging {
         resources.excludes.add("META-INF/versions/9/OSGI-INF/MANIFEST.MF")

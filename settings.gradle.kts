@@ -1,12 +1,15 @@
+@file:Suppress("UnstableApiUsage")
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
         gradlePluginPortal()
     }
 }
-@Suppress("UnstableApiUsage")
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -22,11 +25,11 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "mobile-android-authentication"
-include(":app")
-
+include(
+    ":app",
+    ":localauth",
+)
 includeBuild("${rootProject.projectDir}/mobile-android-pipelines/buildLogic")
-gradle.startParameter.excludedTaskNames.addAll(listOf(":buildLogic:plugins:testClasses"))
-include(":localauth")
 
 fun setGithubCredentials(): MavenArtifactRepository.() -> Unit = {
     val (credUser, credToken) = fetchGithubCredentials()
