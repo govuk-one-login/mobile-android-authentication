@@ -39,7 +39,7 @@ jobs:
         uses: ./mobile-android-pipelines/actions/clean-workspace
 
       - name: Setup GitHub Runner workflow
-        uses: ./mobile-android-pipelines/actions/setup-runner
+        uses: ./setup-runner
 
       - name: Verify Conventional commit standards against latest git tag
         uses: ./mobile-android-pipelines/actions/verify-conventional-commit
