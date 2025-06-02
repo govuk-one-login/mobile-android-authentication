@@ -30,6 +30,7 @@ import uk.gov.android.ui.componentsv2.heading.GdsHeading
 import uk.gov.android.ui.componentsv2.heading.GdsHeadingStyle
 import uk.gov.android.ui.componentsv2.images.GdsVectorImage
 import uk.gov.android.ui.componentsv2.list.GdsBulletedList
+import uk.gov.android.ui.componentsv2.list.ListItem
 import uk.gov.android.ui.componentsv2.list.ListTitle
 import uk.gov.android.ui.componentsv2.list.TitleType
 import uk.gov.android.ui.patterns.dialog.FullScreenDialogue
@@ -145,8 +146,8 @@ private fun WalletCopyText() {
     GdsBulletedList(
         title = ListTitle(text = title, titleType = TitleType.Text),
         bulletListItems = persistentListOf(
-            bulletItemOne,
-            bulletItemTwo,
+            ListItem(bulletItemOne),
+            ListItem(bulletItemTwo),
         ),
         modifier = Modifier.padding(bottom = smallPadding),
     )
@@ -203,7 +204,7 @@ private fun CustomText(text: String) {
     Text(
         text = text,
         color = MaterialTheme.colorScheme.onBackground,
-        modifier = Modifier.padding(bottom = smallPadding),
+        modifier = Modifier.padding(bottom = smallPadding).fillMaxWidth(),
         textAlign = TextAlign.Center,
     )
 }

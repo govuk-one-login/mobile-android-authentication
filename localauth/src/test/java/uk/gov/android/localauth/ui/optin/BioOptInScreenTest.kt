@@ -190,6 +190,42 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
         }
     }
 
+    @Test
+    fun `test no wallet copy preview`() {
+        composeTestRule.apply {
+            setContent {
+                BioOptInPreview()
+            }
+            onNodeWithText(
+                context.getString(R.string.app_enableBiometricsTitle),
+            ).assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.app_enableBiometricsBody1),
+            ).assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.app_enableBiometricsBody2),
+            ).assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.app_enableBiometricsBody3),
+            ).performScrollTo().assertExists()
+
+            onNodeWithText(
+                context.getString(R.string.app_enableBiometricsButton),
+            ).assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.app_enablePasscodeOrPatternButton),
+            )
+
+            onNodeWithContentDescription(
+                context.getString(R.string.bio_opt_in_image_content_description),
+            ).assertIsDisplayed()
+        }
+    }
+
     private fun setupWallet() {
         composeTestRule.setContent {
             BioOptInScreen(

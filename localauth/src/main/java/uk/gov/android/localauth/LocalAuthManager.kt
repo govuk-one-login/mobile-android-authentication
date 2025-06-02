@@ -25,7 +25,7 @@ interface LocalAuthManager {
      * @param callbackHandler allows the consumer to provide implementation for success or failure results/ outcomes
      */
     suspend fun enforceAndSet(
-        walletEnabled: Boolean = true,
+        walletEnabled: Boolean,
         localAuhRequired: Boolean,
         activity: FragmentActivity,
         callbackHandler: LocalAuthManagerCallbackHandler,
