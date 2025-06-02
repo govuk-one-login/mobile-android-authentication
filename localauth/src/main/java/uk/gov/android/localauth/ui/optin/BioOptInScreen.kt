@@ -138,21 +138,7 @@ private fun WalletCopyText() {
     val title = stringResource(R.string.app_wallet_enableBiometricsBody1)
     val bulletItemOne = stringResource(R.string.app_wallet_enableBiometricsBullet1)
     val bulletItemTwo = stringResource(R.string.app_wallet_enableBiometricsBullet2)
-    Image(
-        imageVector = ImageVector.vectorResource(R.drawable.bio_opt_in),
-        contentDescription = null,
-        contentScale = ContentScale.Fit,
-        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
-        modifier = Modifier.padding(vertical = smallPadding)
-            .fillMaxWidth()
-            .testTag(stringResource(R.string.app_enableBiometricsImageTestTag)),
-    )
-    GdsHeading(
-        text = stringResource(R.string.app_enableBiometricsTitle),
-        style = GdsHeadingStyle.Title1,
-        modifier = Modifier.padding(bottom = smallPadding)
-            .semantics { this.traversalIndex = TITLE_INDEX },
-    )
+    Header()
     GdsBulletedList(
         title = ListTitle(text = title, titleType = TitleType.Text),
         bulletListItems = persistentListOf(
@@ -169,24 +155,32 @@ private fun WalletCopyText() {
 @OptIn(UnstableDesignSystemAPI::class)
 @Composable
 private fun NoWalletCopyText() {
+    Header()
+    CustomText(text = stringResource(R.string.app_enableBiometricsBody1), LIST_INDEX)
+    CustomText(text = stringResource(R.string.app_enableBiometricsBody2), CONTENT1_INDEX)
+    CustomText(text = stringResource(R.string.app_enableBiometricsBody3), CONTENT2_INDEX)
+}
+
+@Composable
+@OptIn(UnstableDesignSystemAPI::class)
+private fun Header() {
     Image(
         imageVector = ImageVector.vectorResource(R.drawable.bio_opt_in),
         contentDescription = null,
         contentScale = ContentScale.Fit,
         colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
-        modifier = Modifier.padding(vertical = smallPadding)
+        modifier = Modifier
+            .padding(vertical = smallPadding)
             .fillMaxWidth()
             .testTag(stringResource(R.string.app_enableBiometricsImageTestTag)),
     )
     GdsHeading(
         text = stringResource(R.string.app_enableBiometricsTitle),
         style = GdsHeadingStyle.Title1,
-        modifier = Modifier.padding(bottom = smallPadding)
+        modifier = Modifier
+            .padding(bottom = smallPadding)
             .semantics { this.traversalIndex = TITLE_INDEX },
     )
-    CustomText(text = stringResource(R.string.app_enableBiometricsBody1), LIST_INDEX)
-    CustomText(text = stringResource(R.string.app_enableBiometricsBody2), CONTENT1_INDEX)
-    CustomText(text = stringResource(R.string.app_enableBiometricsBody3), CONTENT2_INDEX)
 }
 
 @Composable
