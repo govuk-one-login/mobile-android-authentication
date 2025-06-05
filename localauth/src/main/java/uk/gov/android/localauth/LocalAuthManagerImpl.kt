@@ -51,7 +51,7 @@ open class LocalAuthManagerImpl(
                 -> callbackHandler.onSuccess(false)
                 else -> {
                     // Go through the local auth flow
-                    handleSecureDevice(callbackHandler, activity, walletEnabled)
+                    handleSecureDevice(callbackHandler, activity, walletEnabled, localAuhRequired)
                 }
             }
         } else {
@@ -107,6 +107,7 @@ open class LocalAuthManagerImpl(
         callbackHandler: LocalAuthManagerCallbackHandler,
         activity: FragmentActivity,
         walletEnabled: Boolean,
+        isLocalAuthRequired: Boolean,
     ) {
         when (deviceBiometricsManager.getCredentialStatus()) {
             DeviceBiometricsStatus.SUCCESS -> {
@@ -129,7 +130,11 @@ open class LocalAuthManagerImpl(
                         localAuthPrefRepo.setLocalAuthPref(
                             LocalAuthPreference.Disabled,
                         )
-                        callbackHandler.onSuccess(false)
+                        if (isLocalAuthRequired) {
+                            callbackHandler.onFailure(false)
+                        } else {
+                            callbackHandler.onSuccess(false)
+                        }
                     },
                 )
             }
