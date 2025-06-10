@@ -118,7 +118,7 @@ open class LocalAuthManagerImpl(
                         localAuthPrefRepo.setLocalAuthPref(
                             LocalAuthPreference.Disabled,
                         )
-                        callbackHandler.onSuccess(true)
+                        setLocalAuthBehaviour(isLocalAuthRequired, callbackHandler, true)
                     },
                     onBiometricsOptIn = {
                         localAuthPrefRepo.setLocalAuthPref(
@@ -130,11 +130,7 @@ open class LocalAuthManagerImpl(
                         localAuthPrefRepo.setLocalAuthPref(
                             LocalAuthPreference.Disabled,
                         )
-                        if (isLocalAuthRequired) {
-                            callbackHandler.onFailure(false)
-                        } else {
-                            callbackHandler.onSuccess(false)
-                        }
+                        setLocalAuthBehaviour(isLocalAuthRequired, callbackHandler)
                     },
                 )
             }
@@ -146,6 +142,18 @@ open class LocalAuthManagerImpl(
                     .setLocalAuthPref(LocalAuthPreference.Enabled(false))
                 callbackHandler.onSuccess(false)
             }
+        }
+    }
+
+    private fun setLocalAuthBehaviour(
+        isLocalAuthRequired: Boolean,
+        callbackHandler: LocalAuthManagerCallbackHandler,
+        backButtonPressed: Boolean = false,
+    ) {
+        if (isLocalAuthRequired) {
+            callbackHandler.onFailure(backButtonPressed)
+        } else {
+            callbackHandler.onSuccess(backButtonPressed)
         }
     }
 }

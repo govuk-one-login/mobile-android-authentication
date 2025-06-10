@@ -177,7 +177,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 Espresso.pressBack()
             }
 
-            verify(callbackHandler).onSuccess(true)
+            verify(callbackHandler).onFailure(true)
             verify(localAuthPreferenceRepository).getLocalAuthPref()
             verify(localAuthPreferenceRepository)
                 .setLocalAuthPref(LocalAuthPreference.Disabled)
