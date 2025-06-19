@@ -304,4 +304,105 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
             assertTrue(onBack)
         }
     }
+
+    @Test
+    fun `test biometrics opt out screen`() {
+        composeTestRule.apply {
+            uiManager.displayBioOptOut(
+                activity,
+                onBack = {
+                    onBack = !onBack
+                },
+                onBiometricsOptIn = {
+                    onBioOptIn = !onBioOptIn
+                },
+            )
+
+            onNodeWithText(
+                context.getString(R.string.app_optOutBiometricsTitle),
+            ).assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.app_optOutBiometricsBody1),
+            ).assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.app_optOutBiometricsBody2),
+            ).assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.app_optOutBiometricsBody3),
+            ).assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.app_optOutBiometricsButton),
+            ).assertIsDisplayed()
+        }
+    }
+
+    @Test
+    fun `test primary button press on biometrics opt out screen`() {
+        onBioOptIn = false
+        composeTestRule.apply {
+            uiManager.displayBioOptOut(
+                activity,
+                onBack = {
+                    onBack = !onBack
+                },
+                onBiometricsOptIn = {
+                    onBioOptIn = !onBioOptIn
+                },
+            )
+
+            onNodeWithText(
+                context.getString(R.string.app_optOutBiometricsButton),
+            )
+                .assertIsDisplayed()
+                .performClick()
+
+            assertTrue(onBioOptIn)
+        }
+    }
+
+    @Test
+    fun `test hard back press on biometrics opt out screen`() {
+        onBack = false
+        composeTestRule.apply {
+            uiManager.displayBioOptOut(
+                activity,
+                onBack = {
+                    onBack = !onBack
+                },
+                onBiometricsOptIn = {
+                    onBioOptIn = !onBioOptIn
+                },
+            )
+
+            Espresso.pressBack()
+
+            assertTrue(onBack)
+        }
+    }
+
+    @Test
+    fun `test back button press on biometrics opt out screen`() {
+        onBack = false
+        composeTestRule.apply {
+            uiManager.displayBioOptOut(
+                activity,
+                onBack = {
+                    onBack = !onBack
+                },
+                onBiometricsOptIn = {
+                    onBioOptIn = !onBioOptIn
+                },
+            )
+
+            onNodeWithContentDescription(
+                context.getString(uk.gov.android.ui.componentsv2.R.string.close_button),
+            ).assertIsDisplayed().performClick()
+
+            assertTrue(onBack)
+        }
+    }
 }

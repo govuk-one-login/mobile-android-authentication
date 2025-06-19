@@ -39,7 +39,8 @@ open class LocalAuthManagerImpl(
 
     override suspend fun enforceAndSet(
         walletEnabled: Boolean,
-        localAuhRequired: Boolean,
+        localAuthRequired: Boolean,
+        walletAddCredentialAttempt: Boolean,
         activity: FragmentActivity,
         callbackHandler: LocalAuthManagerCallbackHandler,
     ) {
@@ -49,15 +50,22 @@ open class LocalAuthManagerImpl(
                 // LocalAuthPref already set and saved (passcode/ biometrics) -- continue onSuccess
                 (localAuthPreference is LocalAuthPreference.Enabled)
                 -> callbackHandler.onSuccess(false)
+
                 else -> {
                     // Go through the local auth flow
-                    handleSecureDevice(callbackHandler, activity, walletEnabled, localAuhRequired)
+                    handleSecureDevice(
+                        callbackHandler,
+                        activity,
+                        walletEnabled,
+                        localAuthRequired,
+                        walletAddCredentialAttempt,
+                    )
                 }
             }
         } else {
             // When device does not have any passcode/ biometrics/ pattern/ etc
             // Check if device requires security
-            handleUnsecuredDevice(localAuhRequired, activity, callbackHandler)
+            handleUnsecuredDevice(localAuthRequired, activity, callbackHandler)
         }
     }
 
@@ -108,6 +116,7 @@ open class LocalAuthManagerImpl(
         activity: FragmentActivity,
         walletEnabled: Boolean,
         isLocalAuthRequired: Boolean,
+        walletAddCredentialAttempt: Boolean,
     ) {
         when (deviceBiometricsManager.getCredentialStatus()) {
             DeviceBiometricsStatus.SUCCESS -> {
@@ -118,7 +127,7 @@ open class LocalAuthManagerImpl(
                         localAuthPrefRepo.setLocalAuthPref(
                             LocalAuthPreference.Disabled,
                         )
-                        setLocalAuthBehaviour(isLocalAuthRequired, callbackHandler, true)
+                        setLocalAuthBehaviour(isLocalAuthRequired, callbackHandler)
                     },
                     onBiometricsOptIn = {
                         localAuthPrefRepo.setLocalAuthPref(
@@ -130,7 +139,12 @@ open class LocalAuthManagerImpl(
                         localAuthPrefRepo.setLocalAuthPref(
                             LocalAuthPreference.Disabled,
                         )
-                        setLocalAuthBehaviour(isLocalAuthRequired, callbackHandler)
+                        setOptOutLocalAuthBehaviour(
+                            activity,
+                            isLocalAuthRequired,
+                            callbackHandler,
+                            walletAddCredentialAttempt,
+                        )
                     },
                 )
             }
@@ -148,12 +162,39 @@ open class LocalAuthManagerImpl(
     private fun setLocalAuthBehaviour(
         isLocalAuthRequired: Boolean,
         callbackHandler: LocalAuthManagerCallbackHandler,
-        backButtonPressed: Boolean = false,
     ) {
         if (isLocalAuthRequired) {
-            callbackHandler.onFailure(backButtonPressed)
+            callbackHandler.onFailure(backButtonPressed = true)
         } else {
-            callbackHandler.onSuccess(backButtonPressed)
+            callbackHandler.onSuccess(backButtonPressed = true)
+        }
+    }
+
+    private fun setOptOutLocalAuthBehaviour(
+        activity: FragmentActivity,
+        isLocalAuthRequired: Boolean,
+        callbackHandler: LocalAuthManagerCallbackHandler,
+        walletAddCredentialAttempt: Boolean,
+    ) {
+        if (isLocalAuthRequired) {
+            if (walletAddCredentialAttempt) {
+                uiManager.displayBioOptOut(
+                    activity,
+                    onBack = {
+                        callbackHandler.onFailure(backButtonPressed = true)
+                    },
+                    onBiometricsOptIn = {
+                        localAuthPrefRepo.setLocalAuthPref(
+                            LocalAuthPreference.Enabled(true),
+                        )
+                        callbackHandler.onSuccess(false)
+                    },
+                )
+            } else {
+                callbackHandler.onFailure(backButtonPressed = false)
+            }
+        } else {
+            callbackHandler.onSuccess(backButtonPressed = false)
         }
     }
 }

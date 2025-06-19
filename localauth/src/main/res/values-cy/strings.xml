@@ -22,4 +22,10 @@
     <string name="app_wallet_enableBiometricsBullet2">gweld ac ychwanegu dogfennau</string>
     <!-- No Wallet Copy -->
     <string name="app_enableBiometricsBody1">Gallwch ddatgloi\'r ap gyda\'ch wyneb, olion bysedd neu iris o fewn 30 munud o fewngofnodi gyda GOV.UK One Login.</string>
+    <!-- Biometrics skipped screen -->
+    <string name="app_optOutBiometricsTitle">Mae angen i chi ddefnyddio biometreg</string>
+    <string name="app_optOutBiometricsBody1">I ychwanegu dogfennau, mae angen i chi ganiatáu i\'r ap hwn ddefnyddio eich wyneb, olion bysedd neu iris. Mae hyn er mwyn cadw\'ch dogfennau\'n ddiogel.</string>
+    <string name="app_optOutBiometricsBody2">Pan fyddwch yn defnyddio biometreg, bydd unrhyw un sy\'n gallu datgloi eich ffôn gyda\'u biometreg neu gyda phin neu batrwm eich ffôn yn gallu cael mynediad i\'ch ap.</string>
+    <string name="app_optOutBiometricsBody3">@string/app_enableBiometricsBody3</string>
+    <string name="app_optOutBiometricsButton">@string/app_enableBiometricsButton</string>
 </resources>
