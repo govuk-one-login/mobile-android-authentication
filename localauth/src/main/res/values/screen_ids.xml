@@ -3,4 +3,5 @@
     <string name="bio_opt_in_screen_wallet_page_id" translatable="false">4c6af885-a47f-4979-8b34-146574c73745</string>
     <string name="bio_opt_in_screen_no_wallet_page_id" translatable="false">33d0549e-dbe5-42ba-bae1-ada49d34e7a4</string>
     <string name="go_settings_screen_page_id" translatable="false">edc06a88-b779-4a17-9ed6-7a9c4103c290</string>
+    <string name="bio_opt_out_screen_page_id" translatable="false">6eef095c-3226-498b-a7ef-517c76ea0475</string>
 </resources>

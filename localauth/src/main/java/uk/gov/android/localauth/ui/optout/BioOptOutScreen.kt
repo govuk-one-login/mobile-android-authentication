@@ -3,6 +3,7 @@ package uk.gov.android.localauth.ui.optout
 import android.content.res.Configuration
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.persistentListOf
@@ -15,21 +16,25 @@ import uk.gov.android.ui.patterns.errorscreen.ErrorScreen
 import uk.gov.android.ui.patterns.errorscreen.ErrorScreenIcon
 import uk.gov.android.ui.theme.m3.GdsTheme
 import uk.gov.android.ui.theme.meta.ScreenPreview
+import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BioOptOutScreen(
+    analyticsLogger: AnalyticsLogger,
     onBack: () -> Unit,
     onBiometricsOptIn: () -> Unit,
     onDismiss: () -> Unit,
 ) {
+    val analyticsViewModel = BioOptOutAnalyticsViewModel(LocalContext.current, analyticsLogger)
+    analyticsViewModel.trackBioOptOutScreen()
     FullScreenDialogue(
         onDismissRequest = onDismiss,
         topAppBar = {
             FullScreenDialogueTopAppBar(
                 onCloseClick = {
                     onBack()
-
+                    analyticsViewModel.trackCloseIconButton()
                     onDismiss()
                 },
             ) {
@@ -38,17 +43,23 @@ fun BioOptOutScreen(
         },
         onBack = {
             onBack()
-
+            analyticsViewModel.trackBackButton()
             onDismiss()
         },
         content = {
-            BioOptOutContent(onBiometricsOptIn = onBiometricsOptIn)
+            BioOptOutContent(onBiometricsOptIn = {
+                onBiometricsOptIn()
+                analyticsViewModel.trackBiometricsButton()
+                onDismiss()
+            })
         },
     )
 }
 
 @Composable
-private fun BioOptOutContent(onBiometricsOptIn: () -> Unit) {
+private fun BioOptOutContent(
+    onBiometricsOptIn: () -> Unit,
+) {
     ErrorScreen(
         icon = ErrorScreenIcon.ErrorIcon,
         title = stringResource(R.string.app_optOutBiometricsTitle),

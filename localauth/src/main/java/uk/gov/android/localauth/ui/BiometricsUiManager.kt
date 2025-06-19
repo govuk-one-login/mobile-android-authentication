@@ -98,7 +98,7 @@ class BiometricsUiManager(
         val dialogView = ComposeView(activity).apply {
             setContent {
                 GdsTheme {
-                    BioOptOutScreen(onBack, onBiometricsOptIn) {
+                    BioOptOutScreen(analyticsLogger, onBack, onBiometricsOptIn) {
                         (parent as? ViewGroup)?.removeView(this)
                     }
                 }
