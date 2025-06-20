@@ -40,7 +40,7 @@ open class LocalAuthManagerImpl(
     override suspend fun enforceAndSet(
         walletEnabled: Boolean,
         localAuthRequired: Boolean,
-        walletAddCredentialAttempt: Boolean,
+        enableOptOut: Boolean,
         activity: FragmentActivity,
         callbackHandler: LocalAuthManagerCallbackHandler,
     ) {
@@ -58,7 +58,7 @@ open class LocalAuthManagerImpl(
                         activity,
                         walletEnabled,
                         localAuthRequired,
-                        walletAddCredentialAttempt,
+                        enableOptOut,
                     )
                 }
             }

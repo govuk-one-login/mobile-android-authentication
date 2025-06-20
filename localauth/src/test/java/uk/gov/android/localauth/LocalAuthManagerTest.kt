@@ -145,7 +145,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 localAuthManager.enforceAndSet(
                     walletEnabled = false,
                     localAuthRequired = true,
-                    walletAddCredentialAttempt = true,
+                    enableOptOut = true,
                     activity = activity,
                     callbackHandler = callbackHandler,
                 )
@@ -175,7 +175,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 localAuthManager.enforceAndSet(
                     walletEnabled = false,
                     localAuthRequired = true,
-                    walletAddCredentialAttempt = true,
+                    enableOptOut = true,
                     activity = activity,
                     callbackHandler = callbackHandler,
                 )
@@ -210,7 +210,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 localAuthManager.enforceAndSet(
                     walletEnabled = false,
                     localAuthRequired = true,
-                    walletAddCredentialAttempt = true,
+                    enableOptOut = true,
                     activity = activity,
                     callbackHandler = callbackHandler,
                 )

@@ -21,14 +21,14 @@ interface LocalAuthManager {
      *
      * @param walletEnabled if the consumer has access to Wallet, it is used to display the correct [BioOptInScreen] copy
      * @param localAuthRequired enforces local authentication on the device - when this is set to true, it requires the device to be secure.
-     * @param walletAddCredentialAttempt indicates whether an attempt to add a Wallet credential is made
+     * @param enableOptOut indicates whether the opt out screen should be displayed when user skips biometrics opt in
      * @param activity is required to allow the [BiometricsUiManager] to display dialogs on top of the consumer underlying activity
      * @param callbackHandler allows the consumer to provide implementation for success or failure results/ outcomes
      */
     suspend fun enforceAndSet(
         walletEnabled: Boolean,
         localAuthRequired: Boolean,
-        walletAddCredentialAttempt: Boolean = false,
+        enableOptOut: Boolean = false,
         activity: FragmentActivity,
         callbackHandler: LocalAuthManagerCallbackHandler,
     )
