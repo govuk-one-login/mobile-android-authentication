@@ -40,7 +40,6 @@ open class LocalAuthManagerImpl(
     override suspend fun enforceAndSet(
         walletEnabled: Boolean,
         localAuthRequired: Boolean,
-        enableOptOut: Boolean,
         activity: FragmentActivity,
         callbackHandler: LocalAuthManagerCallbackHandler,
     ) {
@@ -58,7 +57,6 @@ open class LocalAuthManagerImpl(
                         activity,
                         walletEnabled,
                         localAuthRequired,
-                        enableOptOut,
                     )
                 }
             }
@@ -116,7 +114,6 @@ open class LocalAuthManagerImpl(
         activity: FragmentActivity,
         walletEnabled: Boolean,
         isLocalAuthRequired: Boolean,
-        walletAddCredentialAttempt: Boolean,
     ) {
         when (deviceBiometricsManager.getCredentialStatus()) {
             DeviceBiometricsStatus.SUCCESS -> {
@@ -143,7 +140,6 @@ open class LocalAuthManagerImpl(
                             activity,
                             isLocalAuthRequired,
                             callbackHandler,
-                            walletAddCredentialAttempt,
                         )
                     },
                 )
@@ -174,25 +170,20 @@ open class LocalAuthManagerImpl(
         activity: FragmentActivity,
         isLocalAuthRequired: Boolean,
         callbackHandler: LocalAuthManagerCallbackHandler,
-        walletAddCredentialAttempt: Boolean,
     ) {
         if (isLocalAuthRequired) {
-            if (walletAddCredentialAttempt) {
-                uiManager.displayBioOptOut(
-                    activity,
-                    onBack = {
-                        callbackHandler.onFailure(backButtonPressed = true)
-                    },
-                    onBiometricsOptIn = {
-                        localAuthPrefRepo.setLocalAuthPref(
-                            LocalAuthPreference.Enabled(true),
-                        )
-                        callbackHandler.onSuccess(false)
-                    },
-                )
-            } else {
-                callbackHandler.onFailure(backButtonPressed = false)
-            }
+            uiManager.displayBioOptOut(
+                activity,
+                onBack = {
+                    callbackHandler.onFailure(backButtonPressed = true)
+                },
+                onBiometricsOptIn = {
+                    localAuthPrefRepo.setLocalAuthPref(
+                        LocalAuthPreference.Enabled(true),
+                    )
+                    callbackHandler.onSuccess(false)
+                },
+            )
         } else {
             callbackHandler.onSuccess(backButtonPressed = false)
         }

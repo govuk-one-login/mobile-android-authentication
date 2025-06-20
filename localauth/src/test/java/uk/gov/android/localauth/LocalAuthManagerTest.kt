@@ -145,7 +145,6 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 localAuthManager.enforceAndSet(
                     walletEnabled = false,
                     localAuthRequired = true,
-                    enableOptOut = true,
                     activity = activity,
                     callbackHandler = callbackHandler,
                 )
@@ -175,7 +174,6 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 localAuthManager.enforceAndSet(
                     walletEnabled = false,
                     localAuthRequired = true,
-                    enableOptOut = true,
                     activity = activity,
                     callbackHandler = callbackHandler,
                 )
@@ -210,7 +208,6 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 localAuthManager.enforceAndSet(
                     walletEnabled = false,
                     localAuthRequired = true,
-                    enableOptOut = true,
                     activity = activity,
                     callbackHandler = callbackHandler,
                 )
@@ -382,9 +379,11 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 onNodeWithText(
                     context.getString(R.string.app_enablePasscodeOrPatternButton),
                 ).performClick()
+                onNodeWithText(
+                    context.getString(R.string.app_optOutBiometricsTitle),
+                ).assertIsDisplayed()
             }
 
-            verify(callbackHandler).onFailure(false)
             verify(localAuthPreferenceRepository)
                 .setLocalAuthPref(LocalAuthPreference.Disabled)
         }
