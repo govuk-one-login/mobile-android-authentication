@@ -32,6 +32,6 @@
     <string name="app_optOutBiometricsTitle">You need to use biometrics</string>
     <string name="app_optOutBiometricsBody1">To add documents, you need to allow this app to use your face, fingerprint or iris. This is to keep your documents secure.</string>
     <string name="app_optOutBiometricsBody2">When you use biometrics, anyone who can unlock your phone with their biometrics or with your phone\'s pin or pattern might be able to access your app.</string>
-    <string name="app_optOutBiometricsBody3">app_enableBiometricsBody3</string>
+    <string name="app_optOutBiometricsBody3">@string/app_enableBiometricsBody3</string>
     <string name="app_optOutBiometricsButton">@string/app_enableBiometricsButton</string>
 </resources>
