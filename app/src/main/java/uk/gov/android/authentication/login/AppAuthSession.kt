@@ -26,7 +26,10 @@ class AppAuthSession(
             .setEphemeralBrowsingEnabled(true)
             .setShareState(CustomTabsIntent.SHARE_STATE_OFF)
             .build()
-        val intent = authService.getAuthorizationRequestIntent(configuration.createRequest(), customEphemeralTabIntent)
+        val intent = authService.getAuthorizationRequestIntent(
+            configuration.createRequest(),
+            customEphemeralTabIntent
+        )
         launcher.launch(intent)
     }
 
