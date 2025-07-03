@@ -107,7 +107,8 @@ dependencies {
         libs.kotlinx.serialization.json,
         libs.jose4j,
         libs.gson,
-        libs.bouncy.castle
+        libs.bouncy.castle,
+        libs.androidx.browser
     ).forEach(::implementation)
 
     listOf(
