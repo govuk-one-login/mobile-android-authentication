@@ -40,6 +40,7 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 appauth = { group = "net.openid", name = "appauth", version = "0.11.1" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+androidx-browser = { group = "androidx.browser", name = "browser", version = "1.9.0-alpha01"}
 
 # Local Auth
 androidx-biometric = { group = "androidx.biometric", name = "biometric", version.ref = "androidxBiometric" }

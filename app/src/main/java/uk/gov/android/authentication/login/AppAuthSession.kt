@@ -3,6 +3,9 @@ package uk.gov.android.authentication.login
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
+import androidx.annotation.OptIn
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.browser.customtabs.ExperimentalEphemeralBrowsing
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
@@ -14,11 +17,19 @@ class AppAuthSession(
     private val authService: AuthorizationService = AuthorizationService(context)
     private val clientAuthenticationProvider = ClientAuthenticationProviderImpl()
 
+    @OptIn(ExperimentalEphemeralBrowsing::class)
     override fun present(
         launcher: ActivityResultLauncher<Intent>,
         configuration: LoginSessionConfiguration
     ) {
-        val intent = authService.getAuthorizationRequestIntent(configuration.createRequest())
+        val customEphemeralTabIntent = CustomTabsIntent.Builder()
+            .setEphemeralBrowsingEnabled(true)
+            .setShareState(CustomTabsIntent.SHARE_STATE_OFF)
+            .build()
+        val intent = authService.getAuthorizationRequestIntent(
+            configuration.createRequest(),
+            customEphemeralTabIntent
+        )
         launcher.launch(intent)
     }
 
