@@ -34,6 +34,25 @@ class AuthenticationErrorTest {
     @Test
     fun `from(exception Exception) creates AuthenticationError of type access_denied`() {
         // Given an Intent that doesn't map to AuthorizationException
+        val nonNullMessage = "error message"
+        val exception = AuthorizationException(
+            AuthorizationException.TYPE_OAUTH_AUTHORIZATION_ERROR,
+            AuthorizationRequestErrors.ACCESS_DENIED.code,
+            AuthorizationRequestErrors.ACCESS_DENIED.error,
+            nonNullMessage,
+            AuthorizationRequestErrors.ACCESS_DENIED.errorUri,
+            AuthorizationRequestErrors.ACCESS_DENIED.cause
+        )
+        // When calling the from mapping method
+        val actual = AuthenticationError.Companion.from(exception)
+        // Then return an AuthenticationError
+        assertEquals(ErrorType.ACCESS_DENIED, actual.type)
+        assertEquals(nonNullMessage, actual.message)
+    }
+
+    @Test
+    fun `from(exception Exception) type access_denied null message`() {
+        // Given an Intent that doesn't map to AuthorizationException
         val exception = AuthorizationException(
             AuthorizationException.TYPE_OAUTH_AUTHORIZATION_ERROR,
             AuthorizationRequestErrors.ACCESS_DENIED.code,
@@ -46,10 +65,30 @@ class AuthenticationErrorTest {
         val actual = AuthenticationError.Companion.from(exception)
         // Then return an AuthenticationError
         assertEquals(ErrorType.ACCESS_DENIED, actual.type)
+        assertEquals(AuthenticationError.Companion.NULL_AUTH_MESSAGE, actual.message)
     }
 
     @Test
     fun `from(exception Exception) creates AuthenticationError of type server_error`() {
+        // Given an Intent that doesn't map to AuthorizationException
+        val nonNullMessage = "error message"
+        val exception = AuthorizationException(
+            AuthorizationException.TYPE_OAUTH_AUTHORIZATION_ERROR,
+            AuthorizationRequestErrors.SERVER_ERROR.code,
+            AuthorizationRequestErrors.SERVER_ERROR.error,
+            nonNullMessage,
+            AuthorizationRequestErrors.SERVER_ERROR.errorUri,
+            AuthorizationRequestErrors.SERVER_ERROR.cause
+        )
+        // When calling the from mapping method
+        val actual = AuthenticationError.Companion.from(exception)
+        // Then return an AuthenticationError
+        assertEquals(ErrorType.SERVER_ERROR, actual.type)
+        assertEquals(nonNullMessage, actual.message)
+    }
+
+    @Test
+    fun `from(exception Exception) type server_error null message`() {
         // Given an Intent that doesn't map to AuthorizationException
         val exception = AuthorizationException(
             AuthorizationException.TYPE_OAUTH_AUTHORIZATION_ERROR,
@@ -63,6 +102,7 @@ class AuthenticationErrorTest {
         val actual = AuthenticationError.Companion.from(exception)
         // Then return an AuthenticationError
         assertEquals(ErrorType.SERVER_ERROR, actual.type)
+        assertEquals(AuthenticationError.Companion.NULL_AUTH_MESSAGE, actual.message)
     }
 
     @Test
@@ -84,6 +124,17 @@ class AuthenticationErrorTest {
         // Then return an AuthenticationError
         assertIs<AuthenticationError>(actual)
         assertEquals(NETWORK_ERROR_MSG, actual.message)
+    }
+
+    @Test
+    fun `from(AuthorizationException) creates AuthenticationError null message`() {
+        // Given an OpenId AuthorizationException
+        val networkError = AuthorizationException(0, 3, null, null, null, null)
+        // When calling the from mapping method
+        val actual = AuthenticationError.Companion.from(networkError)
+        // Then return an AuthenticationError
+        assertIs<AuthenticationError>(actual)
+        assertEquals(AuthenticationError.Companion.NULL_AUTH_MESSAGE, actual.message)
     }
 
     @Test

@@ -21,18 +21,23 @@ class AuthenticationError(
 
         fun from(exception: AuthorizationException?): AuthenticationError {
             return when (exception) {
+                null -> AuthenticationError(
+                    message = NULL_AUTH_MESSAGE,
+                    type = ErrorType.OAUTH
+                )
+
                 AuthorizationRequestErrors.ACCESS_DENIED -> AuthenticationError(
-                    message = exception?.message ?: NULL_AUTH_MESSAGE,
+                    message = exception.message ?: NULL_AUTH_MESSAGE,
                     type = ErrorType.ACCESS_DENIED
                 )
 
                 AuthorizationRequestErrors.SERVER_ERROR -> AuthenticationError(
-                    message = exception?.message ?: NULL_AUTH_MESSAGE,
+                    message = exception.message ?: NULL_AUTH_MESSAGE,
                     type = ErrorType.SERVER_ERROR
                 )
 
                 else -> AuthenticationError(
-                    message = exception?.message ?: NULL_AUTH_MESSAGE,
+                    message = exception.message ?: NULL_AUTH_MESSAGE,
                     type = ErrorType.OAUTH
                 )
             }
