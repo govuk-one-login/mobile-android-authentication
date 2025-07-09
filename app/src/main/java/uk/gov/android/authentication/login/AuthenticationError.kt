@@ -44,30 +44,10 @@ class AuthenticationError(
                     status = status
                 )
 
-                TokenRequestErrors.INVALID_REQUEST -> AuthenticationError(
-                    message = message,
-                    type = ErrorType.TOKEN_400,
-                    status = status
-                )
-
-                TokenRequestErrors.UNSUPPORTED_GRANT_TYPE -> AuthenticationError(
-                    message = message,
-                    type = ErrorType.TOKEN_400,
-                    status = status
-                )
-
-                TokenRequestErrors.INVALID_GRANT -> AuthenticationError(
-                    message = message,
-                    type = ErrorType.TOKEN_400,
-                    status = status
-                )
-
-                TokenRequestErrors.INVALID_CLIENT -> AuthenticationError(
-                    message = message,
-                    type = ErrorType.TOKEN_400,
-                    status = status
-                )
-
+                TokenRequestErrors.INVALID_REQUEST,
+                TokenRequestErrors.UNSUPPORTED_GRANT_TYPE,
+                TokenRequestErrors.INVALID_GRANT,
+                TokenRequestErrors.INVALID_CLIENT,
                 TokenRequestErrors.UNAUTHORIZED_CLIENT -> AuthenticationError(
                     message = message,
                     type = ErrorType.TOKEN_400,
