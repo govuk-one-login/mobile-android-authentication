@@ -48,6 +48,7 @@ class AuthenticationErrorTest {
         // Then return an AuthenticationError
         assertEquals(ErrorType.ACCESS_DENIED, actual.type)
         assertEquals(nonNullMessage, actual.message)
+        assertEquals(AuthorizationRequestErrors.ACCESS_DENIED.code, actual.status)
     }
 
     @Test
@@ -85,6 +86,7 @@ class AuthenticationErrorTest {
         // Then return an AuthenticationError
         assertEquals(ErrorType.SERVER_ERROR, actual.type)
         assertEquals(nonNullMessage, actual.message)
+        assertEquals(AuthorizationRequestErrors.SERVER_ERROR.code, actual.status)
     }
 
     @Test

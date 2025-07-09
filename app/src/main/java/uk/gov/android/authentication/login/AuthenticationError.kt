@@ -6,7 +6,8 @@ import net.openid.appauth.AuthorizationException.AuthorizationRequestErrors
 
 class AuthenticationError(
     override val message: String,
-    val type: ErrorType
+    val type: ErrorType,
+    val status: Int = 0
 ) : Error() {
     enum class ErrorType {
         OAUTH,
@@ -20,25 +21,30 @@ class AuthenticationError(
         fun from(intent: Intent) = from(AuthorizationException.fromIntent(intent))
 
         fun from(exception: AuthorizationException?): AuthenticationError {
+            val status = exception?.code ?: 0
             return when (exception) {
                 null -> AuthenticationError(
                     message = NULL_AUTH_MESSAGE,
-                    type = ErrorType.OAUTH
+                    type = ErrorType.OAUTH,
+                    status = status
                 )
 
                 AuthorizationRequestErrors.ACCESS_DENIED -> AuthenticationError(
                     message = exception.message ?: NULL_AUTH_MESSAGE,
-                    type = ErrorType.ACCESS_DENIED
+                    type = ErrorType.ACCESS_DENIED,
+                    status = status
                 )
 
                 AuthorizationRequestErrors.SERVER_ERROR -> AuthenticationError(
                     message = exception.message ?: NULL_AUTH_MESSAGE,
-                    type = ErrorType.SERVER_ERROR
+                    type = ErrorType.SERVER_ERROR,
+                    status = status
                 )
 
                 else -> AuthenticationError(
                     message = exception.message ?: NULL_AUTH_MESSAGE,
-                    type = ErrorType.OAUTH
+                    type = ErrorType.OAUTH,
+                    status = status
                 )
             }
         }
