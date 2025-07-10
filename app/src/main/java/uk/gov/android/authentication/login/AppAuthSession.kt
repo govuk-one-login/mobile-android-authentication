@@ -36,7 +36,8 @@ class AppAuthSession(
     override fun finalise(
         intent: Intent,
         appIntegrity: AppIntegrityParameters,
-        callback: (tokens: TokenResponse) -> Unit
+        onSuccess: (tokens: TokenResponse) -> Unit,
+        onFailure: (error: AuthenticationError) -> Unit
     ) {
         val authResponse = AuthorizationResponse.fromIntent(intent)
         if (authResponse == null) {
@@ -59,9 +60,12 @@ class AppAuthSession(
             request,
             clientAuthenticationWithExtraHeaders
         ) { response, exception ->
-            callback(
-                response?.toTokenResponse() ?: throw AuthenticationError.from(exception)
-            )
+            val tokenResponse = response?.toTokenResponse()
+            if (tokenResponse == null) {
+                onFailure(AuthenticationError.from(exception))
+            } else {
+                onSuccess(tokenResponse)
+            }
         }
     }
 }

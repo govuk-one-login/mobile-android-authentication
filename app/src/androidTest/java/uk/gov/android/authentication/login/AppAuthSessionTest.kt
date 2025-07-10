@@ -75,7 +75,7 @@ class AppAuthSessionTest {
             putExtra(AuthorizationResponse.EXTRA_RESPONSE, "{}")
         }
         // When calling finalise
-        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP)) {}
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, {})
         // Then throw an IllegalArgumentException
     }
 
@@ -96,7 +96,7 @@ class AppAuthSessionTest {
         )
         // When calling finalise
         val result = assertThrows(AuthenticationError::class.java) {
-            appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP)) {}
+            appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, {})
         }
         // Then throw an IllegalArgumentException
         assertEquals(AuthenticationError.ErrorType.ACCESS_DENIED, result.type)
@@ -108,7 +108,7 @@ class AppAuthSessionTest {
         val intent = Intent()
         // When calling finalise
         val error = assertThrows(AuthenticationError::class.java) {
-            appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP)) {}
+            appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, {})
         }
         // Then throw an AuthenticationError
         assertEquals(AuthenticationError.ErrorType.OAUTH, error.type)
@@ -117,12 +117,12 @@ class AppAuthSessionTest {
 
     @Test
     fun finaliseThrowsAuthenticationErrorForIntentWithValidResponse() {
-        // Given an intent without a response data JSON extra
+        // Given an intent with a response data JSON extra
         val intent = Intent().apply {
             putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
         }
         // When calling finalise
-        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP)) {}
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, {})
     }
 
     companion object {

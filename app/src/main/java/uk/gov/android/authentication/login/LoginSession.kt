@@ -26,13 +26,14 @@ interface LoginSession {
      *
      * @param intent The intent from the login activity result
      * @param appIntegrity Provides a ClientAttestation JWT and PoP JWT to be attached in the auth request header parameters
-     * @param callback Method to extract and handle local token usage/storage
+     * @param onSuccess Method to extract and handle local token usage/storage
      * @throws [AuthenticationError] if Authorization fails
      */
     @Throws(Exception::class)
     fun finalise(
         intent: Intent,
         appIntegrity: AppIntegrityParameters,
-        callback: (tokens: TokenResponse) -> Unit
+        onSuccess: (tokens: TokenResponse) -> Unit,
+        onFailure: (error: AuthenticationError) -> Unit
     )
 }
