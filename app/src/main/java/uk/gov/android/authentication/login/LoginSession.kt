@@ -30,7 +30,12 @@ interface LoginSession {
      * @throws [AuthenticationError] if Authorization fails
      */
     @Throws(Exception::class)
-    @Deprecated("Use other finalise method instead")
+    @Deprecated(
+        message = "Please replace this with the alternative finalise function to use improved " +
+            "error handling",
+        replaceWith = ReplaceWith("uk.gov.android.authentication.login.AppAuthSession#finalise"),
+        level = DeprecationLevel.WARNING
+    )
     fun finalise(
         intent: Intent,
         appIntegrity: AppIntegrityParameters,
