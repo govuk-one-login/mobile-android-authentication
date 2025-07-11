@@ -75,7 +75,12 @@ class AppAuthSession(
         }
     }
 
-    @Deprecated("Use other finalise method instead")
+    @Deprecated(
+        message = "Please replace this with the alternative finalise function to use improved " +
+            "error handling",
+        replaceWith = ReplaceWith("uk.gov.android.authentication.login.AppAuthSession#finalise"),
+        level = DeprecationLevel.WARNING
+    )
     override fun finalise(
         intent: Intent,
         appIntegrity: AppIntegrityParameters,
