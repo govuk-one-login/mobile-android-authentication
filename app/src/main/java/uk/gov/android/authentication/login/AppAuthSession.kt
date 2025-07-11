@@ -74,4 +74,37 @@ class AppAuthSession(
             onFailure(e)
         }
     }
+
+    @Deprecated("Use other finalise method instead")
+    override fun finalise(
+        intent: Intent,
+        appIntegrity: AppIntegrityParameters,
+        callback: (tokens: TokenResponse) -> Unit
+    ) {
+        val authResponse = AuthorizationResponse.fromIntent(intent)
+        if (authResponse == null) {
+            val exception = AuthorizationException.fromIntent(intent)
+
+            throw AuthenticationError.from(exception)
+        }
+
+        // Create object that allows for additional headers/ body parameters
+        val clientAuthenticationWithExtraHeaders =
+            clientAuthenticationProvider.setCustomClientAuthentication(
+                appIntegrity.attestation,
+                appIntegrity.pop
+            )
+
+        // Create the standard request
+        val request = authResponse.createTokenExchangeRequest()
+
+        authService.performTokenRequest(
+            request,
+            clientAuthenticationWithExtraHeaders
+        ) { response, exception ->
+            callback(
+                response?.toTokenResponse() ?: throw AuthenticationError.from(exception)
+            )
+        }
+    }
 }

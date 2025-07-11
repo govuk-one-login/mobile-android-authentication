@@ -26,10 +26,25 @@ interface LoginSession {
      *
      * @param intent The intent from the login activity result
      * @param appIntegrity Provides a ClientAttestation JWT and PoP JWT to be attached in the auth request header parameters
+     * @param callback Method to extract and handle local token usage/storage
+     * @throws [AuthenticationError] if Authorization fails
+     */
+    @Throws(Exception::class)
+    @Deprecated("Use other finalise method instead")
+    fun finalise(
+        intent: Intent,
+        appIntegrity: AppIntegrityParameters,
+        callback: (tokens: TokenResponse) -> Unit
+    )
+
+    /**
+     * Callback function to handle intent from the activity result started by [present]
+     *
+     * @param intent The intent from the login activity result
+     * @param appIntegrity Provides a ClientAttestation JWT and PoP JWT to be attached in the auth request header parameters
      * @param onSuccess Method to extract and handle local token usage/storage
      * @param onFailure Method to handle exceptions if Authorization fails
      */
-    @Throws(Exception::class)
     fun finalise(
         intent: Intent,
         appIntegrity: AppIntegrityParameters,
