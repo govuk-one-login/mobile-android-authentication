@@ -9,6 +9,7 @@ import kotlin.test.assertEquals
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationException.AuthorizationRequestErrors
 import net.openid.appauth.AuthorizationResponse
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.assertThrows
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -68,8 +69,79 @@ class AppAuthSessionTest {
         verify(launcher).launch(any())
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun finaliseThrowsIllegalArgumentExceptionForMalformedIntentResponse() {
+        // Given an intent with a malformed (empty) response data JSON extra
+        val intent = Intent().apply {
+            putExtra(AuthorizationResponse.EXTRA_RESPONSE, "{}")
+        }
+        var t: Throwable? = null
+        // When calling finalise
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, { error ->
+            t = error
+        })
+
+        assertThat("Thrown error is not IllegalArgumentException", t is IllegalArgumentException)
+    }
+
+    @Test
+    fun finaliseThrowsAuthenticationErrorOfAccessDenied() {
+        val exception = AuthorizationException(
+            AuthorizationException.TYPE_OAUTH_AUTHORIZATION_ERROR,
+            AuthorizationRequestErrors.ACCESS_DENIED.code,
+            AuthorizationRequestErrors.ACCESS_DENIED.error,
+            AuthorizationRequestErrors.ACCESS_DENIED.errorDescription,
+            AuthorizationRequestErrors.ACCESS_DENIED.errorUri,
+            AuthorizationRequestErrors.ACCESS_DENIED.cause
+        )
+        // Given an intent with a malformed (empty) response data JSON extra
+        val intent = Intent().putExtra(
+            AuthorizationException.EXTRA_EXCEPTION,
+            exception.toJsonString()
+        )
+        // When calling finalise
+        var t: Throwable? = null
+
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, { error ->
+            t = error
+        })
+
+        // Then throw an IllegalArgumentException
+        assertThat("Error is not of type AuthenticationError", t is AuthenticationError)
+        val error = (t as AuthenticationError)
+        assertEquals(AuthenticationError.ErrorType.ACCESS_DENIED, error.type)
+    }
+
+    @Test
+    fun finaliseThrowsAuthenticationErrorForIntentWithoutResponse() {
+        // Given an (empty) intent without a response data JSON extra
+        val intent = Intent()
+        // When calling finalise
+        var t: Throwable? = null
+
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, { error ->
+            t = error
+        })
+
+        // Then throw an AuthenticationError
+        assertThat("Error is not of type AuthenticationError", t is AuthenticationError)
+        val error = (t as AuthenticationError)
+        assertEquals(AuthenticationError.ErrorType.OAUTH, error.type)
+        assertEquals(AuthenticationError.Companion.NULL_AUTH_MESSAGE, error.message)
+    }
+
+    @Test
+    fun finaliseThrowsAuthenticationErrorForIntentWithValidResponse() {
+        // Given an intent with a response data JSON extra
+        val intent = Intent().apply {
+            putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
+        }
+        // When calling finalise
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, {})
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun deprecatedFinaliseThrowsIllegalArgumentExceptionForMalformedIntentResponse() {
         // Given an intent with a malformed (empty) response data JSON extra
         val intent = Intent().apply {
             putExtra(AuthorizationResponse.EXTRA_RESPONSE, "{}")
@@ -80,7 +152,7 @@ class AppAuthSessionTest {
     }
 
     @Test
-    fun finaliseThrowsAuthenticationErrorOfAccessDenied() {
+    fun deprecatedFinaliseThrowsAuthenticationErrorOfAccessDenied() {
         val exception = AuthorizationException(
             AuthorizationException.TYPE_OAUTH_AUTHORIZATION_ERROR,
             AuthorizationRequestErrors.ACCESS_DENIED.code,
@@ -103,7 +175,7 @@ class AppAuthSessionTest {
     }
 
     @Test
-    fun finaliseThrowsAuthenticationErrorForIntentWithoutResponse() {
+    fun deprecatedFinaliseThrowsAuthenticationErrorForIntentWithoutResponse() {
         // Given an (empty) intent without a response data JSON extra
         val intent = Intent()
         // When calling finalise
@@ -116,7 +188,7 @@ class AppAuthSessionTest {
     }
 
     @Test
-    fun finaliseThrowsAuthenticationErrorForIntentWithValidResponse() {
+    fun deprecatedFinaliseThrowsAuthenticationErrorForIntentWithValidResponse() {
         // Given an intent without a response data JSON extra
         val intent = Intent().apply {
             putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)

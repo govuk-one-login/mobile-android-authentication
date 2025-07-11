@@ -33,6 +33,54 @@ class AppAuthSession(
         launcher.launch(intent)
     }
 
+    @Suppress("TooGenericExceptionCaught")
+    override fun finalise(
+        intent: Intent,
+        appIntegrity: AppIntegrityParameters,
+        onSuccess: (tokens: TokenResponse) -> Unit,
+        onFailure: (error: Throwable) -> Unit
+    ) {
+        try {
+            val authResponse = AuthorizationResponse.fromIntent(intent)
+            if (authResponse == null) {
+                val exception = AuthorizationException.fromIntent(intent)
+
+                onFailure(AuthenticationError.from(exception))
+                return
+            }
+
+            // Create object that allows for additional headers/ body parameters
+            val clientAuthenticationWithExtraHeaders =
+                clientAuthenticationProvider.setCustomClientAuthentication(
+                    appIntegrity.attestation,
+                    appIntegrity.pop
+                )
+
+            // Create the standard request
+            val request = authResponse.createTokenExchangeRequest()
+
+            authService.performTokenRequest(
+                request,
+                clientAuthenticationWithExtraHeaders
+            ) { response, exception ->
+                val tokenResponse = response?.toTokenResponse()
+                if (tokenResponse == null) {
+                    onFailure(AuthenticationError.from(exception))
+                } else {
+                    onSuccess(tokenResponse)
+                }
+            }
+        } catch (e: Exception) {
+            onFailure(e)
+        }
+    }
+
+    @Deprecated(
+        message = "Please replace this with the alternative finalise function to use improved " +
+            "error handling",
+        replaceWith = ReplaceWith("uk.gov.android.authentication.login.AppAuthSession#finalise"),
+        level = DeprecationLevel.WARNING
+    )
     override fun finalise(
         intent: Intent,
         appIntegrity: AppIntegrityParameters,
