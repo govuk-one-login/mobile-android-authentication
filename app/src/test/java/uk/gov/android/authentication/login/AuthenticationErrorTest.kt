@@ -104,7 +104,7 @@ class AuthenticationErrorTest {
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
         // Then return an AuthenticationError
-        assertEquals(ErrorType.TOKEN_400, actual.type)
+        assertEquals(ErrorType.TOKEN_ERROR, actual.type)
         assertEquals(TokenRequestErrors.INVALID_REQUEST.code, actual.status)
     }
 
@@ -123,7 +123,7 @@ class AuthenticationErrorTest {
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
         // Then return an AuthenticationError
-        assertEquals(ErrorType.TOKEN_400, actual.type)
+        assertEquals(ErrorType.TOKEN_ERROR, actual.type)
         assertEquals(TokenRequestErrors.INVALID_REQUEST.code, actual.status)
         assertEquals(message, actual.message)
     }
@@ -142,7 +142,7 @@ class AuthenticationErrorTest {
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
         // Then return an AuthenticationError
-        assertEquals(ErrorType.TOKEN_400, actual.type)
+        assertEquals(ErrorType.TOKEN_ERROR, actual.type)
         assertEquals(TokenRequestErrors.UNSUPPORTED_GRANT_TYPE.code, actual.status)
     }
 
@@ -161,7 +161,7 @@ class AuthenticationErrorTest {
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
         // Then return an AuthenticationError
-        assertEquals(ErrorType.TOKEN_400, actual.type)
+        assertEquals(ErrorType.TOKEN_ERROR, actual.type)
         assertEquals(TokenRequestErrors.UNSUPPORTED_GRANT_TYPE.code, actual.status)
         assertEquals(message, actual.message)
     }
@@ -180,7 +180,7 @@ class AuthenticationErrorTest {
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
         // Then return an AuthenticationError
-        assertEquals(ErrorType.TOKEN_400, actual.type)
+        assertEquals(ErrorType.TOKEN_ERROR, actual.type)
         assertEquals(TokenRequestErrors.INVALID_GRANT.code, actual.status)
     }
 
@@ -199,7 +199,7 @@ class AuthenticationErrorTest {
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
         // Then return an AuthenticationError
-        assertEquals(ErrorType.TOKEN_400, actual.type)
+        assertEquals(ErrorType.TOKEN_ERROR, actual.type)
         assertEquals(TokenRequestErrors.INVALID_GRANT.code, actual.status)
         assertEquals(message, actual.message)
     }
@@ -218,7 +218,7 @@ class AuthenticationErrorTest {
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
         // Then return an AuthenticationError
-        assertEquals(ErrorType.TOKEN_400, actual.type)
+        assertEquals(ErrorType.TOKEN_ERROR, actual.type)
         assertEquals(TokenRequestErrors.INVALID_CLIENT.code, actual.status)
     }
 
@@ -237,7 +237,7 @@ class AuthenticationErrorTest {
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
         // Then return an AuthenticationError
-        assertEquals(ErrorType.TOKEN_400, actual.type)
+        assertEquals(ErrorType.TOKEN_ERROR, actual.type)
         assertEquals(TokenRequestErrors.INVALID_CLIENT.code, actual.status)
         assertEquals(message, actual.message)
     }
@@ -256,7 +256,7 @@ class AuthenticationErrorTest {
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
         // Then return an AuthenticationError
-        assertEquals(ErrorType.TOKEN_400, actual.type)
+        assertEquals(ErrorType.TOKEN_ERROR, actual.type)
         assertEquals(TokenRequestErrors.UNAUTHORIZED_CLIENT.code, actual.status)
     }
 
@@ -275,7 +275,7 @@ class AuthenticationErrorTest {
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
         // Then return an AuthenticationError
-        assertEquals(ErrorType.TOKEN_400, actual.type)
+        assertEquals(ErrorType.TOKEN_ERROR, actual.type)
         assertEquals(TokenRequestErrors.UNAUTHORIZED_CLIENT.code, actual.status)
         assertEquals(message, actual.message)
     }

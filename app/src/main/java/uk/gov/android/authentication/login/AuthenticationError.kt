@@ -14,7 +14,7 @@ class AuthenticationError(
         OAUTH,
         ACCESS_DENIED,
         SERVER_ERROR,
-        TOKEN_400
+        TOKEN_ERROR
     }
 
     companion object {
@@ -50,7 +50,7 @@ class AuthenticationError(
                 TokenRequestErrors.INVALID_CLIENT,
                 TokenRequestErrors.UNAUTHORIZED_CLIENT -> AuthenticationError(
                     message = message,
-                    type = ErrorType.TOKEN_400,
+                    type = ErrorType.TOKEN_ERROR,
                     status = status
                 )
 
