@@ -9,7 +9,7 @@ import kotlin.test.assertEquals
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationException.AuthorizationRequestErrors
 import net.openid.appauth.AuthorizationResponse
-import org.junit.Assert.assertThrows
+import org.hamcrest.MatcherAssert.assertThat
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -68,15 +68,19 @@ class AppAuthSessionTest {
         verify(launcher).launch(any())
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun finaliseThrowsIllegalArgumentExceptionForMalformedIntentResponse() {
         // Given an intent with a malformed (empty) response data JSON extra
         val intent = Intent().apply {
             putExtra(AuthorizationResponse.EXTRA_RESPONSE, "{}")
         }
+        var t: Throwable? = null
         // When calling finalise
-        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, {})
-        // Then throw an IllegalArgumentException
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, { error ->
+            t = error
+        })
+
+        assertThat("Thrown error is not IllegalArgumentException", t is IllegalArgumentException)
     }
 
     @Test
@@ -95,11 +99,16 @@ class AppAuthSessionTest {
             exception.toJsonString()
         )
         // When calling finalise
-        val result = assertThrows(AuthenticationError::class.java) {
-            appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, {})
-        }
+        var t: Throwable? = null
+
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, { error ->
+            t = error
+        })
+
         // Then throw an IllegalArgumentException
-        assertEquals(AuthenticationError.ErrorType.ACCESS_DENIED, result.type)
+        assertThat("Error is not of type AuthenticationError", t is AuthenticationError)
+        val error = (t as AuthenticationError)
+        assertEquals(AuthenticationError.ErrorType.ACCESS_DENIED, error.type)
     }
 
     @Test
@@ -107,10 +116,15 @@ class AppAuthSessionTest {
         // Given an (empty) intent without a response data JSON extra
         val intent = Intent()
         // When calling finalise
-        val error = assertThrows(AuthenticationError::class.java) {
-            appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, {})
-        }
+        var t: Throwable? = null
+
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, { error ->
+            t = error
+        })
+
         // Then throw an AuthenticationError
+        assertThat("Error is not of type AuthenticationError", t is AuthenticationError)
+        val error = (t as AuthenticationError)
         assertEquals(AuthenticationError.ErrorType.OAUTH, error.type)
         assertEquals(AuthenticationError.Companion.NULL_AUTH_MESSAGE, error.message)
     }

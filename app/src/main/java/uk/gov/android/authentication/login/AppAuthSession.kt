@@ -33,39 +33,45 @@ class AppAuthSession(
         launcher.launch(intent)
     }
 
+    @Suppress("TooGenericExceptionCaught")
     override fun finalise(
         intent: Intent,
         appIntegrity: AppIntegrityParameters,
         onSuccess: (tokens: TokenResponse) -> Unit,
-        onFailure: (error: AuthenticationError) -> Unit
+        onFailure: (error: Throwable) -> Unit
     ) {
-        val authResponse = AuthorizationResponse.fromIntent(intent)
-        if (authResponse == null) {
-            val exception = AuthorizationException.fromIntent(intent)
+        try {
+            val authResponse = AuthorizationResponse.fromIntent(intent)
+            if (authResponse == null) {
+                val exception = AuthorizationException.fromIntent(intent)
 
-            throw AuthenticationError.from(exception)
-        }
-
-        // Create object that allows for additional headers/ body parameters
-        val clientAuthenticationWithExtraHeaders =
-            clientAuthenticationProvider.setCustomClientAuthentication(
-                appIntegrity.attestation,
-                appIntegrity.pop
-            )
-
-        // Create the standard request
-        val request = authResponse.createTokenExchangeRequest()
-
-        authService.performTokenRequest(
-            request,
-            clientAuthenticationWithExtraHeaders
-        ) { response, exception ->
-            val tokenResponse = response?.toTokenResponse()
-            if (tokenResponse == null) {
                 onFailure(AuthenticationError.from(exception))
-            } else {
-                onSuccess(tokenResponse)
+                return
             }
+
+            // Create object that allows for additional headers/ body parameters
+            val clientAuthenticationWithExtraHeaders =
+                clientAuthenticationProvider.setCustomClientAuthentication(
+                    appIntegrity.attestation,
+                    appIntegrity.pop
+                )
+
+            // Create the standard request
+            val request = authResponse.createTokenExchangeRequest()
+
+            authService.performTokenRequest(
+                request,
+                clientAuthenticationWithExtraHeaders
+            ) { response, exception ->
+                val tokenResponse = response?.toTokenResponse()
+                if (tokenResponse == null) {
+                    onFailure(AuthenticationError.from(exception))
+                } else {
+                    onSuccess(tokenResponse)
+                }
+            }
+        } catch (e: Exception) {
+            onFailure(e)
         }
     }
 }
