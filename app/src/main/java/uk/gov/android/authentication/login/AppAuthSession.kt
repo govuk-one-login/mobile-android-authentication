@@ -9,13 +9,19 @@ import androidx.browser.customtabs.ExperimentalEphemeralBrowsing
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
+import net.openid.appauth.ClientAuthentication
+import net.openid.appauth.TokenRequest
 import uk.gov.android.authentication.integrity.AppIntegrityParameters
 
 class AppAuthSession(
     context: Context
 ) : LoginSession {
-    private val authService: AuthorizationService = AuthorizationService(context)
+    private var authService: AuthorizationService = AuthorizationService(context)
     private val clientAuthenticationProvider = ClientAuthenticationProviderImpl()
+
+    internal fun initAuthService(service: AuthorizationService) {
+        this.authService = service
+    }
 
     @OptIn(ExperimentalEphemeralBrowsing::class)
     override fun present(
@@ -59,17 +65,12 @@ class AppAuthSession(
             // Create the standard request
             val request = authResponse.createTokenExchangeRequest()
 
-            authService.performTokenRequest(
-                request,
-                clientAuthenticationWithExtraHeaders
-            ) { response, exception ->
-                val tokenResponse = response?.toTokenResponse()
-                if (tokenResponse == null) {
-                    onFailure(AuthenticationError.from(exception))
-                } else {
-                    onSuccess(tokenResponse)
-                }
-            }
+            performTokenRequest(
+                request = request,
+                clientAuthentication = clientAuthenticationWithExtraHeaders,
+                onSuccess = { tokens -> onSuccess(tokens) },
+                onFailure = { error -> onFailure(error) }
+            )
         } catch (e: Exception) {
             onFailure(e)
         }
@@ -110,6 +111,30 @@ class AppAuthSession(
             callback(
                 response?.toTokenResponse() ?: throw AuthenticationError.from(exception)
             )
+        }
+    }
+
+    @Suppress("TooGenericExceptionCaught")
+    private fun performTokenRequest(
+        request: TokenRequest,
+        clientAuthentication: ClientAuthentication,
+        onSuccess: (tokens: TokenResponse) -> Unit,
+        onFailure: (error: Throwable) -> Unit
+    ) {
+        authService.performTokenRequest(
+            request,
+            clientAuthentication
+        ) { response, exception ->
+            try {
+                val tokenResponse = response?.toTokenResponse()
+                if (tokenResponse == null) {
+                    onFailure(AuthenticationError.from(exception))
+                } else {
+                    onSuccess(tokenResponse)
+                }
+            } catch (e: Exception) {
+                onFailure(e)
+            }
         }
     }
 }

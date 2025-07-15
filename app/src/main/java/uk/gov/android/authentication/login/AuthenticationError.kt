@@ -5,7 +5,7 @@ import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationException.AuthorizationRequestErrors
 import net.openid.appauth.AuthorizationException.TokenRequestErrors
 
-class AuthenticationError(
+data class AuthenticationError(
     override val message: String,
     val type: ErrorType,
     val status: Int = 0
