@@ -12,12 +12,11 @@ import net.openid.appauth.AuthorizationService
 import net.openid.appauth.ClientAuthentication
 import net.openid.appauth.TokenRequest
 import uk.gov.android.authentication.integrity.AppIntegrityParameters
-import uk.gov.android.authentication.meta.ExcludeFromJacocoGeneratedReport
 
 class AppAuthSession(
-    context: Context
-) : LoginSession {
+    context: Context,
     private val authService: AuthorizationService = AuthorizationService(context)
+) : LoginSession {
     private val clientAuthenticationProvider = ClientAuthenticationProviderImpl()
 
     @OptIn(ExperimentalEphemeralBrowsing::class)
@@ -111,7 +110,6 @@ class AppAuthSession(
         }
     }
 
-    @ExcludeFromJacocoGeneratedReport
     @Suppress("TooGenericExceptionCaught")
     private fun performTokenRequest(
         request: TokenRequest,
