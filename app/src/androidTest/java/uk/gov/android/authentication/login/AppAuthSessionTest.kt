@@ -53,7 +53,8 @@ class AppAuthSessionTest {
     @BeforeTest
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        appAuthSession = AppAuthSession(context, authService)
+        appAuthSession = AppAuthSession(context)
+        appAuthSession.initAuthService(authService)
     }
 
     @Test
@@ -62,7 +63,7 @@ class AppAuthSessionTest {
         val launcher: ActivityResultLauncher<Intent> = mock()
         whenever(launcher.launch(any())).then { } // take no action
         val loginSessionConfig = LoginSessionConfigurationTest.defaultConfig.copy()
-
+        appAuthSession.initAuthService(authService)
         whenever(authService.getAuthorizationRequestIntent(any(), any())).thenReturn(Intent())
 
         // When calling present

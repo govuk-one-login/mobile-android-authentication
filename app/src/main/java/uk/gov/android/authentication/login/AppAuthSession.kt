@@ -14,10 +14,14 @@ import net.openid.appauth.TokenRequest
 import uk.gov.android.authentication.integrity.AppIntegrityParameters
 
 class AppAuthSession(
-    context: Context,
-    private val authService: AuthorizationService = AuthorizationService(context)
+    context: Context
 ) : LoginSession {
+    private var authService: AuthorizationService = AuthorizationService(context)
     private val clientAuthenticationProvider = ClientAuthenticationProviderImpl()
+
+    internal fun initAuthService(service: AuthorizationService) {
+        this.authService = service
+    }
 
     @OptIn(ExperimentalEphemeralBrowsing::class)
     override fun present(
