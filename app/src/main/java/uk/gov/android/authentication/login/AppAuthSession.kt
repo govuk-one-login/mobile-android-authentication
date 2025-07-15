@@ -63,11 +63,15 @@ class AppAuthSession(
                 request,
                 clientAuthenticationWithExtraHeaders
             ) { response, exception ->
-                val tokenResponse = response?.toTokenResponse()
-                if (tokenResponse == null) {
-                    onFailure(AuthenticationError.from(exception))
-                } else {
-                    onSuccess(tokenResponse)
+                try {
+                    val tokenResponse = response?.toTokenResponse()
+                    if (tokenResponse == null) {
+                        onFailure(AuthenticationError.from(exception))
+                    } else {
+                        onSuccess(tokenResponse)
+                    }
+                } catch (e: Exception) {
+                    onFailure(e)
                 }
             }
         } catch (e: Exception) {
