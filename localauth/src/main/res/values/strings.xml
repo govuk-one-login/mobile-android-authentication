@@ -16,12 +16,12 @@
 
     <!-- Go To Settings Screen -->
     <string name="app_localAuthManagerErrorTitle">You need to update your phone settings</string>
-    <string name="app_localAuthManagerErrorBody1">To add documents to your GOV.UK Wallet, you need to protect your phone with a pin or a pattern.</string>
-    <string name="app_localAuthManagerErrorBody2">This is to make sure no one else can view or add documents to your wallet.</string>
+    <string name="app_localAuthManagerErrorBody1">To add documents, you need to protect your phone with a pin or a pattern.</string>
+    <string name="app_localAuthManagerErrorBody2">This is to make sure no one else can view or add documents to your app.</string>
     <string name="app_localAuthManagerErrorBody3">You need to go to your phone settings and:</string>
     <string name="app_localAuthManagerErrorNumberedList1">Find the option to set up a pin or pattern to unlock your phone - this is usually in <b>Device unlock</b> or <b>Lock screen</b>.</string>
     <string name="app_localAuthManagerErrorNumberedList2">Follow the instructions.</string>
-    <string name="app_localAuthManagerErrorNumberedList3">Come back to continue using your GOV.UK Wallet.</string>
+    <string name="app_localAuthManagerErrorNumberedList3">Come back to continue using your documents.</string>
     <string name="app_localAuthManagerErrorGoToSettingsButton">Go to phone settings</string>
 
     <!-- Analytics default values -->
