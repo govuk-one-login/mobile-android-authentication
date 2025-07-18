@@ -29,7 +29,6 @@ fun BioOptOutScreen(
     val analyticsViewModel = BioOptOutAnalyticsViewModel(LocalContext.current, analyticsLogger)
     analyticsViewModel.trackBioOptOutScreen()
     FullScreenDialogue(
-        onDismissRequest = onDismiss,
         topAppBar = {
             FullScreenDialogueTopAppBar(
                 onCloseClick = {
@@ -83,7 +82,6 @@ private fun BioOptOutContent(
 internal fun BioOptOutPreview() {
     GdsTheme {
         FullScreenDialogue(
-            onDismissRequest = {},
             topAppBar = {
                 FullScreenDialogueTopAppBar({}) {
                     // Nothing here
