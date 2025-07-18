@@ -62,7 +62,6 @@ fun BioOptInScreen(
         analyticsViewModel.trackBioOptInNoWalletScreen()
     }
     FullScreenDialogue(
-        onDismissRequest = onDismiss,
         topAppBar = {
             FullScreenDialogueTopAppBar(
                 modifier = Modifier.semantics(true) {
@@ -226,7 +225,6 @@ private fun CustomText(text: String, accessibilityIndex: Float) {
 internal fun BioOptInPreviewWallet() {
     GdsTheme {
         FullScreenDialogue(
-            onDismissRequest = {},
             topAppBar = {
                 FullScreenDialogueTopAppBar({}) {
                     // Nothing here
@@ -247,7 +245,6 @@ internal fun BioOptInPreviewWallet() {
 internal fun BioOptInPreview() {
     GdsTheme {
         FullScreenDialogue(
-            onDismissRequest = {},
             topAppBar = {
                 FullScreenDialogueTopAppBar({}) {
                     // Nothing here
