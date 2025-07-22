@@ -132,14 +132,16 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
     super.onActivityResult(requestCode, resultCode, data)
 
     if (requestCode == LoginSession.REQUEST_CODE_AUTH) {
-        try {
-            loginSession.finalise(intent, appIntegrityParameters) { tokens ->
-                // Do what you like with the tokens!
-                // ...
-            }
-        } catch (e: Error) {
-            // handle error
-        }
+            loginSession.finalise(intent, appIntegrityParameters, 
+                { tokens: TokenResponse ->
+                    // Do what you like with the tokens!
+                    // ...
+                }, 
+                {t: Throwable ->
+                    // Handle exceptions here
+                }
+            )
+
     }
 }
 ```

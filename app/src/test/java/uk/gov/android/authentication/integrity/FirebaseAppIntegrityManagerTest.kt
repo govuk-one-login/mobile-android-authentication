@@ -6,11 +6,18 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import kotlin.time.Instant
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach
+import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.kotlin.any
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import uk.gov.android.authentication.integrity.FirebaseAppIntegrityManager.Companion.POP_ERROR_MSG
+import uk.gov.android.authentication.integrity.FirebaseAppIntegrityManager.Companion.POP_INFO_MSG
+import uk.gov.android.authentication.integrity.FirebaseAppIntegrityManager.Companion.POP_TAG
 import uk.gov.android.authentication.integrity.appcheck.model.AppCheckToken
 import uk.gov.android.authentication.integrity.appcheck.model.AttestationResponse
 import uk.gov.android.authentication.integrity.appcheck.usecase.AppChecker
@@ -19,12 +26,17 @@ import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
 import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 import uk.gov.android.authentication.integrity.pop.SignedPoP
+import uk.gov.logging.api.Logger
 
 class FirebaseAppIntegrityManagerTest {
+    private val expectedResult = ClassLoader.getSystemResource("bodyPoPBase64.txt")
+        .readText()
     private lateinit var appIntegrityManager: AppIntegrityManager
 
+    private val mockPopGenerator: ProofOfPossessionGenerator = mock()
     private val mockCaller: AttestationCaller = mock()
     private val mockAppChecker: AppChecker = mock()
+    private val logger: Logger = mock()
     private val mockKeyStoreManager: KeyStoreManager = mock()
 
     private val exampleAttestation = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIs" +
@@ -45,7 +57,7 @@ class FirebaseAppIntegrityManagerTest {
             mockKeyStoreManager
         )
 
-        appIntegrityManager = FirebaseAppIntegrityManager(config)
+        appIntegrityManager = FirebaseAppIntegrityManager(logger, config, mockPopGenerator)
     }
 
     @Test
@@ -104,8 +116,13 @@ class FirebaseAppIntegrityManagerTest {
     @Test
     fun check_success_response_from_generate_PoP() {
         val mockSignatureByte = "Success".toByteArray()
-        val mockSignature = ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(mockSignatureByte)
 
+        whenever(mockPopGenerator.createBase64PoP(any(), any(), any(), any()))
+            .thenReturn(expectedResult)
+        whenever(mockPopGenerator.getExpiryTime()).thenReturn(
+            java.time.Instant.now().toEpochMilli() + 180000
+        )
+        whenever(mockPopGenerator.isPopExpired(anyLong())).thenReturn(false)
         whenever(mockKeyStoreManager.sign(any())).thenReturn(mockSignatureByte)
 
         val result = appIntegrityManager.generatePoP(MOCK_VALUE, MOCK_VALUE)
@@ -113,12 +130,34 @@ class FirebaseAppIntegrityManagerTest {
         assertTrue(result is SignedPoP.Success)
 
         val splitJwt = result.popJwt.split(".")
+
+        verify(logger).info(POP_TAG, POP_INFO_MSG)
         assertTrue(splitJwt.size == 3)
-        assertEquals(mockSignature, splitJwt.last())
+    }
+
+    @Test
+    fun check_PoP_expired() {
+        val mockSignatureByte = "Success".toByteArray()
+
+        whenever(mockPopGenerator.createBase64PoP(any(), any(), any(), any()))
+            .thenReturn(expectedResult)
+        whenever(mockPopGenerator.isPopExpired(anyLong())).thenReturn(true)
+        whenever(mockKeyStoreManager.sign(any())).thenReturn(mockSignatureByte)
+
+        val result = appIntegrityManager.generatePoP(MOCK_VALUE, MOCK_VALUE)
+
+        assertTrue(result is SignedPoP.Success)
+
+        val splitJwt = result.popJwt.split(".")
+
+        verify(logger).error(eq(POP_TAG), eq(POP_ERROR_MSG), any())
+        assertTrue(splitJwt.size == 3)
     }
 
     @Test()
     fun check_failure_response_from_generate_PoP_signing_failure() {
+        whenever(mockPopGenerator.createBase64PoP(any(), any(), any(), any()))
+            .thenReturn(expectedResult)
         whenever(mockKeyStoreManager.sign(any()))
             .thenAnswer {
                 throw SignatureException()

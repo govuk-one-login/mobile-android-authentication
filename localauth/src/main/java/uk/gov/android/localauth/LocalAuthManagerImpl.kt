@@ -39,7 +39,7 @@ open class LocalAuthManagerImpl(
 
     override suspend fun enforceAndSet(
         walletEnabled: Boolean,
-        localAuhRequired: Boolean,
+        localAuthRequired: Boolean,
         activity: FragmentActivity,
         callbackHandler: LocalAuthManagerCallbackHandler,
     ) {
@@ -49,15 +49,21 @@ open class LocalAuthManagerImpl(
                 // LocalAuthPref already set and saved (passcode/ biometrics) -- continue onSuccess
                 (localAuthPreference is LocalAuthPreference.Enabled)
                 -> callbackHandler.onSuccess(false)
+
                 else -> {
                     // Go through the local auth flow
-                    handleSecureDevice(callbackHandler, activity, walletEnabled)
+                    handleSecureDevice(
+                        callbackHandler,
+                        activity,
+                        walletEnabled,
+                        localAuthRequired,
+                    )
                 }
             }
         } else {
             // When device does not have any passcode/ biometrics/ pattern/ etc
             // Check if device requires security
-            handleUnsecuredDevice(localAuhRequired, activity, callbackHandler)
+            handleUnsecuredDevice(localAuthRequired, activity, callbackHandler)
         }
     }
 
@@ -107,6 +113,7 @@ open class LocalAuthManagerImpl(
         callbackHandler: LocalAuthManagerCallbackHandler,
         activity: FragmentActivity,
         walletEnabled: Boolean,
+        isLocalAuthRequired: Boolean,
     ) {
         when (deviceBiometricsManager.getCredentialStatus()) {
             DeviceBiometricsStatus.SUCCESS -> {
@@ -117,7 +124,7 @@ open class LocalAuthManagerImpl(
                         localAuthPrefRepo.setLocalAuthPref(
                             LocalAuthPreference.Disabled,
                         )
-                        callbackHandler.onSuccess(true)
+                        setLocalAuthBehaviour(isLocalAuthRequired, callbackHandler)
                     },
                     onBiometricsOptIn = {
                         localAuthPrefRepo.setLocalAuthPref(
@@ -129,7 +136,11 @@ open class LocalAuthManagerImpl(
                         localAuthPrefRepo.setLocalAuthPref(
                             LocalAuthPreference.Disabled,
                         )
-                        callbackHandler.onSuccess(false)
+                        setOptOutLocalAuthBehaviour(
+                            activity,
+                            isLocalAuthRequired,
+                            callbackHandler,
+                        )
                     },
                 )
             }
@@ -141,6 +152,40 @@ open class LocalAuthManagerImpl(
                     .setLocalAuthPref(LocalAuthPreference.Enabled(false))
                 callbackHandler.onSuccess(false)
             }
+        }
+    }
+
+    private fun setLocalAuthBehaviour(
+        isLocalAuthRequired: Boolean,
+        callbackHandler: LocalAuthManagerCallbackHandler,
+    ) {
+        if (isLocalAuthRequired) {
+            callbackHandler.onFailure(backButtonPressed = true)
+        } else {
+            callbackHandler.onSuccess(backButtonPressed = true)
+        }
+    }
+
+    private fun setOptOutLocalAuthBehaviour(
+        activity: FragmentActivity,
+        isLocalAuthRequired: Boolean,
+        callbackHandler: LocalAuthManagerCallbackHandler,
+    ) {
+        if (isLocalAuthRequired) {
+            uiManager.displayBioOptOut(
+                activity,
+                onBack = {
+                    callbackHandler.onFailure(backButtonPressed = true)
+                },
+                onBiometricsOptIn = {
+                    localAuthPrefRepo.setLocalAuthPref(
+                        LocalAuthPreference.Enabled(true),
+                    )
+                    callbackHandler.onSuccess(false)
+                },
+            )
+        } else {
+            callbackHandler.onSuccess(backButtonPressed = false)
         }
     }
 }
