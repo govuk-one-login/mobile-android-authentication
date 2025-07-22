@@ -4,7 +4,6 @@ import android.util.Log
 import com.google.gson.JsonParser
 import java.security.SignatureException
 import kotlin.io.encoding.Base64
-import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.text.split
 import uk.gov.android.authentication.integrity.appcheck.model.AppCheckToken
 import uk.gov.android.authentication.integrity.appcheck.model.AttestationResponse
@@ -15,10 +14,12 @@ import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 import uk.gov.android.authentication.integrity.pop.SignedPoP
 import uk.gov.android.authentication.json.jwk.JWK
+import uk.gov.logging.api.Logger
 
-@OptIn(ExperimentalEncodingApi::class)
 class FirebaseAppIntegrityManager(
-    config: AppIntegrityConfiguration
+    private val logger: Logger,
+    config: AppIntegrityConfiguration,
+    private val popGenerator: ProofOfPossessionGenerator = ProofOfPossessionGenerator
 ) : AppIntegrityManager {
     private val appChecker: AppChecker = config.appChecker
     private val attestationCaller: AttestationCaller = config.attestationCaller
@@ -45,17 +46,30 @@ class FirebaseAppIntegrityManager(
 
     override fun generatePoP(iss: String, aud: String): SignedPoP {
         // Create Proof of Possession
-        val pop = ProofOfPossessionGenerator.createBase64PoP(iss, aud)
+        val expiry = popGenerator.getExpiryTime()
+        val pop = popGenerator.createBase64PoP(iss, aud, expiry)
         // Convert into ByteArray
         val popByteArray = pop.toByteArray()
         return try {
             // Get signature to be appended to PoPJwt
             val byteSignature = keyStoreManager.sign(popByteArray)
             // Encode signature in Base64 configured with UrlSafe and no padding
-            val signature = ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(byteSignature)
+            val signature = popGenerator.getUrlSafeNoPaddingBase64(byteSignature)
             // Return the signed PopJwt
             val signedPop = "$pop.$signature"
-            Log.d("SignedPoP", signedPop)
+            // Check if PoP is expired before returning teh result
+            if (popGenerator.isPopExpired(expiry)) {
+                logger.error(
+                    POP_TAG,
+                    POP_ERROR_MSG,
+                    Exception(POP_ERROR_MSG)
+                )
+            } else {
+                logger.info(
+                    POP_TAG,
+                    POP_INFO_MSG
+                )
+            }
             SignedPoP.Success(signedPop)
         } catch (e: SignatureException) {
             SignedPoP.Failure(e.message ?: SIGN_ERROR, e)
@@ -93,5 +107,8 @@ class FirebaseAppIntegrityManager(
 
     companion object {
         const val SIGN_ERROR = "Signing Error"
+        const val POP_TAG = "ProofOfPossession"
+        const val POP_ERROR_MSG = "Proof of Possession is expired"
+        const val POP_INFO_MSG = "Proof of Possession is not expired after signing the JWT"
     }
 }
