@@ -108,7 +108,8 @@ dependencies {
         libs.jose4j,
         libs.gson,
         libs.bouncy.castle,
-        libs.androidx.browser
+        libs.androidx.browser,
+        libs.logging
     ).forEach(::implementation)
 
     listOf(
@@ -116,7 +117,8 @@ dependencies {
         kotlin("test-junit5"),
         libs.bundles.test,
         platform(libs.junit.bom),
-        libs.mockito.kotlin
+        libs.mockito.kotlin,
+        libs.mockito.inline
     ).forEach(::testImplementation)
 
     listOf(

@@ -1,7 +1,7 @@
 package uk.gov.android.authentication.integrity.pop
 
+import java.time.Instant
 import kotlin.io.encoding.Base64
-import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 import kotlinx.serialization.Serializable
@@ -12,7 +12,7 @@ object ProofOfPossessionGenerator {
     fun createBase64PoP(
         iss: String,
         aud: String,
-        exp: Long = getExpiryTime(),
+        exp: Long,
         jti: String = Uuid.random().toString()
     ): String {
         val pop = ProofOfPossession(
@@ -57,15 +57,19 @@ object ProofOfPossessionGenerator {
         val jti: String
     )
 
-    private fun getExpiryTime(): Long {
+    fun getExpiryTime(): Long {
         val minuteUntilExpiry = (MINUTES * MINUTE_IN_MILLISECONDS)
-        return (System.currentTimeMillis() + minuteUntilExpiry) / CONVERT_TO_SECONDS
+        val expiry = (Instant.now().toEpochMilli() + minuteUntilExpiry) / CONVERT_TO_SECONDS
+        return expiry
     }
 
-    @OptIn(ExperimentalEncodingApi::class)
     fun getUrlSafeNoPaddingBase64(input: ByteArray): String {
         return Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT)
             .encode(input)
+    }
+
+    fun isPopExpired(exp: Long): Boolean {
+        return exp <= (Instant.now().toEpochMilli() / CONVERT_TO_SECONDS)
     }
 
     private const val ALG = "ES256"
