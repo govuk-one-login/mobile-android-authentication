@@ -77,7 +77,7 @@ junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", vers
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junit-jupiter-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 androidx-compose-ui-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "compose-ui-junit4" }
-robolectric = { group = "org.robolectric", name = "robolectric", version = "4.14.1" }
+robolectric = { group = "org.robolectric", name = "robolectric", version = "4.15.1" }
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 
