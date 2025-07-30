@@ -23,6 +23,7 @@
     <string name="app_localAuthManagerErrorNumberedList2">Follow the instructions.</string>
     <string name="app_localAuthManagerErrorNumberedList3">Come back to continue using your documents.</string>
     <string name="app_localAuthManagerErrorGoToSettingsButton">Go to phone settings</string>
+    <string name="app_localAuthManagerErrorReason" translatable="false">update phone settings error</string>
 
     <!-- Analytics default values -->
     <string name="system_backButton" translatable="false">back - system</string>
@@ -34,4 +35,5 @@
     <string name="app_optOutBiometricsBody2">When you use biometrics, anyone who can unlock your phone with their biometrics or with your phone\'s pin or pattern might be able to access your app.</string>
     <string name="app_optOutBiometricsBody3">@string/app_enableBiometricsBody3</string>
     <string name="app_optOutBiometricsButton">@string/app_enableBiometricsButton</string>
+    <string name="app_optOutBiometricsErrorReason" translatable="false">biometrics skipped error</string>
 </resources>

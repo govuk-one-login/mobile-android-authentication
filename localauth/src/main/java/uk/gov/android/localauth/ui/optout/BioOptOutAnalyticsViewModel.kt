@@ -43,9 +43,12 @@ class BioOptOutAnalyticsViewModel(
 
     companion object {
         internal fun makeScreenEvent(context: Context) = with(context) {
-            ViewEvent.Screen(
+            ViewEvent.Error(
                 name = getEnglishString(R.string.app_optOutBiometricsTitle),
                 id = getEnglishString(R.string.bio_opt_out_screen_page_id),
+                endpoint = "",
+                status = "",
+                reason = getString(R.string.app_optOutBiometricsErrorReason),
                 params = requiredParams,
             )
         }
