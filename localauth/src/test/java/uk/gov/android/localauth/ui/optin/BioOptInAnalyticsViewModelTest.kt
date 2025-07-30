@@ -3,12 +3,16 @@ package uk.gov.android.localauth.ui.optin
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.verify
 import uk.gov.android.authentication.localauth.R
+import uk.gov.android.localauth.utils.GAUtils
+import uk.gov.android.localauth.utils.GAUtils.FALSE
+import uk.gov.android.localauth.utils.GAUtils.IS_ERROR_REASON_FALSE
 import uk.gov.android.localauth.utils.TestUtils
 import uk.gov.logging.api.analytics.extensions.getEnglishString
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
@@ -56,6 +60,11 @@ class BioOptInAnalyticsViewModelTest {
         viewModel.trackBioOptInWalletScreen()
 
         verify(logger).logEventV3Dot1(event)
+
+        assertThat(
+            IS_ERROR_REASON_FALSE,
+            GAUtils.containsIsError(event, FALSE),
+        )
     }
 
     @Test
