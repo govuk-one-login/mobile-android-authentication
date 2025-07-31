@@ -94,8 +94,8 @@ class BioOptInAnalyticsViewModel(
         }
 
         private val requiredParams = RequiredParameters(
-            taxonomyLevel2 = TaxonomyLevel2.LOGIN,
-            taxonomyLevel3 = TaxonomyLevel3.BIOMETRICS,
+            taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
+            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
         )
     }
 }

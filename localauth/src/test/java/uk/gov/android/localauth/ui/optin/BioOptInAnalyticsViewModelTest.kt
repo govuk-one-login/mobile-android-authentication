@@ -34,8 +34,8 @@ class BioOptInAnalyticsViewModelTest {
         val context: Context = ApplicationProvider.getApplicationContext()
         logger = mock()
         requiredParameters = RequiredParameters(
-            taxonomyLevel2 = TaxonomyLevel2.LOGIN,
-            taxonomyLevel3 = TaxonomyLevel3.BIOMETRICS,
+            taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
+            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
         )
         name = context.getEnglishString(R.string.app_enableBiometricsTitle)
         id = context.getEnglishString(R.string.bio_opt_in_screen_wallet_page_id)
