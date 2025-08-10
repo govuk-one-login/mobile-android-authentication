@@ -33,8 +33,8 @@ class BioOptOutAnalyticsViewModelTest {
         val context: Context = ApplicationProvider.getApplicationContext()
         logger = mock()
         requiredParameters = RequiredParameters(
-            taxonomyLevel2 = TaxonomyLevel2.WALLET,
-            taxonomyLevel3 = TaxonomyLevel3.BIOMETRICS,
+            taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
+            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
         )
         title = context.getEnglishString(R.string.app_optOutBiometricsTitle)
         id = context.getEnglishString(R.string.bio_opt_out_screen_page_id)

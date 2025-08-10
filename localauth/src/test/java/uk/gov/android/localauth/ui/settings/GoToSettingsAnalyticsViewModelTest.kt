@@ -33,7 +33,7 @@ class GoToSettingsAnalyticsViewModelTest {
         val context: Context = ApplicationProvider.getApplicationContext()
         logger = mock()
         requiredParameters = RequiredParameters(
-            taxonomyLevel2 = TaxonomyLevel2.ONBOARDING,
+            taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
             taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
         )
         name = context.getEnglishString(R.string.app_localAuthManagerErrorTitle)
