@@ -72,9 +72,12 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
             ).assertIsDisplayed()
         }
         verify(analyticsLogger).logEventV3Dot1(
-            ViewEvent.Screen(
+            ViewEvent.Error(
                 name = context.getString(R.string.app_localAuthManagerErrorTitle),
                 id = context.getString(R.string.go_settings_screen_page_id),
+                endpoint = "",
+                status = "",
+                reason = context.getString(R.string.app_localAuthManagerErrorReason),
                 params = requiredParams,
             ),
         )

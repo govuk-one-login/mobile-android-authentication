@@ -38,9 +38,12 @@ class GoToSettingsAnalyticsViewModel(
 
     companion object {
         internal fun makeScreenEvent(context: Context) = with(context) {
-            ViewEvent.Screen(
+            ViewEvent.Error(
                 name = getEnglishString(R.string.app_localAuthManagerErrorTitle),
                 id = getEnglishString(R.string.go_settings_screen_page_id),
+                endpoint = "",
+                status = "",
+                reason = getString(R.string.app_localAuthManagerErrorReason),
                 params = requiredParams,
             )
         }
