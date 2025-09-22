@@ -210,7 +210,7 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
             )
 
             onNodeWithContentDescription(
-                context.getString(uk.gov.android.ui.componentsv2.R.string.close_button),
+                context.getString(uk.gov.android.ui.componentsv2.R.string.close_icon_button),
             ).assertIsDisplayed().performClick()
         }
 
@@ -399,7 +399,7 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
             )
 
             onNodeWithContentDescription(
-                context.getString(uk.gov.android.ui.componentsv2.R.string.close_button),
+                context.getString(uk.gov.android.ui.componentsv2.R.string.close_icon_button),
             ).assertIsDisplayed().performClick()
 
             assertTrue(onBack)

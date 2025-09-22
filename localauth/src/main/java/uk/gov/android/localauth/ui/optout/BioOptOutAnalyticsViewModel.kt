@@ -62,7 +62,7 @@ class BioOptOutAnalyticsViewModel(
 
         internal fun makeCloseBackEvent(context: Context) = with(context) {
             TrackEvent.Icon(
-                text = getEnglishString(uk.gov.android.ui.componentsv2.R.string.close_button),
+                text = getEnglishString(uk.gov.android.ui.componentsv2.R.string.close_icon_button),
                 params = requiredParams,
             )
         }

@@ -48,7 +48,7 @@ class BioOptOutAnalyticsViewModelTest {
         reason = context.getString(R.string.app_optOutBiometricsErrorReason)
         biometricsBtn = context.getEnglishString(R.string.app_optOutBiometricsButton)
         backBtn = context.getEnglishString(R.string.system_backButton)
-        icon = context.getEnglishString(uk.gov.android.ui.componentsv2.R.string.close_button)
+        icon = context.getEnglishString(uk.gov.android.ui.componentsv2.R.string.close_icon_button)
         viewModel = BioOptOutAnalyticsViewModel(context, logger)
     }
 

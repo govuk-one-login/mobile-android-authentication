@@ -140,7 +140,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
         setupWallet()
         composeTestRule.apply {
             onNodeWithContentDescription(
-                context.getString(componentsR.string.close_button),
+                context.getString(componentsR.string.close_icon_button),
             ).assertIsDisplayed().performClick()
         }
 
@@ -283,7 +283,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
 
         internal fun makeCloseBackEvent(context: Context) = with(context) {
             TrackEvent.Icon(
-                text = getEnglishString(uk.gov.android.ui.componentsv2.R.string.close_button),
+                text = getEnglishString(uk.gov.android.ui.componentsv2.R.string.close_icon_button),
                 params = requiredParams,
             )
         }

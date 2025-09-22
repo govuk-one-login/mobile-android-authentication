@@ -106,7 +106,7 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
         setup()
         composeTestRule.apply {
             onNodeWithContentDescription(
-                context.getString(ComponentsR.string.close_button),
+                context.getString(ComponentsR.string.close_icon_button),
             ).performClick()
 
             assertTrue(onBack)
