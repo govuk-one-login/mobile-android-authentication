@@ -77,7 +77,7 @@ class BioOptOutScreenTest : FragmentActivityTestCase(false) {
         setupScreen()
         composeTestRule.apply {
             onNodeWithContentDescription(
-                context.getString(uk.gov.android.ui.componentsv2.R.string.close_button),
+                context.getString(uk.gov.android.ui.componentsv2.R.string.close_icon_button),
             ).assertIsDisplayed().performClick()
         }
 

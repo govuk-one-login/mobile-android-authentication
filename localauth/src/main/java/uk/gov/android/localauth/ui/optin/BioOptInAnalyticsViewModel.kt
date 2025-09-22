@@ -81,7 +81,7 @@ class BioOptInAnalyticsViewModel(
 
         internal fun makeCloseBackEvent(context: Context) = with(context) {
             TrackEvent.Icon(
-                text = getEnglishString(componentsR.string.close_button),
+                text = getEnglishString(componentsR.string.close_icon_button),
                 params = requiredParams,
             )
         }
