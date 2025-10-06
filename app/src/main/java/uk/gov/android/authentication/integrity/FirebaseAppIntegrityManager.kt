@@ -81,6 +81,7 @@ class FirebaseAppIntegrityManager(
         val jwk = extractFieldFrom(attestation, "cnf")?.let {
             JsonParser.parseString(it).asJsonObject["jwk"]?.asJsonObject
         } ?: return false
+        println("PoP Jwk: $jwk")
         // Get local cert coordinates
         val (x, y) = keyStoreManager.getPublicKeyCoordinates()
         // Compare attestation with local cert
