@@ -54,7 +54,7 @@ object ProofOfPossessionGenerator {
             header = DPoPHeader(
                 alg = ALG,
                 typ = REFRESH_TYP,
-                jwk = jwk
+                jwk = jwk.jwk
             ),
             payload = DPoPPayload(
                 jti = jti,
@@ -95,7 +95,7 @@ object ProofOfPossessionGenerator {
     data class DPoPHeader(
         val alg: String,
         val typ: String,
-        val jwk: JWK.JsonWebKeySimple
+        val jwk: JWK.JsonWebKeySimpleFormat
     )
 
     @Serializable
