@@ -46,17 +46,17 @@ object ProofOfPossessionGenerator {
      */
     @OptIn(ExperimentalUuidApi::class)
     fun createBase64DPoP(
-        jwk: JWK.JsonWebKeySimple,
+        jwk: JWK.JsonWebKey,
         jti: String = Uuid.random().toString(),
         iat: Long = getIssueTime()
     ): String {
-        val pop = DProofOfPossession(
+        val pop = DemonstratingProofOfPossession(
             header = DPoPHeader(
                 alg = ALG,
                 typ = REFRESH_TYP,
                 jwk = jwk.jwk
             ),
-            payload = DPoPPayload(
+            payload = DemonstratingPoPPayload(
                 jti = jti,
                 htm = HTTP_METHOD,
                 htu = HTTP_URL_SERVICE,
@@ -80,9 +80,9 @@ object ProofOfPossessionGenerator {
     )
 
     @Serializable
-    data class DProofOfPossession(
+    data class DemonstratingProofOfPossession(
         val header: DPoPHeader,
-        val payload: DPoPPayload
+        val payload: DemonstratingPoPPayload
     )
 
     @Serializable
@@ -95,7 +95,7 @@ object ProofOfPossessionGenerator {
     data class DPoPHeader(
         val alg: String,
         val typ: String,
-        val jwk: JWK.JsonWebKeySimpleFormat
+        val jwk: JWK.JsonWebKeyFormat
     )
 
     @Serializable
@@ -107,7 +107,7 @@ object ProofOfPossessionGenerator {
     )
 
     @Serializable
-    data class DPoPPayload(
+    data class DemonstratingPoPPayload(
         val jti: String,
         val htm: String,
         val htu: String,

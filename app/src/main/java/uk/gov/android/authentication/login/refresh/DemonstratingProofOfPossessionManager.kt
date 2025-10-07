@@ -29,7 +29,7 @@ class DemonstratingProofOfPossessionManagerImpl(
 
     override fun generateDPoP(): SignedDPoP {
         val pubKeyECCoord = keyStoreManager.getPublicKeyCoordinates()
-        val jwk = JWK.generateSimpleJwk(x = pubKeyECCoord.first, y = pubKeyECCoord.second)
+        val jwk = JWK.generateJwk(x = pubKeyECCoord.first, y = pubKeyECCoord.second)
         val dPoPJwt = popGenerator.createBase64DPoP(jwk)
         val dPoPByteArray = dPoPJwt.toByteArray()
         return try {

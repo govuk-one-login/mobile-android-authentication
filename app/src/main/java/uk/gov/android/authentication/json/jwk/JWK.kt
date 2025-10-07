@@ -39,17 +39,6 @@ object JWK {
         )
     }
 
-    fun generateSimpleJwk(x: String, y: String): JsonWebKeySimple {
-        return JsonWebKeySimple(
-            jwk = JsonWebKeySimpleFormat(
-                keyTypeValue,
-                curveValue,
-                x,
-                y
-            )
-        )
-    }
-
     /**
      * Method to get a PublicKey in JWK format that uses the Jose library.
      * **To be used in Wallet**
@@ -69,19 +58,6 @@ object JWK {
     data class JsonWebKeyFormat(
         val kty: String,
         val use: String,
-        val crv: String,
-        val x: String,
-        val y: String
-    )
-
-    @Serializable
-    data class JsonWebKeySimple(
-        val jwk: JsonWebKeySimpleFormat
-    )
-
-    @Serializable
-    data class JsonWebKeySimpleFormat(
-        val kty: String,
         val crv: String,
         val x: String,
         val y: String

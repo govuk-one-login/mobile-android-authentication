@@ -41,7 +41,7 @@ class ProofOfPossessionGeneratorTest {
     fun `create Base64 Refresh D Proof of Possession`() {
         val expectedResult = ClassLoader.getSystemResource("bodyDPoPBase64.txt").readText()
         val result = ProofOfPossessionGenerator.createBase64DPoP(
-            JWK.generateSimpleJwk("x", "y"),
+            JWK.generateJwk("x", "y"),
             "0",
             0
         )
