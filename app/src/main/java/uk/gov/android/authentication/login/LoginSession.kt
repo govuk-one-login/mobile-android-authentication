@@ -50,7 +50,28 @@ interface LoginSession {
      * @param onSuccess Method to extract and handle local token usage/storage
      * @param onFailure Method to handle exceptions if Authorization fails
      */
+    @Deprecated(
+        "This method has been deprecated and replaces with finaliseWitDPoP to allow" +
+            " for the fetching and handling refresh tokens",
+        ReplaceWith("uk.gov.android.authentication.login.AppAuthSession#finaliseWithDPoP"),
+        DeprecationLevel.WARNING
+    )
     fun finalise(
+        intent: Intent,
+        appIntegrity: AppIntegrityParameters,
+        onSuccess: (tokens: TokenResponse) -> Unit,
+        onFailure: (error: Throwable) -> Unit
+    )
+
+    /**
+     * Callback function to handle intent from the activity result started by [present] allowing for fetching and handling refresh tokens
+     *
+     * @param intent The intent from the login activity result
+     * @param appIntegrity Provides a ClientAttestation JWT and PoP JWT to be attached in the auth request header parameters
+     * @param onSuccess Method to extract and handle local token usage/storage
+     * @param onFailure Method to handle exceptions if Authorization fails
+     */
+    fun finaliseWithDPoP(
         intent: Intent,
         appIntegrity: AppIntegrityParameters,
         onSuccess: (tokens: TokenResponse) -> Unit,

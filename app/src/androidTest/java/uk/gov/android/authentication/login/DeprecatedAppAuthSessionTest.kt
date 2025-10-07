@@ -25,7 +25,7 @@ import uk.gov.android.authentication.login.AuthenticationError.ErrorType
 import uk.gov.android.authentication.login.refresh.DemonstratingProofOfPossessionManager
 import uk.gov.android.authentication.login.refresh.SignedDPoP
 
-class AppAuthSessionTest {
+class DeprecatedAppAuthSessionTest {
     private lateinit var appAuthSession: AppAuthSession
     private lateinit var demonstratingProofOfPossessionManager:
         DemonstratingProofOfPossessionManager
@@ -58,7 +58,7 @@ class AppAuthSessionTest {
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().context
         demonstratingProofOfPossessionManager = mock()
-        appAuthSession = AppAuthSession(context, demonstratingProofOfPossessionManager)
+        appAuthSession = AppAuthSession(context)
         appAuthSession.initAuthService(authService)
     }
 
@@ -88,8 +88,7 @@ class AppAuthSessionTest {
         }
         var t: Throwable? = null
         // When calling finalise
-        appAuthSession.finaliseWithDPoP(intent, AppIntegrityParameters(ATTESTATION, POP), {
-        }, { error ->
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, { error ->
             t = error
         })
 
@@ -97,7 +96,22 @@ class AppAuthSessionTest {
     }
 
     @Test
-    fun finaliseWithDPoPThrowsAuthenticationErrorOfAccessDenied() {
+    fun finaliseThrowsErrorWhenUsingFinaliseWithDPoPWithDeprecatedConstructor() {
+        var t: Throwable? = null
+
+        val intent = Intent().apply {
+            putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
+        }
+        // When calling finalise
+        appAuthSession.finaliseWithDPoP(intent, AppIntegrityParameters(ATTESTATION, POP), {
+        }, { error ->
+            t = error
+        })
+        assertEquals(AppAuthSession.Companion.DPoPManagerError(), t)
+    }
+
+    @Test
+    fun finaliseThrowsAuthenticationErrorOfAccessDenied() {
         val exception = AuthorizationException(
             AuthorizationException.TYPE_OAUTH_AUTHORIZATION_ERROR,
             AuthorizationRequestErrors.ACCESS_DENIED.code,
@@ -111,11 +125,10 @@ class AppAuthSessionTest {
             AuthorizationException.EXTRA_EXCEPTION,
             exception.toJsonString()
         )
-        // When calling finaliseWithDPoP
+        // When calling finalise
         var t: Throwable? = null
 
-        appAuthSession.finaliseWithDPoP(intent, AppIntegrityParameters(ATTESTATION, POP), {
-        }, { error ->
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, { error ->
             t = error
         })
 
@@ -126,14 +139,13 @@ class AppAuthSessionTest {
     }
 
     @Test
-    fun finaliseWithDPoPThrowsAuthenticationErrorForIntentWithoutResponse() {
+    fun finaliseThrowsAuthenticationErrorForIntentWithoutResponse() {
         // Given an (empty) intent without a response data JSON extra
         val intent = Intent()
-        // When calling finaliseWithDPoP
+        // When calling finalise
         var t: Throwable? = null
 
-        appAuthSession.finaliseWithDPoP(intent, AppIntegrityParameters(ATTESTATION, POP), {
-        }, { error ->
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, { error ->
             t = error
         })
 
@@ -145,21 +157,21 @@ class AppAuthSessionTest {
     }
 
     @Test
-    fun finaliseWithDPoPThrowsAuthenticationErrorForIntentWithValidResponse() {
+    fun finaliseThrowsAuthenticationErrorForIntentWithValidResponse() {
         // Given an intent with a response data JSON extra
         val intent = Intent().apply {
             putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
         }
-        // When calling finaliseWithDPoP
-        appAuthSession.finaliseWithDPoP(intent, AppIntegrityParameters(ATTESTATION, POP), {}, {})
+        // When calling finalise
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, {})
     }
 
     @Test
-    fun finaliseWithDPoPOnSuccessCalled() {
+    fun finaliseOnSuccessCalled() {
         val intent = Intent().apply {
             putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
         }
-        // When calling finaliseWithDPoP
+        // When calling finalise
         var actualTokenResponse: TokenResponse? = null
 
         val auTokenResponse = buildTokenResponse(accessToken = ACCESS_TOKEN)
@@ -171,16 +183,13 @@ class AppAuthSessionTest {
             REFRESH_TOKEN
         )
 
-        whenever(demonstratingProofOfPossessionManager.generateDPoP()).thenReturn(
-            SignedDPoP.Success("success")
-        )
         whenever(authService.performTokenRequest(any(), any(), any()))
             .thenAnswer {
                 (it.arguments[2] as AuthorizationService.TokenResponseCallback)
                     .onTokenRequestCompleted(auTokenResponse, null)
             }
 
-        appAuthSession.finaliseWithDPoP(intent, AppIntegrityParameters(ATTESTATION, POP), { tr ->
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), { tr ->
             actualTokenResponse = tr
         }, {})
 
@@ -188,7 +197,7 @@ class AppAuthSessionTest {
     }
 
     @Test
-    fun finaliseWithDPoPOnFailure() {
+    fun finaliseOnFailure() {
         val intent = Intent().apply {
             putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
         }
@@ -207,26 +216,20 @@ class AppAuthSessionTest {
             type = ErrorType.SERVER_ERROR,
             status = 1005
         )
-
-        whenever(demonstratingProofOfPossessionManager.generateDPoP()).thenReturn(
-            SignedDPoP.Success("success")
-        )
         whenever(authService.performTokenRequest(any(), any(), any()))
             .thenAnswer {
                 (it.arguments[2] as AuthorizationService.TokenResponseCallback)
                     .onTokenRequestCompleted(null, auException)
             }
 
-        appAuthSession.finaliseWithDPoP(intent, AppIntegrityParameters(ATTESTATION, POP), {
-        }, { error ->
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, { error ->
             actualException = error
         })
 
         assertEquals(expectedException, actualException)
     }
 
-    @Test
-    fun finaliseWithDPoPFailedSignDPoP() {
+    fun finaliseFailedSignDPoP() {
         val exp = Exception("Failure signing DPoP")
         var actualException: Throwable? = null
 
@@ -237,35 +240,28 @@ class AppAuthSessionTest {
         whenever(demonstratingProofOfPossessionManager.generateDPoP())
             .thenReturn(SignedDPoP.Failure(exp.message!!, exp))
 
-        appAuthSession.finaliseWithDPoP(intent, AppIntegrityParameters(ATTESTATION, POP), {
-        }, { error ->
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, { error ->
             actualException = error
         })
-
-        assertEquals(exp, actualException)
     }
 
     @Test
-    fun finaliseWithDPoPOnFailureToken() {
+    fun finaliseOnFailureToken() {
         val intent = Intent().apply {
             putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
         }
-        // When calling finaliseWithDPoP
+        // When calling finalise
         var actualException: Throwable? = null
 
         val auTokenResponse = buildTokenResponse(accessToken = null)
 
-        whenever(demonstratingProofOfPossessionManager.generateDPoP()).thenReturn(
-            SignedDPoP.Success("success")
-        )
         whenever(authService.performTokenRequest(any(), any(), any()))
             .thenAnswer {
                 (it.arguments[2] as AuthorizationService.TokenResponseCallback)
                     .onTokenRequestCompleted(auTokenResponse, null)
             }
 
-        appAuthSession.finaliseWithDPoP(intent, AppIntegrityParameters(ATTESTATION, POP), {
-        }, { error ->
+        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, { error ->
             actualException = error
         })
 
@@ -273,24 +269,6 @@ class AppAuthSessionTest {
             "Exception thrown is not IllegalArgumentException",
             actualException is IllegalArgumentException
         )
-    }
-
-    @Test
-    fun finaliseWithDPoPFailureWhenNoErrorPassedFromSignedDPoPResult() {
-        val intent = Intent().apply {
-            putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
-        }
-        // When calling finaliseWithDPoP
-        var actualException: Throwable? = null
-        whenever(demonstratingProofOfPossessionManager.generateDPoP()).thenReturn(
-            SignedDPoP.Failure("Failure")
-        )
-        appAuthSession.finaliseWithDPoP(intent, AppIntegrityParameters(ATTESTATION, POP), {
-        }, { error ->
-            actualException = error
-        })
-
-        assertEquals(AppAuthSession.Companion.DPoPManagerError("Failure"), actualException)
     }
 
     @Test(expected = IllegalArgumentException::class)

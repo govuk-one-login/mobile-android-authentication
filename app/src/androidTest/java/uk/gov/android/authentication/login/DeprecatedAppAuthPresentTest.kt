@@ -14,23 +14,18 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import net.openid.appauth.AuthorizationManagementActivity
 import org.hamcrest.CoreMatchers.not
-import org.mockito.kotlin.mock
 import uk.gov.android.authentication.TestActivity
-import uk.gov.android.authentication.login.refresh.DemonstratingProofOfPossessionManager
 
-class AppAuthPresentTest {
+class DeprecatedAppAuthPresentTest {
     private lateinit var loginSession: LoginSession
     private lateinit var loginSessionConfig: LoginSessionConfiguration
     private lateinit var clientAuthenticationProvider: ClientAuthenticationProvider
-    private lateinit var demonstratingProofOfPossessionManager:
-        DemonstratingProofOfPossessionManager
 
     @BeforeTest
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().context
-        demonstratingProofOfPossessionManager = mock()
         clientAuthenticationProvider = ClientAuthenticationProviderImpl()
-        loginSession = AppAuthSession(context, demonstratingProofOfPossessionManager)
+        loginSession = AppAuthSession(context)
         loginSessionConfig = LoginSessionConfigurationTest.defaultConfig.copy()
         Intents.init()
     }
