@@ -47,6 +47,7 @@ object ProofOfPossessionGenerator {
     @OptIn(ExperimentalUuidApi::class)
     fun createBase64DPoP(
         jwk: JWK.JsonWebKey,
+        htu: String,
         jti: String = Uuid.random().toString(),
         iat: Long = getIssueTime()
     ): String {
@@ -59,7 +60,7 @@ object ProofOfPossessionGenerator {
             payload = DemonstratingPoPPayload(
                 jti = jti,
                 htm = HTTP_METHOD,
-                htu = HTTP_URL_SERVICE,
+                htu = htu,
                 iat = iat
             )
         )
@@ -137,7 +138,6 @@ object ProofOfPossessionGenerator {
     private const val APP_INTEGRITY_TYP = "oauth-client-attestation-pop+jwt"
     private const val REFRESH_TYP = "dpop+jwt"
     private const val HTTP_METHOD = "POST"
-    private const val HTTP_URL_SERVICE = "www.token.account.gov.uk/token"
     private const val MINUTES = 3
     private const val MINUTE_IN_MILLISECONDS = 60000
     private const val CONVERT_TO_SECONDS = 1000

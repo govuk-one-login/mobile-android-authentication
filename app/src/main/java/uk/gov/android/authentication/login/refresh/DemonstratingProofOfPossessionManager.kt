@@ -11,8 +11,10 @@ import uk.gov.android.authentication.json.jwk.JWK
 fun interface DemonstratingProofOfPossessionManager {
     /**
      * Function that creates the DPoP JWT (signed with the same key as for the AppIntegrity PoP).
+     *
+     * @param htu - provides the http request service url required to be added to the code
      */
-    fun generateDPoP(): SignedDPoP
+    fun generateDPoP(htu: String): SignedDPoP
 }
 
 /**
@@ -27,10 +29,10 @@ class DemonstratingProofOfPossessionManagerImpl(
     private val popGenerator = config.popGenerator
     private val logger = config.logger
 
-    override fun generateDPoP(): SignedDPoP {
+    override fun generateDPoP(htu: String): SignedDPoP {
         val pubKeyECCoord = keyStoreManager.getPublicKeyCoordinates()
         val jwk = JWK.generateJwk(x = pubKeyECCoord.first, y = pubKeyECCoord.second)
-        val dPoPJwt = popGenerator.createBase64DPoP(jwk)
+        val dPoPJwt = popGenerator.createBase64DPoP(jwk, htu)
         val dPoPByteArray = dPoPJwt.toByteArray()
         return try {
             // Get signature to be appended to DPoPJwt
@@ -39,6 +41,7 @@ class DemonstratingProofOfPossessionManagerImpl(
             val signature = popGenerator.getUrlSafeNoPaddingBase64(byteSignature)
             // Return the signed PopJwt
             val signedDPop = "$dPoPJwt.$signature"
+            println(signedDPop)
             logger.info("Signed D PoP", signedDPop)
             // Check if PoP is expired before returning the result
             SignedDPoP.Success(signedDPop)

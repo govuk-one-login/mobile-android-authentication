@@ -71,9 +71,10 @@ interface LoginSession {
      * @param onSuccess Method to extract and handle local token usage/storage
      * @param onFailure Method to handle exceptions if Authorization fails
      */
-    fun finaliseWithDPoP(
+    fun finalise(
         intent: Intent,
         appIntegrity: AppIntegrityParameters,
+        httpServiceDomain: String,
         onSuccess: (tokens: TokenResponse) -> Unit,
         onFailure: (error: Throwable) -> Unit
     )

@@ -61,9 +61,10 @@ class AppAuthSession : LoginSession {
     }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun finaliseWithDPoP(
+    override fun finalise(
         intent: Intent,
         appIntegrity: AppIntegrityParameters,
+        httpServiceDomain: String,
         onSuccess: (tokens: TokenResponse) -> Unit,
         onFailure: (error: Throwable) -> Unit
     ) {
@@ -78,7 +79,7 @@ class AppAuthSession : LoginSession {
 
             // Create object that allows for additional headers/ body parameters
             demonstratingProofOfPossessionManager?.let {
-                when (val signedDPoP = it.generateDPoP()) {
+                when (val signedDPoP = it.generateDPoP(httpServiceDomain)) {
                     is SignedDPoP.Success -> {
                         val clientAuthenticationWithExtraHeaders =
                             clientAuthenticationProvider.setCustomClientAuthentication(

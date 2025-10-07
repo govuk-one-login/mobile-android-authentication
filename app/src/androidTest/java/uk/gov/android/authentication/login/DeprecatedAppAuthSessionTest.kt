@@ -103,10 +103,13 @@ class DeprecatedAppAuthSessionTest {
             putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
         }
         // When calling finalise
-        appAuthSession.finaliseWithDPoP(intent, AppIntegrityParameters(ATTESTATION, POP), {
-        }, { error ->
-            t = error
-        })
+        appAuthSession.finalise(
+            intent,
+            AppIntegrityParameters(ATTESTATION, POP),
+            "domain",
+            {},
+            { error -> t = error }
+        )
         assertEquals(AppAuthSession.Companion.DPoPManagerError(), t)
     }
 
@@ -237,7 +240,7 @@ class DeprecatedAppAuthSessionTest {
             putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
         }
 
-        whenever(demonstratingProofOfPossessionManager.generateDPoP())
+        whenever(demonstratingProofOfPossessionManager.generateDPoP(any()))
             .thenReturn(SignedDPoP.Failure(exp.message!!, exp))
 
         appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP), {}, { error ->

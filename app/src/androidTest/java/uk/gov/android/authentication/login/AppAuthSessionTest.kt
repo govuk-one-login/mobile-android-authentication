@@ -88,10 +88,13 @@ class AppAuthSessionTest {
         }
         var t: Throwable? = null
         // When calling finalise
-        appAuthSession.finaliseWithDPoP(intent, AppIntegrityParameters(ATTESTATION, POP), {
-        }, { error ->
-            t = error
-        })
+        appAuthSession.finalise(
+            intent,
+            AppIntegrityParameters(ATTESTATION, POP),
+            "domain",
+            {},
+            { error -> t = error }
+        )
 
         assertThat("Thrown error is not IllegalArgumentException", t is IllegalArgumentException)
     }
@@ -114,10 +117,13 @@ class AppAuthSessionTest {
         // When calling finaliseWithDPoP
         var t: Throwable? = null
 
-        appAuthSession.finaliseWithDPoP(intent, AppIntegrityParameters(ATTESTATION, POP), {
-        }, { error ->
-            t = error
-        })
+        appAuthSession.finalise(
+            intent,
+            AppIntegrityParameters(ATTESTATION, POP),
+            "domain",
+            {},
+            { error -> t = error }
+        )
 
         // Then throw an IllegalArgumentException
         assertThat("Error is not of type AuthenticationError", t is AuthenticationError)
@@ -132,10 +138,13 @@ class AppAuthSessionTest {
         // When calling finaliseWithDPoP
         var t: Throwable? = null
 
-        appAuthSession.finaliseWithDPoP(intent, AppIntegrityParameters(ATTESTATION, POP), {
-        }, { error ->
-            t = error
-        })
+        appAuthSession.finalise(
+            intent,
+            AppIntegrityParameters(ATTESTATION, POP),
+            "domain",
+            {},
+            { error -> t = error }
+        )
 
         // Then throw an AuthenticationError
         assertThat("Error is not of type AuthenticationError", t is AuthenticationError)
@@ -151,7 +160,13 @@ class AppAuthSessionTest {
             putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
         }
         // When calling finaliseWithDPoP
-        appAuthSession.finaliseWithDPoP(intent, AppIntegrityParameters(ATTESTATION, POP), {}, {})
+        appAuthSession.finalise(
+            intent,
+            AppIntegrityParameters(ATTESTATION, POP),
+            "domain",
+            {},
+            {}
+        )
     }
 
     @Test
@@ -171,7 +186,7 @@ class AppAuthSessionTest {
             REFRESH_TOKEN
         )
 
-        whenever(demonstratingProofOfPossessionManager.generateDPoP()).thenReturn(
+        whenever(demonstratingProofOfPossessionManager.generateDPoP(any())).thenReturn(
             SignedDPoP.Success("success")
         )
         whenever(authService.performTokenRequest(any(), any(), any()))
@@ -180,9 +195,13 @@ class AppAuthSessionTest {
                     .onTokenRequestCompleted(auTokenResponse, null)
             }
 
-        appAuthSession.finaliseWithDPoP(intent, AppIntegrityParameters(ATTESTATION, POP), { tr ->
-            actualTokenResponse = tr
-        }, {})
+        appAuthSession.finalise(
+            intent,
+            AppIntegrityParameters(ATTESTATION, POP),
+            "domain",
+            { tr -> actualTokenResponse = tr },
+            {}
+        )
 
         assertEquals(expectedTokenResponse, actualTokenResponse)
     }
@@ -208,7 +227,7 @@ class AppAuthSessionTest {
             status = 1005
         )
 
-        whenever(demonstratingProofOfPossessionManager.generateDPoP()).thenReturn(
+        whenever(demonstratingProofOfPossessionManager.generateDPoP(any())).thenReturn(
             SignedDPoP.Success("success")
         )
         whenever(authService.performTokenRequest(any(), any(), any()))
@@ -217,10 +236,13 @@ class AppAuthSessionTest {
                     .onTokenRequestCompleted(null, auException)
             }
 
-        appAuthSession.finaliseWithDPoP(intent, AppIntegrityParameters(ATTESTATION, POP), {
-        }, { error ->
-            actualException = error
-        })
+        appAuthSession.finalise(
+            intent,
+            AppIntegrityParameters(ATTESTATION, POP),
+            "domain",
+            {},
+            { error -> actualException = error }
+        )
 
         assertEquals(expectedException, actualException)
     }
@@ -234,13 +256,16 @@ class AppAuthSessionTest {
             putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
         }
 
-        whenever(demonstratingProofOfPossessionManager.generateDPoP())
+        whenever(demonstratingProofOfPossessionManager.generateDPoP(any()))
             .thenReturn(SignedDPoP.Failure(exp.message!!, exp))
 
-        appAuthSession.finaliseWithDPoP(intent, AppIntegrityParameters(ATTESTATION, POP), {
-        }, { error ->
-            actualException = error
-        })
+        appAuthSession.finalise(
+            intent,
+            AppIntegrityParameters(ATTESTATION, POP),
+            "domain",
+            {},
+            { error -> actualException = error }
+        )
 
         assertEquals(exp, actualException)
     }
@@ -255,7 +280,7 @@ class AppAuthSessionTest {
 
         val auTokenResponse = buildTokenResponse(accessToken = null)
 
-        whenever(demonstratingProofOfPossessionManager.generateDPoP()).thenReturn(
+        whenever(demonstratingProofOfPossessionManager.generateDPoP(any())).thenReturn(
             SignedDPoP.Success("success")
         )
         whenever(authService.performTokenRequest(any(), any(), any()))
@@ -264,10 +289,13 @@ class AppAuthSessionTest {
                     .onTokenRequestCompleted(auTokenResponse, null)
             }
 
-        appAuthSession.finaliseWithDPoP(intent, AppIntegrityParameters(ATTESTATION, POP), {
-        }, { error ->
-            actualException = error
-        })
+        appAuthSession.finalise(
+            intent,
+            AppIntegrityParameters(ATTESTATION, POP),
+            "domain",
+            {},
+            { error -> actualException = error }
+        )
 
         assertThat(
             "Exception thrown is not IllegalArgumentException",
@@ -282,13 +310,16 @@ class AppAuthSessionTest {
         }
         // When calling finaliseWithDPoP
         var actualException: Throwable? = null
-        whenever(demonstratingProofOfPossessionManager.generateDPoP()).thenReturn(
+        whenever(demonstratingProofOfPossessionManager.generateDPoP(any())).thenReturn(
             SignedDPoP.Failure("Failure")
         )
-        appAuthSession.finaliseWithDPoP(intent, AppIntegrityParameters(ATTESTATION, POP), {
-        }, { error ->
-            actualException = error
-        })
+        appAuthSession.finalise(
+            intent,
+            AppIntegrityParameters(ATTESTATION, POP),
+            "domain",
+            {},
+            { error -> actualException = error }
+        )
 
         assertEquals(AppAuthSession.Companion.DPoPManagerError("Failure"), actualException)
     }

@@ -40,11 +40,13 @@ class DemonstratingProofOfPossessionManagerTest {
 
         whenever(mockKeyStoreManager.getPublicKeyCoordinates())
             .thenReturn(Pair("Success", "Success"))
-        whenever(mockPopGenerator.createBase64DPoP(any(), any(), any())).thenReturn(expectedDPoP)
+        whenever(mockPopGenerator.createBase64DPoP(any(), any(), any(), any())).thenReturn(
+            expectedDPoP
+        )
         whenever(mockPopGenerator.getUrlSafeNoPaddingBase64(any())).thenReturn(mockSignatureBase64)
         whenever(mockKeyStoreManager.sign(any())).thenReturn(mockSignatureByte)
 
-        val result = dPoPManager.generateDPoP()
+        val result = dPoPManager.generateDPoP("test")
 
         assertEquals(SignedDPoP.Success("$expectedDPoP.$mockSignatureBase64"), result)
     }
@@ -53,14 +55,16 @@ class DemonstratingProofOfPossessionManagerTest {
     fun testGenerateDPoPFailure() {
         val exp = SignatureException("Filed signing dpop!")
 
-        whenever(mockPopGenerator.createBase64DPoP(any(), any(), any())).thenReturn(expectedDPoP)
+        whenever(mockPopGenerator.createBase64DPoP(any(), any(), any(), any())).thenReturn(
+            expectedDPoP
+        )
         whenever(mockKeyStoreManager.getPublicKeyCoordinates())
             .thenReturn(Pair("Success", "Success"))
         whenever(mockKeyStoreManager.sign(any())).thenAnswer {
             throw exp
         }
 
-        val result = dPoPManager.generateDPoP()
+        val result = dPoPManager.generateDPoP("test")
 
         assertEquals(SignedDPoP.Failure(exp.message!!, exp), result)
     }
