@@ -42,7 +42,6 @@ class DemonstratingProofOfPossessionManagerImpl(
             // Return the signed PopJwt
             val signedDPop = "$dPoPJwt.$signature"
             println(signedDPop)
-            logger.info("Signed D PoP", signedDPop)
             // Check if PoP is expired before returning the result
             SignedDPoP.Success(signedDPop)
         } catch (e: SignatureException) {

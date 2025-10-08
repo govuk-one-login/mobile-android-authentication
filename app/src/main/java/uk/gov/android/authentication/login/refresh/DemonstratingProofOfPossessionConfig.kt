@@ -5,7 +5,7 @@ import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 import uk.gov.logging.api.Logger
 
 /**
- * Configuration class providing required components for the Demonstrating Proof od Possession Manager
+ * Configuration class providing required components for the Demonstrating Proof of Possession Manager
  */
 data class DemonstratingProofOfPossessionConfig(
     val logger: Logger,

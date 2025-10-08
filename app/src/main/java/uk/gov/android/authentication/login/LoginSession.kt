@@ -51,9 +51,10 @@ interface LoginSession {
      * @param onFailure Method to handle exceptions if Authorization fails
      */
     @Deprecated(
-        "This method has been deprecated and replaces with finaliseWitDPoP to allow" +
-            " for the fetching and handling refresh tokens",
-        ReplaceWith("uk.gov.android.authentication.login.AppAuthSession#finaliseWithDPoP"),
+        "This method has been deprecated and replaces with finalise that accepts a htu" +
+            " as a parameter to allow for the fetching and handling refresh tokens" +
+            " - will be removed on 7/12/25",
+        ReplaceWith("uk.gov.android.authentication.login.AppAuthSession#finalise"),
         DeprecationLevel.WARNING
     )
     fun finalise(
