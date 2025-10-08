@@ -5,6 +5,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import uk.gov.android.authentication.json.jwk.JWK
 
 class ProofOfPossessionGeneratorTest {
     @Test
@@ -34,6 +35,19 @@ class ProofOfPossessionGeneratorTest {
             (Instant.now().toEpochMilli() + (MINUTES * MINUTE_IN_MILLISECONDS)) / CONVERT_TO_SECONDS
 
         assertFalse(ProofOfPossessionGenerator.isPopExpired(validDateInSeconds))
+    }
+
+    @Test
+    fun `create Base64 Refresh D Proof of Possession`() {
+        val expectedResult = ClassLoader.getSystemResource("bodyDPoPBase64.txt").readText()
+        val result = ProofOfPossessionGenerator.createBase64DPoP(
+            JWK.generateJwk("x", "y"),
+            "test",
+            "0",
+            0
+        )
+
+        assertEquals(expectedResult, result)
     }
 
     companion object {

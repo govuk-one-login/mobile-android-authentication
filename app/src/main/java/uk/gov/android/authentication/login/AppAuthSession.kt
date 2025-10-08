@@ -12,12 +12,33 @@ import net.openid.appauth.AuthorizationService
 import net.openid.appauth.ClientAuthentication
 import net.openid.appauth.TokenRequest
 import uk.gov.android.authentication.integrity.AppIntegrityParameters
+import uk.gov.android.authentication.login.refresh.DemonstratingProofOfPossessionManager
+import uk.gov.android.authentication.login.refresh.SignedDPoP
 
-class AppAuthSession(
-    context: Context
-) : LoginSession {
-    private var authService: AuthorizationService = AuthorizationService(context)
+class AppAuthSession : LoginSession {
+    private var authService: AuthorizationService
+    private var demonstratingProofOfPossessionManager: DemonstratingProofOfPossessionManager? = null
     private val clientAuthenticationProvider = ClientAuthenticationProviderImpl()
+
+    @Deprecated(
+        "This constructor method is now deprecated and replaced by a constructor" +
+            " requesting a Demonstrating Proof Of Possession Manager to allow for DPoP" +
+            " to be sent in the token request and enable use of refresh tokens" +
+            " - will be removed on 7/12/25",
+        ReplaceWith("uk.gov.android.authentication.login.AppAuthSession"),
+        DeprecationLevel.WARNING
+    )
+    constructor(context: Context) {
+        authService = AuthorizationService(context)
+    }
+
+    constructor(
+        context: Context,
+        demonstratingProofOfPossessionManager: DemonstratingProofOfPossessionManager
+    ) {
+        authService = AuthorizationService(context)
+        this.demonstratingProofOfPossessionManager = demonstratingProofOfPossessionManager
+    }
 
     internal fun initAuthService(service: AuthorizationService) {
         this.authService = service
@@ -39,6 +60,61 @@ class AppAuthSession(
         launcher.launch(intent)
     }
 
+    @Suppress("TooGenericExceptionCaught")
+    override fun finalise(
+        intent: Intent,
+        appIntegrity: AppIntegrityParameters,
+        httpServiceDomain: String,
+        onSuccess: (tokens: TokenResponse) -> Unit,
+        onFailure: (error: Throwable) -> Unit
+    ) {
+        try {
+            val authResponse = AuthorizationResponse.fromIntent(intent)
+            if (authResponse == null) {
+                val exception = AuthorizationException.fromIntent(intent)
+
+                onFailure(AuthenticationError.from(exception))
+                return
+            }
+
+            // Create object that allows for additional headers/ body parameters
+            demonstratingProofOfPossessionManager?.let {
+                when (val signedDPoP = it.generateDPoP(httpServiceDomain)) {
+                    is SignedDPoP.Success -> {
+                        val clientAuthenticationWithExtraHeaders =
+                            clientAuthenticationProvider.setCustomClientAuthentication(
+                                appIntegrity.attestation,
+                                appIntegrity.pop,
+                                signedDPoP.popJwt
+                            )
+
+                        // Create the standard request
+                        val request = authResponse.createTokenExchangeRequest()
+
+                        performTokenRequest(
+                            request = request,
+                            clientAuthentication = clientAuthenticationWithExtraHeaders,
+                            onSuccess = { tokens -> onSuccess(tokens) },
+                            onFailure = { error -> onFailure(error) }
+                        )
+                    }
+                    is SignedDPoP.Failure -> onFailure(
+                        signedDPoP.error ?: DPoPManagerError(signedDPoP.reason)
+                    )
+                }
+            } ?: onFailure(DPoPManagerError())
+        } catch (e: Exception) {
+            onFailure(e)
+        }
+    }
+
+    @Deprecated(
+        "This method has been deprecated and replaces with finalise that accepts a htu" +
+            " as a parameter to allow for the fetching and handling refresh tokens" +
+            " - will be removed on 7/12/25",
+        ReplaceWith("uk.gov.android.authentication.login.AppAuthSession#finalise"),
+        DeprecationLevel.WARNING
+    )
     @Suppress("TooGenericExceptionCaught")
     override fun finalise(
         intent: Intent,
@@ -136,5 +212,13 @@ class AppAuthSession(
                 onFailure(e)
             }
         }
+    }
+
+    companion object {
+        private const val DPOP_MANAGER_INIT_ERROR = "Demonstrating Proof Of Possession Manager" +
+            " has not been initialised! Please make sure you provide it in the" +
+            " constructor AppAuthSession()."
+
+        data class DPoPManagerError(val error: String = DPOP_MANAGER_INIT_ERROR) : Exception(error)
     }
 }

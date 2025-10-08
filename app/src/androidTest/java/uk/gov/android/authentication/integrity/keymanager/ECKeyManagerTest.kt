@@ -55,7 +55,6 @@ class ECKeyManagerTest {
         // And get public key in JWK format
         val ecPoints = ecKeyManager.getPublicKeyCoordinates()
         val jwk = JWK.generateJwk(ecPoints.first, ecPoints.second)
-
         // Then
         assertTrue(jwtVerifier.verify(jwt, Json.encodeToString(jwk.jwk)))
     }
