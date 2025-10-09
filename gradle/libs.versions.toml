@@ -2,7 +2,7 @@
 core-ktx = "1.16.0"
 junit = "5.13.3"
 appcompat = "1.7.1"
-androidGradlePlugin = "8.10.0"
+androidGradlePlugin = "8.13.0"
 kotlin = "2.2.0"
 serialization = "1.9.0"
 detekt-gradle = "1.23.8" # https://github.com/detekt/detekt/releases/tag/v1.23.6
