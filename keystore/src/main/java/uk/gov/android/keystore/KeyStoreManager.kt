@@ -1,4 +1,4 @@
-package uk.gov.android.authentication.integrity.keymanager
+package uk.gov.android.keystore
 
 import java.io.ByteArrayInputStream
 import java.security.interfaces.ECPublicKey
@@ -6,13 +6,7 @@ import java.security.spec.ECParameterSpec
 import org.bouncycastle.asn1.ASN1InputStream
 import org.bouncycastle.asn1.ASN1Integer
 import org.bouncycastle.asn1.ASN1Sequence
-import uk.gov.android.authentication.integrity.AppIntegrityUtils
 
-@Deprecated(
-    message = "Replaced by KeyStoreManager in the keystore module - will be removed in Jan 2026",
-    replaceWith = ReplaceWith("java/uk/gov/android/keystore/KeyStoreManager.kt"),
-    level = DeprecationLevel.WARNING
-)
 interface KeyStoreManager {
     fun getPublicKeyCoordinates(): Pair<String, String>
     fun getPublicKey(): ECPublicKey
@@ -28,8 +22,8 @@ interface KeyStoreManager {
             // Get the required length for the keys r and s
             val keySizeBytes = spec.order.bitLength() / TO_BYTE
             // Generate ByteArrays in correct format for r and s
-            val rBytes = AppIntegrityUtils.toFixedLengthBytes(r, keySizeBytes)
-            val sBytes = AppIntegrityUtils.toFixedLengthBytes(s, keySizeBytes)
+            val rBytes = Utils.toFixedLengthBytes(r, keySizeBytes)
+            val sBytes = Utils.toFixedLengthBytes(s, keySizeBytes)
             // Consolidate the two values into a ByteArray
             return rBytes + sBytes
         }
