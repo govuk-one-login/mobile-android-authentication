@@ -93,8 +93,7 @@ dependencies {
         kotlin("test-junit"),
         libs.bundles.android.test,
         libs.bundles.mockito,
-        libs.bundles.espresso,
-        project(":app")
+        libs.bundles.espresso
     ).forEach(::androidTestImplementation)
 
     listOf(

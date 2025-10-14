@@ -109,7 +109,8 @@ dependencies {
         libs.gson,
         libs.bouncy.castle,
         libs.androidx.browser,
-        libs.logging
+        libs.logging,
+        project(":keystore")
     ).forEach(::implementation)
 
     listOf(
