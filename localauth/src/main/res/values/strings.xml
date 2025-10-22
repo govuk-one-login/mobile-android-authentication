@@ -9,7 +9,7 @@
     <string name="app_enableBiometricsImageTestTag" translatable="false">Decorative image test tag</string>
     <!-- Wallet Copy -->
     <string name="app_wallet_enableBiometricsBody1">Use your face, fingerprint or iris to:</string>
-    <string name="app_wallet_enableBiometricsBullet1">unlock the app within 30 minutes of signing in with Welcome to GOV.UK  One Login</string>
+    <string name="app_wallet_enableBiometricsBullet1">sign in</string>
     <string name="app_wallet_enableBiometricsBullet2">view and add documents</string>
     <!-- No Wallet Copy -->
     <string name="app_enableBiometricsBody1">You can unlock the app with your face, fingerprint or iris within 30 minutes of signing in with GOV.UK One Login.</string>
