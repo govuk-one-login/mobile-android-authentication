@@ -18,7 +18,7 @@
     <string name="app_enableBiometricsBody3">Gallwch droi biometreg i ffwrdd unrhyw bryd yng ngosodiadau\'r ap.</string>
     <!-- Wallet Copy -->
     <string name="app_wallet_enableBiometricsBody1">Defnyddiwch eich wyneb, eich olion bysedd neu\'ch iris i:</string>
-    <string name="app_wallet_enableBiometricsBullet1">ddatgloi\'r ap o fewn 30 munud ar ôl mewngofnodi gyda GOV.UK One Login</string>
+    <string name="app_wallet_enableBiometricsBullet1">mewngofnodi</string>
     <string name="app_wallet_enableBiometricsBullet2">gweld ac ychwanegu dogfennau</string>
     <!-- No Wallet Copy -->
     <string name="app_enableBiometricsBody1">Gallwch ddatgloi\'r ap gyda\'ch wyneb, olion bysedd neu iris o fewn 30 munud o fewngofnodi gyda GOV.UK One Login.</string>

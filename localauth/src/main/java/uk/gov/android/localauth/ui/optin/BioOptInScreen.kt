@@ -221,6 +221,7 @@ private fun CustomText(text: String, accessibilityIndex: Float) {
 @OptIn(ExperimentalMaterial3Api::class)
 @ScreenPreview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(locale = "CY")
 @Composable
 internal fun BioOptInPreviewWallet() {
     GdsTheme {
@@ -241,6 +242,7 @@ internal fun BioOptInPreviewWallet() {
 @OptIn(ExperimentalMaterial3Api::class)
 @ScreenPreview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(locale = "CY")
 @Composable
 internal fun BioOptInPreview() {
     GdsTheme {
