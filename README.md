@@ -74,7 +74,7 @@ val vectorsOfTrust: String = "[\"Cl.Cm.P0\"]"
 
 #### TokenResponse
 
-Holds the returned token values
+Holds the returned token values:
 
 ```kotlin
 val tokenType: String
