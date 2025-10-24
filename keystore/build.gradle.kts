@@ -85,10 +85,6 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-
-    packaging {
-        resources.excludes.add("META-INF/versions/9/OSGI-INF/MANIFEST.MF")
-    }
 }
 
 dependencies {
@@ -103,14 +99,10 @@ dependencies {
     listOf(
         libs.androidx.core.core.ktx,
         libs.appcompat,
-        libs.appauth,
-        libs.kotlinx.serialization.json,
-        libs.jose4j,
-        libs.gson,
+        libs.material,
         libs.bouncy.castle,
-        libs.androidx.browser,
-        libs.logging,
-        project(":keystore")
+        libs.kotlinx.serialization.json,
+        project(":app")
     ).forEach(::implementation)
 
     listOf(
@@ -118,26 +110,6 @@ dependencies {
         kotlin("test-junit5"),
         libs.bundles.test,
         platform(libs.junit.bom),
-        libs.mockito.kotlin,
-        libs.mockito.inline
+        libs.mockito.kotlin
     ).forEach(::testImplementation)
-
-    listOf(
-        libs.androidx.test.orchestrator
-    ).forEach {
-        androidTestUtil(it)
-    }
-}
-
-mavenPublishingConfig {
-    mavenConfigBlock {
-        name.set(
-            "Authentication module for Android Devices"
-        )
-        description.set(
-            """
-            A Gradle module which implements OpenID Connect to return an access token for Android.
-            """.trimIndent()
-        )
-    }
 }
