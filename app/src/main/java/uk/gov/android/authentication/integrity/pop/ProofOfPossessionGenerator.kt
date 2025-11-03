@@ -7,6 +7,7 @@ import kotlin.uuid.Uuid
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import uk.gov.android.authentication.json.jwk.JWK
+import java.time.temporal.ChronoUnit
 
 object ProofOfPossessionGenerator {
     /**
@@ -116,13 +117,15 @@ object ProofOfPossessionGenerator {
     )
 
     fun getExpiryTime(): Long {
-        val minuteUntilExpiry = (MINUTES * MINUTE_IN_MILLISECONDS)
-        val expiry = (Instant.now().toEpochMilli() + minuteUntilExpiry) / CONVERT_TO_SECONDS
+        val expiry = Instant
+            .now()
+            .plus(3, ChronoUnit.MINUTES)
+            .epochSecond
         return expiry
     }
 
     fun getIssueTime(): Long {
-        return Instant.now().toEpochMilli() / CONVERT_TO_SECONDS
+        return Instant.now().epochSecond
     }
 
     fun getUrlSafeNoPaddingBase64(input: ByteArray): String {
@@ -131,14 +134,11 @@ object ProofOfPossessionGenerator {
     }
 
     fun isPopExpired(exp: Long): Boolean {
-        return exp <= (Instant.now().toEpochMilli() / CONVERT_TO_SECONDS)
+        return exp <= Instant.now().epochSecond
     }
 
     private const val ALG = "ES256"
     private const val APP_INTEGRITY_TYP = "oauth-client-attestation-pop+jwt"
     private const val REFRESH_TYP = "dpop+jwt"
     private const val HTTP_METHOD = "POST"
-    private const val MINUTES = 3
-    private const val MINUTE_IN_MILLISECONDS = 60000
-    private const val CONVERT_TO_SECONDS = 1000
 }
