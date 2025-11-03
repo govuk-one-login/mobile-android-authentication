@@ -5,7 +5,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import uk.gov.android.authentication.json.jwk.JWK
+import uk.gov.android.json.jwk.JWK
 
 class ProofOfPossessionGeneratorTest {
     @Test

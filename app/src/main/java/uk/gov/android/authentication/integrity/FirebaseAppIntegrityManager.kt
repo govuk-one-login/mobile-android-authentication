@@ -13,7 +13,7 @@ import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
 import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 import uk.gov.android.authentication.integrity.pop.SignedPoP
-import uk.gov.android.authentication.json.jwk.JWK
+import uk.gov.android.json.jwk.JWK
 import uk.gov.logging.api.Logger
 
 class FirebaseAppIntegrityManager(

@@ -3,7 +3,7 @@ package uk.gov.android.authentication.login.refresh
 import java.security.SignatureException
 import uk.gov.android.authentication.integrity.FirebaseAppIntegrityManager.Companion.SIGN_ERROR
 import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
-import uk.gov.android.authentication.json.jwk.JWK
+import uk.gov.android.json.jwk.JWK
 
 /**
  * Component allowing to create a signed Demonstrating Proof of Possession that can be used in the token exchange and retrieve a refresh token

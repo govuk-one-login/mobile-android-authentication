@@ -23,10 +23,11 @@ dependencyResolutionManagement {
 
 rootProject.name = "mobile-android-authentication"
 include(":app")
+include(":json")
+include(":localauth")
 
 includeBuild("${rootProject.projectDir}/mobile-android-pipelines/buildLogic")
 gradle.startParameter.excludedTaskNames.addAll(listOf(":buildLogic:plugins:testClasses"))
-include(":localauth")
 
 fun setGithubCredentials(): MavenArtifactRepository.() -> Unit = {
     val (credUser, credToken) = fetchGithubCredentials()
