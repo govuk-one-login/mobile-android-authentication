@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import uk.gov.pipelines.config.ApkConfig
 
 plugins {
@@ -82,8 +83,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
+
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
     }
 
     packaging {
@@ -109,7 +113,8 @@ dependencies {
         libs.gson,
         libs.bouncy.castle,
         libs.androidx.browser,
-        libs.logging
+        libs.logging,
+        project(":json")
     ).forEach(::implementation)
 
     listOf(

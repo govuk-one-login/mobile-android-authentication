@@ -3,20 +3,21 @@ import uk.gov.pipelines.config.ApkConfig
 
 plugins {
     `maven-publish`
-    alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.paparazzi)
+    alias(libs.plugins.kotlin.serlialization)
     id("uk.gov.pipelines.android-lib-config")
 }
 
 android {
-    namespace = "uk.gov.android.localauth"
+    namespace = "uk.gov.android.json"
 
     defaultConfig {
-        val apkConfig: ApkConfig by project.rootProject.extra
-        namespace = apkConfig.applicationId + ".localauth"
-        compileSdk = apkConfig.sdkVersions.compile
-        minSdk = apkConfig.sdkVersions.minimum
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        defaultConfig {
+            val apkConfig: ApkConfig by project.rootProject.extra
+            namespace = apkConfig.applicationId + ".localauth"
+            compileSdk = apkConfig.sdkVersions.compile
+            minSdk = apkConfig.sdkVersions.minimum
+            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        }
     }
 
     buildTypes {
@@ -48,10 +49,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    buildFeatures {
-        compose = true
     }
 
     kotlin {
@@ -99,36 +96,26 @@ dependencies {
     listOf(
         kotlin("test"),
         kotlin("test-junit"),
-        libs.android.test.ext.junit,
-        libs.espresso.core,
+        libs.bundles.android.test,
+        libs.bundles.mockito,
+        libs.bundles.espresso,
     ).forEach(::androidTestImplementation)
 
     listOf(
         libs.androidx.core.core.ktx,
-        libs.appcompat,
-        libs.material,
-        libs.androidx.biometric,
-        libs.androidx.ui,
-        libs.androidx.material3,
-        libs.androidx.ui.tooling.preview,
-        libs.androidx.navigation,
-        libs.bundles.gov.uk,
-        libs.kotlinx.collections.immutable,
+        libs.kotlinx.serialization.json,
+        libs.jose4j,
+        libs.gson,
+        libs.bouncy.castle,
     ).forEach(::implementation)
 
     listOf(
         kotlin("test"),
         kotlin("test-junit5"),
-        libs.junit.jupiter.launcher,
-        libs.junit.jupiter.params,
+        libs.bundles.test,
         platform(libs.junit.bom),
         libs.mockito.kotlin,
-        libs.androidx.compose.ui.junit4,
-        libs.junit,
-        libs.robolectric,
-        libs.bundles.test,
-        libs.espresso.core,
-        libs.espresso.intents,
+        libs.mockito.inline,
     ).forEach(::testImplementation)
 
     listOf(
@@ -136,34 +123,4 @@ dependencies {
     ).forEach {
         androidTestUtil(it)
     }
-
-    listOf(
-        libs.androidx.compose.ui.tooling,
-        libs.androidx.compose.ui.test.manifest,
-    ).forEach(::debugImplementation)
-
-    testRuntimeOnly(libs.junit.vintage.engine)
-}
-
-mavenPublishingConfig {
-    mavenConfigBlock {
-        name.set(
-            "Local Authentication (secure device) module for Android Devices",
-        )
-        description.set(
-            """
-            A Gradle module which implements the local authentication (passcode/ biometrics) based on
-            a combination of device security and privacy settings and user choice of how to secure the application.
-            """.trimIndent(),
-        )
-    }
-}
-
-// https://govukverify.atlassian.net/browse/DCMAW-11888
-// https://github.com/Kotlin/dokka/issues/2956
-tasks.matching { task ->
-    task.name.contains("javaDocReleaseGeneration") ||
-        task.name.contains("javaDocDebugGeneration")
-}.configureEach {
-    enabled = false
 }

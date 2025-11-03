@@ -1,8 +1,7 @@
-package uk.gov.android.authentication.json.jwk
+package uk.gov.android.json.jwk
 
-import java.security.Key
 import kotlinx.serialization.Serializable
-import org.jose4j.jwk.JsonWebKey
+import java.security.Key
 
 /**
  * Object to create a JWK following the required format:
@@ -34,8 +33,8 @@ object JWK {
                 useValue,
                 curveValue,
                 x,
-                y
-            )
+                y,
+            ),
         )
     }
 
@@ -51,7 +50,7 @@ object JWK {
 
     @Serializable
     data class JsonWebKey(
-        val jwk: JsonWebKeyFormat
+        val jwk: JsonWebKeyFormat,
     )
 
     @Serializable
@@ -60,6 +59,6 @@ object JWK {
         val use: String,
         val crv: String,
         val x: String,
-        val y: String
+        val y: String,
     )
 }
