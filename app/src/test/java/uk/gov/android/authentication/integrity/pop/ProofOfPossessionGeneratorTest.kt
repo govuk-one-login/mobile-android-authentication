@@ -18,7 +18,7 @@ import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator.ge
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator.getIssueTime
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator.isPopExpired
-import uk.gov.android.authentication.json.jwk.JWK
+import uk.gov.android.json.jwk.JWK
 
 class ProofOfPossessionGeneratorTest {
     // createBase64PoP tests

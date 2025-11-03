@@ -8,8 +8,8 @@ import kotlin.test.Test
 import kotlin.test.assertTrue
 import kotlinx.serialization.json.Json
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
-import uk.gov.android.authentication.json.jwk.JWK
-import uk.gov.android.authentication.json.jwt.Jose4jJwtVerifier
+import uk.gov.android.json.jwk.JWK
+import uk.gov.android.json.jwt.Jose4jJwtVerifier
 
 @OptIn(ExperimentalEncodingApi::class)
 class ECKeyManagerTest {

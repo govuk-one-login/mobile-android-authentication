@@ -1,4 +1,4 @@
-package uk.gov.android.authentication.json.jwt
+package uk.gov.android.json.jwt
 
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParseException
@@ -30,8 +30,8 @@ class Jose4jJwtVerifier : JwtVerifier {
         jws.setAlgorithmConstraints(
             AlgorithmConstraints(
                 AlgorithmConstraints.ConstraintType.PERMIT,
-                AlgorithmIdentifiers.ECDSA_USING_P256_CURVE_AND_SHA256
-            )
+                AlgorithmIdentifiers.ECDSA_USING_P256_CURVE_AND_SHA256,
+            ),
         )
         jws.compactSerialization = encodedJsonWebToken
         jws.key = publicKeyJwk.key
