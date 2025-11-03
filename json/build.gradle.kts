@@ -8,12 +8,10 @@ plugins {
 }
 
 android {
-    namespace = "uk.gov.android.json"
-
     defaultConfig {
         defaultConfig {
             val apkConfig: ApkConfig by project.rootProject.extra
-            namespace = apkConfig.applicationId + ".localauth"
+            namespace = apkConfig.applicationId + ".json"
             compileSdk = apkConfig.sdkVersions.compile
             minSdk = apkConfig.sdkVersions.minimum
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
