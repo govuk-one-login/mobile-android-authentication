@@ -1,4 +1,5 @@
 import uk.gov.pipelines.config.ApkConfig
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     `maven-publish`
@@ -32,9 +33,9 @@ android {
             it.testLogging {
                 events =
                     setOf(
-                        org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
-                        org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
-                        org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
+                        TestLogEvent.FAILED,
+                        TestLogEvent.PASSED,
+                        TestLogEvent.SKIPPED,
                     )
             }
         }
