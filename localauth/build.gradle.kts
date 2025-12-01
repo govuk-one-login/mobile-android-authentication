@@ -1,6 +1,6 @@
-import uk.gov.pipelines.config.ApkConfig
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import uk.gov.pipelines.config.ApkConfig
 
 plugins {
     `maven-publish`
@@ -63,36 +63,6 @@ android {
 
     ktlint {
         version = libs.versions.ktlint.cli.get()
-    }
-
-    lint {
-        val configDir = "${rootProject.projectDir}/config"
-
-        abortOnError = true
-        absolutePaths = true
-        baseline = File("$configDir/android/baseline.xml")
-        checkAllWarnings = true
-        checkDependencies = false
-        checkGeneratedSources = false
-        checkReleaseBuilds = true
-        disable.addAll(
-            setOf(
-                "ConvertToWebp",
-                "UnusedIds",
-                "VectorPath",
-            ),
-        )
-        explainIssues = true
-        htmlReport = true
-        ignoreTestSources = true
-        ignoreWarnings = false
-        lintConfig = File("$configDir/android/lint.xml")
-        noLines = false
-        quiet = false
-        showAll = true
-        textReport = true
-        warningsAsErrors = true
-        xmlReport = true
     }
 }
 
