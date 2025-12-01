@@ -26,8 +26,15 @@ jobs:
     runs-on: ubuntu-22.04
     #    runs-on: ubuntu-20.04-16core # Larger github runner, with KVM acceleration
     steps:
+      - name: Checkout codebase
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          lfs: 'true'
+          submodules: 'true'
+          fetch-depth: 0
+
       - name: Run pull request workflow
-        uses: govuk-one-login/mobile-android-pipelines@8fdf2e86f8a1ae8edd135115c0ba8ba70e8e10de
+        uses: ./mobile-android-pipelines
         with:
           sonar_token: ${{ secrets.SONAR_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
