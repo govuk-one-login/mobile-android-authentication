@@ -1,5 +1,6 @@
 import uk.gov.pipelines.config.ApkConfig
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     `maven-publish`
@@ -54,8 +55,10 @@ android {
         compose = true
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_17
+        }
     }
 
     ktlint {
