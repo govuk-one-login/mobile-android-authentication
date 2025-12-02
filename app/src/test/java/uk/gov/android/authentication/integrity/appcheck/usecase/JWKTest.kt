@@ -6,7 +6,7 @@ import java.security.spec.X509EncodedKeySpec
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import org.jose4j.jwk.JsonWebKey
-import uk.gov.android.authentication.json.jwk.JWK
+import uk.gov.android.json.jwk.JWK
 
 class JWKTest {
     @Test

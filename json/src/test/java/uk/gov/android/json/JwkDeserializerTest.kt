@@ -1,15 +1,15 @@
-package uk.gov.android.authentication.json
+package uk.gov.android.json
 
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonParseException
 import com.google.gson.JsonParser
-import kotlin.test.Test
 import org.jose4j.jwk.JsonWebKey
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import uk.gov.android.authentication.json.jwt.JwkDeserializer
+import uk.gov.android.json.jwt.JwkDeserializer
+import kotlin.test.Test
 
 class JwkDeserializerTest {
     private val context: JsonDeserializationContext = mock()
@@ -27,7 +27,7 @@ class JwkDeserializerTest {
             sut.deserialize(
                 json = jsonValidObj,
                 typeOfT = JsonWebKey::class.java,
-                context = null
+                context = null,
             )
         }
     }
@@ -40,14 +40,14 @@ class JwkDeserializerTest {
                 "kid" to "key-0",
                 "kty" to "AES",
                 "x" to "hc8mJ6fcZikhWM4ofHGSwXTkdqXM8GbPtRzPa7LttA=",
-                "y" to "OIhg/7rhWfmnWQEgAXzU8fCTggGrS3zj5x76a0lrzJM="
-            )
+                "y" to "OIhg/7rhWfmnWQEgAXzU8fCTggGrS3zj5x76a0lrzJM=",
+            ),
         )
         assertThrows<JsonParseException> {
             sut.deserialize(
                 json = jsonValidObj,
                 typeOfT = JsonWebKey::class.java,
-                context = context
+                context = context,
             )
         }
     }
