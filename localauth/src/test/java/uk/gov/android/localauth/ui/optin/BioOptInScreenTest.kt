@@ -287,7 +287,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
     fun `DEPRECATED - test no wallet copy preview`() {
         composeTestRule.apply {
             setContent {
-                DeprecatedBioOptInPreviewWallet()
+                DeprecatedBioOptInPreview()
             }
             onNodeWithText(
                 context.getString(R.string.app_enableBiometricsTitle),
