@@ -1,4 +1,5 @@
 @file:Suppress("TooManyFunctions")
+
 package uk.gov.android.localauth.ui.optin
 
 import android.content.res.Configuration
