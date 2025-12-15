@@ -10,9 +10,20 @@ import uk.gov.android.ui.theme.m3.GdsTheme
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 
 interface DialogUiManager {
+    @Deprecated(
+        message = "Please use screen that does not allow for walletEnabled - will be removed 9th of Feb",
+        level = DeprecationLevel.WARNING,
+    )
     fun displayBioOptIn(
         activity: FragmentActivity,
         walletEnabled: Boolean,
+        onBack: () -> Unit,
+        onBiometricsOptIn: () -> Unit,
+        onBiometricsOptOut: () -> Unit,
+    )
+
+    fun displayBioOptIn(
+        activity: FragmentActivity,
         onBack: () -> Unit,
         onBiometricsOptIn: () -> Unit,
         onBiometricsOptOut: () -> Unit,
@@ -34,6 +45,10 @@ interface DialogUiManager {
 class BiometricsUiManager(
     private val analyticsLogger: AnalyticsLogger,
 ) : DialogUiManager {
+    @Deprecated(
+        "Please use screen that does not allow for walletEnabled - will be removed 9th of Feb",
+        level = DeprecationLevel.WARNING,
+    )
     override fun displayBioOptIn(
         activity: FragmentActivity,
         walletEnabled: Boolean,
@@ -48,6 +63,36 @@ class BiometricsUiManager(
                         BioOptInScreen(
                             analyticsLogger,
                             walletEnabled,
+                            onBack,
+                            onBiometricsOptIn,
+                            onBiometricsOptOut,
+                        ) {
+                            (parent as? ViewGroup)?.removeView(this)
+                        }
+                    }
+                }
+            }
+        activity.addContentView(
+            dialogView,
+            ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+            ),
+        )
+    }
+
+    override fun displayBioOptIn(
+        activity: FragmentActivity,
+        onBack: () -> Unit,
+        onBiometricsOptIn: () -> Unit,
+        onBiometricsOptOut: () -> Unit,
+    ) {
+        val dialogView =
+            ComposeView(activity).apply {
+                setContent {
+                    GdsTheme {
+                        BioOptInScreen(
+                            analyticsLogger,
                             onBack,
                             onBiometricsOptIn,
                             onBiometricsOptOut,

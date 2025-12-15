@@ -43,7 +43,7 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
     }
 
     @Test
-    fun `display bio opt in screen with wallet`() {
+    fun `DEPRECATED - display bio opt in screen with wallet`() {
         composeTestRule.apply {
             uiManager.displayBioOptIn(
                 activity,
@@ -86,7 +86,7 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
     }
 
     @Test
-    fun `display bio opt in screen without wallet`() {
+    fun `DEPRECATED - display bio opt in screen without wallet`() {
         composeTestRule.apply {
             uiManager.displayBioOptIn(
                 activity,
@@ -128,7 +128,7 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
     }
 
     @Test
-    fun `test bio opt in button`() {
+    fun `DEPRECATED - test bio opt in button`() {
         composeTestRule.apply {
             uiManager.displayBioOptIn(
                 activity,
@@ -151,7 +151,7 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
     }
 
     @Test
-    fun `test passcode opt in button`() {
+    fun `DEPRECATED - test passcode opt in button`() {
         composeTestRule.apply {
             uiManager.displayBioOptIn(
                 activity,
@@ -174,7 +174,7 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
     }
 
     @Test
-    fun `test back press on bio opt in`() {
+    fun `DEPRECATED - test back press on bio opt in`() {
         composeTestRule.apply {
             uiManager.displayBioOptIn(
                 activity,
@@ -199,11 +199,140 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
     }
 
     @Test
-    fun `test close button`() {
+    fun `DEPRECATED - test close button`() {
         composeTestRule.apply {
             uiManager.displayBioOptIn(
                 activity,
                 walletEnabled = false,
+                onBack = { onBack = !onBack },
+                onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
+                onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
+            )
+
+            onNodeWithContentDescription(
+                context.getString(uk.gov.android.ui.componentsv2.R.string.close_icon_button),
+            ).assertIsDisplayed().performClick()
+        }
+
+        assertTrue(onBioOptOut)
+        verify(analyticsLogger).logEventV3Dot1(makeCloseBackEvent(context))
+    }
+
+    @Test
+    fun `display bio opt in screen with wallet`() {
+        composeTestRule.apply {
+            uiManager.displayBioOptIn(
+                activity,
+                onBack = { onBack = !onBack },
+                onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
+                onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
+            )
+
+            onNodeWithText(
+                context.getString(R.string.app_enableBiometricsTitle),
+            ).assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.app_wallet_enableBiometricsBody1),
+            ).assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.app_wallet_enableBiometricsBullet1),
+            ).assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.app_wallet_enableBiometricsBullet2),
+            ).performScrollTo().assertExists()
+
+            onNodeWithText(
+                context.getString(R.string.app_enableBiometricsButton),
+            ).assertIsDisplayed()
+
+            onNodeWithText(
+                context.getString(R.string.app_enablePasscodeOrPatternButton),
+            )
+
+            onNodeWithTag(
+                context.getString(R.string.app_enableBiometricsImageTestTag),
+            ).assertIsDisplayed()
+        }
+
+        verify(analyticsLogger).logEventV3Dot1(makeWalletScreenEvent(context))
+    }
+
+    @Test
+    fun `test bio opt in button`() {
+        composeTestRule.apply {
+            uiManager.displayBioOptIn(
+                activity,
+                onBack = { onBack = !onBack },
+                onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
+                onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
+            )
+
+            onNodeWithText(
+                context.getString(R.string.app_enableBiometricsButton),
+            ).performClick()
+
+            onNodeWithText(
+                context.getString(R.string.app_enableBiometricsTitle),
+            ).assertIsNotDisplayed()
+
+            assertTrue(onBioOptIn)
+        }
+    }
+
+    @Test
+    fun `test passcode opt in button`() {
+        composeTestRule.apply {
+            uiManager.displayBioOptIn(
+                activity,
+                onBack = { onBack = !onBack },
+                onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
+                onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
+            )
+
+            onNodeWithText(
+                context.getString(R.string.app_enablePasscodeOrPatternButton),
+            ).performClick()
+
+            onNodeWithText(
+                context.getString(R.string.app_enableBiometricsTitle),
+            ).assertIsNotDisplayed()
+
+            assertTrue(onBioOptOut)
+        }
+    }
+
+    @Test
+    fun `test back press on bio opt in`() {
+        composeTestRule.apply {
+            uiManager.displayBioOptIn(
+                activity,
+                onBack = { onBack = !onBack },
+                onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
+                onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
+            )
+
+            onNodeWithText(
+                context.getString(R.string.app_enableBiometricsTitle),
+            ).assertIsDisplayed()
+
+            Espresso.pressBack()
+
+            onNodeWithText(
+                context.getString(R.string.app_enableBiometricsTitle),
+            ).assertIsNotDisplayed()
+
+            assertTrue(onBack)
+        }
+    }
+
+    @Test
+    fun `test close button`() {
+        composeTestRule.apply {
+            uiManager.displayBioOptIn(
+                activity,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
                 onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
