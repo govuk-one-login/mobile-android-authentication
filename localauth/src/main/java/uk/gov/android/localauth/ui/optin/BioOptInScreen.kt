@@ -4,6 +4,7 @@ package uk.gov.android.localauth.ui.optin
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -81,8 +82,9 @@ fun BioOptInScreen(
             analyticsViewModel.trackBackButton()
             onDismiss()
         },
-        content = {
+        content = { scrollState ->
             BioOptInContent(
+                scrollState = scrollState,
                 onBiometricsOptIn = {
                     onBiometricsOptIn()
                     analyticsViewModel.trackBiometricsButton()
@@ -100,6 +102,7 @@ fun BioOptInScreen(
 
 @Composable
 private fun BioOptInContent(
+    scrollState: ScrollState,
     onBiometricsOptIn: () -> Unit,
     onBiometricsOptOut: () -> Unit,
 ) {
@@ -110,14 +113,15 @@ private fun BioOptInContent(
         Modifier
             .padding(smallPadding)
             .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(scrollState),
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
             modifier =
             Modifier
                 .fillMaxHeight()
-                .weight(1f),
+                .weight(1f)
+                .verticalScroll(rememberScrollState()),
         ) {
             Text()
         }
@@ -165,8 +169,9 @@ fun BioOptInScreen(
             analyticsViewModel.trackBackButton()
             onDismiss()
         },
-        content = {
+        content = { scrollState ->
             BioOptInContent(
+                scrollState = scrollState,
                 walletEnabled = walletEnabled,
                 onBiometricsOptIn = {
                     onBiometricsOptIn()
@@ -189,6 +194,7 @@ fun BioOptInScreen(
 )
 @Composable
 private fun BioOptInContent(
+    scrollState: ScrollState,
     walletEnabled: Boolean,
     onBiometricsOptIn: () -> Unit,
     onBiometricsOptOut: () -> Unit,
@@ -200,14 +206,15 @@ private fun BioOptInContent(
         Modifier
             .padding(smallPadding)
             .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(scrollState),
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
             modifier =
             Modifier
                 .fillMaxHeight()
-                .weight(1f),
+                .weight(1f)
+                .verticalScroll(rememberScrollState()),
         ) {
             if (walletEnabled) {
                 Text()
@@ -321,7 +328,7 @@ internal fun DeprecatedBioOptInPreviewWallet() {
             },
             onBack = {},
             content = {
-                BioOptInContent(true, {}, {})
+                BioOptInContent(rememberScrollState(), true, {}, {})
             },
         )
     }
@@ -342,7 +349,7 @@ internal fun DeprecatedBioOptInPreview() {
             },
             onBack = {},
             content = {
-                BioOptInContent(false, {}, {})
+                BioOptInContent(rememberScrollState(), false, {}, {})
             },
         )
     }
@@ -363,7 +370,7 @@ internal fun BioOptInPreview() {
             },
             onBack = {},
             content = {
-                BioOptInContent({}, {})
+                BioOptInContent(rememberScrollState(), {}, {})
             },
         )
     }
