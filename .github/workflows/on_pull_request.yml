@@ -33,9 +33,63 @@ jobs:
           submodules: 'true'
           fetch-depth: 0
 
-      - name: Run pull request workflow
-        uses: ./mobile-android-pipelines
+      - name: Clean workspace
+        uses: ./mobile-android-pipelines/actions/clean-workspace
+
+      - name: Setup GitHub Runner workflow
+        uses: ./mobile-android-pipelines/actions/setup-runner
         with:
-          sonar_token: ${{ secrets.SONAR_TOKEN }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          gradle_cache_disabled: ${{ 'true' }}
+          gradle-cache-disabled: ${{ inputs.GRADLE_CACHE_DISABLED }}
+
+      - name: Verify Conventional commit standards against latest git tag
+        uses: ./mobile-android-pipelines/actions/verify-conventional-commit
+
+      - name: Lint script files
+        uses: ./mobile-android-pipelines/actions/lint
+
+      - name: Run gradle testing suite
+        uses: ./config/run-testing-suite
+
+      - name: Increment the release version using Conventional Commits
+        id: versioning
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: ./mobile-android-pipelines/actions/increment-version
+
+      - name: Sonar scan
+        uses: ./mobile-android-pipelines/actions/sonar-scan
+        with:
+          sonar-token: ${{ inputs.SONAR_TOKEN }}
+          version-name: ${{ steps.versioning.outputs.new_version }}
+
+      - name: Bundle reports folder
+        uses: ./mobile-android-pipelines/actions/bundle-reports
+
+      - name: Publish release tags
+        if: ${{ github.event_name != 'pull_request'
+          && steps.versioning.outputs.current_version != steps.versioning.outputs.new_version }}
+        uses: ./mobile-android-pipelines/actions/publish-release-tag
+
+      - name: Test local publish
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: ./mobile-android-pipelines/actions/maven-publish-local
+        with:
+          version-name: ${{ steps.versioning.outputs.new_version }}
+
+      - name: Publish package
+        if: ${{ github.event_name != 'pull_request'
+          && steps.versioning.outputs.current_version != steps.versioning.outputs.new_version }}
+        uses: ./mobile-android-pipelines/actions/maven-publish
+        with:
+          GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          VERSION_NAME: ${{ steps.versioning.outputs.new_version }}
+
+      - name: Generate Changelog
+        uses: ./mobile-android-pipelines/actions/generate-and-upload-changelog
+        with:
+          current-version: ${{ steps.versioning.outputs.current_version }}
+          new-version: ${{ steps.versioning.outputs.new_version }}
+          version-prefix: ${{ inputs.VERSION_PREFIX }}
+
+      - name: Clean workspace
+        uses: ./mobile-android-pipelines/actions/clean-workspace

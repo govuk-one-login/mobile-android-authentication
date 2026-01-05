@@ -1,0 +1,38 @@
+name: 'Run testing suite no sharding'
+description: 'Run gradle testing suite'
+inputs:
+  SCREENSHOT_TEST_COMMAND:
+    description: 'The paparazzi command(s) needed to run the screenshot tests'
+    required: false
+  GITHUB_ACTOR:
+    description: 'Github username'
+    required: false
+  GITHUB_TOKEN:
+    description: 'Github token'
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run instrumentation tests
+      run: |
+        ./gradlew \
+          googleAtdPixelXLApi33DebugAndroidTest \
+          --continue \
+          --stacktrace \
+          -Pandroid.testoptions.manageddevices.emulator.gpu=swiftshader_indirect
+          -max-workers=1
+      shell: bash
+
+    - name: Run screenshot tests
+      if: ${{ inputs.SCREENSHOT_TEST_COMMAND != '' }}
+      run: |
+        ./gradlew ${{ inputs.SCREENSHOT_TEST_COMMAND }} \
+        --continue \
+        -Pgpr.user=${{ inputs.GITHUB_ACTOR }} \
+        -Pgpr.token=${{ inputs.GITHUB_TOKEN }}
+      shell: bash
+
+    - name: Run unit tests
+      run: ./mobile-android-pipelines/scripts/runUnitTests.sh
+      shell: bash
