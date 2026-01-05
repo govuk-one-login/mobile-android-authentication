@@ -44,11 +44,14 @@ jobs:
       - name: Verify Conventional commit standards against latest git tag
         uses: ./mobile-android-pipelines/actions/verify-conventional-commit
 
+      - name: Clean up runner before running checks
+        uses: ./mobile-android-pipelines/actions/clean-runner-fast
+
       - name: Lint script files
         uses: ./mobile-android-pipelines/actions/lint
 
       - name: Run gradle testing suite
-        uses: ./config/run-testing-suite
+        uses: ./mobile-android-pipelines/actions/run-testing-suite
 
       - name: Increment the release version using Conventional Commits
         id: versioning
