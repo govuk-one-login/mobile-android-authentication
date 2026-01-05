@@ -4,7 +4,6 @@ package uk.gov.android.localauth.ui.optin
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -82,9 +81,8 @@ fun BioOptInScreen(
             analyticsViewModel.trackBackButton()
             onDismiss()
         },
-        content = { scrollState ->
+        content = {
             BioOptInContent(
-                scrollState = scrollState,
                 onBiometricsOptIn = {
                     onBiometricsOptIn()
                     analyticsViewModel.trackBiometricsButton()
@@ -102,7 +100,6 @@ fun BioOptInScreen(
 
 @Composable
 private fun BioOptInContent(
-    scrollState: ScrollState,
     onBiometricsOptIn: () -> Unit,
     onBiometricsOptOut: () -> Unit,
 ) {
@@ -112,8 +109,7 @@ private fun BioOptInContent(
         modifier =
         Modifier
             .padding(smallPadding)
-            .fillMaxSize()
-            .verticalScroll(scrollState),
+            .fillMaxSize(),
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
@@ -169,9 +165,8 @@ fun BioOptInScreen(
             analyticsViewModel.trackBackButton()
             onDismiss()
         },
-        content = { scrollState ->
+        content = {
             BioOptInContent(
-                scrollState = scrollState,
                 walletEnabled = walletEnabled,
                 onBiometricsOptIn = {
                     onBiometricsOptIn()
@@ -194,7 +189,6 @@ fun BioOptInScreen(
 )
 @Composable
 private fun BioOptInContent(
-    scrollState: ScrollState,
     walletEnabled: Boolean,
     onBiometricsOptIn: () -> Unit,
     onBiometricsOptOut: () -> Unit,
@@ -205,8 +199,7 @@ private fun BioOptInContent(
         modifier =
         Modifier
             .padding(smallPadding)
-            .fillMaxSize()
-            .verticalScroll(scrollState),
+            .fillMaxSize(),
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
@@ -328,7 +321,7 @@ internal fun DeprecatedBioOptInPreviewWallet() {
             },
             onBack = {},
             content = {
-                BioOptInContent(rememberScrollState(), true, {}, {})
+                BioOptInContent(true, {}, {})
             },
         )
     }
@@ -349,7 +342,7 @@ internal fun DeprecatedBioOptInPreview() {
             },
             onBack = {},
             content = {
-                BioOptInContent(rememberScrollState(), false, {}, {})
+                BioOptInContent(false, {}, {})
             },
         )
     }
@@ -370,7 +363,7 @@ internal fun BioOptInPreview() {
             },
             onBack = {},
             content = {
-                BioOptInContent(rememberScrollState(), {}, {})
+                BioOptInContent({}, {})
             },
         )
     }
