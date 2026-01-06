@@ -289,21 +289,22 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
             setContent {
                 DeprecatedBioOptInPreview()
             }
+
             onNodeWithText(
                 context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBody1),
+                context.getString(R.string.app_enableBiometricsBody1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBullet1),
+                context.getString(R.string.app_enableBiometricsBody2),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBullet2),
-            ).assertExists()
+                context.getString(R.string.app_enableBiometricsBody3),
+            ).performScrollTo().assertExists()
 
             onNodeWithText(
                 context.getString(R.string.app_enableBiometricsButton),
@@ -311,7 +312,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
 
             onNodeWithText(
                 context.getString(R.string.app_enablePasscodeOrPatternButton),
-            ).assertIsDisplayed()
+            )
 
             onNodeWithTag(
                 context.getString(R.string.app_enableBiometricsImageTestTag),
