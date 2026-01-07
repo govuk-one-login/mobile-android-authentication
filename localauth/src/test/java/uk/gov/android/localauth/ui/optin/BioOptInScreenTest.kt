@@ -289,6 +289,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
             setContent {
                 DeprecatedBioOptInPreview()
             }
+
             onNodeWithText(
                 context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsDisplayed()

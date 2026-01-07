@@ -109,15 +109,15 @@ private fun BioOptInContent(
         modifier =
         Modifier
             .padding(smallPadding)
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
+            .fillMaxSize(),
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
             modifier =
             Modifier
                 .fillMaxHeight()
-                .weight(1f),
+                .weight(1f)
+                .verticalScroll(rememberScrollState()),
         ) {
             Text()
         }
@@ -199,15 +199,15 @@ private fun BioOptInContent(
         modifier =
         Modifier
             .padding(smallPadding)
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
+            .fillMaxSize(),
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
             modifier =
             Modifier
                 .fillMaxHeight()
-                .weight(1f),
+                .weight(1f)
+                .verticalScroll(rememberScrollState()),
         ) {
             if (walletEnabled) {
                 Text()
