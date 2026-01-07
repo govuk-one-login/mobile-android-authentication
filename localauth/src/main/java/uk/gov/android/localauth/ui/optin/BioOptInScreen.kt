@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package uk.gov.android.localauth.ui.optin
 
 import android.content.res.Configuration
@@ -29,12 +31,14 @@ import kotlinx.collections.immutable.persistentListOf
 import uk.gov.android.authentication.localauth.R
 import uk.gov.android.ui.componentsv2.button.ButtonType
 import uk.gov.android.ui.componentsv2.button.GdsButton
+import uk.gov.android.ui.componentsv2.button.GdsIconButtonDefaults
 import uk.gov.android.ui.componentsv2.heading.GdsHeading
 import uk.gov.android.ui.componentsv2.heading.GdsHeadingStyle
 import uk.gov.android.ui.componentsv2.list.GdsBulletedList
 import uk.gov.android.ui.componentsv2.list.ListItem
 import uk.gov.android.ui.componentsv2.list.ListTitle
 import uk.gov.android.ui.componentsv2.list.TitleType
+import uk.gov.android.ui.componentsv2.topappbar.GdsTopAppBar
 import uk.gov.android.ui.patterns.dialog.FullScreenDialogue
 import uk.gov.android.ui.patterns.dialog.FullScreenDialogueTopAppBar
 import uk.gov.android.ui.theme.m3.GdsTheme
@@ -43,6 +47,83 @@ import uk.gov.android.ui.theme.smallPadding
 import uk.gov.android.ui.theme.util.UnstableDesignSystemAPI
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BioOptInScreen(
+    analyticsLogger: AnalyticsLogger,
+    onBack: () -> Unit,
+    onBiometricsOptIn: () -> Unit,
+    onBiometricsOptOut: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    val analyticsViewModel = BioOptInAnalyticsViewModel(LocalContext.current, analyticsLogger)
+    analyticsViewModel.trackBioOptInWalletScreen()
+
+    FullScreenDialogue(
+        topAppBar = {
+            GdsTopAppBar(
+                title = null,
+                navigationButton = GdsIconButtonDefaults.defaultCloseContent(),
+                onClick = {
+                    analyticsViewModel.trackCloseIconButton()
+                    onBiometricsOptOut()
+                    onDismiss()
+                },
+            )
+        },
+        onBack = {
+            onBack()
+            analyticsViewModel.trackBackButton()
+            onDismiss()
+        },
+        content = {
+            BioOptInContent(
+                onBiometricsOptIn = {
+                    onBiometricsOptIn()
+                    analyticsViewModel.trackBiometricsButton()
+                    onDismiss()
+                },
+                onBiometricsOptOut = {
+                    onBiometricsOptOut()
+                    analyticsViewModel.trackPasscodeButton()
+                    onDismiss()
+                },
+            )
+        },
+    )
+}
+
+@Composable
+private fun BioOptInContent(
+    onBiometricsOptIn: () -> Unit,
+    onBiometricsOptOut: () -> Unit,
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier =
+        Modifier
+            .padding(smallPadding)
+            .fillMaxSize(),
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            modifier =
+            Modifier
+                .fillMaxHeight()
+                .weight(1f)
+                .verticalScroll(rememberScrollState()),
+        ) {
+            Text()
+        }
+        BioOptInButtons(onBiometricsOptIn, onBiometricsOptOut)
+    }
+}
+
+@Deprecated(
+    message = "Please use screen that does not allow for walletEnabled - will be removed 9th of Feb",
+    level = DeprecationLevel.WARNING,
+)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BioOptInScreen(
@@ -94,6 +175,10 @@ fun BioOptInScreen(
     )
 }
 
+@Deprecated(
+    message = "Please use screen that does not allow for walletEnabled - will be removed 9th of Feb",
+    level = DeprecationLevel.WARNING,
+)
 @Composable
 private fun BioOptInContent(
     walletEnabled: Boolean,
@@ -106,18 +191,18 @@ private fun BioOptInContent(
         modifier =
         Modifier
             .padding(smallPadding)
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
+            .fillMaxSize(),
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
             modifier =
             Modifier
                 .fillMaxHeight()
-                .weight(1f),
+                .weight(1f)
+                .verticalScroll(rememberScrollState()),
         ) {
             if (walletEnabled) {
-                WalletCopyText()
+                Text()
             } else {
                 NoWalletCopyText()
             }
@@ -128,7 +213,7 @@ private fun BioOptInContent(
 
 @OptIn(UnstableDesignSystemAPI::class)
 @Composable
-private fun WalletCopyText() {
+private fun Text() {
     val title = stringResource(R.string.app_wallet_enableBiometricsBody1)
     val bulletItemOne = stringResource(R.string.app_wallet_enableBiometricsBullet1)
     val bulletItemTwo = stringResource(R.string.app_wallet_enableBiometricsBullet2)
@@ -213,7 +298,7 @@ private fun CustomText(text: String) {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Preview(locale = "CY")
 @Composable
-internal fun BioOptInPreviewWallet() {
+internal fun DeprecatedBioOptInPreviewWallet() {
     GdsTheme {
         FullScreenDialogue(
             topAppBar = {
@@ -234,7 +319,7 @@ internal fun BioOptInPreviewWallet() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Preview(locale = "CY")
 @Composable
-internal fun BioOptInPreview() {
+internal fun DeprecatedBioOptInPreview() {
     GdsTheme {
         FullScreenDialogue(
             topAppBar = {
@@ -245,6 +330,27 @@ internal fun BioOptInPreview() {
             onBack = {},
             content = {
                 BioOptInContent(false, {}, {})
+            },
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@ScreenPreview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(locale = "CY")
+@Composable
+internal fun BioOptInPreview() {
+    GdsTheme {
+        FullScreenDialogue(
+            topAppBar = {
+                GdsTopAppBar(
+                    navigationButton = GdsIconButtonDefaults.defaultCloseContent(),
+                ) {}
+            },
+            onBack = {},
+            content = {
+                BioOptInContent({}, {})
             },
         )
     }
