@@ -126,7 +126,7 @@ private fun BioOptInContent(
 }
 
 @Deprecated(
-    message = "Please use screen that does not allow for walletEnabled - will be removed 9th of Feb",
+    message = "Please use screen that does not allow for walletEnabled - will be removed 7th of March",
     level = DeprecationLevel.WARNING,
 )
 @OptIn(ExperimentalMaterial3Api::class)
@@ -184,7 +184,7 @@ fun BioOptInScreen(
 }
 
 @Deprecated(
-    message = "Please use screen that does not allow for walletEnabled - will be removed 9th of Feb",
+    message = "Please use screen that does not allow for walletEnabled - will be removed 7th of March",
     level = DeprecationLevel.WARNING,
 )
 @Composable
