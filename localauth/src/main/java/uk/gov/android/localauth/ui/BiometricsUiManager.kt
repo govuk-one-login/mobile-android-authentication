@@ -11,7 +11,7 @@ import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 
 interface DialogUiManager {
     @Deprecated(
-        message = "Please use screen that does not allow for walletEnabled - will be removed 9th of Feb",
+        message = "Please use screen that does not allow for walletEnabled - will be removed 7th of March",
         level = DeprecationLevel.WARNING,
     )
     fun displayBioOptIn(
@@ -46,7 +46,7 @@ class BiometricsUiManager(
     private val analyticsLogger: AnalyticsLogger,
 ) : DialogUiManager {
     @Deprecated(
-        "Please use screen that does not allow for walletEnabled - will be removed 9th of Feb",
+        "Please use screen that does not allow for walletEnabled - will be removed 7th of March",
         level = DeprecationLevel.WARNING,
     )
     override fun displayBioOptIn(
