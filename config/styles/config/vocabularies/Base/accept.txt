@@ -59,3 +59,7 @@ ECPoint
 [Jj][Ss][Oo][Nn]
 JSON
 [Aa]ppIntegrity
+(?i)Hotfix
+gradlew
+passcode
+localauth
