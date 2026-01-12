@@ -285,7 +285,7 @@ The AppIntegrityConfiguration provides the AttestationCaller, AppChecker, and Ke
 An example of the AppIntegrityManager and a possible implementation is available in the [FirebaseAppIntegrityManager](app/src/main/java/uk/gov/android/authentication/integrity/FirebaseAppIntegrityManager.kt)
 
 ## Local Authentication Manager
-The LocalAuthManager allows a consumer to check the device security level and what is **available** and **enabled** (e.g. biometrics, passcode, etc). Based on this, it will save preferences accordingly.
+The LocalAuthManager allows a consumer to check the device security level and what is **available** and **enabled** (for example biometrics, passcode, etc). Based on this, it will save preferences accordingly.
 It requires a `DeviceBiometricsManager` and a `LocalAuthPreferenceRepo` which allows for the device checks and storing/ updating the reference accordingly.
 
 ```kotlin
@@ -361,7 +361,7 @@ hotfix branch.
 
 The temporary hotfix branch is currently expected to be named "temp/hotfix". If a different name is
 desired please edit the value under "branches:" in `.github/workflows/on_push_hotfix.yml`.
-The hotfix branch name should should be in the format "hotfix/M.m.p".
+The hotfix branch name should be in the format "hotfix/M.m.p".
 
 Once the hotfix PR has been approved and the "Squash and merge" button pressed, the merge title
 must be in the format "Merge pull request #xxx from govuk-one-login/release/M.m.p" to allow for the
