@@ -2,6 +2,11 @@
 
 Implementation of Authentication package
 
+## Status
+
+[![On Branch Push (main)](https://github.com/govuk-one-login/mobile-android-authentication/actions/workflows/on_push-main.yml/badge.svg)](https://github.com/govuk-one-login/mobile-android-authentication/actions/workflows/on_push-main.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mobile-android-authentication&metric=alert_status&token=98ca94907f5822494cf7583a2352d8d99dd27c70)](https://sonarcloud.io/summary/new_code?id=mobile-android-authentication)
+
 ## Installation
 
 To use Authentication in an Android Project:
