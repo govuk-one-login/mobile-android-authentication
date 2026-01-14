@@ -1,4 +1,4 @@
-name: Release Mobile Android Logging
+name: On Branch Push (main)
 on:
   push:
     branches: [ main ]
