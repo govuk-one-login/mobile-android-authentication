@@ -2,7 +2,7 @@
 core-ktx = "1.16.0"
 junit = "5.13.3"
 appcompat = "1.7.1"
-kotlin = "2.2.0"
+kotlin = "2.3.0"
 serialization = "1.9.0"
 test-core = "1.6.1"
 test-runner = "1.6.2"
