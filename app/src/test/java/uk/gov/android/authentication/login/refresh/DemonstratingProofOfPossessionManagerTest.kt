@@ -7,8 +7,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
+import uk.gov.android.keystore.KeyStoreManager
 import uk.gov.logging.api.Logger
 
 class DemonstratingProofOfPossessionManagerTest {

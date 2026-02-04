@@ -1,7 +1,7 @@
 package uk.gov.android.authentication.login.refresh
 
-import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
+import uk.gov.android.keystore.KeyStoreManager
 import uk.gov.logging.api.Logger
 
 /**
