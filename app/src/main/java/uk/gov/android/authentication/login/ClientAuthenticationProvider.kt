@@ -2,7 +2,7 @@ package uk.gov.android.authentication.login
 
 import net.openid.appauth.ClientAuthentication
 
-interface ClientAuthenticationProvider {
+fun interface ClientAuthenticationProvider {
     fun setCustomClientAuthentication(
         clientAttestation: String?,
         proofOfPossession: String?,
