@@ -20,18 +20,6 @@ class AppAuthSession : LoginSession {
     private var demonstratingProofOfPossessionManager: DemonstratingProofOfPossessionManager? = null
     private val clientAuthenticationProvider = ClientAuthenticationProviderImpl()
 
-    @Deprecated(
-        "This constructor method is now deprecated and replaced by a constructor" +
-            " requesting a Demonstrating Proof Of Possession Manager to allow for DPoP" +
-            " to be sent in the token request and enable use of refresh tokens" +
-            " - will be removed on 7/12/25",
-        ReplaceWith("uk.gov.android.authentication.login.AppAuthSession"),
-        DeprecationLevel.WARNING
-    )
-    constructor(context: Context) {
-        authService = AuthorizationService(context)
-    }
-
     constructor(
         context: Context,
         demonstratingProofOfPossessionManager: DemonstratingProofOfPossessionManager
@@ -105,88 +93,6 @@ class AppAuthSession : LoginSession {
             } ?: onFailure(DPoPManagerError())
         } catch (e: Exception) {
             onFailure(e)
-        }
-    }
-
-    @Deprecated(
-        "This method has been deprecated and replaces with finalise that accepts a htu" +
-            " as a parameter to allow for the fetching and handling refresh tokens" +
-            " - will be removed on 7/12/25",
-        ReplaceWith("uk.gov.android.authentication.login.AppAuthSession#finalise"),
-        DeprecationLevel.WARNING
-    )
-    @Suppress("TooGenericExceptionCaught")
-    override fun finalise(
-        intent: Intent,
-        appIntegrity: AppIntegrityParameters,
-        onSuccess: (tokens: TokenResponse) -> Unit,
-        onFailure: (error: Throwable) -> Unit
-    ) {
-        try {
-            val authResponse = AuthorizationResponse.fromIntent(intent)
-            if (authResponse == null) {
-                val exception = AuthorizationException.fromIntent(intent)
-
-                onFailure(AuthenticationError.from(exception))
-                return
-            }
-
-            // Create object that allows for additional headers/ body parameters
-            val clientAuthenticationWithExtraHeaders =
-                clientAuthenticationProvider.setCustomClientAuthentication(
-                    appIntegrity.attestation,
-                    appIntegrity.pop
-                )
-
-            // Create the standard request
-            val request = authResponse.createTokenExchangeRequest()
-
-            performTokenRequest(
-                request = request,
-                clientAuthentication = clientAuthenticationWithExtraHeaders,
-                onSuccess = { tokens -> onSuccess(tokens) },
-                onFailure = { error -> onFailure(error) }
-            )
-        } catch (e: Exception) {
-            onFailure(e)
-        }
-    }
-
-    @Deprecated(
-        message = "Please replace this with the alternative finalise function to use improved " +
-            "error handling",
-        replaceWith = ReplaceWith("uk.gov.android.authentication.login.AppAuthSession#finalise"),
-        level = DeprecationLevel.WARNING
-    )
-    override fun finalise(
-        intent: Intent,
-        appIntegrity: AppIntegrityParameters,
-        callback: (tokens: TokenResponse) -> Unit
-    ) {
-        val authResponse = AuthorizationResponse.fromIntent(intent)
-        if (authResponse == null) {
-            val exception = AuthorizationException.fromIntent(intent)
-
-            throw AuthenticationError.from(exception)
-        }
-
-        // Create object that allows for additional headers/ body parameters
-        val clientAuthenticationWithExtraHeaders =
-            clientAuthenticationProvider.setCustomClientAuthentication(
-                appIntegrity.attestation,
-                appIntegrity.pop
-            )
-
-        // Create the standard request
-        val request = authResponse.createTokenExchangeRequest()
-
-        authService.performTokenRequest(
-            request,
-            clientAuthenticationWithExtraHeaders
-        ) { response, exception ->
-            callback(
-                response?.toTokenResponse() ?: throw AuthenticationError.from(exception)
-            )
         }
     }
 
