@@ -1,4 +1,4 @@
-package uk.gov.android.authentication.integrity.keymanager
+package uk.gov.android.keystore
 
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
@@ -10,14 +10,8 @@ import java.security.Signature
 import java.security.interfaces.ECPublicKey
 import java.security.spec.ECGenParameterSpec
 import kotlin.io.encoding.ExperimentalEncodingApi
-import uk.gov.android.authentication.integrity.AppIntegrityUtils
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 
-@Deprecated(
-    message = "Replaced by ECKeyManager in the keystore module - will be removed in Jan 2026",
-    replaceWith = ReplaceWith("java/uk/gov/android/keystore/ECKeyManager.kt"),
-    level = DeprecationLevel.WARNING
-)
 @ExperimentalEncodingApi
 @Suppress("MemberVisibilityCanBePrivate")
 class ECKeyManager : KeyStoreManager {
@@ -54,9 +48,9 @@ class ECKeyManager : KeyStoreManager {
     override fun getPublicKeyCoordinates(): Pair<String, String> {
         val xByteArr = appCheckPublicKey.w.affineX
         val yByteArr = appCheckPublicKey.w.affineY
-        val xCheckedArray = AppIntegrityUtils
+        val xCheckedArray = Utils
             .toFixedLengthBytes(xByteArr, EC_POINTS_LENGTH_REQUIREMENT)
-        val yCheckedArray = AppIntegrityUtils
+        val yCheckedArray = Utils
             .toFixedLengthBytes(yByteArr, EC_POINTS_LENGTH_REQUIREMENT)
         val x = ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(xCheckedArray)
         val y = ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(yCheckedArray)
