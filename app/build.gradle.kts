@@ -70,10 +70,14 @@ dependencies {
         kotlin("test-junit"),
         libs.bundles.android.test,
         libs.bundles.mockito,
-        libs.bundles.espresso
+        libs.bundles.espresso,
+        libs.logging.test,
+        libs.androidx.uiautomator
     ).forEach(::androidTestImplementation)
 
     listOf(
+        platform(libs.kotlin.bom),
+        libs.kotlinx.coroutines,
         libs.androidx.core.core.ktx,
         libs.appcompat,
         libs.appauth,
@@ -82,7 +86,8 @@ dependencies {
         libs.gson,
         libs.bouncy.castle,
         libs.androidx.browser,
-        libs.logging
+        libs.logging,
+        libs.androidx.biometric
     ).forEach(::implementation)
 
     listOf(
@@ -91,8 +96,14 @@ dependencies {
         libs.bundles.test,
         platform(libs.junit.bom),
         libs.mockito.kotlin,
-        libs.mockito.inline
+        libs.mockito.inline,
+        libs.robolectric,
+        libs.junit,
+        libs.logging.test,
+        libs.kotlinx.coroutines.test
     ).forEach(::testImplementation)
+
+    testRuntimeOnly(libs.junit.vintage.engine)
 
     listOf(
         libs.androidx.test.orchestrator
