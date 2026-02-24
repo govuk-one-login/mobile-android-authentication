@@ -101,7 +101,7 @@ class FirebaseAppIntegrityManagerTest {
         whenever(mockAppChecker.getAppCheckToken())
             .thenReturn(Result.success(AppCheckToken("Success")))
         whenever(mockCaller.call(any(), any()))
-            .thenReturn(AttestationResponse.Failure("Error"))
+            .thenReturn(AttestationResponse.Failure("Error", Exception()))
         whenever(mockKeyStoreManager.getPublicKeyCoordinates())
             .thenReturn(Pair("Success", "Success"))
         val result = appIntegrityManager.getAttestation()
