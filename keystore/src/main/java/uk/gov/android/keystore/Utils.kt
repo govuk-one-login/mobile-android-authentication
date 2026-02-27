@@ -1,13 +1,8 @@
-package uk.gov.android.authentication.integrity
+package uk.gov.android.keystore
 
 import java.math.BigInteger
 
-@Deprecated(
-    message = "Replace with Utils from the keystore module - will be removed in Jan 2026",
-    replaceWith = ReplaceWith("java/uk/gov/android/keystore/Utils"),
-    level = DeprecationLevel.WARNING
-)
-object AppIntegrityUtils {
+object Utils {
     fun toFixedLengthBytes(value: BigInteger, length: Int): ByteArray {
         val valueBytes = value.toByteArray()
         return if (valueBytes.size > length) {

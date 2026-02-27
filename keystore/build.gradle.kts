@@ -1,5 +1,3 @@
-import org.gradle.api.tasks.testing.logging.TestLogEvent
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import uk.gov.pipelines.config.ApkConfig
 
 plugins {
@@ -8,6 +6,7 @@ plugins {
     id("uk.gov.pipelines.android-lib-config")
 }
 
+apply(from = "${rootProject.extra["configDir"]}/detekt/config.gradle")
 apply(from = "${rootProject.extra["configDir"]}/ktlint/config.gradle")
 
 android {
@@ -29,6 +28,36 @@ android {
         }
     }
 
+    lint {
+        val configDir = "${rootProject.projectDir}/config"
+
+        abortOnError = true
+        absolutePaths = true
+        baseline = File("$configDir/android/baseline.xml")
+        checkAllWarnings = true
+        checkDependencies = false
+        checkGeneratedSources = false
+        checkReleaseBuilds = true
+        disable.addAll(
+            setOf(
+                "ConvertToWebp",
+                "UnusedIds",
+                "VectorPath"
+            )
+        )
+        explainIssues = true
+        htmlReport = true
+        ignoreTestSources = true
+        ignoreWarnings = false
+        lintConfig = File("$configDir/android/lint.xml")
+        noLines = false
+        quiet = false
+        showAll = true
+        textReport = true
+        warningsAsErrors = true
+        xmlReport = true
+    }
+
     testOptions {
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
         animationsDisabled = true
@@ -37,9 +66,9 @@ android {
             it.testLogging {
                 events =
                     setOf(
-                        TestLogEvent.FAILED,
-                        TestLogEvent.PASSED,
-                        TestLogEvent.SKIPPED
+                        org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
+                        org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
+                        org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
                     )
             }
         }
@@ -53,14 +82,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlin {
-        compilerOptions {
-            jvmTarget = JvmTarget.JVM_17
-        }
-    }
-
-    packaging {
-        resources.excludes.add("META-INF/versions/9/OSGI-INF/MANIFEST.MF")
+    kotlinOptions {
+        jvmTarget = "17"
     }
 }
 
@@ -76,14 +99,10 @@ dependencies {
     listOf(
         libs.androidx.core.core.ktx,
         libs.appcompat,
-        libs.appauth,
-        libs.kotlinx.serialization.json,
-        libs.jose4j,
-        libs.gson,
+        libs.material,
         libs.bouncy.castle,
-        libs.androidx.browser,
-        libs.logging,
-        project(":keystore")
+        libs.kotlinx.serialization.json,
+        project(":app")
     ).forEach(::implementation)
 
     listOf(
@@ -91,26 +110,6 @@ dependencies {
         kotlin("test-junit5"),
         libs.bundles.test,
         platform(libs.junit.bom),
-        libs.mockito.kotlin,
-        libs.mockito.inline
+        libs.mockito.kotlin
     ).forEach(::testImplementation)
-
-    listOf(
-        libs.androidx.test.orchestrator
-    ).forEach {
-        androidTestUtil(it)
-    }
-}
-
-mavenPublishingConfig {
-    mavenConfigBlock {
-        name.set(
-            "Authentication module for Android Devices"
-        )
-        description.set(
-            """
-            A Gradle module which implements OpenID Connect to return an access token for Android.
-            """.trimIndent()
-        )
-    }
 }
