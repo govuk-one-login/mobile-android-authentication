@@ -15,10 +15,11 @@ import java.security.KeyStore
 import java.security.Signature
 import java.security.interfaces.ECPublicKey
 import java.security.spec.ECGenParameterSpec
-import kotlin.coroutines.suspendCoroutine
+import kotlin.coroutines.resumeWithException
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import uk.gov.android.authentication.integrity.AppIntegrityUtils.toFixedLengthBytes
 import uk.gov.android.authentication.integrity.keymanager.BiometricAuthHandler.AccessControlLevel
@@ -84,7 +85,7 @@ class AndroidKeyPairManager private constructor(
         authHandler: BiometricAuthHandler
     ): List<SignedData> =
         withContext(mainDispatcher) {
-            suspendCoroutine { continuation ->
+            suspendCancellableCoroutine { continuation ->
                 authHandler.use {
                     it.authenticate(
                         Request(
@@ -98,20 +99,15 @@ class AndroidKeyPairManager private constructor(
                                             requests.toList().map { request ->
                                                 SignedData(
                                                     keyAlias = request.keyAlias,
-                                                    signature = sign(
-                                                        request.keyAlias,
-                                                        request.data
-                                                    )
+                                                    signature = sign(request.keyAlias, request.data)
                                                 )
                                             }
                                         }
                                     )
                                 },
                                 onError = { code, msg ->
-                                    continuation.resumeWith(
-                                        Result.failure(
-                                            BiometricAuthException(code, msg)
-                                        )
+                                    continuation.resumeWithException(
+                                        BiometricAuthException(code, msg)
                                     )
                                 }
                             )
@@ -126,7 +122,7 @@ class AndroidKeyPairManager private constructor(
             keyStore.deleteEntry(alias)
             logger.debug(TAG, "alias: $alias - deleted")
         } else {
-            logger.debug(TAG, "alias: $alias - it's not wallet alias")
+            logger.nonFatal(IllegalStateException("Attempted to delete non-existent alias: $alias"))
         }
     }
 
@@ -138,7 +134,7 @@ class AndroidKeyPairManager private constructor(
                 keyStore.deleteEntry(alias)
                 logger.debug(TAG, "alias: $alias - deleted")
             } else {
-                logger.debug(TAG, "alias: $alias - it's not wallet alias")
+                logger.debug(TAG, "alias: $alias - does not match prefix: $prefix")
             }
         }
     }
@@ -156,6 +152,7 @@ class AndroidKeyPairManager private constructor(
             if (userAuthRequired) {
                 setUserAuthenticationRequired(true)
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                    @Suppress("deprecation")
                     setUserAuthenticationValidityDurationSeconds(KEY_TIMEOUT_SECONDS)
                 } else {
                     val type = AUTH_DEVICE_CREDENTIAL or AUTH_BIOMETRIC_STRONG

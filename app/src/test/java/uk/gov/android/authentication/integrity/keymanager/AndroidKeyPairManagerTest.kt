@@ -103,7 +103,7 @@ class AndroidKeyPairManagerTest {
         keyPairManager.deleteKeyFor(alias)
 
         assertEquals(1, logger.size)
-        assertEquals("alias: $alias - it's not wallet alias", logger[0].message)
+        assertEquals("Attempted to delete non-existent alias: $alias", logger[0].message)
     }
 
     @Test
@@ -130,8 +130,8 @@ class AndroidKeyPairManagerTest {
         keyPairManager.deleteAllKeysWithPrefix(POP_KEY_PREFIX)
 
         assertEquals(2, logger.size)
-        assertEquals("alias: $alias1 - it's not wallet alias", logger[0].message)
-        assertEquals("alias: $alias2 - it's not wallet alias", logger[1].message)
+        assertEquals("alias: $alias1 - does not match prefix: $POP_KEY_PREFIX", logger[0].message)
+        assertEquals("alias: $alias2 - does not match prefix: $POP_KEY_PREFIX", logger[1].message)
     }
 
     @Test
