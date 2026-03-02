@@ -8,6 +8,10 @@ import org.bouncycastle.asn1.ASN1Integer
 import org.bouncycastle.asn1.ASN1Sequence
 import uk.gov.android.authentication.integrity.AppIntegrityUtils
 
+@Deprecated(
+    message = "Use KeyPairManager instead",
+    replaceWith = ReplaceWith("KeyPairManager")
+)
 interface KeyStoreManager {
     fun getPublicKeyCoordinates(): Pair<String, String>
     fun getPublicKey(): ECPublicKey

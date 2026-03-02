@@ -184,7 +184,7 @@ class AndroidKeyPairManagerTest {
         }
 
     @Test
-    fun `authenticateAndSign - error callback throws exception`() =
+    fun `authenticateAndSign - error callback throws BiometricAuthException`() =
         runTest {
             val alias = "test-alias"
             val data = "test-data".toByteArray()
@@ -207,7 +207,7 @@ class AndroidKeyPairManagerTest {
             }.`when`(authHandler).authenticate(requestCaptor.capture())
 
             val exception =
-                assertThrows<Exception> {
+                assertThrows<BiometricAuthException> {
                     keyPairManager.authenticateAndSign(
                         SignRequest(alias, data),
                         promptConfig = promptConfig,
@@ -218,6 +218,57 @@ class AndroidKeyPairManagerTest {
             assertEquals("Biometric authentication failed: 1 - Error", exception.message)
             verify(authHandler).close()
         }
+
+    @Test
+    fun `authenticateAndSign - throws IllegalArgumentException when userAuthRequired is false`() =
+        runTest {
+            val keyPairManagerNoAuth =
+                AndroidKeyPairManager.createForTesting(
+                    logger = logger,
+                    userAuthRequired = false,
+                    keyStore = keyStore,
+                    keyPairGenerator = keyPairGenerator,
+                    mainDispatcher = testDispatcher
+                )
+            val authHandler: BiometricAuthHandler = mock()
+            val promptConfig = PromptConfig("Title", "Close")
+
+            val exception =
+                assertThrows<IllegalArgumentException> {
+                    keyPairManagerNoAuth.authenticateAndSign(
+                        SignRequest("test-alias", "test-data".toByteArray()),
+                        promptConfig = promptConfig,
+                        authHandler = authHandler
+                    )
+                }
+
+            assertEquals("Authentication required for signing operations", exception.message)
+        }
+
+    @Test
+    fun `sign - throws KeySigningException when signing fails`() {
+        val alias = "test-alias"
+        val data = "test-data".toByteArray()
+        val keyPair = KeyPairGenerator.getInstance("EC").generateKeyPair()
+        val entry = mock<KeyStore.PrivateKeyEntry>()
+        val certificate: Certificate = mock()
+        val signingException = java.security.SignatureException("Signing failed")
+
+        given(keyStore.containsAlias(alias)).willReturn(true)
+        given(certificate.publicKey).willReturn(keyPair.public)
+        given(keyStore.getCertificate(alias)).willReturn(certificate)
+        given(keyStore.getEntry(any(), anyOrNull())).willReturn(entry)
+        given(entry.privateKey).willAnswer { throw signingException }
+
+        val exception =
+            assertThrows<KeySigningException> {
+                keyPairManager.sign(alias, data)
+            }
+
+        assertEquals("Failed to sign data with key alias: $alias", exception.message)
+        assertEquals(signingException, exception.cause)
+        assertTrue(logger.contains("Signing failed"))
+    }
 
     companion object {
         private const val POP_KEY_PREFIX = "wallet-popkey-"

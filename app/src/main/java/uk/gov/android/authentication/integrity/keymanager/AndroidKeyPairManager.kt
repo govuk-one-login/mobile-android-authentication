@@ -25,7 +25,7 @@ import uk.gov.android.authentication.integrity.AppIntegrityUtils.toFixedLengthBy
 import uk.gov.android.authentication.integrity.keymanager.BiometricAuthHandler.AccessControlLevel
 import uk.gov.android.authentication.integrity.keymanager.BiometricAuthHandler.Callback
 import uk.gov.android.authentication.integrity.keymanager.BiometricAuthHandler.Request
-import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager.Companion.convertSignatureToASN1
+import uk.gov.android.authentication.integrity.keymanager.KeyPairManager.Companion.convertSignatureToASN1
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64
 import uk.gov.logging.api.Logger
 
@@ -48,43 +48,14 @@ class AndroidKeyPairManager private constructor(
         mainDispatcher = Dispatchers.Main
     )
 
-    @OptIn(ExperimentalEncodingApi::class)
-    override fun getPublicKeyCoordinates(alias: String): Pair<String, String> {
-        val publicKey = getPublicKey(alias)
-        val xBytes = toFixedLengthBytes(publicKey.w.affineX, EC_POINTS_LENGTH_REQUIREMENT)
-        val yBytes = toFixedLengthBytes(publicKey.w.affineY, EC_POINTS_LENGTH_REQUIREMENT)
-        val x = getUrlSafeNoPaddingBase64(xBytes)
-        val y = getUrlSafeNoPaddingBase64(yBytes)
-        return Pair(x, y)
-    }
-
-    private fun sign(
-        alias: String,
-        data: ByteArray
-    ): ByteArray =
-        runCatching {
-            val privateKey = getPrivateKeyEntry(alias).privateKey
-
-            val signature =
-                Signature.getInstance(ALG).run {
-                    initSign(privateKey)
-                    update(data)
-                    sign()
-                }
-
-            val ecSpec = getPublicKey(alias).params
-            convertSignatureToASN1(signature, ecSpec)
-        }.getOrElse { exception ->
-            logger.nonFatal(exception)
-            throw exception
-        }
-
     override suspend fun authenticateAndSign(
         vararg requests: SignRequest,
         promptConfig: BiometricAuthHandler.PromptConfig,
         authHandler: BiometricAuthHandler
     ): List<SignedData> =
         withContext(mainDispatcher) {
+            // Ensure keys are configured with user authentication for secure signing
+            require(userAuthRequired) { "Authentication required for signing operations" }
             suspendCancellableCoroutine { continuation ->
                 authHandler.use {
                     it.authenticate(
@@ -99,7 +70,10 @@ class AndroidKeyPairManager private constructor(
                                             requests.toList().map { request ->
                                                 SignedData(
                                                     keyAlias = request.keyAlias,
-                                                    signature = sign(request.keyAlias, request.data)
+                                                    signature = sign(
+                                                        request.keyAlias,
+                                                        request.data
+                                                    )
                                                 )
                                             }
                                         }
@@ -117,15 +91,6 @@ class AndroidKeyPairManager private constructor(
             }
         }
 
-    override fun deleteKeyFor(alias: String) {
-        if (keyStore.containsAlias(alias)) {
-            keyStore.deleteEntry(alias)
-            logger.debug(TAG, "alias: $alias - deleted")
-        } else {
-            logger.nonFatal(IllegalStateException("Attempted to delete non-existent alias: $alias"))
-        }
-    }
-
     override fun deleteAllKeysWithPrefix(prefix: String) {
         val aliases = keyStore.aliases()
         while (aliases.hasMoreElements()) {
@@ -138,6 +103,55 @@ class AndroidKeyPairManager private constructor(
             }
         }
     }
+
+    override fun deleteKeyFor(alias: String) {
+        if (keyStore.containsAlias(alias)) {
+            keyStore.deleteEntry(alias)
+            logger.debug(TAG, "alias: $alias - deleted")
+        } else {
+            logger.nonFatal(IllegalStateException("Attempted to delete non-existent alias: $alias"))
+        }
+    }
+
+    override fun getPublicKey(alias: String): ECPublicKey {
+        if (!keyStore.containsAlias(alias)) {
+            logger.debug(TAG, "alias: $alias - create new POP key")
+            createKeyPair(alias)
+        }
+        logger.debug(TAG, "alias: $alias - get public key")
+        return keyStore.getCertificate(alias).publicKey as ECPublicKey
+    }
+
+    @OptIn(ExperimentalEncodingApi::class)
+    override fun getPublicKeyCoordinates(alias: String): Pair<String, String> {
+        val publicKey = getPublicKey(alias)
+        val xBytes = toFixedLengthBytes(publicKey.w.affineX, EC_POINTS_LENGTH_REQUIREMENT)
+        val yBytes = toFixedLengthBytes(publicKey.w.affineY, EC_POINTS_LENGTH_REQUIREMENT)
+        val x = getUrlSafeNoPaddingBase64(xBytes)
+        val y = getUrlSafeNoPaddingBase64(yBytes)
+        return Pair(x, y)
+    }
+
+    override fun sign(
+        alias: String,
+        data: ByteArray
+    ): ByteArray =
+        runCatching {
+            val privateKey = getPrivateKeyEntry(alias).privateKey
+
+            val signature =
+                Signature.getInstance(ALG).run {
+                    initSign(privateKey)
+                    update(data)
+                    sign()
+                }
+
+            val ecSpec = getPublicKey(alias).params
+            convertSignatureToASN1(signature, ecSpec)
+        }.getOrElse { exception ->
+            logger.nonFatal(exception)
+            throw KeySigningException(alias, exception)
+        }
 
     private fun getKeyGenParameterSpec(
         alias: String,
@@ -167,15 +181,6 @@ class AndroidKeyPairManager private constructor(
         val entry =
             keyStore.getEntry(alias, null) ?: error("Private key not found for alias: $alias")
         return entry as KeyStore.PrivateKeyEntry
-    }
-
-    fun getPublicKey(alias: String): ECPublicKey {
-        if (!keyStore.containsAlias(alias)) {
-            logger.debug(TAG, "alias: $alias - create new POP key")
-            createKeyPair(alias)
-        }
-        logger.debug(TAG, "alias: $alias - get public key")
-        return keyStore.getCertificate(alias).publicKey as ECPublicKey
     }
 
     private fun createKeyPair(alias: String) {
