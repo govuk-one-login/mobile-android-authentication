@@ -33,6 +33,11 @@ appauth = { group = "net.openid", name = "appauth", version = "0.11.1" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 androidx-browser = { group = "androidx.browser", name = "browser", version = "1.9.0-alpha01"}
 
+# Kotlin
+kotlin-bom = { group = "org.jetbrains.kotlin", name = "kotlin-bom", version.ref = "kotlin" }
+kotlinx-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test" }
+
 # Local Auth
 androidx-biometric = { group = "androidx.biometric", name = "biometric", version.ref = "androidxBiometric" }
 androidx-ui = { group= "androidx.compose.ui", name = "ui", version.ref = "androidx-ui" }
@@ -47,6 +52,7 @@ componentsv2 = { group = "uk.gov.android", name = "componentsv2", version.ref = 
 patterns = { group = "uk.gov.android", name = "patterns", version.ref = "govuk-ui" }
 theme = { group = "uk.gov.android", name = "theme", version.ref = "govuk-ui" }
 logging = { group = "uk.gov.logging", name = "logging-impl", version.ref = "govuk-logging" }
+logging-test = { group = "uk.gov.logging", name = "logging-testdouble", version.ref = "govuk-logging" }
 
 #Jwt Verifier
 jose4j = { module = "org.bitbucket.b_c:jose4j", version.ref = "jose4j" }
@@ -73,6 +79,7 @@ android-test-runner = { group = "androidx.test", name = "runner", version.ref = 
 android-test-rules = { group = "androidx.test", name = "rules", version.ref = "test-rules" }
 android-test-core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "test-core" }
 android-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "test-ext-junit" }
+androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version = "2.3.0" }
 mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito-kotlin" }
 mockito-android = { group = "org.mockito", name = "mockito-android", version.ref = "mockito-android" }
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version = "5.2.0" }
