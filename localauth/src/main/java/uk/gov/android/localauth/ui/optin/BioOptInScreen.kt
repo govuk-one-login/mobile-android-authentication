@@ -25,8 +25,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.persistentListOf
@@ -66,9 +64,6 @@ fun BioOptInScreen(
             GdsTopAppBar(
                 title = null,
                 navigationButton = GdsIconButtonDefaults.defaultCloseContent(),
-                modifier = Modifier.semantics(true) {
-                    this.traversalIndex = CLOSE_INDEX
-                },
                 onClick = {
                     analyticsViewModel.trackCloseIconButton()
                     onBiometricsOptOut()
@@ -148,9 +143,6 @@ fun BioOptInScreen(
     FullScreenDialogue(
         topAppBar = {
             FullScreenDialogueTopAppBar(
-                modifier = Modifier.semantics(true) {
-                    this.traversalIndex = CLOSE_INDEX
-                },
                 onCloseClick = {
                     analyticsViewModel.trackCloseIconButton()
                     onBiometricsOptOut()
@@ -233,19 +225,18 @@ private fun Text() {
             ListItem(bulletItemTwo),
         ),
         modifier = Modifier.padding(bottom = smallPadding),
-        accessibilityIndex = LIST_INDEX,
     )
-    CustomText(text = stringResource(R.string.app_enableBiometricsBody2), CONTENT1_INDEX)
-    CustomText(text = stringResource(R.string.app_enableBiometricsBody3), CONTENT2_INDEX)
+    CustomText(text = stringResource(R.string.app_enableBiometricsBody2))
+    CustomText(text = stringResource(R.string.app_enableBiometricsBody3))
 }
 
 @OptIn(UnstableDesignSystemAPI::class)
 @Composable
 private fun NoWalletCopyText() {
     Header()
-    CustomText(text = stringResource(R.string.app_enableBiometricsBody1), LIST_INDEX)
-    CustomText(text = stringResource(R.string.app_enableBiometricsBody2), CONTENT1_INDEX)
-    CustomText(text = stringResource(R.string.app_enableBiometricsBody3), CONTENT2_INDEX)
+    CustomText(text = stringResource(R.string.app_enableBiometricsBody1))
+    CustomText(text = stringResource(R.string.app_enableBiometricsBody2))
+    CustomText(text = stringResource(R.string.app_enableBiometricsBody3))
 }
 
 @Composable
@@ -264,9 +255,7 @@ private fun Header() {
     GdsHeading(
         text = stringResource(R.string.app_enableBiometricsTitle),
         style = GdsHeadingStyle.Title1,
-        modifier = Modifier
-            .padding(bottom = smallPadding)
-            .semantics { this.traversalIndex = TITLE_INDEX },
+        modifier = Modifier.padding(bottom = smallPadding),
     )
 }
 
@@ -295,13 +284,11 @@ private fun BioOptInButtons(
 }
 
 @Composable
-private fun CustomText(text: String, accessibilityIndex: Float) {
+private fun CustomText(text: String) {
     Text(
         text = text,
         color = MaterialTheme.colorScheme.onBackground,
-        modifier = Modifier.padding(bottom = smallPadding)
-            .fillMaxWidth()
-            .semantics { this.traversalIndex = accessibilityIndex },
+        modifier = Modifier.padding(bottom = smallPadding).fillMaxWidth(),
         textAlign = TextAlign.Center,
     )
 }
@@ -368,9 +355,3 @@ internal fun BioOptInPreview() {
         )
     }
 }
-
-private const val CLOSE_INDEX = -15f
-private const val TITLE_INDEX = -14f
-private const val LIST_INDEX = -12f
-private const val CONTENT1_INDEX = -11f
-private const val CONTENT2_INDEX = -10f
