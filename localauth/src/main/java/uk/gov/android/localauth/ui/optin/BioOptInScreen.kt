@@ -2,6 +2,7 @@
 
 package uk.gov.android.localauth.ui.optin
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.persistentListOf
 import uk.gov.android.authentication.localauth.R
-import uk.gov.android.ui.componentsv2.button.ButtonType
+import uk.gov.android.ui.componentsv2.button.ButtonTypeV2
 import uk.gov.android.ui.componentsv2.button.GdsButton
 import uk.gov.android.ui.componentsv2.button.GdsIconButtonDefaults
 import uk.gov.android.ui.componentsv2.heading.GdsHeading
@@ -42,13 +43,13 @@ import uk.gov.android.ui.componentsv2.list.ListTitle
 import uk.gov.android.ui.componentsv2.list.TitleType
 import uk.gov.android.ui.componentsv2.topappbar.GdsTopAppBar
 import uk.gov.android.ui.patterns.dialog.FullScreenDialogue
-import uk.gov.android.ui.patterns.dialog.FullScreenDialogueTopAppBar
 import uk.gov.android.ui.theme.m3.GdsTheme
 import uk.gov.android.ui.theme.meta.ScreenPreview
 import uk.gov.android.ui.theme.smallPadding
 import uk.gov.android.ui.theme.util.UnstableDesignSystemAPI
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 
+@SuppressLint("ViewModelConstructorInComposable")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BioOptInScreen(
@@ -147,18 +148,16 @@ fun BioOptInScreen(
     }
     FullScreenDialogue(
         topAppBar = {
-            FullScreenDialogueTopAppBar(
+            GdsTopAppBar(
                 modifier = Modifier.semantics(true) {
                     this.traversalIndex = CLOSE_INDEX
                 },
-                onCloseClick = {
+                onClick = {
                     analyticsViewModel.trackCloseIconButton()
                     onBiometricsOptOut()
                     onDismiss()
                 },
-            ) {
-                // Nothing here (no title)
-            }
+            )
         },
         onBack = {
             onBack()
@@ -233,7 +232,6 @@ private fun Text() {
             ListItem(bulletItemTwo),
         ),
         modifier = Modifier.padding(bottom = smallPadding),
-        accessibilityIndex = LIST_INDEX,
     )
     CustomText(text = stringResource(R.string.app_enableBiometricsBody2), CONTENT1_INDEX)
     CustomText(text = stringResource(R.string.app_enableBiometricsBody3), CONTENT2_INDEX)
@@ -281,13 +279,13 @@ private fun BioOptInButtons(
     ) {
         GdsButton(
             text = stringResource(R.string.app_enableBiometricsButton),
-            buttonType = ButtonType.Primary,
+            buttonType = ButtonTypeV2.Primary(),
             onClick = onBiometricsOptIn,
             modifier = Modifier.fillMaxWidth(),
         )
         GdsButton(
             text = stringResource(R.string.app_enablePasscodeOrPatternButton),
-            buttonType = ButtonType.Quaternary,
+            buttonType = ButtonTypeV2.Quaternary(),
             onClick = onBiometricsOptOut,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -315,9 +313,7 @@ internal fun DeprecatedBioOptInPreviewWallet() {
     GdsTheme {
         FullScreenDialogue(
             topAppBar = {
-                FullScreenDialogueTopAppBar({}) {
-                    // Nothing here
-                }
+                GdsTopAppBar { /* Nothing here */ }
             },
             onBack = {},
             content = {
@@ -336,13 +332,11 @@ internal fun DeprecatedBioOptInPreview() {
     GdsTheme {
         FullScreenDialogue(
             topAppBar = {
-                FullScreenDialogueTopAppBar({}) {
-                    // Nothing here
-                }
+                GdsTopAppBar(onClick = { /* // Nothing here */ })
             },
             onBack = {},
             content = {
-                BioOptInContent(false, {}, {})
+                BioOptInContent({}, {})
             },
         )
     }
