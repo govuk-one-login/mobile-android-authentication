@@ -149,6 +149,7 @@ fun BioOptInScreen(
     FullScreenDialogue(
         topAppBar = {
             GdsTopAppBar(
+                navigationButton = GdsIconButtonDefaults.defaultCloseContent(),
                 modifier = Modifier.semantics(true) {
                     this.traversalIndex = CLOSE_INDEX
                 },
@@ -313,7 +314,9 @@ internal fun DeprecatedBioOptInPreviewWallet() {
     GdsTheme {
         FullScreenDialogue(
             topAppBar = {
-                GdsTopAppBar { /* Nothing here */ }
+                GdsTopAppBar(
+                    navigationButton = GdsIconButtonDefaults.defaultCloseContent(),
+                )
             },
             onBack = {},
             content = {
@@ -332,11 +335,13 @@ internal fun DeprecatedBioOptInPreview() {
     GdsTheme {
         FullScreenDialogue(
             topAppBar = {
-                GdsTopAppBar(onClick = { /* // Nothing here */ })
+                GdsTopAppBar(
+                    navigationButton = GdsIconButtonDefaults.defaultCloseContent(),
+                )
             },
             onBack = {},
             content = {
-                BioOptInContent({}, {})
+                BioOptInContent(false, {}, {})
             },
         )
     }
@@ -353,7 +358,7 @@ internal fun BioOptInPreview() {
             topAppBar = {
                 GdsTopAppBar(
                     navigationButton = GdsIconButtonDefaults.defaultCloseContent(),
-                ) {}
+                )
             },
             onBack = {},
             content = {

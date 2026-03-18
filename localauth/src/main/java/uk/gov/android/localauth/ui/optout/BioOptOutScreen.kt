@@ -17,6 +17,7 @@ import kotlinx.collections.immutable.persistentListOf
 import uk.gov.android.authentication.localauth.R
 import uk.gov.android.ui.componentsv2.button.ButtonTypeV2
 import uk.gov.android.ui.componentsv2.button.GdsButton
+import uk.gov.android.ui.componentsv2.button.GdsIconButtonDefaults
 import uk.gov.android.ui.componentsv2.heading.GdsHeading
 import uk.gov.android.ui.componentsv2.images.GdsIcon
 import uk.gov.android.ui.componentsv2.topappbar.GdsTopAppBar
@@ -40,6 +41,7 @@ fun BioOptOutScreen(
     FullScreenDialogue(
         topAppBar = {
             GdsTopAppBar(
+                navigationButton = GdsIconButtonDefaults.defaultCloseContent(),
                 onClick = {
                     onBack()
                     analyticsViewModel.trackCloseIconButton()
@@ -117,7 +119,9 @@ internal fun BioOptOutPreview() {
     GdsTheme {
         FullScreenDialogue(
             topAppBar = {
-                GdsTopAppBar(onClick = { /* Nothing to do */ })
+                GdsTopAppBar(
+                    navigationButton = GdsIconButtonDefaults.defaultCloseContent(),
+                )
             },
             onBack = {},
             content = {
