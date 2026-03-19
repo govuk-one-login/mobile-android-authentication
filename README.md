@@ -52,7 +52,7 @@ The Authentication package comprises three sub-packages:
 3. jwt - provides ability to verify a JWT with a public key adhering to the JWK specifications.
 4. localauth - provides functionality for checking the device security level/ type and saving this as a local authentication preference.
 
-The package integrates [openID](https://openid.net/developers/how-connect-works/) AppAuth and conforms to its standards, documentation can be found here [AppAuth](https://github.com/openid/AppAuth-Android)
+The package integrates [openID](https://openid.net/developers/how-connect-works/) AppAuth and conforms to its standards, documentation can be found here [AppAuth](https://github.com/openid/AppAuth-Android).
 
 ## Login
 ### Types
