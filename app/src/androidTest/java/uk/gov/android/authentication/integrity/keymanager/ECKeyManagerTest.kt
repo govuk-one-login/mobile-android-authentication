@@ -17,10 +17,11 @@ class ECKeyManagerTest {
     private lateinit var ecKeyManager: ECKeyManager
     private val jwtVerifier = Jose4jJwtVerifier()
 
+    // Unsigned jwt generated from dummy values
     private val manuallyGeneratedTestJwtHeaderAndBody =
-        "eyJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJiWXJjdUFiY2RFZmdqZEVnWVNTYkJqd1h6SHJ3SiIsImF1ZCI6Imh" +
-            "0dHBzOi8vZXhhbXBsZS5jb20iLCJleHAiOjE3MzMyNjE2MjYsImp0aSI6ImE3ZmNhMzRlLWJlNzI" +
-            "tNDJmYi05MDY1LTRkNTVlOWMxNjljZSJ9"
+        "eyJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJiWXJjdUFiY2RFZmdqZEVnWVNTYkJqd1h6SHJ3SiIsImF1ZCI6Imh0d" +
+            "HBzOi8vZXhhbXBsZS5jb20iLCJleHAiOjE3MzMyNjE2MjYsImp0aSI6IjQ2NjkxZjBjLTVmYzktND" +
+            "lmOS1hNjg0LWU4Y2YwZWE1YjJkZiJ9"
 
     @BeforeTest
     fun setup() {

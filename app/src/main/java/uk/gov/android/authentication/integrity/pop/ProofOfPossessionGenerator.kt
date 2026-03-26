@@ -25,11 +25,6 @@ import uk.gov.android.authentication.json.jwk.JWK
  * All generated tokens follow the JWT structure (header.payload) but are **unsigned**.
  * The tokens are Base64URL-encoded without padding, as per RFC 7515.
  *
- * Example output format:
- * ```
- * eyJhbGciOiJFUzI1NiIsInR5cCI6Im9hdXRoLWNsaWVudC1hdHRlc3RhdGlvbi1wb3Arand0In0.eyJpc3MiOiJ1cm46ZmRjOmdvdjp1azp3YWxsZXQiLCJhdWQiOiJodHRwczovL3Rva2VuLmFjY291bnQuZ292LnVrIiwiZXhwIjoxNzM0NTY3ODkwLCJqdGkiOiJkM2U4ZTM4Mi00NjkxLTRiMWYtODNjMS00NDU0Zjc1YmQ5MzAifQ
- * ```
- *
  * ## Security Considerations
  *
  * - Tokens are **not signed** by this generator; signing must be performed separately
