@@ -41,6 +41,10 @@ jobs:
           gradle_cache_disabled: ${{ 'true' }}
 
   dependencySubmissionJob:
+    env:
+      ANDROID_HOME: ${{ github.workspace }}/bin/androidSdk
+      GITHUB_ACTOR: ${{ secrets.MODULE_FETCH_TOKEN_USERNAME}}
+      GITHUB_TOKEN: ${{ secrets.MODULE_FETCH_TOKEN }}
     name: Submit dependency graph
     runs-on: ubuntu-22.04
     permissions:
