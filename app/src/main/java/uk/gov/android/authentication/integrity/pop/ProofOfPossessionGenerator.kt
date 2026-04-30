@@ -1,6 +1,7 @@
 package uk.gov.android.authentication.integrity.pop
 
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 import kotlin.io.encoding.Base64
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -8,7 +9,6 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonObject
 import uk.gov.android.authentication.json.jwk.JWK
-import java.time.temporal.ChronoUnit
 
 /**
  * Generator for Proof of Possession (PoP) tokens used in OAuth 2.0 authentication flows.
