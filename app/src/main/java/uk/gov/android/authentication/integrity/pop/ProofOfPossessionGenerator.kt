@@ -244,7 +244,7 @@ object ProofOfPossessionGenerator {
     fun getExpiryTime(): Long {
         val expiry = Instant
             .now()
-            .plus(3, ChronoUnit.MINUTES)
+            .plus(EXPIRY_MINUTES, ChronoUnit.MINUTES)
             .epochSecond
         return expiry
     }
@@ -287,4 +287,5 @@ object ProofOfPossessionGenerator {
     private const val OPENID4VCI_TYP = "openid4vci-proof+jwt"
     private const val REFRESH_TYP = "dpop+jwt"
     private const val HTTP_METHOD = "POST"
+    private const val EXPIRY_MINUTES = 3L
 }
