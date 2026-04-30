@@ -10,16 +10,3 @@ val libs = the<LibrariesForLibs>()
 
 plugins.apply("uk.gov.pipelines.android-lib-config")
 plugins.apply("uk.gov.android.authentication.android-test-config")
-
-configure<LibraryExtension> {
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-}
-
-configure<KotlinAndroidProjectExtension> {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_17)
-    }
-}
