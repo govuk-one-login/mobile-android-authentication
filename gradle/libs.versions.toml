@@ -1,4 +1,5 @@
 [versions]
+agp = "8.13.2"
 core-ktx = "1.16.0"
 junit = "6.0.3"
 appcompat = "1.7.1"
@@ -27,6 +28,8 @@ govuk-ui = "14.0.0"
 paparazzi = "1.3.5"
 
 [libraries]
+android-build-tool = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 androidx-core-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 appauth = { group = "net.openid", name = "appauth", version = "0.11.1" }
@@ -88,6 +91,7 @@ espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents"
 androidx-test-orchestrator = { group = "androidx.test", name = "orchestrator", version.ref = "test-orchestrator" }
 junit = { group = "junit", name = "junit", version.ref = "junitVersion" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+pipelines = { module = "uk.gov.pipelines:plugins" }
 
 [bundles]
 android-test = [ "android-test-core", "android-test-runner", "android-test-rules", "android-test-core-ktx", "android-test-ext-junit" ]
