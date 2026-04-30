@@ -35,7 +35,7 @@ dependencies {
         libs.kotlinx.serialization.json,
         libs.logging,
         platform(libs.kotlin.bom),
-        projects.json,
+        projects.json
     ).forEach(::implementation)
 
     listOf(
