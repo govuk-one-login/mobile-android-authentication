@@ -1,63 +1,15 @@
-import org.gradle.api.tasks.testing.logging.TestLogEvent
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import uk.gov.pipelines.config.ApkConfig
+import uk.gov.android.authentication.extensions.setNamespace
 
 plugins {
     `maven-publish`
     alias(libs.plugins.kotlin.serlialization)
-    id("uk.gov.pipelines.android-lib-config")
+    id("uk.gov.android.authentication.android-lib-config")
 }
 
 apply(from = "${rootProject.extra["configDir"]}/ktlint/config.gradle")
 
 android {
-    defaultConfig {
-        val apkConfig: ApkConfig by project.rootProject.extra
-        namespace = apkConfig.applicationId + ".impl"
-        compileSdk = apkConfig.sdkVersions.compile
-        minSdk = apkConfig.sdkVersions.minimum
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-
-    testOptions {
-        execution = "ANDROIDX_TEST_ORCHESTRATOR"
-        animationsDisabled = true
-        unitTests.all {
-            it.useJUnitPlatform()
-            it.testLogging {
-                events =
-                    setOf(
-                        TestLogEvent.FAILED,
-                        TestLogEvent.PASSED,
-                        TestLogEvent.SKIPPED
-                    )
-            }
-        }
-        unitTests {
-            isReturnDefaultValues = true
-            isIncludeAndroidResources = true
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlin {
-        compilerOptions {
-            jvmTarget = JvmTarget.JVM_17
-        }
-    }
+    setNamespace(".impl")
 
     packaging {
         resources.excludes.add("META-INF/versions/9/OSGI-INF/MANIFEST.MF")
@@ -66,50 +18,30 @@ android {
 
 dependencies {
     listOf(
-        kotlin("test"),
-        kotlin("test-junit"),
-        libs.bundles.android.test,
-        libs.bundles.mockito,
-        libs.bundles.espresso,
-        libs.logging.test,
-        libs.androidx.uiautomator
+        libs.androidx.uiautomator,
+        libs.logging.test
     ).forEach(::androidTestImplementation)
 
     listOf(
-        platform(libs.kotlin.bom),
-        libs.kotlinx.coroutines,
-        libs.androidx.core.core.ktx,
-        libs.appcompat,
-        libs.appauth,
-        libs.kotlinx.serialization.json,
-        libs.jose4j,
-        libs.gson,
-        libs.bouncy.castle,
+        libs.androidx.biometric,
         libs.androidx.browser,
+        libs.androidx.core.core.ktx, //
+        libs.appauth,
+        libs.appcompat, //
+        libs.bouncy.castle,
+        libs.gson,
+        libs.jose4j,
+        libs.kotlinx.coroutines,
+        libs.kotlinx.serialization.json,
         libs.logging,
-        libs.androidx.biometric
+        platform(libs.kotlin.bom)
     ).forEach(::implementation)
 
     listOf(
-        kotlin("test"),
-        kotlin("test-junit5"),
-        libs.bundles.test,
-        platform(libs.junit.bom),
-        libs.mockito.kotlin,
-        libs.mockito.inline,
-        libs.robolectric,
-        libs.junit,
+        libs.kotlinx.coroutines.test,
         libs.logging.test,
-        libs.kotlinx.coroutines.test
+        libs.mockito.inline
     ).forEach(::testImplementation)
-
-    testRuntimeOnly(libs.junit.vintage.engine)
-
-    listOf(
-        libs.androidx.test.orchestrator
-    ).forEach {
-        androidTestUtil(it)
-    }
 }
 
 mavenPublishingConfig {
