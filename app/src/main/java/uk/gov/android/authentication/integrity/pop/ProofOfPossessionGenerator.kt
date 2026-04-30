@@ -1,6 +1,7 @@
 package uk.gov.android.authentication.integrity.pop
 
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 import kotlin.io.encoding.Base64
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -241,8 +242,10 @@ object ProofOfPossessionGenerator {
      * @return Unix epoch timestamp in seconds, 3 minutes from the current time
      */
     fun getExpiryTime(): Long {
-        val minuteUntilExpiry = (MINUTES * MINUTE_IN_MILLISECONDS)
-        val expiry = (Instant.now().toEpochMilli() + minuteUntilExpiry) / CONVERT_TO_SECONDS
+        val expiry = Instant
+            .now()
+            .plus(EXPIRY_MINUTES, ChronoUnit.MINUTES)
+            .epochSecond
         return expiry
     }
 
@@ -252,7 +255,7 @@ object ProofOfPossessionGenerator {
      * @return Current Unix epoch timestamp in seconds
      */
     fun getIssueTime(): Long {
-        return Instant.now().toEpochMilli() / CONVERT_TO_SECONDS
+        return Instant.now().epochSecond
     }
 
     /**
@@ -276,7 +279,7 @@ object ProofOfPossessionGenerator {
      * @return `true` if the token has expired or is expiring now, `false` otherwise
      */
     fun isPopExpired(exp: Long): Boolean {
-        return exp <= (Instant.now().toEpochMilli() / CONVERT_TO_SECONDS)
+        return exp <= Instant.now().epochSecond
     }
 
     private const val ALG = "ES256"
@@ -284,7 +287,5 @@ object ProofOfPossessionGenerator {
     private const val OPENID4VCI_TYP = "openid4vci-proof+jwt"
     private const val REFRESH_TYP = "dpop+jwt"
     private const val HTTP_METHOD = "POST"
-    private const val MINUTES = 3
-    private const val MINUTE_IN_MILLISECONDS = 60000
-    private const val CONVERT_TO_SECONDS = 1000
+    private const val EXPIRY_MINUTES = 3L
 }
