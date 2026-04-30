@@ -1,4 +1,4 @@
-name: Release Mobile Android Logging
+name: On Branch Push (main)
 on:
   push:
     branches: [ main ]
@@ -14,10 +14,16 @@ jobs:
       contents: write
       packages: write
     runs-on: ubuntu-22.04
-
     steps:
+      - name: Checkout codebase
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          lfs: 'true'
+          submodules: 'true'
+          fetch-depth: 0
+
       - name: Run deployment workflow
-        uses: govuk-one-login/mobile-android-pipelines@8fdf2e86f8a1ae8edd135115c0ba8ba70e8e10de
+        uses: ./mobile-android-pipelines
         with:
           sonar_token: ${{ secrets.SONAR_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,5 +1,8 @@
 # mobile-android-authentication
 
+[![On Branch Push (main)](https://github.com/govuk-one-login/mobile-android-authentication/actions/workflows/on_push-main.yml/badge.svg)](https://github.com/govuk-one-login/mobile-android-authentication/actions/workflows/on_push-main.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mobile-android-authentication&metric=alert_status&token=98ca94907f5822494cf7583a2352d8d99dd27c70)](https://sonarcloud.io/summary/new_code?id=mobile-android-authentication)
+
 Implementation of Authentication package
 
 ## Installation
@@ -49,7 +52,7 @@ The Authentication package comprises three sub-packages:
 3. jwt - provides ability to verify a JWT with a public key adhering to the JWK specifications.
 4. localauth - provides functionality for checking the device security level/ type and saving this as a local authentication preference.
 
-The package integrates [openID](https://openid.net/developers/how-connect-works/) AppAuth and conforms to its standards, documentation can be found here [AppAuth](https://github.com/openid/AppAuth-Android)
+The package integrates [openID](https://openid.net/developers/how-connect-works/) AppAuth and conforms to its standards, documentation can be found here [AppAuth](https://github.com/openid/AppAuth-Android).
 
 ## Login
 ### Types
@@ -285,7 +288,7 @@ The AppIntegrityConfiguration provides the AttestationCaller, AppChecker, and Ke
 An example of the AppIntegrityManager and a possible implementation is available in the [FirebaseAppIntegrityManager](app/src/main/java/uk/gov/android/authentication/integrity/FirebaseAppIntegrityManager.kt)
 
 ## Local Authentication Manager
-The LocalAuthManager allows a consumer to check the device security level and what is **available** and **enabled** (e.g. biometrics, passcode, etc). Based on this, it will save preferences accordingly.
+The LocalAuthManager allows a consumer to check the device security level and what is **available** and **enabled** (for example biometrics, passcode, etc). Based on this, it will save preferences accordingly.
 It requires a `DeviceBiometricsManager` and a `LocalAuthPreferenceRepo` which allows for the device checks and storing/ updating the reference accordingly.
 
 ```kotlin
@@ -354,3 +357,15 @@ You can use the following command to check the SHA 256 checksum of a file
 ```bash
 shasum -a 256 gradle-8.10.2-bin.zip
 ```
+
+## Hotfix changes
+There are GitHub Actions workflows for a hotfix pull request and merging a hotfix to a temporary
+hotfix branch.
+
+The temporary hotfix branch is currently expected to be named "temp/hotfix". If a different name is
+desired please edit the value under "branches:" in `.github/workflows/on_push_hotfix.yml`.
+The hotfix branch name should be in the format "hotfix/M.m.p".
+
+Once the hotfix PR has been approved and the "Squash and merge" button pressed, the merge title
+must be in the format "Merge pull request #xxx from govuk-one-login/release/M.m.p" to allow for the
+correct version to be extracted and used as a tag.

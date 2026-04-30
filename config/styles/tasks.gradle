@@ -1,4 +1,0 @@
-tasks.register('vale', Exec) {
-    executable "vale"
-    args "--no-wrap", "$rootProject.projectDir"
-}

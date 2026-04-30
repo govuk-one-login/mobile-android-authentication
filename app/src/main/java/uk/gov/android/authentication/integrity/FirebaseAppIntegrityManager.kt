@@ -28,7 +28,7 @@ class FirebaseAppIntegrityManager(
     override suspend fun getAttestation(): AttestationResponse {
         // Get Firebase token
         val token = appChecker.getAppCheckToken().getOrElse { err ->
-            AttestationResponse.Failure(err.toString())
+            AttestationResponse.Failure(err.toString(), err)
         }
         // If successful -> functionality to get signed attestation from Mobile back-end
         val pubKeyECCoord = keyStoreManager.getPublicKeyCoordinates()
