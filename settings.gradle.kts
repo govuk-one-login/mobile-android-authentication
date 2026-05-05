@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("${rootProject.projectDir}/build-logic")
     repositories {
         gradlePluginPortal()
         google()
