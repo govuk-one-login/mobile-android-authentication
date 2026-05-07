@@ -8,7 +8,7 @@ import kotlin.uuid.Uuid
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonObject
-import uk.gov.android.json.jwk.JWK
+import uk.gov.android.authentication.json.jwk.JWK
 
 /**
  * Generator for Proof of Possession (PoP) tokens used in OAuth 2.0 authentication flows.

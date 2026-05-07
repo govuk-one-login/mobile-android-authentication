@@ -1,4 +1,4 @@
-package uk.gov.android.json.jwk
+package uk.gov.android.authentication.json.jwk
 
 import kotlinx.serialization.Serializable
 import java.security.Key

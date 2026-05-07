@@ -1,4 +1,4 @@
-package uk.gov.android.json.jwt
+package uk.gov.android.authentication.json.jwt
 
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParseException
