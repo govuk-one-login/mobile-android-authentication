@@ -1,4 +1,4 @@
-package uk.gov.android.authentication.json
+package uk.gov.android.authentication.json.jwt
 
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonParseException
@@ -8,7 +8,6 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import uk.gov.android.authentication.json.jwt.JwkDeserializer
 import kotlin.test.Test
 
 class JwkDeserializerTest {

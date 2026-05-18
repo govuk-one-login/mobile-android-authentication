@@ -1,6 +1,5 @@
-package uk.gov.android.authentication.json
+package uk.gov.android.authentication.json.jwt
 
-import uk.gov.android.authentication.json.jwt.Jose4jJwtVerifier
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
