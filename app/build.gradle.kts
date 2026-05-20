@@ -34,7 +34,8 @@ dependencies {
         libs.kotlinx.coroutines,
         libs.kotlinx.serialization.json,
         libs.logging,
-        platform(libs.kotlin.bom)
+        platform(libs.kotlin.bom),
+        projects.json
     ).forEach(::implementation)
 
     listOf(
