@@ -41,7 +41,7 @@ dependencyResolutionManagement {
 }
 ```
 
-2. For local development, ensure you have a `github.properties` in the project's root which includes your username and an access token. **Do not commit this file to Version Control**
+2. For local development, make sure you have a `github.properties` in the project's root which includes your username and an access token. **Do not add this file to Version Control**
 3. Add `implementation("uk.gov.android:authentication:_")` for latest version and check packages for version information
 
 ## Package description
@@ -59,7 +59,7 @@ The package integrates [openID](https://openid.net/developers/how-connect-works/
 
 #### LoginSessionConfiguration
 
-Handles creating the `config` found in `LoginSession`. It requires the following to be initialised:
+Handles creating the `config` found in `LoginSession`. It needs the following to be initialised:
 
 ```kotlin
 val authorizeEndpoint: Uri
@@ -128,7 +128,7 @@ loginSession.present(configuration)
 
 ```
 
-Ensure the request code has been registered by the Activity to handle the ActivityResult and call `finalise`
+Make sure the request code has been registered by the Activity to handle the ActivityResult and call `finalise`
 
 ```kotlin
 override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -253,7 +253,7 @@ class AttestationCallerImpl @Inject constructor(
 
 ### ProofOfPossessionGenerator and SignedPoP
 
-The ProofOfPossessionGenerator object creates a Proof of Possession (PoP) that will be used in the authentication call, as part of a header. It adheres to the following scheme and it is a signed JWT contained within the SignedPoP. This will be used and verified by the backend to ensure the app is genuine.
+The ProofOfPossessionGenerator object creates a Proof of Possession (PoP) that will be used in the authentication call, as part of a header. It adheres to the following scheme and it is a signed JWT contained within the SignedPoP. This will be used and verified by the backend to make sure the app is genuine.
 It adheres to the following requirements:
 
 _Header_
@@ -289,7 +289,7 @@ An example of the AppIntegrityManager and a possible implementation is available
 
 ## Local Authentication Manager
 The LocalAuthManager allows a consumer to check the device security level and what is **available** and **enabled** (for example biometrics, passcode, etc). Based on this, it will save preferences accordingly.
-It requires a `DeviceBiometricsManager` and a `LocalAuthPreferenceRepo` which allows for the device checks and storing/ updating the reference accordingly.
+It needs a `DeviceBiometricsManager` and a `LocalAuthPreferenceRepo` which allows for the device checks and storing/ updating the reference accordingly.
 
 ```kotlin
 val biometricManager = BiometricManager.from(context)
@@ -367,5 +367,5 @@ desired please edit the value under "branches:" in `.github/workflows/on_push_ho
 The hotfix branch name should be in the format "hotfix/M.m.p".
 
 Once the hotfix PR has been approved and the "Squash and merge" button pressed, the merge title
-must be in the format "Merge pull request #xxx from govuk-one-login/release/M.m.p" to allow for the
+must be in the format "Merge pull request #xxx from govuk-one-login/release/M.m.p" to let the
 correct version to be extracted and used as a tag.
