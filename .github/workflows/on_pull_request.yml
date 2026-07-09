@@ -2,13 +2,10 @@ name: On Pull Request
 
 on:
   pull_request:
-    branches:
-      - main
     types:
       - opened
       - reopened
       - synchronize
-      - ready_for_review
   merge_group:
   workflow_dispatch:
 
