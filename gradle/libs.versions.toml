@@ -3,7 +3,7 @@ agp = "9.2.1"
 core-ktx = "1.16.0"
 junit = "6.1.2"
 appcompat = "1.7.1"
-kotlin = "2.4.0"
+kotlin = "2.4.10"
 serialization = "1.11.0"
 test-core = "1.6.1"
 test-runner = "1.6.2"
@@ -48,7 +48,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3",
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 # Needed for BackHandler
 androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version = "2.9.8"}
-kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version = "0.4.0" }
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version = "0.5.1" }
 
 # Gds
 componentsv2 = { group = "uk.gov.android", name = "componentsv2", version.ref = "govuk-ui" }
