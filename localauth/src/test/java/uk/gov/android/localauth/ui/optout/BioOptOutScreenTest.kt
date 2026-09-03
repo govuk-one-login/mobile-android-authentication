@@ -7,6 +7,8 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
@@ -19,8 +21,6 @@ import uk.gov.android.localauth.ui.optout.BioOptOutAnalyticsViewModel.Companion.
 import uk.gov.android.localauth.utils.FragmentActivityTestCase
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 import uk.gov.logging.api.v3dot1.logger.logEventV3Dot1
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 @RunWith(AndroidJUnit4::class)
 class BioOptOutScreenTest : FragmentActivityTestCase(false) {
@@ -34,23 +34,23 @@ class BioOptOutScreenTest : FragmentActivityTestCase(false) {
         setupScreen()
         composeTestRule.apply {
             onNodeWithText(
-                context.getString(R.string.app_optOutBiometricsTitle),
+                context.getString(R.string.app_optOutBiometricsTitle)
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_optOutBiometricsBody1),
+                context.getString(R.string.app_optOutBiometricsBody1)
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_optOutBiometricsBody2),
+                context.getString(R.string.app_optOutBiometricsBody2)
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_optOutBiometricsBody3),
+                context.getString(R.string.app_optOutBiometricsBody3)
             ).performScrollTo().assertExists()
 
             onNodeWithText(
-                context.getString(R.string.app_optOutBiometricsButton),
+                context.getString(R.string.app_optOutBiometricsButton)
             ).assertIsDisplayed()
         }
 
@@ -63,7 +63,7 @@ class BioOptOutScreenTest : FragmentActivityTestCase(false) {
         val text = R.string.app_optOutBiometricsButton
         composeTestRule.apply {
             onNodeWithText(
-                context.getString(text),
+                context.getString(text)
             ).performClick()
 
             assertTrue(onBioOptIn)
@@ -77,7 +77,7 @@ class BioOptOutScreenTest : FragmentActivityTestCase(false) {
         setupScreen()
         composeTestRule.apply {
             onNodeWithContentDescription(
-                context.getString(uk.gov.android.ui.componentsv2.R.string.close_icon_button),
+                context.getString(uk.gov.android.ui.componentsv2.R.string.close_icon_button)
             ).assertIsDisplayed().performClick()
         }
 
@@ -103,23 +103,23 @@ class BioOptOutScreenTest : FragmentActivityTestCase(false) {
                 BioOptOutPreview()
             }
             onNodeWithText(
-                context.getString(R.string.app_optOutBiometricsTitle),
+                context.getString(R.string.app_optOutBiometricsTitle)
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_optOutBiometricsBody1),
+                context.getString(R.string.app_optOutBiometricsBody1)
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_optOutBiometricsBody2),
+                context.getString(R.string.app_optOutBiometricsBody2)
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_optOutBiometricsBody3),
+                context.getString(R.string.app_optOutBiometricsBody3)
             ).performScrollTo().assertExists()
 
             onNodeWithText(
-                context.getString(R.string.app_optOutBiometricsButton),
+                context.getString(R.string.app_optOutBiometricsButton)
             ).assertIsDisplayed()
         }
     }
@@ -130,7 +130,7 @@ class BioOptOutScreenTest : FragmentActivityTestCase(false) {
                 analyticsLogger = analyticsLogger,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
-                onDismiss = { onDismiss++ },
+                onDismiss = { onDismiss++ }
             )
         }
     }

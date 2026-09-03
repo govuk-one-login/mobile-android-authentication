@@ -12,14 +12,11 @@ import uk.gov.logging.api.v3dot1.model.RequiredParameters
 import uk.gov.logging.api.v3dot1.model.TrackEvent
 import uk.gov.logging.api.v3dot1.model.ViewEvent
 
-class GoToSettingsAnalyticsViewModel(
-    context: Context,
-    private val analyticsLogger: AnalyticsLogger,
-) : ViewModel() {
+class GoToSettingsAnalyticsViewModel(context: Context, private val analyticsLogger: AnalyticsLogger) : ViewModel() {
     private val screenEvent = makeScreenEvent(context)
     private val goToSettingsBtnEvent = makeButtonEvent(
         context,
-        R.string.app_localAuthManagerErrorGoToSettingsButton,
+        R.string.app_localAuthManagerErrorGoToSettingsButton
     )
 
     private val backBtnEvent = makeBackButtonEvent(context)
@@ -44,27 +41,27 @@ class GoToSettingsAnalyticsViewModel(
                 endpoint = "",
                 status = "",
                 reason = getString(R.string.app_localAuthManagerErrorReason),
-                params = requiredParams,
+                params = requiredParams
             )
         }
 
         internal fun makeButtonEvent(context: Context, text: Int) = with(context) {
             TrackEvent.Button(
                 text = getEnglishString(text),
-                params = requiredParams,
+                params = requiredParams
             )
         }
 
         internal fun makeBackButtonEvent(context: Context) = with(context) {
             TrackEvent.Button(
                 text = getEnglishString(R.string.system_backButton),
-                params = requiredParams,
+                params = requiredParams
             )
         }
 
         private val requiredParams = RequiredParameters(
             taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
-            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
+            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED
         )
     }
 }

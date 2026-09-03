@@ -42,31 +42,10 @@ class DidKeyProofOfPossessionManagerTest {
     }
 
     @Test
-    fun `generatePoP returns valid JWT with three parts`() =
-        runTest {
-            setupMocks()
+    fun `generatePoP returns valid JWT with three parts`() = runTest {
+        setupMocks()
 
-            val result =
-                manager.generatePoP(
-                    authHandler = authHandler,
-                    alias = "test-alias",
-                    aud = "https://example.com",
-                    nonce = "test-nonce",
-                    iss = ISS
-                )
-
-            val parts = result.split(".")
-            assertEquals(3, parts.size)
-            assertTrue(parts[0].isNotEmpty(), "Header should not be empty")
-            assertTrue(parts[1].isNotEmpty(), "Payload should not be empty")
-            assertTrue(parts[2].isNotEmpty(), "Signature should not be empty")
-        }
-
-    @Test
-    fun `generatePoP calls keyManager to get public key coordinates`() =
-        runTest {
-            setupMocks()
-
+        val result =
             manager.generatePoP(
                 authHandler = authHandler,
                 alias = "test-alias",
@@ -75,14 +54,74 @@ class DidKeyProofOfPossessionManagerTest {
                 iss = ISS
             )
 
-            verify(keyPairManager).getPublicKeyCoordinates("test-alias")
-        }
+        val parts = result.split(".")
+        assertEquals(3, parts.size)
+        assertTrue(parts[0].isNotEmpty(), "Header should not be empty")
+        assertTrue(parts[1].isNotEmpty(), "Payload should not be empty")
+        assertTrue(parts[2].isNotEmpty(), "Signature should not be empty")
+    }
 
     @Test
-    fun `generatePoP calls popGenerator with correct parameters`() =
-        runTest {
-            setupMocks()
+    fun `generatePoP calls keyManager to get public key coordinates`() = runTest {
+        setupMocks()
 
+        manager.generatePoP(
+            authHandler = authHandler,
+            alias = "test-alias",
+            aud = "https://example.com",
+            nonce = "test-nonce",
+            iss = ISS
+        )
+
+        verify(keyPairManager).getPublicKeyCoordinates("test-alias")
+    }
+
+    @Test
+    fun `generatePoP calls popGenerator with correct parameters`() = runTest {
+        setupMocks()
+
+        manager.generatePoP(
+            authHandler = authHandler,
+            alias = "test-alias",
+            aud = "https://example.com",
+            nonce = "test-nonce",
+            iss = ISS
+        )
+
+        verify(popGenerator).createBase64DidKeyPoP(
+            kid = any(),
+            nonce = eq("test-nonce"),
+            aud = eq("https://example.com"),
+            iss = eq(ISS)
+        )
+    }
+
+    @Test
+    fun `generatePoP calls keyManager sign with unsigned JWT`() = runTest {
+        setupMocks()
+
+        manager.generatePoP(
+            authHandler = authHandler,
+            alias = "test-alias",
+            aud = "https://example.com",
+            nonce = "test-nonce",
+            iss = ISS
+        )
+
+        val captor = argumentCaptor<Array<SignRequest>>()
+        verify(keyPairManager).authenticateAndSign(
+            *captor.capture(),
+            promptConfig = any(),
+            authHandler = any()
+        )
+        assertEquals("test-alias", captor.firstValue[0].keyAlias)
+    }
+
+    @Test
+    fun `generatePoP signature is base64 URL safe encoded`() = runTest {
+        setupMocks()
+
+        val result =
             manager.generatePoP(
                 authHandler = authHandler,
                 alias = "test-alias",
@@ -91,286 +130,234 @@ class DidKeyProofOfPossessionManagerTest {
                 iss = ISS
             )
 
-            verify(popGenerator).createBase64DidKeyPoP(
-                kid = any(),
-                nonce = eq("test-nonce"),
-                aud = eq("https://example.com"),
-                iss = eq(ISS)
-            )
-        }
+        val signature = result.split(".")[2]
+
+        assertFalse(signature.contains("+"))
+        assertFalse(signature.contains("/"))
+        assertFalse(signature.contains("="))
+    }
 
     @Test
-    fun `generatePoP calls keyManager sign with unsigned JWT`() =
-        runTest {
-            setupMocks()
+    fun `generatePoP with different audiences produces different results`() = runTest {
+        val xBytes = ByteArray(32) { 1 }
+        val yBytes = ByteArray(32) { 2 }
 
-            manager.generatePoP(
-                authHandler = authHandler,
-                alias = "test-alias",
-                aud = "https://example.com",
-                nonce = "test-nonce",
-                iss = ISS
-            )
-
-            val captor = argumentCaptor<Array<SignRequest>>()
-            verify(keyPairManager).authenticateAndSign(
-                *captor.capture(),
+        given(keyPairManager.getPublicKeyCoordinates(any()))
+            .willReturn(Pair(encodeBase64(xBytes), encodeBase64(yBytes)))
+        given(
+            popGenerator.createBase64DidKeyPoP(any(), any(), eq("https://example1.com"), any())
+        )
+            .willReturn("header1.payload1")
+        given(
+            popGenerator.createBase64DidKeyPoP(any(), any(), eq("https://example2.com"), any())
+        )
+            .willReturn("header2.payload2")
+        given(
+            keyPairManager.authenticateAndSign(
+                anyVararg(),
                 promptConfig = any(),
                 authHandler = any()
             )
-            assertEquals("test-alias", captor.firstValue[0].keyAlias)
-        }
+        ).willReturn(listOf(SignedData("test-alias", byteArrayOf(1, 2, 3, 4, 5))))
+
+        val result1 = manager.generatePoP(
+            authHandler,
+            "test-alias",
+            "https://example1.com",
+            "nonce",
+            ISS
+        )
+        val result2 = manager.generatePoP(
+            authHandler,
+            "test-alias",
+            "https://example2.com",
+            "nonce",
+            ISS
+        )
+
+        assertNotEquals(result1, result2)
+    }
 
     @Test
-    fun `generatePoP signature is base64 URL safe encoded`() =
-        runTest {
-            setupMocks()
+    fun `generatePoP with different nonces produces different results`() = runTest {
+        val xBytes = ByteArray(32) { 1 }
+        val yBytes = ByteArray(32) { 2 }
 
-            val result =
-                manager.generatePoP(
-                    authHandler = authHandler,
-                    alias = "test-alias",
-                    aud = "https://example.com",
-                    nonce = "test-nonce",
-                    iss = ISS
-                )
+        given(keyPairManager.getPublicKeyCoordinates(any()))
+            .willReturn(Pair(encodeBase64(xBytes), encodeBase64(yBytes)))
+        given(popGenerator.createBase64DidKeyPoP(any(), eq("nonce1"), any(), any()))
+            .willReturn("header1.payload1")
+        given(popGenerator.createBase64DidKeyPoP(any(), eq("nonce2"), any(), any()))
+            .willReturn("header2.payload2")
+        given(
+            keyPairManager.authenticateAndSign(
+                anyVararg(),
+                promptConfig = any(),
+                authHandler = any()
+            )
+        ).willReturn(listOf(SignedData("test-alias", byteArrayOf(1, 2, 3, 4, 5))))
 
-            val signature = result.split(".")[2]
+        val result1 = manager.generatePoP(
+            authHandler,
+            "test-alias",
+            "https://example.com",
+            "nonce1",
+            ISS
+        )
+        val result2 = manager.generatePoP(
+            authHandler,
+            "test-alias",
+            "https://example.com",
+            "nonce2",
+            ISS
+        )
 
-            assertFalse(signature.contains("+"))
-            assertFalse(signature.contains("/"))
-            assertFalse(signature.contains("="))
-        }
+        assertNotEquals(result1, result2)
+    }
 
     @Test
-    fun `generatePoP with different audiences produces different results`() =
-        runTest {
-            val xBytes = ByteArray(32) { 1 }
-            val yBytes = ByteArray(32) { 2 }
+    fun `generatePoP handles even parity Y coordinate`() = runTest {
+        val yBytesEven = byteArrayOf(1, 2, 3, 4)
+        given(keyPairManager.getPublicKeyCoordinates(any()))
+            .willReturn(Pair(encodeBase64(ByteArray(32) { 1 }), encodeBase64(yBytesEven)))
+        given(popGenerator.createBase64DidKeyPoP(any(), any(), any(), any())).willReturn(
+            "header.payload"
+        )
+        given(
+            keyPairManager.authenticateAndSign(
+                anyVararg(),
+                promptConfig = any(),
+                authHandler = any()
+            )
+        ).willReturn(listOf(SignedData("test-alias", byteArrayOf(1, 2, 3))))
 
-            given(keyPairManager.getPublicKeyCoordinates(any()))
-                .willReturn(Pair(encodeBase64(xBytes), encodeBase64(yBytes)))
-            given(
-                popGenerator.createBase64DidKeyPoP(any(), any(), eq("https://example1.com"), any())
-            )
-                .willReturn("header1.payload1")
-            given(
-                popGenerator.createBase64DidKeyPoP(any(), any(), eq("https://example2.com"), any())
-            )
-                .willReturn("header2.payload2")
-            given(
-                keyPairManager.authenticateAndSign(
-                    anyVararg(),
-                    promptConfig = any(),
-                    authHandler = any()
-                )
-            ).willReturn(listOf(SignedData("test-alias", byteArrayOf(1, 2, 3, 4, 5))))
+        val result = manager.generatePoP(
+            authHandler,
+            "test-alias",
+            "https://example.com",
+            "nonce",
+            ISS
+        )
 
-            val result1 = manager.generatePoP(
-                authHandler,
-                "test-alias",
-                "https://example1.com",
-                "nonce",
-                ISS
-            )
-            val result2 = manager.generatePoP(
-                authHandler,
-                "test-alias",
-                "https://example2.com",
-                "nonce",
-                ISS
-            )
-
-            assertNotEquals(result1, result2)
-        }
+        assertNotNull(result)
+        verify(keyPairManager).getPublicKeyCoordinates("test-alias")
+    }
 
     @Test
-    fun `generatePoP with different nonces produces different results`() =
-        runTest {
-            val xBytes = ByteArray(32) { 1 }
-            val yBytes = ByteArray(32) { 2 }
-
-            given(keyPairManager.getPublicKeyCoordinates(any()))
-                .willReturn(Pair(encodeBase64(xBytes), encodeBase64(yBytes)))
-            given(popGenerator.createBase64DidKeyPoP(any(), eq("nonce1"), any(), any()))
-                .willReturn("header1.payload1")
-            given(popGenerator.createBase64DidKeyPoP(any(), eq("nonce2"), any(), any()))
-                .willReturn("header2.payload2")
-            given(
-                keyPairManager.authenticateAndSign(
-                    anyVararg(),
-                    promptConfig = any(),
-                    authHandler = any()
-                )
-            ).willReturn(listOf(SignedData("test-alias", byteArrayOf(1, 2, 3, 4, 5))))
-
-            val result1 = manager.generatePoP(
-                authHandler,
-                "test-alias",
-                "https://example.com",
-                "nonce1",
-                ISS
+    fun `generatePoP handles odd parity Y coordinate`() = runTest {
+        val yBytesOdd = byteArrayOf(1, 2, 3, 5)
+        given(keyPairManager.getPublicKeyCoordinates(any()))
+            .willReturn(Pair(encodeBase64(ByteArray(32) { 1 }), encodeBase64(yBytesOdd)))
+        given(popGenerator.createBase64DidKeyPoP(any(), any(), any(), any())).willReturn(
+            "header.payload"
+        )
+        given(
+            keyPairManager.authenticateAndSign(
+                anyVararg(),
+                promptConfig = any(),
+                authHandler = any()
             )
-            val result2 = manager.generatePoP(
-                authHandler,
-                "test-alias",
-                "https://example.com",
-                "nonce2",
-                ISS
-            )
+        ).willReturn(listOf(SignedData("test-alias", byteArrayOf(1, 2, 3))))
 
-            assertNotEquals(result1, result2)
-        }
+        val result = manager.generatePoP(
+            authHandler,
+            "test-alias",
+            "https://example.com",
+            "nonce",
+            ISS
+        )
+
+        assertNotNull(result)
+        verify(keyPairManager).getPublicKeyCoordinates("test-alias")
+    }
 
     @Test
-    fun `generatePoP handles even parity Y coordinate`() =
-        runTest {
-            val yBytesEven = byteArrayOf(1, 2, 3, 4)
-            given(keyPairManager.getPublicKeyCoordinates(any()))
-                .willReturn(Pair(encodeBase64(ByteArray(32) { 1 }), encodeBase64(yBytesEven)))
-            given(popGenerator.createBase64DidKeyPoP(any(), any(), any(), any())).willReturn(
-                "header.payload"
-            )
-            given(
-                keyPairManager.authenticateAndSign(
-                    anyVararg(),
-                    promptConfig = any(),
-                    authHandler = any()
-                )
-            ).willReturn(listOf(SignedData("test-alias", byteArrayOf(1, 2, 3))))
+    fun `generatePoP creates DID key with correct format`() = runTest {
+        val xBytes = ByteArray(32) { it.toByte() }
+        val yBytesEven = byteArrayOf(1, 2, 3, 4)
 
-            val result = manager.generatePoP(
-                authHandler,
-                "test-alias",
-                "https://example.com",
-                "nonce",
-                ISS
+        given(keyPairManager.getPublicKeyCoordinates(any()))
+            .willReturn(Pair(encodeBase64(xBytes), encodeBase64(yBytesEven)))
+        given(popGenerator.createBase64DidKeyPoP(any(), any(), any(), any())).willReturn(
+            "header.payload"
+        )
+        given(
+            keyPairManager.authenticateAndSign(
+                anyVararg(),
+                promptConfig = any(),
+                authHandler = any()
             )
+        ).willReturn(listOf(SignedData("test-alias", byteArrayOf(1, 2, 3))))
 
-            assertNotNull(result)
-            verify(keyPairManager).getPublicKeyCoordinates("test-alias")
-        }
+        manager.generatePoP(authHandler, "test-alias", "https://example.com", "nonce", ISS)
+
+        val kidCaptor = argumentCaptor<String>()
+        verify(popGenerator).createBase64DidKeyPoP(kidCaptor.capture(), any(), any(), any())
+        assertTrue(kidCaptor.firstValue.startsWith("did:key:z"))
+    }
 
     @Test
-    fun `generatePoP handles odd parity Y coordinate`() =
-        runTest {
-            val yBytesOdd = byteArrayOf(1, 2, 3, 5)
-            given(keyPairManager.getPublicKeyCoordinates(any()))
-                .willReturn(Pair(encodeBase64(ByteArray(32) { 1 }), encodeBase64(yBytesOdd)))
-            given(popGenerator.createBase64DidKeyPoP(any(), any(), any(), any())).willReturn(
-                "header.payload"
-            )
-            given(
-                keyPairManager.authenticateAndSign(
-                    anyVararg(),
-                    promptConfig = any(),
-                    authHandler = any()
-                )
-            ).willReturn(listOf(SignedData("test-alias", byteArrayOf(1, 2, 3))))
+    fun `generatePoP throws exception when keyManager fails to get coordinates`() = runTest {
+        given(keyPairManager.getPublicKeyCoordinates(any())).willThrow(
+            RuntimeException("Key not found")
+        )
 
-            val result = manager.generatePoP(
-                authHandler,
-                "test-alias",
-                "https://example.com",
-                "nonce",
-                ISS
-            )
-
-            assertNotNull(result)
-            verify(keyPairManager).getPublicKeyCoordinates("test-alias")
-        }
-
-    @Test
-    fun `generatePoP creates DID key with correct format`() =
-        runTest {
-            val xBytes = ByteArray(32) { it.toByte() }
-            val yBytesEven = byteArrayOf(1, 2, 3, 4)
-
-            given(keyPairManager.getPublicKeyCoordinates(any()))
-                .willReturn(Pair(encodeBase64(xBytes), encodeBase64(yBytesEven)))
-            given(popGenerator.createBase64DidKeyPoP(any(), any(), any(), any())).willReturn(
-                "header.payload"
-            )
-            given(
-                keyPairManager.authenticateAndSign(
-                    anyVararg(),
-                    promptConfig = any(),
-                    authHandler = any()
-                )
-            ).willReturn(listOf(SignedData("test-alias", byteArrayOf(1, 2, 3))))
-
+        assertThrows<RuntimeException> {
             manager.generatePoP(authHandler, "test-alias", "https://example.com", "nonce", ISS)
-
-            val kidCaptor = argumentCaptor<String>()
-            verify(popGenerator).createBase64DidKeyPoP(kidCaptor.capture(), any(), any(), any())
-            assertTrue(kidCaptor.firstValue.startsWith("did:key:z"))
         }
+    }
 
     @Test
-    fun `generatePoP throws exception when keyManager fails to get coordinates`() =
-        runTest {
-            given(keyPairManager.getPublicKeyCoordinates(any())).willThrow(
-                RuntimeException("Key not found")
+    fun `generatePoP throws exception when keyManager fails to sign`() = runTest {
+        given(keyPairManager.getPublicKeyCoordinates(any()))
+            .willReturn(Pair(encodeBase64(ByteArray(32)), encodeBase64(ByteArray(32))))
+        given(popGenerator.createBase64DidKeyPoP(any(), any(), any(), any())).willReturn(
+            "header.payload"
+        )
+        given(
+            keyPairManager.authenticateAndSign(
+                anyVararg(),
+                promptConfig = any(),
+                authHandler = any()
             )
+        ).willThrow(RuntimeException("Signing failed"))
 
-            assertThrows<RuntimeException> {
-                manager.generatePoP(authHandler, "test-alias", "https://example.com", "nonce", ISS)
-            }
+        assertThrows<RuntimeException> {
+            manager.generatePoP(authHandler, "test-alias", "https://example.com", "nonce", ISS)
         }
+    }
 
     @Test
-    fun `generatePoP throws exception when keyManager fails to sign`() =
-        runTest {
-            given(keyPairManager.getPublicKeyCoordinates(any()))
-                .willReturn(Pair(encodeBase64(ByteArray(32)), encodeBase64(ByteArray(32))))
-            given(popGenerator.createBase64DidKeyPoP(any(), any(), any(), any())).willReturn(
-                "header.payload"
+    fun `generatePoP signature is appended to unsigned JWT`() = runTest {
+        val unsignedJwt = "header.payload"
+        val signature = byteArrayOf(1, 2, 3, 4, 5)
+
+        given(keyPairManager.getPublicKeyCoordinates(any()))
+            .willReturn(Pair(encodeBase64(ByteArray(32)), encodeBase64(ByteArray(32))))
+        given(popGenerator.createBase64DidKeyPoP(any(), any(), any(), any())).willReturn(
+            unsignedJwt
+        )
+        given(
+            keyPairManager.authenticateAndSign(
+                anyVararg(),
+                promptConfig = any(),
+                authHandler = any()
             )
-            given(
-                keyPairManager.authenticateAndSign(
-                    anyVararg(),
-                    promptConfig = any(),
-                    authHandler = any()
-                )
-            ).willThrow(RuntimeException("Signing failed"))
+        ).willReturn(listOf(SignedData("test-alias", signature)))
 
-            assertThrows<RuntimeException> {
-                manager.generatePoP(authHandler, "test-alias", "https://example.com", "nonce", ISS)
-            }
-        }
+        val result = manager.generatePoP(
+            authHandler,
+            "test-alias",
+            "https://example.com",
+            "nonce",
+            ISS
+        )
 
-    @Test
-    fun `generatePoP signature is appended to unsigned JWT`() =
-        runTest {
-            val unsignedJwt = "header.payload"
-            val signature = byteArrayOf(1, 2, 3, 4, 5)
-
-            given(keyPairManager.getPublicKeyCoordinates(any()))
-                .willReturn(Pair(encodeBase64(ByteArray(32)), encodeBase64(ByteArray(32))))
-            given(popGenerator.createBase64DidKeyPoP(any(), any(), any(), any())).willReturn(
-                unsignedJwt
-            )
-            given(
-                keyPairManager.authenticateAndSign(
-                    anyVararg(),
-                    promptConfig = any(),
-                    authHandler = any()
-                )
-            ).willReturn(listOf(SignedData("test-alias", signature)))
-
-            val result = manager.generatePoP(
-                authHandler,
-                "test-alias",
-                "https://example.com",
-                "nonce",
-                ISS
-            )
-
-            assertTrue(result.startsWith(unsignedJwt))
-            val parts = result.split(".")
-            assertEquals(3, parts.size)
-            assertEquals(parts[2], getUrlSafeNoPaddingBase64(signature))
-        }
+        assertTrue(result.startsWith(unsignedJwt))
+        val parts = result.split(".")
+        assertEquals(3, parts.size)
+        assertEquals(parts[2], getUrlSafeNoPaddingBase64(signature))
+    }
 
     @OptIn(ExperimentalEncodingApi::class)
     private fun encodeBase64(bytes: ByteArray): String =

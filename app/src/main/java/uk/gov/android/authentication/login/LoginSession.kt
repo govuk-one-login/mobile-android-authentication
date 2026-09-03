@@ -16,10 +16,7 @@ interface LoginSession {
      * @param launcher [ActivityResultLauncher] a launcher to start the Login activity for result
      * @param configuration [LoginSessionConfiguration] containing necessary session configuration
      */
-    fun present(
-        launcher: ActivityResultLauncher<Intent>,
-        configuration: LoginSessionConfiguration
-    )
+    fun present(launcher: ActivityResultLauncher<Intent>, configuration: LoginSessionConfiguration)
 
     /**
      * Callback function to handle intent from the activity result started by [present] allowing for fetching and handling refresh tokens

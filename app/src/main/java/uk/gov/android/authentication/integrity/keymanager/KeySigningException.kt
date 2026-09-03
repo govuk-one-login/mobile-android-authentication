@@ -9,7 +9,5 @@ package uk.gov.android.authentication.integrity.keymanager
  * @param alias The key alias that failed to sign the data
  * @param cause The underlying cause of the signing failure
  */
-class KeySigningException(
-    alias: String,
-    cause: Throwable
-) : Exception("Failed to sign data with key alias: $alias", cause)
+class KeySigningException(alias: String, cause: Throwable) :
+    Exception("Failed to sign data with key alias: $alias", cause)

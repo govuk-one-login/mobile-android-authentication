@@ -3,6 +3,9 @@ package uk.gov.android.localauth.device
 import android.app.KeyguardManager
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.eq
@@ -11,9 +14,6 @@ import org.mockito.kotlin.whenever
 import uk.gov.android.localauth.devicesecurity.DeviceBiometricsManager
 import uk.gov.android.localauth.devicesecurity.DeviceBiometricsManagerImpl
 import uk.gov.android.localauth.devicesecurity.DeviceBiometricsStatus
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 class DeviceBiometricsManagerTest {
     private lateinit var biometricsManager: BiometricManager

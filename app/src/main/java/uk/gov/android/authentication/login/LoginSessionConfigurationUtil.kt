@@ -11,19 +11,17 @@ internal fun LoginSessionConfiguration.createRequest(): AuthorizationRequest = c
     .setAdditionalParameters(createAdditionalParameters())
     .build()
 
-internal fun LoginSessionConfiguration.createBuilder() =
-    AuthorizationRequest.Builder(
-        createAuthorizationServiceConfiguration(),
-        clientId,
-        responseType.value,
-        redirectUri
-    )
+internal fun LoginSessionConfiguration.createBuilder() = AuthorizationRequest.Builder(
+    createAuthorizationServiceConfiguration(),
+    clientId,
+    responseType.value,
+    redirectUri
+)
 
-internal fun LoginSessionConfiguration.createAuthorizationServiceConfiguration() =
-    AuthorizationServiceConfiguration(
-        authorizeEndpoint,
-        tokenEndpoint
-    )
+internal fun LoginSessionConfiguration.createAuthorizationServiceConfiguration() = AuthorizationServiceConfiguration(
+    authorizeEndpoint,
+    tokenEndpoint
+)
 
 internal val LoginSessionConfiguration.scopeValues: List<String>
     get() = scopes.map { it.value }

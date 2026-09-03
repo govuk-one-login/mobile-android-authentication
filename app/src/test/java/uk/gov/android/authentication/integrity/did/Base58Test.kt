@@ -15,19 +15,13 @@ import org.junit.jupiter.params.provider.ValueSource
 class Base58Test {
     @ParameterizedTest
     @MethodSource("provideEncodeTestCases")
-    fun `encode produces correct base58 string`(
-        input: ByteArray,
-        expected: String
-    ) {
+    fun `encode produces correct base58 string`(input: ByteArray, expected: String) {
         assertEquals(expected, Base58.encode(input))
     }
 
     @ParameterizedTest
     @MethodSource("provideDecodeTestCases")
-    fun `decode produces correct byte array`(
-        input: String,
-        expected: ByteArray
-    ) {
+    fun `decode produces correct byte array`(input: String, expected: ByteArray) {
         assertArrayEquals(expected, Base58.decode(input))
     }
 
@@ -118,48 +112,45 @@ class Base58Test {
 
     companion object {
         @JvmStatic
-        fun provideEncodeTestCases(): Stream<Arguments> =
-            Stream.of(
-                Arguments.of(ByteArray(0), ""),
-                Arguments.of(byteArrayOf(0), "1"),
-                Arguments.of(ByteArray(7), "1111111"),
-                Arguments.of(byteArrayOf(1), "2"),
-                Arguments.of(byteArrayOf(57), "z"),
-                Arguments.of(byteArrayOf(-1), "5Q"),
-                Arguments.of(byteArrayOf(0, 0, 1, 2, 3), "11Ldp"),
-                Arguments.of("Hello World".toByteArray(), "JxF12TrwUP45BMd"),
-                Arguments.of("test".toByteArray(), "3yZe7d"),
-                Arguments.of(BigInteger.valueOf(3471844090L).toByteArray(), "16Ho7Hs")
-            )
+        fun provideEncodeTestCases(): Stream<Arguments> = Stream.of(
+            Arguments.of(ByteArray(0), ""),
+            Arguments.of(byteArrayOf(0), "1"),
+            Arguments.of(ByteArray(7), "1111111"),
+            Arguments.of(byteArrayOf(1), "2"),
+            Arguments.of(byteArrayOf(57), "z"),
+            Arguments.of(byteArrayOf(-1), "5Q"),
+            Arguments.of(byteArrayOf(0, 0, 1, 2, 3), "11Ldp"),
+            Arguments.of("Hello World".toByteArray(), "JxF12TrwUP45BMd"),
+            Arguments.of("test".toByteArray(), "3yZe7d"),
+            Arguments.of(BigInteger.valueOf(3471844090L).toByteArray(), "16Ho7Hs")
+        )
 
         @JvmStatic
-        fun provideDecodeTestCases(): Stream<Arguments> =
-            Stream.of(
-                Arguments.of("", ByteArray(0)),
-                Arguments.of("1", byteArrayOf(0)),
-                Arguments.of("1111111", ByteArray(7)),
-                Arguments.of("2", byteArrayOf(1)),
-                Arguments.of("z", byteArrayOf(57)),
-                Arguments.of("5Q", byteArrayOf(-1)),
-                Arguments.of("11Ldp", byteArrayOf(0, 0, 1, 2, 3)),
-                Arguments.of("JxF12TrwUP45BMd", "Hello World".toByteArray()),
-                Arguments.of("3yZe7d", "test".toByteArray())
-            )
+        fun provideDecodeTestCases(): Stream<Arguments> = Stream.of(
+            Arguments.of("", ByteArray(0)),
+            Arguments.of("1", byteArrayOf(0)),
+            Arguments.of("1111111", ByteArray(7)),
+            Arguments.of("2", byteArrayOf(1)),
+            Arguments.of("z", byteArrayOf(57)),
+            Arguments.of("5Q", byteArrayOf(-1)),
+            Arguments.of("11Ldp", byteArrayOf(0, 0, 1, 2, 3)),
+            Arguments.of("JxF12TrwUP45BMd", "Hello World".toByteArray()),
+            Arguments.of("3yZe7d", "test".toByteArray())
+        )
 
         @JvmStatic
-        fun provideRoundTripTestCases(): Stream<Arguments> =
-            Stream.of(
-                Arguments.of(ByteArray(0)),
-                Arguments.of(byteArrayOf(0)),
-                Arguments.of(ByteArray(10) { 0 }),
-                Arguments.of(byteArrayOf(1, 2, 3)),
-                Arguments.of(byteArrayOf(0, 0, 1, 2, 3)),
-                Arguments.of(ByteArray(10) { -1 }),
-                Arguments.of(ByteArray(100) { it.toByte() }),
-                Arguments.of("Hello World".toByteArray()),
-                Arguments.of("The quick brown fox jumps over the lazy dog".toByteArray()),
-                Arguments.of(byteArrayOf(0xAA.toByte(), 0x55, 0xAA.toByte(), 0x55)),
-                Arguments.of(BigInteger.valueOf(3471844090L).toByteArray())
-            )
+        fun provideRoundTripTestCases(): Stream<Arguments> = Stream.of(
+            Arguments.of(ByteArray(0)),
+            Arguments.of(byteArrayOf(0)),
+            Arguments.of(ByteArray(10) { 0 }),
+            Arguments.of(byteArrayOf(1, 2, 3)),
+            Arguments.of(byteArrayOf(0, 0, 1, 2, 3)),
+            Arguments.of(ByteArray(10) { -1 }),
+            Arguments.of(ByteArray(100) { it.toByte() }),
+            Arguments.of("Hello World".toByteArray()),
+            Arguments.of("The quick brown fox jumps over the lazy dog".toByteArray()),
+            Arguments.of(byteArrayOf(0xAA.toByte(), 0x55, 0xAA.toByte(), 0x55)),
+            Arguments.of(BigInteger.valueOf(3471844090L).toByteArray())
+        )
     }
 }

@@ -17,7 +17,7 @@ interface LocalAuthManager {
 
     @Deprecated(
         message = "Please use screen that does not allow for walletEnabled - will be removed 7th of March",
-        level = DeprecationLevel.WARNING,
+        level = DeprecationLevel.WARNING
     )
     /**
      * This method allows to checks if local authentication is available on the device and saves the
@@ -28,12 +28,7 @@ interface LocalAuthManager {
      * @param activity is required to allow the [BiometricsUiManager] to display dialogs on top of the consumer underlying activity
      * @param callbackHandler allows the consumer to provide implementation for success or failure results/ outcomes
      */
-    suspend fun enforceAndSet(
-        walletEnabled: Boolean,
-        localAuthRequired: Boolean,
-        activity: FragmentActivity,
-        callbackHandler: LocalAuthManagerCallbackHandler,
-    )
+    suspend fun enforceAndSet(walletEnabled: Boolean, localAuthRequired: Boolean, activity: FragmentActivity, callbackHandler: LocalAuthManagerCallbackHandler)
 
     /**
      * This method allows to checks if local authentication is available on the device and saves the
@@ -46,7 +41,7 @@ interface LocalAuthManager {
     suspend fun enforceAndSet(
         localAuthRequired: Boolean,
         activity: FragmentActivity,
-        callbackHandler: LocalAuthManagerCallbackHandler,
+        callbackHandler: LocalAuthManagerCallbackHandler
     )
 
     /**

@@ -39,7 +39,7 @@ class BioOptInAnalyticsViewModelTest {
         logger = mock()
         requiredParameters = RequiredParameters(
             taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
-            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
+            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED
         )
         name = context.getEnglishString(R.string.app_enableBiometricsTitle)
         id = context.getEnglishString(R.string.bio_opt_in_screen_wallet_page_id)
@@ -54,7 +54,7 @@ class BioOptInAnalyticsViewModelTest {
         val event = ViewEvent.Screen(
             name = name,
             id = id,
-            params = requiredParameters,
+            params = requiredParameters
         )
 
         viewModel.trackBioOptInWalletScreen()
@@ -63,7 +63,7 @@ class BioOptInAnalyticsViewModelTest {
 
         assertThat(
             IS_ERROR_REASON_FALSE,
-            GAUtils.containsIsError(event, FALSE),
+            GAUtils.containsIsError(event, FALSE)
         )
     }
 
@@ -74,20 +74,20 @@ class BioOptInAnalyticsViewModelTest {
                 trackFunction = {
                     viewModel.trackBiometricsButton()
                 },
-                text = biometricsBtn,
+                text = biometricsBtn
             ),
             TestUtils.TrackEventTestCase.Button(
                 trackFunction = {
                     viewModel.trackPasscodeButton()
                 },
-                text = passcodeBtn,
+                text = passcodeBtn
             ),
             TestUtils.TrackEventTestCase.Button(
                 trackFunction = {
                     viewModel.trackBackButton()
                 },
-                text = backBtn,
-            ),
+                text = backBtn
+            )
         ).forEach {
             val result = TestUtils.executeTrackEventTestCase(it, requiredParameters)
 
@@ -100,7 +100,7 @@ class BioOptInAnalyticsViewModelTest {
         val event = ViewEvent.Screen(
             name = name,
             id = id,
-            params = requiredParameters,
+            params = requiredParameters
         )
 
         viewModel.trackBioOptInWalletScreen()

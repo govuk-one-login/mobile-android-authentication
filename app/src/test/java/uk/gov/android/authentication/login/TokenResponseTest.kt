@@ -80,11 +80,7 @@ class TokenResponseTest {
         }
     }
 
-    private fun jsonSerialize(obj: TokenResponse): String {
-        return Json.encodeToString(obj)
-    }
+    private fun jsonSerialize(obj: TokenResponse): String = Json.encodeToString(obj)
 
-    private fun jsonDeserialize(text: String): TokenResponse? {
-        return Json.decodeFromString(text)
-    }
+    private fun jsonDeserialize(text: String): TokenResponse? = Json.decodeFromString(text)
 }

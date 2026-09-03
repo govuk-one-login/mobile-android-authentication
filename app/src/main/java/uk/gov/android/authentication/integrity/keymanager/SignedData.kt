@@ -6,10 +6,7 @@ package uk.gov.android.authentication.integrity.keymanager
  * @property keyAlias The alias of the key used for signing
  * @property signature The cryptographic signature in ASN.1 format
  */
-data class SignedData(
-    val keyAlias: String,
-    val signature: ByteArray
-) {
+data class SignedData(val keyAlias: String, val signature: ByteArray) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is SignedData) return false

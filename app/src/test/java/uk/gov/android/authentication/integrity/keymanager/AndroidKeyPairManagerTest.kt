@@ -140,110 +140,107 @@ class AndroidKeyPairManagerTest {
     }
 
     @Test
-    fun `authenticateAndSign - success callback returns signed data`() =
-        runTest {
-            val alias = "test-alias"
-            val data = "test-data".toByteArray()
-            val authHandler: BiometricAuthHandler = mock()
-            val promptConfig = PromptConfig("Title", "Close")
-            val keyPair = KeyPairGenerator.getInstance("EC").generateKeyPair()
-            val entry = mock<KeyStore.PrivateKeyEntry>()
-            val certificate: Certificate = mock()
-            val signature =
-                Signature.getInstance("SHA256withECDSA").apply {
-                    initSign(keyPair.private)
-                    update(data)
-                }
-            val cryptoObject: BiometricPrompt.CryptoObject = mock()
-            val authenticationResult: BiometricPrompt.AuthenticationResult = mock()
+    fun `authenticateAndSign - success callback returns signed data`() = runTest {
+        val alias = "test-alias"
+        val data = "test-data".toByteArray()
+        val authHandler: BiometricAuthHandler = mock()
+        val promptConfig = PromptConfig("Title", "Close")
+        val keyPair = KeyPairGenerator.getInstance("EC").generateKeyPair()
+        val entry = mock<KeyStore.PrivateKeyEntry>()
+        val certificate: Certificate = mock()
+        val signature =
+            Signature.getInstance("SHA256withECDSA").apply {
+                initSign(keyPair.private)
+                update(data)
+            }
+        val cryptoObject: BiometricPrompt.CryptoObject = mock()
+        val authenticationResult: BiometricPrompt.AuthenticationResult = mock()
 
-            given(cryptoObject.signature).willReturn(signature)
-            given(authenticationResult.cryptoObject).willReturn(cryptoObject)
-            given(keyStore.getEntry(any(), anyOrNull())).willReturn(entry)
-            given(entry.privateKey).willReturn(keyPair.private)
-            given(keyStore.containsAlias(alias)).willReturn(true)
-            given(certificate.publicKey).willReturn(keyPair.public)
-            given(keyStore.getCertificate(alias)).willReturn(certificate)
+        given(cryptoObject.signature).willReturn(signature)
+        given(authenticationResult.cryptoObject).willReturn(cryptoObject)
+        given(keyStore.getEntry(any(), anyOrNull())).willReturn(entry)
+        given(entry.privateKey).willReturn(keyPair.private)
+        given(keyStore.containsAlias(alias)).willReturn(true)
+        given(certificate.publicKey).willReturn(keyPair.public)
+        given(keyStore.getCertificate(alias)).willReturn(certificate)
 
-            val requestCaptor = argumentCaptor<BiometricAuthHandler.Request>()
-            doAnswer {
-                val request = requestCaptor.firstValue
-                request.callback.onSuccess(authenticationResult)
-            }.`when`(authHandler).authenticate(requestCaptor.capture())
+        val requestCaptor = argumentCaptor<BiometricAuthHandler.Request>()
+        doAnswer {
+            val request = requestCaptor.firstValue
+            request.callback.onSuccess(authenticationResult)
+        }.`when`(authHandler).authenticate(requestCaptor.capture())
 
-            val result =
+        val result =
+            keyPairManager.authenticateAndSign(
+                SignRequest(alias, data),
+                promptConfig = promptConfig,
+                authHandler = authHandler
+            )
+
+        assertTrue(result.isNotEmpty())
+        verify(authHandler).authenticate(any())
+        verify(authHandler).close()
+    }
+
+    @Test
+    fun `authenticateAndSign - error callback throws BiometricAuthException`() = runTest {
+        val alias = "test-alias"
+        val data = "test-data".toByteArray()
+        val authHandler: BiometricAuthHandler = mock()
+        val promptConfig = PromptConfig("Title", "Close")
+        val keyPair = KeyPairGenerator.getInstance("EC").generateKeyPair()
+        val entry = mock<KeyStore.PrivateKeyEntry>()
+        val certificate: Certificate = mock()
+
+        given(keyStore.getEntry(any(), anyOrNull())).willReturn(entry)
+        given(entry.privateKey).willReturn(keyPair.private)
+        given(keyStore.containsAlias(alias)).willReturn(true)
+        given(certificate.publicKey).willReturn(keyPair.public)
+        given(keyStore.getCertificate(alias)).willReturn(certificate)
+
+        val requestCaptor = argumentCaptor<BiometricAuthHandler.Request>()
+        doAnswer {
+            val request = requestCaptor.firstValue
+            request.callback.onError(1, "Error")
+        }.`when`(authHandler).authenticate(requestCaptor.capture())
+
+        val exception =
+            assertThrows<BiometricAuthException> {
                 keyPairManager.authenticateAndSign(
                     SignRequest(alias, data),
                     promptConfig = promptConfig,
                     authHandler = authHandler
                 )
+            }
 
-            assertTrue(result.isNotEmpty())
-            verify(authHandler).authenticate(any())
-            verify(authHandler).close()
-        }
-
-    @Test
-    fun `authenticateAndSign - error callback throws BiometricAuthException`() =
-        runTest {
-            val alias = "test-alias"
-            val data = "test-data".toByteArray()
-            val authHandler: BiometricAuthHandler = mock()
-            val promptConfig = PromptConfig("Title", "Close")
-            val keyPair = KeyPairGenerator.getInstance("EC").generateKeyPair()
-            val entry = mock<KeyStore.PrivateKeyEntry>()
-            val certificate: Certificate = mock()
-
-            given(keyStore.getEntry(any(), anyOrNull())).willReturn(entry)
-            given(entry.privateKey).willReturn(keyPair.private)
-            given(keyStore.containsAlias(alias)).willReturn(true)
-            given(certificate.publicKey).willReturn(keyPair.public)
-            given(keyStore.getCertificate(alias)).willReturn(certificate)
-
-            val requestCaptor = argumentCaptor<BiometricAuthHandler.Request>()
-            doAnswer {
-                val request = requestCaptor.firstValue
-                request.callback.onError(1, "Error")
-            }.`when`(authHandler).authenticate(requestCaptor.capture())
-
-            val exception =
-                assertThrows<BiometricAuthException> {
-                    keyPairManager.authenticateAndSign(
-                        SignRequest(alias, data),
-                        promptConfig = promptConfig,
-                        authHandler = authHandler
-                    )
-                }
-
-            assertEquals("Biometric authentication failed: 1 - Error", exception.message)
-            verify(authHandler).close()
-        }
+        assertEquals("Biometric authentication failed: 1 - Error", exception.message)
+        verify(authHandler).close()
+    }
 
     @Test
-    fun `authenticateAndSign - throws IllegalArgumentException when userAuthRequired is false`() =
-        runTest {
-            val keyPairManagerNoAuth =
-                AndroidKeyPairManager.createForTesting(
-                    logger = logger,
-                    userAuthRequired = false,
-                    keyStore = keyStore,
-                    keyPairGenerator = keyPairGenerator,
-                    mainDispatcher = testDispatcher
+    fun `authenticateAndSign - throws IllegalArgumentException when userAuthRequired is false`() = runTest {
+        val keyPairManagerNoAuth =
+            AndroidKeyPairManager.createForTesting(
+                logger = logger,
+                userAuthRequired = false,
+                keyStore = keyStore,
+                keyPairGenerator = keyPairGenerator,
+                mainDispatcher = testDispatcher
+            )
+        val authHandler: BiometricAuthHandler = mock()
+        val promptConfig = PromptConfig("Title", "Close")
+
+        val exception =
+            assertThrows<IllegalArgumentException> {
+                keyPairManagerNoAuth.authenticateAndSign(
+                    SignRequest("test-alias", "test-data".toByteArray()),
+                    promptConfig = promptConfig,
+                    authHandler = authHandler
                 )
-            val authHandler: BiometricAuthHandler = mock()
-            val promptConfig = PromptConfig("Title", "Close")
+            }
 
-            val exception =
-                assertThrows<IllegalArgumentException> {
-                    keyPairManagerNoAuth.authenticateAndSign(
-                        SignRequest("test-alias", "test-data".toByteArray()),
-                        promptConfig = promptConfig,
-                        authHandler = authHandler
-                    )
-                }
-
-            assertEquals("Authentication required for signing operations", exception.message)
-        }
+        assertEquals("Authentication required for signing operations", exception.message)
+    }
 
     @Test
     fun `sign - throws KeySigningException when signing fails`() {

@@ -19,7 +19,7 @@ dependencies {
 mavenPublishingConfig {
     mavenConfigBlock {
         name.set(
-            "Authentication JSON utilities",
+            "Authentication JSON utilities"
         )
     }
 }

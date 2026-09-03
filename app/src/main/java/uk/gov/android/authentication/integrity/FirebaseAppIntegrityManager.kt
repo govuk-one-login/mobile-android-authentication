@@ -87,22 +87,18 @@ class FirebaseAppIntegrityManager(
         return jwk["x"].asString == x && jwk["y"].asString == y
     }
 
-    override fun getExpiry(attestation: String): Long? {
-        return extractFieldFrom(attestation, "exp")?.toLongOrNull()
-    }
+    override fun getExpiry(attestation: String): Long? = extractFieldFrom(attestation, "exp")?.toLongOrNull()
 
     @Suppress("TooGenericExceptionCaught")
-    private fun extractFieldFrom(attestation: String, field: String): String? {
-        return try {
-            val body = String(
-                Base64.withPadding(Base64.PaddingOption.ABSENT)
-                    .decode(attestation.split(".")[1])
-            )
-            JsonParser.parseString(body).asJsonObject[field]?.toString()
-        } catch (e: Exception) {
-            Log.e(this::class.simpleName, e.message, e)
-            null
-        }
+    private fun extractFieldFrom(attestation: String, field: String): String? = try {
+        val body = String(
+            Base64.withPadding(Base64.PaddingOption.ABSENT)
+                .decode(attestation.split(".")[1])
+        )
+        JsonParser.parseString(body).asJsonObject[field]?.toString()
+    } catch (e: Exception) {
+        Log.e(this::class.simpleName, e.message, e)
+        null
     }
 
     companion object {

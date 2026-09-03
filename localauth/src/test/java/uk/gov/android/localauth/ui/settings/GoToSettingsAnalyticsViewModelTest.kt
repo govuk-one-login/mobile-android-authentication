@@ -39,7 +39,7 @@ class GoToSettingsAnalyticsViewModelTest {
         logger = mock()
         requiredParameters = RequiredParameters(
             taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
-            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
+            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED
         )
         name = context.getEnglishString(R.string.app_localAuthManagerErrorTitle)
         id = context.getEnglishString(R.string.go_settings_screen_page_id)
@@ -57,7 +57,7 @@ class GoToSettingsAnalyticsViewModelTest {
             endpoint = "",
             status = "",
             reason = reason,
-            params = requiredParameters,
+            params = requiredParameters
         )
 
         viewModel.trackScreen()
@@ -66,7 +66,7 @@ class GoToSettingsAnalyticsViewModelTest {
 
         assertThat(
             IS_ERROR_REASON_TRUE,
-            GAUtils.containsIsError(event, TRUE),
+            GAUtils.containsIsError(event, TRUE)
         )
     }
 
@@ -77,14 +77,14 @@ class GoToSettingsAnalyticsViewModelTest {
                 trackFunction = {
                     viewModel.trackPrimaryButton()
                 },
-                text = primaryBtn,
+                text = primaryBtn
             ),
             TestUtils.TrackEventTestCase.Button(
                 trackFunction = {
                     viewModel.trackBackButton()
                 },
-                text = backBtn,
-            ),
+                text = backBtn
+            )
         ).forEach {
             val result = TestUtils.executeTrackEventTestCase(it, requiredParameters)
 

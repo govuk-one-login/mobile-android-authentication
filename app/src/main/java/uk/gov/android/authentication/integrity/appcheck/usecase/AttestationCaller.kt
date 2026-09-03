@@ -21,10 +21,7 @@ fun interface AttestationCaller {
      * @return An [AttestationResponse] object indicating success or failure.
      *         On success, the response contains the signed attestation statement.
      */
-    suspend fun call(
-        token: String,
-        jwk: JWK.JsonWebKey
-    ): AttestationResponse
+    suspend fun call(token: String, jwk: JWK.JsonWebKey): AttestationResponse
 
     companion object {
         const val FIREBASE_HEADER = "X-Firebase-AppCheck"

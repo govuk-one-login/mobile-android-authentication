@@ -57,7 +57,7 @@ fun BioOptInScreen(
     onBack: () -> Unit,
     onBiometricsOptIn: () -> Unit,
     onBiometricsOptOut: () -> Unit,
-    onDismiss: () -> Unit,
+    onDismiss: () -> Unit
 ) {
     val analyticsViewModel = BioOptInAnalyticsViewModel(LocalContext.current, analyticsLogger)
     analyticsViewModel.trackBioOptInWalletScreen()
@@ -74,7 +74,7 @@ fun BioOptInScreen(
                     analyticsViewModel.trackCloseIconButton()
                     onBiometricsOptOut()
                     onDismiss()
-                },
+                }
             )
         },
         onBack = {
@@ -93,24 +93,21 @@ fun BioOptInScreen(
                     onBiometricsOptOut()
                     analyticsViewModel.trackPasscodeButton()
                     onDismiss()
-                },
+                }
             )
-        },
+        }
     )
 }
 
 @Composable
-private fun BioOptInContent(
-    onBiometricsOptIn: () -> Unit,
-    onBiometricsOptOut: () -> Unit,
-) {
+private fun BioOptInContent(onBiometricsOptIn: () -> Unit, onBiometricsOptOut: () -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier =
         Modifier
             .padding(smallPadding)
-            .fillMaxSize(),
+            .fillMaxSize()
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
@@ -118,7 +115,7 @@ private fun BioOptInContent(
             Modifier
                 .fillMaxHeight()
                 .weight(1f)
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(rememberScrollState())
         ) {
             Text()
         }
@@ -128,7 +125,7 @@ private fun BioOptInContent(
 
 @Deprecated(
     message = "Please use screen that does not allow for walletEnabled - will be removed 7th of March",
-    level = DeprecationLevel.WARNING,
+    level = DeprecationLevel.WARNING
 )
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -138,7 +135,7 @@ fun BioOptInScreen(
     onBack: () -> Unit,
     onBiometricsOptIn: () -> Unit,
     onBiometricsOptOut: () -> Unit,
-    onDismiss: () -> Unit,
+    onDismiss: () -> Unit
 ) {
     val analyticsViewModel = BioOptInAnalyticsViewModel(LocalContext.current, analyticsLogger)
     if (walletEnabled) {
@@ -157,7 +154,7 @@ fun BioOptInScreen(
                     analyticsViewModel.trackCloseIconButton()
                     onBiometricsOptOut()
                     onDismiss()
-                },
+                }
             )
         },
         onBack = {
@@ -177,29 +174,25 @@ fun BioOptInScreen(
                     onBiometricsOptOut()
                     analyticsViewModel.trackPasscodeButton()
                     onDismiss()
-                },
+                }
             )
-        },
+        }
     )
 }
 
 @Deprecated(
     message = "Please use screen that does not allow for walletEnabled - will be removed 7th of March",
-    level = DeprecationLevel.WARNING,
+    level = DeprecationLevel.WARNING
 )
 @Composable
-private fun BioOptInContent(
-    walletEnabled: Boolean,
-    onBiometricsOptIn: () -> Unit,
-    onBiometricsOptOut: () -> Unit,
-) {
+private fun BioOptInContent(walletEnabled: Boolean, onBiometricsOptIn: () -> Unit, onBiometricsOptOut: () -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier =
         Modifier
             .padding(smallPadding)
-            .fillMaxSize(),
+            .fillMaxSize()
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
@@ -207,7 +200,7 @@ private fun BioOptInContent(
             Modifier
                 .fillMaxHeight()
                 .weight(1f)
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(rememberScrollState())
         ) {
             if (walletEnabled) {
                 Text()
@@ -230,9 +223,9 @@ private fun Text() {
         title = ListTitle(text = title, titleType = TitleType.Text),
         bulletListItems = persistentListOf(
             ListItem(bulletItemOne),
-            ListItem(bulletItemTwo),
+            ListItem(bulletItemTwo)
         ),
-        modifier = Modifier.padding(bottom = smallPadding),
+        modifier = Modifier.padding(bottom = smallPadding)
     )
     CustomText(text = stringResource(R.string.app_enableBiometricsBody2), CONTENT1_INDEX)
     CustomText(text = stringResource(R.string.app_enableBiometricsBody3), CONTENT2_INDEX)
@@ -258,37 +251,34 @@ private fun Header() {
         modifier = Modifier
             .padding(vertical = smallPadding)
             .fillMaxWidth()
-            .testTag(stringResource(R.string.app_enableBiometricsImageTestTag)),
+            .testTag(stringResource(R.string.app_enableBiometricsImageTestTag))
     )
     GdsHeading(
         text = stringResource(R.string.app_enableBiometricsTitle),
         style = GdsHeadingStyle.Title1,
         modifier = Modifier
             .padding(bottom = smallPadding)
-            .semantics { this.traversalIndex = TITLE_INDEX },
+            .semantics { this.traversalIndex = TITLE_INDEX }
     )
 }
 
 @Composable
-private fun BioOptInButtons(
-    onBiometricsOptIn: () -> Unit,
-    onBiometricsOptOut: () -> Unit,
-) {
+private fun BioOptInButtons(onBiometricsOptIn: () -> Unit, onBiometricsOptOut: () -> Unit) {
     Column(
         verticalArrangement = Arrangement.Bottom,
-        modifier = Modifier.padding(bottom = smallPadding),
+        modifier = Modifier.padding(bottom = smallPadding)
     ) {
         GdsButton(
             text = stringResource(R.string.app_enableBiometricsButton),
             buttonType = ButtonTypeV2.Primary(),
             onClick = onBiometricsOptIn,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
         )
         GdsButton(
             text = stringResource(R.string.app_enablePasscodeOrPatternButton),
             buttonType = ButtonTypeV2.Quaternary(),
             onClick = onBiometricsOptOut,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
@@ -301,7 +291,7 @@ private fun CustomText(text: String, accessibilityIndex: Float) {
         modifier = Modifier.padding(bottom = smallPadding)
             .fillMaxWidth()
             .semantics { this.traversalIndex = accessibilityIndex },
-        textAlign = TextAlign.Center,
+        textAlign = TextAlign.Center
     )
 }
 
@@ -315,13 +305,13 @@ internal fun DeprecatedBioOptInPreviewWallet() {
         FullScreenDialogue(
             topAppBar = {
                 GdsTopAppBar(
-                    navigationButton = GdsIconButtonDefaults.defaultCloseContent(),
+                    navigationButton = GdsIconButtonDefaults.defaultCloseContent()
                 )
             },
             onBack = {},
             content = {
                 BioOptInContent(true, {}, {})
-            },
+            }
         )
     }
 }
@@ -336,13 +326,13 @@ internal fun DeprecatedBioOptInPreview() {
         FullScreenDialogue(
             topAppBar = {
                 GdsTopAppBar(
-                    navigationButton = GdsIconButtonDefaults.defaultCloseContent(),
+                    navigationButton = GdsIconButtonDefaults.defaultCloseContent()
                 )
             },
             onBack = {},
             content = {
                 BioOptInContent(false, {}, {})
-            },
+            }
         )
     }
 }
@@ -357,13 +347,13 @@ internal fun BioOptInPreview() {
         FullScreenDialogue(
             topAppBar = {
                 GdsTopAppBar(
-                    navigationButton = GdsIconButtonDefaults.defaultCloseContent(),
+                    navigationButton = GdsIconButtonDefaults.defaultCloseContent()
                 )
             },
             onBack = {},
             content = {
                 BioOptInContent({}, {})
-            },
+            }
         )
     }
 }

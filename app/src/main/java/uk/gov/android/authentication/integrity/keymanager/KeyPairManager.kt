@@ -73,10 +73,7 @@ interface KeyPairManager {
      * @return The signature in ASN.1 DER format as a byte array
      * @throws KeySigningException if signing fails or the key cannot be accessed
      */
-    fun sign(
-        alias: String,
-        data: ByteArray
-    ): ByteArray
+    fun sign(alias: String, data: ByteArray): ByteArray
 
     companion object {
         /**

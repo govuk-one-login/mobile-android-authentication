@@ -17,7 +17,7 @@ android {
 dependencies {
     listOf(
         libs.androidx.uiautomator,
-        libs.logging.test,
+        libs.logging.test
     ).forEach(::androidTestImplementation)
 
     listOf(
@@ -33,25 +33,25 @@ dependencies {
         libs.kotlinx.serialization.json,
         libs.logging,
         platform(libs.kotlin.bom),
-        projects.json,
+        projects.json
     ).forEach(::implementation)
 
     listOf(
         libs.kotlinx.coroutines.test,
         libs.logging.test,
-        libs.mockito.inline,
+        libs.mockito.inline
     ).forEach(::testImplementation)
 }
 
 mavenPublishingConfig {
     mavenConfigBlock {
         name.set(
-            "Authentication module for Android Devices",
+            "Authentication module for Android Devices"
         )
         description.set(
             """
             A Gradle module which implements OpenID Connect to return an access token for Android.
-            """.trimIndent(),
+            """.trimIndent()
         )
     }
 }

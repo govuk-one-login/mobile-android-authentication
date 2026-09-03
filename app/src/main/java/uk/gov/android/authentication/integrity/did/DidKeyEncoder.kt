@@ -101,10 +101,9 @@ object DidKeyEncoder {
         return ((firstDigit shl HEX_NIBBLE_BITS) + secondDigit).toByte()
     }
 
-    private fun toDigit(hexChar: Char): Int =
-        requireNotNull(hexChar.digitToIntOrNull(HEX_RADIX)) {
-            "Invalid Hexadecimal Character: $hexChar"
-        }
+    private fun toDigit(hexChar: Char): Int = requireNotNull(hexChar.digitToIntOrNull(HEX_RADIX)) {
+        "Invalid Hexadecimal Character: $hexChar"
+    }
 
     /**
      * Multicodec identifier for cryptographic key types.
@@ -112,10 +111,7 @@ object DidKeyEncoder {
      * @property code The codec code value in hexadecimal
      * @property compressedKeyLength The compressed public key length in bytes
      */
-    enum class Multicodec(
-        val code: String,
-        val compressedKeyLength: Int
-    ) {
+    enum class Multicodec(val code: String, val compressedKeyLength: Int) {
         /** P-256 (secp256r1) public key codec */
         P256_PUB("1200", P256_COMPRESSED_KEY_LENGTH)
     }

@@ -25,24 +25,24 @@ import uk.gov.android.ui.componentsv2.list.GdsNumberedList
 import uk.gov.android.ui.componentsv2.list.ListItem
 import uk.gov.android.ui.componentsv2.list.ListTitle
 import uk.gov.android.ui.componentsv2.list.TitleType
+import uk.gov.android.ui.patterns.R as patternsR
 import uk.gov.android.ui.patterns.dialog.FullScreenDialogue
 import uk.gov.android.ui.patterns.errorscreen.v2.ErrorScreen
 import uk.gov.android.ui.theme.m3.GdsTheme
 import uk.gov.android.ui.theme.meta.ScreenPreview
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
-import uk.gov.android.ui.patterns.R as patternsR
 
 @Composable
 fun GoToSettingsScreen(
     analyticsLogger: AnalyticsLogger,
     onBack: () -> Unit,
     onGoToSettings: () -> Unit,
-    onDismiss: () -> Unit,
+    onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
     val analyticsViewModel = GoToSettingsAnalyticsViewModel(
         context,
-        analyticsLogger,
+        analyticsLogger
     )
     analyticsViewModel.trackScreen()
     FullScreenDialogue(
@@ -65,17 +65,15 @@ fun GoToSettingsScreen(
                 context.startActivity(intent)
                 onDismiss()
             }
-        },
+        }
     )
 }
 
 @Composable
-private fun GoToSettingsContent(
-    onGoToSettings: () -> Unit,
-) {
+private fun GoToSettingsContent(onGoToSettings: () -> Unit) {
     val body = persistentListOf(
         stringResource(R.string.app_localAuthManagerErrorBody1),
-        stringResource(R.string.app_localAuthManagerErrorBody2),
+        stringResource(R.string.app_localAuthManagerErrorBody2)
     )
     val numberedListTitle = stringResource(R.string.app_localAuthManagerErrorBody3)
     val numberedListStep1 = stringResource(R.string.app_localAuthManagerErrorNumberedList1)
@@ -87,13 +85,13 @@ private fun GoToSettingsContent(
                 image = ImageVector.vectorResource(patternsR.drawable.ic_warning_error),
                 contentDescription = stringResource(patternsR.string.error_icon_description),
                 color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
             )
         },
         title = { horizontalPadding ->
             GdsHeading(
                 text = stringResource(R.string.app_localAuthManagerErrorTitle),
-                modifier = Modifier.padding(horizontal = horizontalPadding),
+                modifier = Modifier.padding(horizontal = horizontalPadding)
             )
         },
         modifier = Modifier.fillMaxSize(),
@@ -102,7 +100,7 @@ private fun GoToSettingsContent(
                 Text(
                     text = body[index],
                     modifier = Modifier.padding(horizontal = horizontalPadding),
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
             item {
@@ -110,10 +108,10 @@ private fun GoToSettingsContent(
                     numberedListItems = persistentListOf(
                         ListItem(numberedListStep1),
                         ListItem(numberedListStep2),
-                        ListItem(numberedListStep3),
+                        ListItem(numberedListStep3)
                     ),
                     title = ListTitle(numberedListTitle, TitleType.Heading),
-                    modifier = Modifier.padding(horizontal = horizontalPadding),
+                    modifier = Modifier.padding(horizontal = horizontalPadding)
                 )
             }
         },
@@ -122,9 +120,9 @@ private fun GoToSettingsContent(
                 text = stringResource(R.string.app_localAuthManagerErrorGoToSettingsButton),
                 buttonType = ButtonTypeV2.Primary(),
                 onClick = onGoToSettings,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
             )
-        },
+        }
     )
 }
 

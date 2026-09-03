@@ -7,12 +7,14 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlin.test.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import uk.gov.android.authentication.localauth.R
 import uk.gov.android.localauth.utils.FragmentActivityTestCase
+import uk.gov.android.ui.componentsv2.R as ComponentsR
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 import uk.gov.logging.api.analytics.parameters.data.TaxonomyLevel2
 import uk.gov.logging.api.analytics.parameters.data.TaxonomyLevel3
@@ -20,8 +22,6 @@ import uk.gov.logging.api.v3dot1.logger.logEventV3Dot1
 import uk.gov.logging.api.v3dot1.model.RequiredParameters
 import uk.gov.logging.api.v3dot1.model.TrackEvent
 import uk.gov.logging.api.v3dot1.model.ViewEvent
-import kotlin.test.assertTrue
-import uk.gov.android.ui.componentsv2.R as ComponentsR
 
 @RunWith(AndroidJUnit4::class)
 class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
@@ -32,7 +32,7 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
 
     private val requiredParams = RequiredParameters(
         taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
-        taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
+        taxonomyLevel3 = TaxonomyLevel3.UNDEFINED
     )
 
     @Test
@@ -40,35 +40,35 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
         setup()
         composeTestRule.apply {
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorTitle),
+                context.getString(R.string.app_localAuthManagerErrorTitle)
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorBody1),
+                context.getString(R.string.app_localAuthManagerErrorBody1)
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorBody2),
+                context.getString(R.string.app_localAuthManagerErrorBody2)
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorBody3),
+                context.getString(R.string.app_localAuthManagerErrorBody3)
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorNumberedList1),
+                context.getString(R.string.app_localAuthManagerErrorNumberedList1)
             ).performScrollTo().assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorNumberedList2),
+                context.getString(R.string.app_localAuthManagerErrorNumberedList2)
             ).performScrollTo().assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorNumberedList3),
+                context.getString(R.string.app_localAuthManagerErrorNumberedList3)
             ).performScrollTo().assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton),
+                context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton)
             ).assertIsDisplayed()
         }
         verify(analyticsLogger).logEventV3Dot1(
@@ -78,8 +78,8 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
                 endpoint = "",
                 status = "",
                 reason = context.getString(R.string.app_localAuthManagerErrorReason),
-                params = requiredParams,
-            ),
+                params = requiredParams
+            )
         )
     }
 
@@ -88,7 +88,7 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
         setup()
         composeTestRule.apply {
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton),
+                context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton)
             ).performClick()
 
             assertTrue(onGoToSettings)
@@ -96,8 +96,8 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
         verify(analyticsLogger).logEventV3Dot1(
             TrackEvent.Button(
                 text = context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton),
-                params = requiredParams,
-            ),
+                params = requiredParams
+            )
         )
     }
 
@@ -106,7 +106,7 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
         setup()
         composeTestRule.apply {
             onNodeWithContentDescription(
-                context.getString(ComponentsR.string.close_icon_button),
+                context.getString(ComponentsR.string.close_icon_button)
             ).performClick()
 
             assertTrue(onBack)
@@ -115,8 +115,8 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
         verify(analyticsLogger).logEventV3Dot1(
             TrackEvent.Button(
                 text = context.getString(R.string.system_backButton),
-                params = requiredParams,
-            ),
+                params = requiredParams
+            )
         )
     }
 
@@ -125,7 +125,7 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
         setup()
         composeTestRule.apply {
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorTitle),
+                context.getString(R.string.app_localAuthManagerErrorTitle)
             ).assertIsDisplayed()
 
             Espresso.pressBack()
@@ -136,8 +136,8 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
         verify(analyticsLogger).logEventV3Dot1(
             TrackEvent.Button(
                 text = context.getString(R.string.system_backButton),
-                params = requiredParams,
-            ),
+                params = requiredParams
+            )
         )
     }
 
@@ -149,35 +149,35 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
             }
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorTitle),
+                context.getString(R.string.app_localAuthManagerErrorTitle)
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorBody1),
+                context.getString(R.string.app_localAuthManagerErrorBody1)
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorBody2),
+                context.getString(R.string.app_localAuthManagerErrorBody2)
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorBody3),
+                context.getString(R.string.app_localAuthManagerErrorBody3)
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorNumberedList1),
+                context.getString(R.string.app_localAuthManagerErrorNumberedList1)
             ).performScrollTo().assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorNumberedList2),
+                context.getString(R.string.app_localAuthManagerErrorNumberedList2)
             ).performScrollTo().assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorNumberedList3),
+                context.getString(R.string.app_localAuthManagerErrorNumberedList3)
             ).performScrollTo().assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton),
+                context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton)
             ).assertIsDisplayed()
         }
     }
@@ -188,7 +188,7 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
                 analyticsLogger = analyticsLogger,
                 onBack = { onBack = !onBack },
                 onGoToSettings = { onGoToSettings = !onGoToSettings },
-                onDismiss = { onDismiss = !onDismiss },
+                onDismiss = { onDismiss = !onDismiss }
             )
         }
     }

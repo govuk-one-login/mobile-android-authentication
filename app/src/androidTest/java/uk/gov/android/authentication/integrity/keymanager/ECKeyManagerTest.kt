@@ -61,12 +61,10 @@ class ECKeyManagerTest {
     }
 
     @Suppress("SwallowedException")
-    private fun checkInputIsBase64(input: String): Boolean {
-        return try {
-            Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT).decode(input.toByteArray())
-            true
-        } catch (e: IllegalArgumentException) {
-            false
-        }
+    private fun checkInputIsBase64(input: String): Boolean = try {
+        Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT).decode(input.toByteArray())
+        true
+    } catch (e: IllegalArgumentException) {
+        false
     }
 }

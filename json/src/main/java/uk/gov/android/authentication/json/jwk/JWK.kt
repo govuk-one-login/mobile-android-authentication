@@ -1,7 +1,7 @@
 package uk.gov.android.authentication.json.jwk
 
-import kotlinx.serialization.Serializable
 import java.security.Key
+import kotlinx.serialization.Serializable
 
 /**
  * Object to create a JWK following the required format:
@@ -26,17 +26,15 @@ object JWK {
      * @param y - ECPoint in Base64Url format with no padding - 32 bits
      * @return [JsonWebKey]
      */
-    fun generateJwk(x: String, y: String): JsonWebKey {
-        return JsonWebKey(
-            jwk = JsonWebKeyFormat(
-                KEY_TYPE_VALUE,
-                USE_VALUE,
-                CURVE_VALUE,
-                x,
-                y,
-            ),
+    fun generateJwk(x: String, y: String): JsonWebKey = JsonWebKey(
+        jwk = JsonWebKeyFormat(
+            KEY_TYPE_VALUE,
+            USE_VALUE,
+            CURVE_VALUE,
+            x,
+            y
         )
-    }
+    )
 
     /**
      * Method to get a PublicKey in JWK format that uses the Jose library.
@@ -44,21 +42,11 @@ object JWK {
      * @param key - ECPublicKey
      * @return [org.jose4j.jwk.JsonWebKey]
      */
-    fun generateJwk(key: Key): org.jose4j.jwk.JsonWebKey {
-        return org.jose4j.jwk.JsonWebKey.Factory.newJwk(key)
-    }
+    fun generateJwk(key: Key): org.jose4j.jwk.JsonWebKey = org.jose4j.jwk.JsonWebKey.Factory.newJwk(key)
 
     @Serializable
-    data class JsonWebKey(
-        val jwk: JsonWebKeyFormat,
-    )
+    data class JsonWebKey(val jwk: JsonWebKeyFormat)
 
     @Serializable
-    data class JsonWebKeyFormat(
-        val kty: String,
-        val use: String,
-        val crv: String,
-        val x: String,
-        val y: String,
-    )
+    data class JsonWebKeyFormat(val kty: String, val use: String, val crv: String, val x: String, val y: String)
 }
