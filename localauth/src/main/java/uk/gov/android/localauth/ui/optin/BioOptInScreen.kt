@@ -104,15 +104,13 @@ private fun BioOptInContent(onBiometricsOptIn: () -> Unit, onBiometricsOptOut: (
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier =
-        Modifier
+        modifier = Modifier
             .padding(smallPadding)
             .fillMaxSize()
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
-            modifier =
-            Modifier
+            modifier = Modifier
                 .fillMaxHeight()
                 .weight(1f)
                 .verticalScroll(rememberScrollState())
@@ -189,15 +187,13 @@ private fun BioOptInContent(walletEnabled: Boolean, onBiometricsOptIn: () -> Uni
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier =
-        Modifier
+        modifier = Modifier
             .padding(smallPadding)
             .fillMaxSize()
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
-            modifier =
-            Modifier
+            modifier = Modifier
                 .fillMaxHeight()
                 .weight(1f)
                 .verticalScroll(rememberScrollState())
@@ -288,7 +284,8 @@ private fun CustomText(text: String, accessibilityIndex: Float) {
     Text(
         text = text,
         color = MaterialTheme.colorScheme.onBackground,
-        modifier = Modifier.padding(bottom = smallPadding)
+        modifier = Modifier
+            .padding(bottom = smallPadding)
             .fillMaxWidth()
             .semantics { this.traversalIndex = accessibilityIndex },
         textAlign = TextAlign.Center

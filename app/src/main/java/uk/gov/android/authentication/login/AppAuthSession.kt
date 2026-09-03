@@ -83,6 +83,7 @@ class AppAuthSession : LoginSession {
                             onFailure = { error -> onFailure(error) }
                         )
                     }
+
                     is SignedDPoP.Failure -> onFailure(
                         signedDPoP.error ?: DPoPManagerError(signedDPoP.reason)
                     )

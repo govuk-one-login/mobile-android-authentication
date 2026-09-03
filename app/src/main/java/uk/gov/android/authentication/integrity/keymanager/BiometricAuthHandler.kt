@@ -85,6 +85,7 @@ class BiometricAuthHandler(activity: FragmentActivity) : AutoCloseable {
                 // Fingerprint allowing multiple attempts with FaceScan
                 BiometricPrompt.ERROR_UNABLE_TO_PROCESS,
                 BiometricPrompt.ERROR_TIMEOUT -> onFailure()
+
                 else -> onError(errorCode, errString)
             }
         }

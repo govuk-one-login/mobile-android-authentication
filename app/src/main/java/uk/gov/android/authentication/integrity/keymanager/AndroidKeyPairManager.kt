@@ -62,28 +62,28 @@ class AndroidKeyPairManager private constructor(
                         accessControlLevel = AccessControlLevel.PASSCODE_AND_BIOMETRICS,
                         promptConfig = promptConfig,
                         callback =
-                        Callback(
-                            onSuccess = {
-                                continuation.resumeWith(
-                                    runCatching {
-                                        requests.toList().map { request ->
-                                            SignedData(
-                                                keyAlias = request.keyAlias,
-                                                signature = sign(
-                                                    request.keyAlias,
-                                                    request.data
+                            Callback(
+                                onSuccess = {
+                                    continuation.resumeWith(
+                                        runCatching {
+                                            requests.toList().map { request ->
+                                                SignedData(
+                                                    keyAlias = request.keyAlias,
+                                                    signature = sign(
+                                                        request.keyAlias,
+                                                        request.data
+                                                    )
                                                 )
-                                            )
+                                            }
                                         }
-                                    }
-                                )
-                            },
-                            onError = { code, msg ->
-                                continuation.resumeWithException(
-                                    BiometricAuthException(code, msg)
-                                )
-                            }
-                        )
+                                    )
+                                },
+                                onError = { code, msg ->
+                                    continuation.resumeWithException(
+                                        BiometricAuthException(code, msg)
+                                    )
+                                }
+                            )
                     )
                 )
             }
