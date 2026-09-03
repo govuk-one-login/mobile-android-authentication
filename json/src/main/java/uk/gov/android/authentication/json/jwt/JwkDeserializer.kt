@@ -14,10 +14,11 @@ class JwkDeserializer : JsonDeserializer<JsonWebKey> {
         typeOfT: Type?,
         context: JsonDeserializationContext?,
     ): JsonWebKey {
-        val jwkParameters: Map<String, Any> = context?.deserialize(
-            json,
-            LinkedHashMap::class.java,
-        ) ?: throw IllegalArgumentException(NULL_CONTEXT)
+        val jwkParameters: Map<String, Any> =
+            context?.deserialize(
+                json,
+                LinkedHashMap::class.java,
+            ) ?: throw IllegalArgumentException(NULL_CONTEXT)
         return try {
             JsonWebKey.Factory.newJwk(jwkParameters)
         } catch (e: JoseException) {

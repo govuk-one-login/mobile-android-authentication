@@ -14,9 +14,10 @@ class JwkDeserializerTest {
     private val context: JsonDeserializationContext = mock()
     private val sut = JwkDeserializer()
 
-    private val jwk = "{\"crv\":\"P-256\",\"kid\":\"key-0\",\"kty\":\"EC\",\"x\":\"Shc8mJ6fcZik" +
-        "hWM4ofHGSwXTkdqXM8GbPtRzPa7LttA=\",\"y\":\"OIhg/7rhWfmnWQEgAXzU8fCTggGrS3zj5x76a0l" +
-        "rzJM=\"}"
+    private val jwk =
+        "{\"crv\":\"P-256\",\"kid\":\"key-0\",\"kty\":\"EC\",\"x\":\"Shc8mJ6fcZik" +
+            "hWM4ofHGSwXTkdqXM8GbPtRzPa7LttA=\",\"y\":\"OIhg/7rhWfmnWQEgAXzU8fCTggGrS3zj5x76a0l" +
+            "rzJM=\"}"
 
     private val jsonValidObj = JsonParser.parseString(jwk).asJsonObject
 

@@ -18,7 +18,7 @@ interface LoginSession {
      */
     fun present(
         launcher: ActivityResultLauncher<Intent>,
-        configuration: LoginSessionConfiguration
+        configuration: LoginSessionConfiguration,
     )
 
     /**
@@ -34,6 +34,6 @@ interface LoginSession {
         appIntegrity: AppIntegrityParameters,
         httpServiceDomain: String,
         onSuccess: (tokens: TokenResponse) -> Unit,
-        onFailure: (error: Throwable) -> Unit
+        onFailure: (error: Throwable) -> Unit,
     )
 }

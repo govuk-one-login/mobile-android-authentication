@@ -485,8 +485,7 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
 
             onNodeWithText(
                 context.getString(R.string.app_optOutBiometricsButton),
-            )
-                .assertIsDisplayed()
+            ).assertIsDisplayed()
                 .performClick()
 
             assertTrue(onBioOptIn)

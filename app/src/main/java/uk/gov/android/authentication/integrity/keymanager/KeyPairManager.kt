@@ -1,13 +1,13 @@
 package uk.gov.android.authentication.integrity.keymanager
 
-import java.io.ByteArrayInputStream
-import java.security.interfaces.ECPublicKey
-import java.security.spec.ECParameterSpec
 import org.bouncycastle.asn1.ASN1InputStream
 import org.bouncycastle.asn1.ASN1Integer
 import org.bouncycastle.asn1.ASN1Sequence
 import uk.gov.android.authentication.integrity.AppIntegrityUtils
 import uk.gov.android.authentication.integrity.keymanager.BiometricAuthHandler.PromptConfig
+import java.io.ByteArrayInputStream
+import java.security.interfaces.ECPublicKey
+import java.security.spec.ECParameterSpec
 
 interface KeyPairManager {
     /**
@@ -26,7 +26,7 @@ interface KeyPairManager {
     suspend fun authenticateAndSign(
         vararg requests: SignRequest,
         promptConfig: PromptConfig,
-        authHandler: BiometricAuthHandler
+        authHandler: BiometricAuthHandler,
     ): List<SignedData>
 
     /**
@@ -75,7 +75,7 @@ interface KeyPairManager {
      */
     fun sign(
         alias: String,
-        data: ByteArray
+        data: ByteArray,
     ): ByteArray
 
     companion object {
@@ -93,7 +93,10 @@ interface KeyPairManager {
          * @param spec The EC parameter specification containing the curve order
          * @return The signature as concatenated r and s values in fixed-length byte arrays
          */
-        fun convertSignatureToASN1(signature: ByteArray, spec: ECParameterSpec): ByteArray {
+        fun convertSignatureToASN1(
+            signature: ByteArray,
+            spec: ECParameterSpec,
+        ): ByteArray {
             // Convert signature to bites as values
             val asn1Stream = ASN1InputStream(ByteArrayInputStream(signature))
             val sequence = asn1Stream.readObject() as ASN1Sequence

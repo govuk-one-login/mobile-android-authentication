@@ -40,8 +40,8 @@ object TestValues {
     private val TEST_CLAIMS_SUPPORTED: List<String> = mutableListOf("aud", "exp")
     private val TEST_JSON: String = getDiscoveryDocumentJson()
 
-    private fun getDiscoveryDocumentJson(): String {
-        return (
+    private fun getDiscoveryDocumentJson(): String =
+        (
             (
                 "{\n" +
                     " \"issuer\": \"" + TEST_ISSUER + "\",\n" +
@@ -62,9 +62,8 @@ object TestValues {
                     toJson(TEST_TOKEN_ENDPOINT_AUTH_METHODS) + ",\n" +
                     " \"claims_supported\": " + toJson(TEST_CLAIMS_SUPPORTED) + "\n" +
                     "}"
-                )
             )
-    }
+        )
 
     private fun toJson(strings: List<String?>): String = JSONArray(strings).toString()
 
@@ -73,17 +72,17 @@ object TestValues {
         get() {
             try {
                 return AuthorizationServiceDiscovery(
-                    JSONObject(TEST_JSON)
+                    JSONObject(TEST_JSON),
                 )
             } catch (ex: JSONException) {
                 throw RuntimeException(
                     "Unable to create test authorization service discover document",
-                    ex
+                    ex,
                 )
             } catch (ex: AuthorizationServiceDiscovery.MissingArgumentException) {
                 throw RuntimeException(
                     "Unable to create test authorization service discover document",
-                    ex
+                    ex,
                 )
             }
         }

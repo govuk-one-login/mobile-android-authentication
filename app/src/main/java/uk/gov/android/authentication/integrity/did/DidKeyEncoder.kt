@@ -90,7 +90,7 @@ object DidKeyEncoder {
 
         return ByteArray(hexString.length / HEX_CHAR_LENGTH) { i ->
             hexToByte(
-                hexString.substring(i * HEX_CHAR_LENGTH, i * HEX_CHAR_LENGTH + HEX_CHAR_LENGTH)
+                hexString.substring(i * HEX_CHAR_LENGTH, i * HEX_CHAR_LENGTH + HEX_CHAR_LENGTH),
             )
         }
     }
@@ -114,9 +114,9 @@ object DidKeyEncoder {
      */
     enum class Multicodec(
         val code: String,
-        val compressedKeyLength: Int
+        val compressedKeyLength: Int,
     ) {
         /** P-256 (secp256r1) public key codec */
-        P256_PUB("1200", P256_COMPRESSED_KEY_LENGTH)
+        P256_PUB("1200", P256_COMPRESSED_KEY_LENGTH),
     }
 }

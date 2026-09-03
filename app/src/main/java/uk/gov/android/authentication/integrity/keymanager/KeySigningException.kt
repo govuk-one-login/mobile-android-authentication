@@ -11,5 +11,5 @@ package uk.gov.android.authentication.integrity.keymanager
  */
 class KeySigningException(
     alias: String,
-    cause: Throwable
+    cause: Throwable,
 ) : Exception("Failed to sign data with key alias: $alias", cause)

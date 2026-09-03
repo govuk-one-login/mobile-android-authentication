@@ -16,13 +16,13 @@ class BioOptOutAnalyticsViewModel(
     context: Context,
     private val analyticsLogger: AnalyticsLogger,
 ) : ViewModel() {
-
     private val screenEvent = makeScreenEvent(context)
     private val closeIconEvent = makeCloseBackEvent(context)
-    private val biometricsBtnEvent = makeButtonEvent(
-        context,
-        R.string.app_optOutBiometricsButton,
-    )
+    private val biometricsBtnEvent =
+        makeButtonEvent(
+            context,
+            R.string.app_optOutBiometricsButton,
+        )
     private val backBtnEvent = makeBackButtonEvent(context)
 
     fun trackBioOptOutScreen() {
@@ -42,41 +42,48 @@ class BioOptOutAnalyticsViewModel(
     }
 
     companion object {
-        internal fun makeScreenEvent(context: Context) = with(context) {
-            ViewEvent.Error(
-                name = getEnglishString(R.string.app_optOutBiometricsTitle),
-                id = getEnglishString(R.string.bio_opt_out_screen_page_id),
-                endpoint = "",
-                status = "",
-                reason = getString(R.string.app_optOutBiometricsErrorReason),
-                params = requiredParams,
-            )
-        }
+        internal fun makeScreenEvent(context: Context) =
+            with(context) {
+                ViewEvent.Error(
+                    name = getEnglishString(R.string.app_optOutBiometricsTitle),
+                    id = getEnglishString(R.string.bio_opt_out_screen_page_id),
+                    endpoint = "",
+                    status = "",
+                    reason = getString(R.string.app_optOutBiometricsErrorReason),
+                    params = requiredParams,
+                )
+            }
 
-        internal fun makeButtonEvent(context: Context, text: Int) = with(context) {
+        internal fun makeButtonEvent(
+            context: Context,
+            text: Int,
+        ) = with(context) {
             TrackEvent.Button(
                 text = getEnglishString(text),
                 params = requiredParams,
             )
         }
 
-        internal fun makeCloseBackEvent(context: Context) = with(context) {
-            TrackEvent.Icon(
-                text = getEnglishString(uk.gov.android.ui.componentsv2.R.string.close_icon_button),
-                params = requiredParams,
-            )
-        }
+        internal fun makeCloseBackEvent(context: Context) =
+            with(context) {
+                TrackEvent.Icon(
+                    text = getEnglishString(uk.gov.android.ui.componentsv2.R.string.close_icon_button),
+                    params = requiredParams,
+                )
+            }
 
-        internal fun makeBackButtonEvent(context: Context) = with(context) {
-            TrackEvent.Button(
-                text = getEnglishString(R.string.system_backButton),
-                params = requiredParams,
-            )
-        }
+        internal fun makeBackButtonEvent(context: Context) =
+            with(context) {
+                TrackEvent.Button(
+                    text = getEnglishString(R.string.system_backButton),
+                    params = requiredParams,
+                )
+            }
 
-        private val requiredParams = RequiredParameters(
-            taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
-            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
-        )
+        private val requiredParams =
+            RequiredParameters(
+                taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
+                taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
+            )
     }
 }

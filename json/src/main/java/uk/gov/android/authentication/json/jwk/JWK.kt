@@ -26,17 +26,20 @@ object JWK {
      * @param y - ECPoint in Base64Url format with no padding - 32 bits
      * @return [JsonWebKey]
      */
-    fun generateJwk(x: String, y: String): JsonWebKey {
-        return JsonWebKey(
-            jwk = JsonWebKeyFormat(
-                keyTypeValue,
-                useValue,
-                curveValue,
-                x,
-                y,
-            ),
+    fun generateJwk(
+        x: String,
+        y: String,
+    ): JsonWebKey =
+        JsonWebKey(
+            jwk =
+                JsonWebKeyFormat(
+                    keyTypeValue,
+                    useValue,
+                    curveValue,
+                    x,
+                    y,
+                ),
         )
-    }
 
     /**
      * Method to get a PublicKey in JWK format that uses the Jose library.
@@ -44,9 +47,9 @@ object JWK {
      * @param key - ECPublicKey
      * @return [org.jose4j.jwk.JsonWebKey]
      */
-    fun generateJwk(key: Key): org.jose4j.jwk.JsonWebKey {
-        return org.jose4j.jwk.JsonWebKey.Factory.newJwk(key)
-    }
+    fun generateJwk(key: Key): org.jose4j.jwk.JsonWebKey =
+        org.jose4j.jwk.JsonWebKey.Factory
+            .newJwk(key)
 
     @Serializable
     data class JsonWebKey(

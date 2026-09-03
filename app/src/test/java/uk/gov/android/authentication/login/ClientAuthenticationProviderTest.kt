@@ -8,11 +8,12 @@ class ClientAuthenticationProviderTest {
 
     @Test
     fun `provide additional header parameters`() {
-        val result = sut.setCustomClientAuthentication(
-            ATTESTATION,
-            POP,
-            DPOP
-        )
+        val result =
+            sut.setCustomClientAuthentication(
+                ATTESTATION,
+                POP,
+                DPOP,
+            )
 
         assertEquals(expected, result.getRequestHeaders(""))
         assertEquals(mutableMapOf(), result.getRequestParameters(""))
@@ -30,15 +31,17 @@ class ClientAuthenticationProviderTest {
         private const val ATTESTATION = "client attestation"
         private const val POP = "proof of possession"
         private const val DPOP = "demonstrating proof of possession"
-        private val expected = mutableMapOf(
-            Pair("OAuth-Client-Attestation", ATTESTATION),
-            Pair("OAuth-Client-Attestation-PoP", POP),
-            Pair("DPoP", DPOP)
-        )
-        private val expectedWhenNull = mutableMapOf(
-            Pair("OAuth-Client-Attestation", ""),
-            Pair("OAuth-Client-Attestation-PoP", ""),
-            Pair("DPoP", "")
-        )
+        private val expected =
+            mutableMapOf(
+                Pair("OAuth-Client-Attestation", ATTESTATION),
+                Pair("OAuth-Client-Attestation-PoP", POP),
+                Pair("DPoP", DPOP),
+            )
+        private val expectedWhenNull =
+            mutableMapOf(
+                Pair("OAuth-Client-Attestation", ""),
+                Pair("OAuth-Client-Attestation-PoP", ""),
+                Pair("DPoP", ""),
+            )
     }
 }

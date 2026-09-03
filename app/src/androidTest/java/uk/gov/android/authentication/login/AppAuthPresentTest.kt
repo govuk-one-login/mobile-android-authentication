@@ -9,14 +9,14 @@ import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.intent.matcher.IntentMatchers.isInternal
 import androidx.test.espresso.intent.matcher.UriMatchers
 import androidx.test.platform.app.InstrumentationRegistry
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
-import kotlin.test.Test
 import net.openid.appauth.AuthorizationManagementActivity
 import org.hamcrest.CoreMatchers.not
 import org.mockito.kotlin.mock
 import uk.gov.android.authentication.TestActivity
 import uk.gov.android.authentication.login.refresh.DemonstratingProofOfPossessionManager
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 
 class AppAuthPresentTest {
     private lateinit var loginSession: LoginSession
@@ -45,7 +45,7 @@ class AppAuthPresentTest {
         // Given a registered ActivityResultLauncher
         val scenario = ActivityScenario.launch(TestActivity::class.java)
         intending(not(isInternal())).respondWith(
-            Instrumentation.ActivityResult(Activity.RESULT_OK, null)
+            Instrumentation.ActivityResult(Activity.RESULT_OK, null),
         )
         scenario.onActivity { activity ->
             val launcher = (activity as TestActivity).launcher
@@ -55,7 +55,7 @@ class AppAuthPresentTest {
 
         // Then launch an AuthorizationManagementActivity intent
         Intents.intended(
-            IntentMatchers.hasComponent(AuthorizationManagementActivity::class.java.name)
+            IntentMatchers.hasComponent(AuthorizationManagementActivity::class.java.name),
         )
         // Aimed at the host, path, and scheme set by the LoginSessionConfiguration.authorizeEndpoint
         val host = loginSessionConfig.authorizeEndpoint.host

@@ -12,10 +12,11 @@ class TestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        launcher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            callback(result.data!!)
-        }
+        launcher =
+            registerForActivityResult(
+                ActivityResultContracts.StartActivityForResult(),
+            ) { result ->
+                callback(result.data!!)
+            }
     }
 }

@@ -7,7 +7,7 @@ import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
 
 class BiometricAuthHandler(
-    activity: FragmentActivity
+    activity: FragmentActivity,
 ) : AutoCloseable {
     private var fragmentActivity: FragmentActivity? = null
 
@@ -49,20 +49,20 @@ class BiometricAuthHandler(
     data class Request(
         val accessControlLevel: AccessControlLevel,
         val promptConfig: PromptConfig,
-        val callback: Callback
+        val callback: Callback,
     )
 
     data class PromptConfig(
         val title: String,
         val negativeButton: String,
         val subTitle: String? = null,
-        val description: String? = null
+        val description: String? = null,
     )
 
     enum class AccessControlLevel {
         OPEN,
         PASSCODE,
-        PASSCODE_AND_BIOMETRICS
+        PASSCODE_AND_BIOMETRICS,
         ;
 
         fun toAuthenticators(): Int =
@@ -77,13 +77,13 @@ class BiometricAuthHandler(
         val onSuccess: (BiometricPrompt.AuthenticationResult) -> Unit = {},
         val onError: (
             errorCode: Int,
-            errString: CharSequence
+            errString: CharSequence,
         ) -> Unit = { _, _ -> },
-        val onFailure: () -> Unit = {}
+        val onFailure: () -> Unit = {},
     ) : BiometricPrompt.AuthenticationCallback() {
         override fun onAuthenticationError(
             errorCode: Int,
-            errString: CharSequence
+            errString: CharSequence,
         ) {
             super.onAuthenticationError(errorCode, errString)
             when (errorCode) {
@@ -91,7 +91,8 @@ class BiometricAuthHandler(
                 // face is not recognised, instead of onFailure. This check below allows for FaceScan to have the same behaviour as
                 // Fingerprint allowing multiple attempts with FaceScan
                 BiometricPrompt.ERROR_UNABLE_TO_PROCESS,
-                BiometricPrompt.ERROR_TIMEOUT -> onFailure()
+                BiometricPrompt.ERROR_TIMEOUT,
+                -> onFailure()
                 else -> onError(errorCode, errString)
             }
         }

@@ -22,7 +22,7 @@ class AppAuthSession : LoginSession {
 
     constructor(
         context: Context,
-        demonstratingProofOfPossessionManager: DemonstratingProofOfPossessionManager
+        demonstratingProofOfPossessionManager: DemonstratingProofOfPossessionManager,
     ) {
         authService = AuthorizationService(context)
         this.demonstratingProofOfPossessionManager = demonstratingProofOfPossessionManager
@@ -35,16 +35,19 @@ class AppAuthSession : LoginSession {
     @OptIn(ExperimentalEphemeralBrowsing::class)
     override fun present(
         launcher: ActivityResultLauncher<Intent>,
-        configuration: LoginSessionConfiguration
+        configuration: LoginSessionConfiguration,
     ) {
-        val customEphemeralTabIntent = CustomTabsIntent.Builder()
-            .setEphemeralBrowsingEnabled(true)
-            .setShareState(CustomTabsIntent.SHARE_STATE_OFF)
-            .build()
-        val intent = authService.getAuthorizationRequestIntent(
-            configuration.createRequest(),
-            customEphemeralTabIntent
-        )
+        val customEphemeralTabIntent =
+            CustomTabsIntent
+                .Builder()
+                .setEphemeralBrowsingEnabled(true)
+                .setShareState(CustomTabsIntent.SHARE_STATE_OFF)
+                .build()
+        val intent =
+            authService.getAuthorizationRequestIntent(
+                configuration.createRequest(),
+                customEphemeralTabIntent,
+            )
         launcher.launch(intent)
     }
 
@@ -54,7 +57,7 @@ class AppAuthSession : LoginSession {
         appIntegrity: AppIntegrityParameters,
         httpServiceDomain: String,
         onSuccess: (tokens: TokenResponse) -> Unit,
-        onFailure: (error: Throwable) -> Unit
+        onFailure: (error: Throwable) -> Unit,
     ) {
         try {
             val authResponse = AuthorizationResponse.fromIntent(intent)
@@ -73,7 +76,7 @@ class AppAuthSession : LoginSession {
                             clientAuthenticationProvider.setCustomClientAuthentication(
                                 appIntegrity.attestation,
                                 appIntegrity.pop,
-                                signedDPoP.popJwt
+                                signedDPoP.popJwt,
                             )
 
                         // Create the standard request
@@ -83,12 +86,13 @@ class AppAuthSession : LoginSession {
                             request = request,
                             clientAuthentication = clientAuthenticationWithExtraHeaders,
                             onSuccess = { tokens -> onSuccess(tokens) },
-                            onFailure = { error -> onFailure(error) }
+                            onFailure = { error -> onFailure(error) },
                         )
                     }
-                    is SignedDPoP.Failure -> onFailure(
-                        signedDPoP.error ?: DPoPManagerError(signedDPoP.reason)
-                    )
+                    is SignedDPoP.Failure ->
+                        onFailure(
+                            signedDPoP.error ?: DPoPManagerError(signedDPoP.reason),
+                        )
                 }
             } ?: onFailure(DPoPManagerError())
         } catch (e: Exception) {
@@ -101,11 +105,11 @@ class AppAuthSession : LoginSession {
         request: TokenRequest,
         clientAuthentication: ClientAuthentication,
         onSuccess: (tokens: TokenResponse) -> Unit,
-        onFailure: (error: Throwable) -> Unit
+        onFailure: (error: Throwable) -> Unit,
     ) {
         authService.performTokenRequest(
             request,
-            clientAuthentication
+            clientAuthentication,
         ) { response, exception ->
             try {
                 val tokenResponse = response?.toTokenResponse()
@@ -121,10 +125,13 @@ class AppAuthSession : LoginSession {
     }
 
     companion object {
-        private const val DPOP_MANAGER_INIT_ERROR = "Demonstrating Proof Of Possession Manager" +
-            " has not been initialised! Please make sure you provide it in the" +
-            " constructor AppAuthSession()."
+        private const val DPOP_MANAGER_INIT_ERROR =
+            "Demonstrating Proof Of Possession Manager" +
+                " has not been initialised! Please make sure you provide it in the" +
+                " constructor AppAuthSession()."
 
-        data class DPoPManagerError(val error: String = DPOP_MANAGER_INIT_ERROR) : Exception(error)
+        data class DPoPManagerError(
+            val error: String = DPOP_MANAGER_INIT_ERROR,
+        ) : Exception(error)
     }
 }

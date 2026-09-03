@@ -5,18 +5,30 @@ import uk.gov.logging.api.v3dot1.model.TrackEvent
 import uk.gov.logging.api.v3dot1.model.ViewEvent
 
 object TestUtils {
-    internal sealed class TrackEventTestCase(val runTrackFunction: () -> Unit) {
-        data class Icon(val trackFunction: () -> Unit, val text: String) :
-            TrackEventTestCase(trackFunction)
+    internal sealed class TrackEventTestCase(
+        val runTrackFunction: () -> Unit,
+    ) {
+        data class Icon(
+            val trackFunction: () -> Unit,
+            val text: String,
+        ) : TrackEventTestCase(trackFunction)
 
-        data class Link(val trackFunction: () -> Unit, val domain: String, val text: String) :
-            TrackEventTestCase(trackFunction)
+        data class Link(
+            val trackFunction: () -> Unit,
+            val domain: String,
+            val text: String,
+        ) : TrackEventTestCase(trackFunction)
 
-        data class Button(val trackFunction: () -> Unit, val text: String) :
-            TrackEventTestCase(trackFunction)
+        data class Button(
+            val trackFunction: () -> Unit,
+            val text: String,
+        ) : TrackEventTestCase(trackFunction)
 
-        data class Screen(val trackFunction: () -> Unit, val name: String, val id: String) :
-            TrackEventTestCase(trackFunction)
+        data class Screen(
+            val trackFunction: () -> Unit,
+            val name: String,
+            val id: String,
+        ) : TrackEventTestCase(trackFunction)
     }
 
     internal fun executeTrackEventTestCase(

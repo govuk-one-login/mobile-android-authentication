@@ -1,14 +1,14 @@
 package uk.gov.android.authentication.integrity.pop
 
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
+import kotlinx.serialization.json.putJsonObject
+import uk.gov.android.authentication.json.jwk.JWK
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import kotlin.io.encoding.Base64
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
-import kotlinx.serialization.json.putJsonObject
-import uk.gov.android.authentication.json.jwk.JWK
 
 /**
  * Generator for Proof of Possession (PoP) tokens used in OAuth 2.0 authentication flows.
@@ -72,19 +72,21 @@ object ProofOfPossessionGenerator {
         iss: String,
         aud: String,
         exp: Long,
-        jti: String = Uuid.random().toString()
+        jti: String = Uuid.random().toString(),
     ): String {
-        val headerJson = buildJsonObject {
-            put("alg", ALG)
-            put("typ", APP_INTEGRITY_TYP)
-        }
+        val headerJson =
+            buildJsonObject {
+                put("alg", ALG)
+                put("typ", APP_INTEGRITY_TYP)
+            }
 
-        val payloadJson = buildJsonObject {
-            put("iss", iss)
-            put("aud", aud)
-            put("exp", exp)
-            put("jti", jti)
-        }
+        val payloadJson =
+            buildJsonObject {
+                put("iss", iss)
+                put("aud", aud)
+                put("exp", exp)
+                put("jti", jti)
+            }
 
         return encodeJwtParts(headerJson, payloadJson)
     }
@@ -133,26 +135,28 @@ object ProofOfPossessionGenerator {
         jwk: JWK.JsonWebKey,
         htu: String,
         jti: String = Uuid.random().toString(),
-        iat: Long = getIssueTime()
+        iat: Long = getIssueTime(),
     ): String {
-        val headerJson = buildJsonObject {
-            put("alg", ALG)
-            put("typ", REFRESH_TYP)
-            putJsonObject("jwk") {
-                put("kty", jwk.jwk.kty)
-                put("use", jwk.jwk.use)
-                put("crv", jwk.jwk.crv)
-                put("x", jwk.jwk.x)
-                put("y", jwk.jwk.y)
+        val headerJson =
+            buildJsonObject {
+                put("alg", ALG)
+                put("typ", REFRESH_TYP)
+                putJsonObject("jwk") {
+                    put("kty", jwk.jwk.kty)
+                    put("use", jwk.jwk.use)
+                    put("crv", jwk.jwk.crv)
+                    put("x", jwk.jwk.x)
+                    put("y", jwk.jwk.y)
+                }
             }
-        }
 
-        val payloadJson = buildJsonObject {
-            put("jti", jti)
-            put("htm", HTTP_METHOD)
-            put("htu", htu)
-            put("iat", iat)
-        }
+        val payloadJson =
+            buildJsonObject {
+                put("jti", jti)
+                put("htm", HTTP_METHOD)
+                put("htu", htu)
+                put("iat", iat)
+            }
 
         return encodeJwtParts(headerJson, payloadJson)
     }
@@ -194,20 +198,22 @@ object ProofOfPossessionGenerator {
         kid: String,
         nonce: String,
         aud: String,
-        iss: String
+        iss: String,
     ): String {
-        val headerJson = buildJsonObject {
-            put("alg", ALG)
-            put("typ", OPENID4VCI_TYP)
-            put("kid", kid)
-        }
+        val headerJson =
+            buildJsonObject {
+                put("alg", ALG)
+                put("typ", OPENID4VCI_TYP)
+                put("kid", kid)
+            }
 
-        val payloadJson = buildJsonObject {
-            put("iss", iss)
-            put("iat", getIssueTime())
-            put("nonce", nonce)
-            put("aud", aud)
-        }
+        val payloadJson =
+            buildJsonObject {
+                put("iss", iss)
+                put("iat", getIssueTime())
+                put("nonce", nonce)
+                put("aud", aud)
+            }
 
         return encodeJwtParts(headerJson, payloadJson)
     }
@@ -224,7 +230,7 @@ object ProofOfPossessionGenerator {
      */
     private fun encodeJwtParts(
         header: kotlinx.serialization.json.JsonObject,
-        payload: kotlinx.serialization.json.JsonObject
+        payload: kotlinx.serialization.json.JsonObject,
     ): String {
         val headerBase64 = getUrlSafeNoPaddingBase64(header.toString().toByteArray())
         val payloadBase64 = getUrlSafeNoPaddingBase64(payload.toString().toByteArray())
@@ -237,10 +243,11 @@ object ProofOfPossessionGenerator {
      * @return Unix epoch timestamp in seconds, 3 minutes from the current time
      */
     fun getExpiryTime(): Long {
-        val expiry = Instant
-            .now()
-            .plus(EXPIRY_MINUTES, ChronoUnit.MINUTES)
-            .epochSecond
+        val expiry =
+            Instant
+                .now()
+                .plus(EXPIRY_MINUTES, ChronoUnit.MINUTES)
+                .epochSecond
         return expiry
     }
 
@@ -249,9 +256,7 @@ object ProofOfPossessionGenerator {
      *
      * @return Current Unix epoch timestamp in seconds
      */
-    fun getIssueTime(): Long {
-        return Instant.now().epochSecond
-    }
+    fun getIssueTime(): Long = Instant.now().epochSecond
 
     /**
      * Encodes a byte array to Base64URL format without padding.
@@ -262,10 +267,10 @@ object ProofOfPossessionGenerator {
      * @param input Byte array to encode
      * @return Base64URL-encoded string without padding
      */
-    fun getUrlSafeNoPaddingBase64(input: ByteArray): String {
-        return Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT)
+    fun getUrlSafeNoPaddingBase64(input: ByteArray): String =
+        Base64.UrlSafe
+            .withPadding(Base64.PaddingOption.ABSENT)
             .encode(input)
-    }
 
     /**
      * Checks if a Proof of Possession token has expired.
@@ -273,9 +278,7 @@ object ProofOfPossessionGenerator {
      * @param exp Expiration timestamp in Unix epoch seconds
      * @return `true` if the token has expired or is expiring now, `false` otherwise
      */
-    fun isPopExpired(exp: Long): Boolean {
-        return exp <= Instant.now().epochSecond
-    }
+    fun isPopExpired(exp: Long): Boolean = exp <= Instant.now().epochSecond
 
     private const val ALG = "ES256"
     private const val APP_INTEGRITY_TYP = "oauth-client-attestation-pop+jwt"

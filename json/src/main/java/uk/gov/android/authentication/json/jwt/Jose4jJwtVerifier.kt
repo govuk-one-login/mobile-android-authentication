@@ -20,10 +20,14 @@ class Jose4jJwtVerifier : JwtVerifier {
      * @throws IllegalArgumentException when the JWK parse fails due to null context
      * @throws JoseException when the encoded JWT is invalid
      */
-    override fun verify(encodedJsonWebToken: String, publicKeyJwkString: String): Boolean {
-        val gson = GsonBuilder()
-            .registerTypeAdapter(JsonWebKey::class.java, JwkDeserializer())
-            .create()
+    override fun verify(
+        encodedJsonWebToken: String,
+        publicKeyJwkString: String,
+    ): Boolean {
+        val gson =
+            GsonBuilder()
+                .registerTypeAdapter(JsonWebKey::class.java, JwkDeserializer())
+                .create()
 
         val publicKeyJwk = gson.fromJson(publicKeyJwkString, JsonWebKey::class.java)
         val jws = JsonWebSignature()

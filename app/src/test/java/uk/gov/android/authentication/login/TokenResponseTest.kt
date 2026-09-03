@@ -1,66 +1,74 @@
 package uk.gov.android.authentication.login
 
-import kotlin.test.Test
-import kotlin.test.assertEquals
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.assertThrows
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class TokenResponseTest {
     @Test
     fun `serialise TokenResponse to JSON all values`() {
-        val tokenResponse = TokenResponse(
-            "bearer",
-            "sampleAccessToken",
-            3600,
-            "sampleIdToken",
-            "sampleRefreshToken"
-        )
-        val expectedJson = "{\"tokenType\":\"bearer\",\"accessToken\":\"sampleAccessToken\"," +
-            "\"accessTokenExpirationTime\":3600,\"idToken\":\"sampleIdToken\"," +
-            "\"refreshToken\":\"sampleRefreshToken\"}"
+        val tokenResponse =
+            TokenResponse(
+                "bearer",
+                "sampleAccessToken",
+                3600,
+                "sampleIdToken",
+                "sampleRefreshToken",
+            )
+        val expectedJson =
+            "{\"tokenType\":\"bearer\",\"accessToken\":\"sampleAccessToken\"," +
+                "\"accessTokenExpirationTime\":3600,\"idToken\":\"sampleIdToken\"," +
+                "\"refreshToken\":\"sampleRefreshToken\"}"
         assertEquals(expectedJson, jsonSerialize(tokenResponse))
     }
 
     @Test
     fun `serialise TokenResponse to JSON with defaults`() {
-        val tokenResponse = TokenResponse(
-            "bearer",
-            "sampleAccessToken",
-            3600,
-            "sampleIdToken"
-        )
-        val expectedJson = "{\"tokenType\":\"bearer\",\"accessToken\":\"sampleAccessToken\"," +
-            "\"accessTokenExpirationTime\":3600,\"idToken\":\"sampleIdToken\"}"
+        val tokenResponse =
+            TokenResponse(
+                "bearer",
+                "sampleAccessToken",
+                3600,
+                "sampleIdToken",
+            )
+        val expectedJson =
+            "{\"tokenType\":\"bearer\",\"accessToken\":\"sampleAccessToken\"," +
+                "\"accessTokenExpirationTime\":3600,\"idToken\":\"sampleIdToken\"}"
         assertEquals(expectedJson, jsonSerialize(tokenResponse))
     }
 
     @Test
     fun `de-serialise TokenResponse from JSON`() {
-        val json = "{\"tokenType\":\"bearer\",\"accessToken\":\"sampleAccessToken\"," +
-            "\"accessTokenExpirationTime\":3600,\"idToken\":\"sampleIdToken\"," +
-            "\"refreshToken\":\"sampleRefreshToken\"}"
-        val expectedTokenResponse = TokenResponse(
-            "bearer",
-            "sampleAccessToken",
-            3600,
-            "sampleIdToken",
-            "sampleRefreshToken"
-        )
+        val json =
+            "{\"tokenType\":\"bearer\",\"accessToken\":\"sampleAccessToken\"," +
+                "\"accessTokenExpirationTime\":3600,\"idToken\":\"sampleIdToken\"," +
+                "\"refreshToken\":\"sampleRefreshToken\"}"
+        val expectedTokenResponse =
+            TokenResponse(
+                "bearer",
+                "sampleAccessToken",
+                3600,
+                "sampleIdToken",
+                "sampleRefreshToken",
+            )
         assertEquals(expectedTokenResponse, jsonDeserialize(json))
     }
 
     @Test
     fun `de-serialise TokenResponse from JSON with defaults`() {
-        val json = "{\"tokenType\":\"bearer\",\"accessToken\":\"sampleAccessToken\"," +
-            "\"accessTokenExpirationTime\":3600,\"idToken\":\"sampleIdToken\"}"
-        val expectedTokenResponse = TokenResponse(
-            "bearer",
-            "sampleAccessToken",
-            3600,
-            "sampleIdToken"
-        )
+        val json =
+            "{\"tokenType\":\"bearer\",\"accessToken\":\"sampleAccessToken\"," +
+                "\"accessTokenExpirationTime\":3600,\"idToken\":\"sampleIdToken\"}"
+        val expectedTokenResponse =
+            TokenResponse(
+                "bearer",
+                "sampleAccessToken",
+                3600,
+                "sampleIdToken",
+            )
         assertEquals(expectedTokenResponse, jsonDeserialize(json))
     }
 
@@ -80,11 +88,7 @@ class TokenResponseTest {
         }
     }
 
-    private fun jsonSerialize(obj: TokenResponse): String {
-        return Json.encodeToString(obj)
-    }
+    private fun jsonSerialize(obj: TokenResponse): String = Json.encodeToString(obj)
 
-    private fun jsonDeserialize(text: String): TokenResponse? {
-        return Json.decodeFromString(text)
-    }
+    private fun jsonDeserialize(text: String): TokenResponse? = Json.decodeFromString(text)
 }

@@ -1,15 +1,6 @@
 package uk.gov.android.authentication.integrity.keymanager
 
 import androidx.biometric.BiometricPrompt
-import java.security.KeyPairGenerator
-import java.security.KeyStore
-import java.security.KeyStoreException
-import java.security.Signature
-import java.security.cert.Certificate
-import java.util.Collections
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -23,6 +14,15 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import uk.gov.android.authentication.integrity.keymanager.BiometricAuthHandler.PromptConfig
 import uk.gov.logging.testdouble.SystemLogger
+import java.security.KeyPairGenerator
+import java.security.KeyStore
+import java.security.KeyStoreException
+import java.security.Signature
+import java.security.cert.Certificate
+import java.util.Collections
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AndroidKeyPairManagerTest {
@@ -36,7 +36,7 @@ class AndroidKeyPairManagerTest {
             userAuthRequired = true,
             keyStore = keyStore,
             keyPairGenerator = keyPairGenerator,
-            mainDispatcher = testDispatcher
+            mainDispatcher = testDispatcher,
         )
 
     @Test
@@ -65,7 +65,7 @@ class AndroidKeyPairManagerTest {
 
         assertTrue(logger.contains("alias: $alias - create new POP key"))
         assertTrue(
-            logger.contains("alias: $alias - KeyPair generated using software-backed KeyStore")
+            logger.contains("alias: $alias - KeyPair generated using software-backed KeyStore"),
         )
         assertTrue(logger.contains("alias: $alias - get public key"))
     }
@@ -175,7 +175,7 @@ class AndroidKeyPairManagerTest {
                 keyPairManager.authenticateAndSign(
                     SignRequest(alias, data),
                     promptConfig = promptConfig,
-                    authHandler = authHandler
+                    authHandler = authHandler,
                 )
 
             assertTrue(result.isNotEmpty())
@@ -211,7 +211,7 @@ class AndroidKeyPairManagerTest {
                     keyPairManager.authenticateAndSign(
                         SignRequest(alias, data),
                         promptConfig = promptConfig,
-                        authHandler = authHandler
+                        authHandler = authHandler,
                     )
                 }
 
@@ -228,7 +228,7 @@ class AndroidKeyPairManagerTest {
                     userAuthRequired = false,
                     keyStore = keyStore,
                     keyPairGenerator = keyPairGenerator,
-                    mainDispatcher = testDispatcher
+                    mainDispatcher = testDispatcher,
                 )
             val authHandler: BiometricAuthHandler = mock()
             val promptConfig = PromptConfig("Title", "Close")
@@ -238,7 +238,7 @@ class AndroidKeyPairManagerTest {
                     keyPairManagerNoAuth.authenticateAndSign(
                         SignRequest("test-alias", "test-data".toByteArray()),
                         promptConfig = promptConfig,
-                        authHandler = authHandler
+                        authHandler = authHandler,
                     )
                 }
 

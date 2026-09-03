@@ -4,9 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
 import androidx.test.platform.app.InstrumentationRegistry
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationException.AuthorizationRequestErrors
 import net.openid.appauth.AuthorizationResponse
@@ -23,34 +20,38 @@ import uk.gov.android.authentication.login.AuthenticationError.Companion.NULL_AU
 import uk.gov.android.authentication.login.AuthenticationError.ErrorType
 import uk.gov.android.authentication.login.refresh.DemonstratingProofOfPossessionManager
 import uk.gov.android.authentication.login.refresh.SignedDPoP
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class AppAuthSessionTest {
     private lateinit var appAuthSession: AppAuthSession
     private lateinit var demonstratingProofOfPossessionManager:
         DemonstratingProofOfPossessionManager
-    private var authResponse = "{\n" +
-        " \"request\": {\n" +
-        "    \"configuration\": {\n" +
-        "      \"authorizationEndpoint\": \"https://<your-authorization-server>/authorize\",\n" +
-        "      \"tokenEndpoint\": \"https://<your-authorization-server>/token\"\n" +
-        "    },\n" +
-        "    \"responseType\": \"code\",\n" +
-        "    \"clientId\": \"your_client_id\",\n" +
-        "    \"redirectUri\": \"https://<your-authorization-server>/redirect\",\n" +
-        "    \"scopes\": [\n" +
-        "      \"openid\",\n" +
-        "      \"profile\",\n" +
-        "      \"email\"\n" +
-        "    ],\n" +
-        "    \"state\": \"your_state\",\n" +
-        "    \"codeVerifier\": \"codeV_f1ctive_openid_test_987xyz_123_thgs45-swhsjdn\",\n" +
-        "    \"additionalParameters\": {}\n" +
-        "  },\n" +
-        "  \"state\": \"your_state\",\n" +
-        "  \"code\": \"auth_f1ct1ve_openid_c0de_xyz987\",\n" +
-        "  \"codeVerifier\": \"codeV_f1ctive_openid_test_987xyz_123_thgs45-swhsjdn\",\n" +
-        "  \"additionalParameters\": {}\n" +
-        "}"
+    private var authResponse =
+        "{\n" +
+            " \"request\": {\n" +
+            "    \"configuration\": {\n" +
+            "      \"authorizationEndpoint\": \"https://<your-authorization-server>/authorize\",\n" +
+            "      \"tokenEndpoint\": \"https://<your-authorization-server>/token\"\n" +
+            "    },\n" +
+            "    \"responseType\": \"code\",\n" +
+            "    \"clientId\": \"your_client_id\",\n" +
+            "    \"redirectUri\": \"https://<your-authorization-server>/redirect\",\n" +
+            "    \"scopes\": [\n" +
+            "      \"openid\",\n" +
+            "      \"profile\",\n" +
+            "      \"email\"\n" +
+            "    ],\n" +
+            "    \"state\": \"your_state\",\n" +
+            "    \"codeVerifier\": \"codeV_f1ctive_openid_test_987xyz_123_thgs45-swhsjdn\",\n" +
+            "    \"additionalParameters\": {}\n" +
+            "  },\n" +
+            "  \"state\": \"your_state\",\n" +
+            "  \"code\": \"auth_f1ct1ve_openid_c0de_xyz987\",\n" +
+            "  \"codeVerifier\": \"codeV_f1ctive_openid_test_987xyz_123_thgs45-swhsjdn\",\n" +
+            "  \"additionalParameters\": {}\n" +
+            "}"
     private val authService: AuthorizationService = mock()
 
     @BeforeTest
@@ -73,7 +74,7 @@ class AppAuthSessionTest {
         // When calling present
         appAuthSession.present(
             launcher = launcher,
-            configuration = loginSessionConfig
+            configuration = loginSessionConfig,
         )
         // Then create the AuthorisationIntent and launch
         verify(launcher).launch(any())
@@ -82,9 +83,10 @@ class AppAuthSessionTest {
     @Test
     fun finaliseThrowsIllegalArgumentExceptionForMalformedIntentResponse() {
         // Given an intent with a malformed (empty) response data JSON extra
-        val intent = Intent().apply {
-            putExtra(AuthorizationResponse.EXTRA_RESPONSE, "{}")
-        }
+        val intent =
+            Intent().apply {
+                putExtra(AuthorizationResponse.EXTRA_RESPONSE, "{}")
+            }
         var t: Throwable? = null
         // When calling finalise
         appAuthSession.finalise(
@@ -92,7 +94,7 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> t = error }
+            { error -> t = error },
         )
 
         assertThat("Thrown error is not IllegalArgumentException", t is IllegalArgumentException)
@@ -100,19 +102,21 @@ class AppAuthSessionTest {
 
     @Test
     fun finaliseWithDPoPThrowsAuthenticationErrorOfAccessDenied() {
-        val exception = AuthorizationException(
-            AuthorizationException.TYPE_OAUTH_AUTHORIZATION_ERROR,
-            AuthorizationRequestErrors.ACCESS_DENIED.code,
-            AuthorizationRequestErrors.ACCESS_DENIED.error,
-            AuthorizationRequestErrors.ACCESS_DENIED.errorDescription,
-            AuthorizationRequestErrors.ACCESS_DENIED.errorUri,
-            AuthorizationRequestErrors.ACCESS_DENIED.cause
-        )
+        val exception =
+            AuthorizationException(
+                AuthorizationException.TYPE_OAUTH_AUTHORIZATION_ERROR,
+                AuthorizationRequestErrors.ACCESS_DENIED.code,
+                AuthorizationRequestErrors.ACCESS_DENIED.error,
+                AuthorizationRequestErrors.ACCESS_DENIED.errorDescription,
+                AuthorizationRequestErrors.ACCESS_DENIED.errorUri,
+                AuthorizationRequestErrors.ACCESS_DENIED.cause,
+            )
         // Given an intent with a malformed (empty) response data JSON extra
-        val intent = Intent().putExtra(
-            AuthorizationException.EXTRA_EXCEPTION,
-            exception.toJsonString()
-        )
+        val intent =
+            Intent().putExtra(
+                AuthorizationException.EXTRA_EXCEPTION,
+                exception.toJsonString(),
+            )
         // When calling finaliseWithDPoP
         var t: Throwable? = null
 
@@ -121,7 +125,7 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> t = error }
+            { error -> t = error },
         )
 
         // Then throw an IllegalArgumentException
@@ -142,7 +146,7 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> t = error }
+            { error -> t = error },
         )
 
         // Then throw an AuthenticationError
@@ -155,38 +159,41 @@ class AppAuthSessionTest {
     @Test
     fun finaliseWithDPoPThrowsAuthenticationErrorForIntentWithValidResponse() {
         // Given an intent with a response data JSON extra
-        val intent = Intent().apply {
-            putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
-        }
+        val intent =
+            Intent().apply {
+                putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
+            }
         // When calling finaliseWithDPoP
         appAuthSession.finalise(
             intent,
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            {}
+            {},
         )
     }
 
     @Test
     fun finaliseWithDPoPOnSuccessCalled() {
-        val intent = Intent().apply {
-            putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
-        }
+        val intent =
+            Intent().apply {
+                putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
+            }
         // When calling finaliseWithDPoP
         var actualTokenResponse: TokenResponse? = null
 
         val auTokenResponse = buildTokenResponse(accessToken = ACCESS_TOKEN)
-        val expectedTokenResponse = TokenResponse(
-            TOKEN_TYPE,
-            ACCESS_TOKEN,
-            EXPIRATION_TIME,
-            ID_TOKEN,
-            REFRESH_TOKEN
-        )
+        val expectedTokenResponse =
+            TokenResponse(
+                TOKEN_TYPE,
+                ACCESS_TOKEN,
+                EXPIRATION_TIME,
+                ID_TOKEN,
+                REFRESH_TOKEN,
+            )
 
         whenever(demonstratingProofOfPossessionManager.generateDPoP(any())).thenReturn(
-            SignedDPoP.Success("success")
+            SignedDPoP.Success("success"),
         )
         whenever(authService.performTokenRequest(any(), any(), any()))
             .thenAnswer {
@@ -199,7 +206,7 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             { tr -> actualTokenResponse = tr },
-            {}
+            {},
         )
 
         assertEquals(expectedTokenResponse, actualTokenResponse)
@@ -207,27 +214,30 @@ class AppAuthSessionTest {
 
     @Test
     fun finaliseWithDPoPOnFailure() {
-        val intent = Intent().apply {
-            putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
-        }
+        val intent =
+            Intent().apply {
+                putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
+            }
 
         var actualException: Throwable? = null
-        val auException = AuthorizationException(
-            AuthorizationException.TYPE_OAUTH_AUTHORIZATION_ERROR,
-            1005,
-            "server_error",
-            null,
-            null,
-            null
-        )
-        val expectedException = AuthenticationError(
-            message = NULL_AUTH_MESSAGE,
-            type = ErrorType.SERVER_ERROR,
-            status = 1005
-        )
+        val auException =
+            AuthorizationException(
+                AuthorizationException.TYPE_OAUTH_AUTHORIZATION_ERROR,
+                1005,
+                "server_error",
+                null,
+                null,
+                null,
+            )
+        val expectedException =
+            AuthenticationError(
+                message = NULL_AUTH_MESSAGE,
+                type = ErrorType.SERVER_ERROR,
+                status = 1005,
+            )
 
         whenever(demonstratingProofOfPossessionManager.generateDPoP(any())).thenReturn(
-            SignedDPoP.Success("success")
+            SignedDPoP.Success("success"),
         )
         whenever(authService.performTokenRequest(any(), any(), any()))
             .thenAnswer {
@@ -240,7 +250,7 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> actualException = error }
+            { error -> actualException = error },
         )
 
         assertEquals(expectedException, actualException)
@@ -251,9 +261,10 @@ class AppAuthSessionTest {
         val exp = Exception("Failure signing DPoP")
         var actualException: Throwable? = null
 
-        val intent = Intent().apply {
-            putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
-        }
+        val intent =
+            Intent().apply {
+                putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
+            }
 
         whenever(demonstratingProofOfPossessionManager.generateDPoP(any()))
             .thenReturn(SignedDPoP.Failure(exp.message!!, exp))
@@ -263,7 +274,7 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> actualException = error }
+            { error -> actualException = error },
         )
 
         assertEquals(exp, actualException)
@@ -271,16 +282,17 @@ class AppAuthSessionTest {
 
     @Test
     fun finaliseWithDPoPOnFailureToken() {
-        val intent = Intent().apply {
-            putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
-        }
+        val intent =
+            Intent().apply {
+                putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
+            }
         // When calling finaliseWithDPoP
         var actualException: Throwable? = null
 
         val auTokenResponse = buildTokenResponse(accessToken = null)
 
         whenever(demonstratingProofOfPossessionManager.generateDPoP(any())).thenReturn(
-            SignedDPoP.Success("success")
+            SignedDPoP.Success("success"),
         )
         whenever(authService.performTokenRequest(any(), any(), any()))
             .thenAnswer {
@@ -293,31 +305,32 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> actualException = error }
+            { error -> actualException = error },
         )
 
         assertThat(
             "Exception thrown is not IllegalArgumentException",
-            actualException is IllegalArgumentException
+            actualException is IllegalArgumentException,
         )
     }
 
     @Test
     fun finaliseWithDPoPFailureWhenNoErrorPassedFromSignedDPoPResult() {
-        val intent = Intent().apply {
-            putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
-        }
+        val intent =
+            Intent().apply {
+                putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
+            }
         // When calling finaliseWithDPoP
         var actualException: Throwable? = null
         whenever(demonstratingProofOfPossessionManager.generateDPoP(any())).thenReturn(
-            SignedDPoP.Failure("Failure")
+            SignedDPoP.Failure("Failure"),
         )
         appAuthSession.finalise(
             intent,
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> actualException = error }
+            { error -> actualException = error },
         )
 
         assertEquals(AppAuthSession.Companion.DPoPManagerError("Failure"), actualException)
@@ -325,11 +338,15 @@ class AppAuthSessionTest {
 
     private fun buildTokenResponse(accessToken: String?): net.openid.appauth.TokenResponse {
         val clientId = "id"
-        val tokenRequest = TokenRequest.Builder(
-            AuthorizationServiceConfiguration(Uri.EMPTY, Uri.EMPTY),
-            clientId
-        ).setGrantType("grantType").build()
-        return net.openid.appauth.TokenResponse.Builder(tokenRequest)
+        val tokenRequest =
+            TokenRequest
+                .Builder(
+                    AuthorizationServiceConfiguration(Uri.EMPTY, Uri.EMPTY),
+                    clientId,
+                ).setGrantType("grantType")
+                .build()
+        return net.openid.appauth.TokenResponse
+            .Builder(tokenRequest)
             .setRefreshToken(REFRESH_TOKEN)
             .setIdToken(ID_TOKEN)
             .setAccessToken(accessToken)

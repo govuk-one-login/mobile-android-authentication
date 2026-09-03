@@ -23,7 +23,7 @@ fun interface AttestationCaller {
      */
     suspend fun call(
         token: String,
-        jwk: JWK.JsonWebKey
+        jwk: JWK.JsonWebKey,
     ): AttestationResponse
 
     companion object {
