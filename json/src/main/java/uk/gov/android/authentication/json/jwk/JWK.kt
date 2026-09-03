@@ -15,9 +15,9 @@ import java.security.Key
  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 object JWK {
-    private const val KEY_TYPE_VALUE = "EC"
-    private const val USE_VALUE = "sig"
-    private const val CURVE_VALUE = "P-256"
+    private const val keyTypeValue = "EC"
+    private const val useValue = "sig"
+    private const val curveValue = "P-256"
 
     /**
      * Method to get a PublicKey in JWK format that includes "use" field.
@@ -33,9 +33,9 @@ object JWK {
         JsonWebKey(
             jwk =
                 JsonWebKeyFormat(
-                    KEY_TYPE_VALUE,
-                    USE_VALUE,
-                    CURVE_VALUE,
+                    keyTypeValue,
+                    useValue,
+                    curveValue,
                     x,
                     y,
                 ),
