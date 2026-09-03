@@ -5,6 +5,8 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
+import java.security.KeyStore
+import kotlin.io.encoding.ExperimentalEncodingApi
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
@@ -12,8 +14,6 @@ import org.junit.Before
 import org.junit.Test
 import uk.gov.android.authentication.integrity.keymanager.AndroidKeyPairManager.Companion.KEYSTORE
 import uk.gov.logging.testdouble.SystemLogger
-import java.security.KeyStore
-import kotlin.io.encoding.ExperimentalEncodingApi
 
 @OptIn(ExperimentalEncodingApi::class)
 class AndroidKeyPairManagerTest {

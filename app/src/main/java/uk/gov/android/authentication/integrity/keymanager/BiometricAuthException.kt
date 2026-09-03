@@ -8,5 +8,5 @@ package uk.gov.android.authentication.integrity.keymanager
  */
 class BiometricAuthException(
     code: Int,
-    message: CharSequence,
+    message: CharSequence
 ) : Exception("Biometric authentication failed: $code - $message")

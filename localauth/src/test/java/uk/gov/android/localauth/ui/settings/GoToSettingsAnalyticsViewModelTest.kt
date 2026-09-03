@@ -37,11 +37,10 @@ class GoToSettingsAnalyticsViewModelTest {
     fun setup() {
         val context: Context = ApplicationProvider.getApplicationContext()
         logger = mock()
-        requiredParameters =
-            RequiredParameters(
-                taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
-                taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
-            )
+        requiredParameters = RequiredParameters(
+            taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
+            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
+        )
         name = context.getEnglishString(R.string.app_localAuthManagerErrorTitle)
         id = context.getEnglishString(R.string.go_settings_screen_page_id)
         primaryBtn = context.getEnglishString(R.string.app_localAuthManagerErrorGoToSettingsButton)
@@ -52,15 +51,14 @@ class GoToSettingsAnalyticsViewModelTest {
 
     @Test
     fun trackScreen() {
-        val event =
-            ViewEvent.Error(
-                name = name,
-                id = id,
-                endpoint = "",
-                status = "",
-                reason = reason,
-                params = requiredParameters,
-            )
+        val event = ViewEvent.Error(
+            name = name,
+            id = id,
+            endpoint = "",
+            status = "",
+            reason = reason,
+            params = requiredParameters,
+        )
 
         viewModel.trackScreen()
 

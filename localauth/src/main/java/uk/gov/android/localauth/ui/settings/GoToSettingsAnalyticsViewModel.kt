@@ -17,11 +17,10 @@ class GoToSettingsAnalyticsViewModel(
     private val analyticsLogger: AnalyticsLogger,
 ) : ViewModel() {
     private val screenEvent = makeScreenEvent(context)
-    private val goToSettingsBtnEvent =
-        makeButtonEvent(
-            context,
-            R.string.app_localAuthManagerErrorGoToSettingsButton,
-        )
+    private val goToSettingsBtnEvent = makeButtonEvent(
+        context,
+        R.string.app_localAuthManagerErrorGoToSettingsButton,
+    )
 
     private val backBtnEvent = makeBackButtonEvent(context)
 
@@ -38,40 +37,34 @@ class GoToSettingsAnalyticsViewModel(
     }
 
     companion object {
-        internal fun makeScreenEvent(context: Context) =
-            with(context) {
-                ViewEvent.Error(
-                    name = getEnglishString(R.string.app_localAuthManagerErrorTitle),
-                    id = getEnglishString(R.string.go_settings_screen_page_id),
-                    endpoint = "",
-                    status = "",
-                    reason = getString(R.string.app_localAuthManagerErrorReason),
-                    params = requiredParams,
-                )
-            }
+        internal fun makeScreenEvent(context: Context) = with(context) {
+            ViewEvent.Error(
+                name = getEnglishString(R.string.app_localAuthManagerErrorTitle),
+                id = getEnglishString(R.string.go_settings_screen_page_id),
+                endpoint = "",
+                status = "",
+                reason = getString(R.string.app_localAuthManagerErrorReason),
+                params = requiredParams,
+            )
+        }
 
-        internal fun makeButtonEvent(
-            context: Context,
-            text: Int,
-        ) = with(context) {
+        internal fun makeButtonEvent(context: Context, text: Int) = with(context) {
             TrackEvent.Button(
                 text = getEnglishString(text),
                 params = requiredParams,
             )
         }
 
-        internal fun makeBackButtonEvent(context: Context) =
-            with(context) {
-                TrackEvent.Button(
-                    text = getEnglishString(R.string.system_backButton),
-                    params = requiredParams,
-                )
-            }
-
-        private val requiredParams =
-            RequiredParameters(
-                taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
-                taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
+        internal fun makeBackButtonEvent(context: Context) = with(context) {
+            TrackEvent.Button(
+                text = getEnglishString(R.string.system_backButton),
+                params = requiredParams,
             )
+        }
+
+        private val requiredParams = RequiredParameters(
+            taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
+            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
+        )
     }
 }

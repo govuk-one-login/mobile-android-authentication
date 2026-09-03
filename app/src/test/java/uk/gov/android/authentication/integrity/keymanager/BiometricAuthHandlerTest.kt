@@ -31,7 +31,7 @@ class BiometricAuthHandlerTest {
             BiometricAuthHandler.Request(
                 accessControlLevel = AccessControlLevel.PASSCODE,
                 promptConfig = BiometricAuthHandler.PromptConfig("Title", "Close"),
-                callback = BiometricAuthHandler.Callback(),
+                callback = BiometricAuthHandler.Callback()
             )
 
         // WHEN
@@ -49,7 +49,7 @@ class BiometricAuthHandlerTest {
             BiometricAuthHandler.Request(
                 accessControlLevel = AccessControlLevel.OPEN,
                 promptConfig = BiometricAuthHandler.PromptConfig("Title", "Close"),
-                callback = BiometricAuthHandler.Callback(),
+                callback = BiometricAuthHandler.Callback()
             )
 
         // WHEN & THEN
@@ -67,7 +67,7 @@ class BiometricAuthHandlerTest {
     fun `PASSCODE_AND_BIOMETRICS returns correct authenticator`() {
         assertEquals(
             BIOMETRIC_STRONG or DEVICE_CREDENTIAL,
-            AccessControlLevel.PASSCODE_AND_BIOMETRICS.toAuthenticators(),
+            AccessControlLevel.PASSCODE_AND_BIOMETRICS.toAuthenticators()
         )
     }
 
@@ -84,7 +84,7 @@ class BiometricAuthHandlerTest {
         val callback =
             BiometricAuthHandler.Callback(
                 onFailure = { failureCalled = true },
-                onError = { _, _ -> errorCalled = true },
+                onError = { _, _ -> errorCalled = true }
             )
 
         // WHEN
@@ -103,7 +103,7 @@ class BiometricAuthHandlerTest {
         val callback =
             BiometricAuthHandler.Callback(
                 onFailure = { failureCalled = true },
-                onError = { _, _ -> errorCalled = true },
+                onError = { _, _ -> errorCalled = true }
             )
 
         // WHEN
@@ -124,7 +124,7 @@ class BiometricAuthHandlerTest {
                 onError = { code, msg ->
                     errorCode = code
                     errorMessage = msg.toString()
-                },
+                }
             )
 
         // WHEN
@@ -141,7 +141,7 @@ class BiometricAuthHandlerTest {
         var successCalled = false
         val callback =
             BiometricAuthHandler.Callback(
-                onSuccess = { successCalled = true },
+                onSuccess = { successCalled = true }
             )
 
         // WHEN
@@ -157,7 +157,7 @@ class BiometricAuthHandlerTest {
         var failureCalled = false
         val callback =
             BiometricAuthHandler.Callback(
-                onFailure = { failureCalled = true },
+                onFailure = { failureCalled = true }
             )
 
         // WHEN
@@ -178,7 +178,7 @@ class BiometricAuthHandlerTest {
             BiometricAuthHandler.Request(
                 accessControlLevel = AccessControlLevel.PASSCODE,
                 promptConfig = BiometricAuthHandler.PromptConfig("Title", "Close"),
-                callback = BiometricAuthHandler.Callback(),
+                callback = BiometricAuthHandler.Callback()
             )
         handler.authenticate(request)
 

@@ -67,13 +67,14 @@ fun BioOptOutScreen(
 }
 
 @Composable
-private fun BioOptOutContent(onBiometricsOptIn: () -> Unit) {
-    val body =
-        persistentListOf(
-            stringResource(R.string.app_optOutBiometricsBody1),
-            stringResource(R.string.app_optOutBiometricsBody2),
-            stringResource(R.string.app_optOutBiometricsBody3),
-        )
+private fun BioOptOutContent(
+    onBiometricsOptIn: () -> Unit,
+) {
+    val body = persistentListOf(
+        stringResource(R.string.app_optOutBiometricsBody1),
+        stringResource(R.string.app_optOutBiometricsBody2),
+        stringResource(R.string.app_optOutBiometricsBody3),
+    )
     ErrorScreen(
         icon = {
             GdsIcon(
@@ -87,6 +88,7 @@ private fun BioOptOutContent(onBiometricsOptIn: () -> Unit) {
             GdsHeading(
                 text = stringResource(R.string.app_optOutBiometricsTitle),
                 modifier = Modifier.fillMaxWidth().padding(horizontal = horizontalPadding),
+
             )
         },
         body = { horizontalPadding ->

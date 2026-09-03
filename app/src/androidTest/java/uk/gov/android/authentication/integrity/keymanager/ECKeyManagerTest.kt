@@ -1,15 +1,15 @@
 package uk.gov.android.authentication.integrity.keymanager
 
-import kotlinx.serialization.json.Json
-import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
-import uk.gov.android.authentication.json.jwk.JWK
-import uk.gov.android.authentication.json.jwt.Jose4jJwtVerifier
 import java.security.KeyStore
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
+import kotlinx.serialization.json.Json
+import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
+import uk.gov.android.authentication.json.jwk.JWK
+import uk.gov.android.authentication.json.jwt.Jose4jJwtVerifier
 
 @OptIn(ExperimentalEncodingApi::class)
 class ECKeyManagerTest {
@@ -25,10 +25,9 @@ class ECKeyManagerTest {
 
     @BeforeTest
     fun setup() {
-        keyStore =
-            KeyStore.getInstance("AndroidKeyStore").apply {
-                load(null)
-            }
+        keyStore = KeyStore.getInstance("AndroidKeyStore").apply {
+            load(null)
+        }
         ecKeyManager = ECKeyManager()
     }
 
@@ -62,11 +61,12 @@ class ECKeyManagerTest {
     }
 
     @Suppress("SwallowedException")
-    private fun checkInputIsBase64(input: String): Boolean =
-        try {
+    private fun checkInputIsBase64(input: String): Boolean {
+        return try {
             Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT).decode(input.toByteArray())
             true
         } catch (e: IllegalArgumentException) {
             false
         }
+    }
 }

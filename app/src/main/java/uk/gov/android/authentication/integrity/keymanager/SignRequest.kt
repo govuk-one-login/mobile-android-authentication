@@ -8,7 +8,7 @@ package uk.gov.android.authentication.integrity.keymanager
  */
 data class SignRequest(
     val keyAlias: String,
-    val data: ByteArray,
+    val data: ByteArray
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

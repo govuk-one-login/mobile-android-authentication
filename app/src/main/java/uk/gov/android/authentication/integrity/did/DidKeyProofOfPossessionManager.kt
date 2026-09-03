@@ -1,12 +1,12 @@
 package uk.gov.android.authentication.integrity.did
 
+import kotlin.io.encoding.Base64
 import uk.gov.android.authentication.integrity.keymanager.BiometricAuthHandler
 import uk.gov.android.authentication.integrity.keymanager.BiometricAuthHandler.PromptConfig
 import uk.gov.android.authentication.integrity.keymanager.KeyPairManager
 import uk.gov.android.authentication.integrity.keymanager.SignRequest
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64
-import kotlin.io.encoding.Base64
 
 /**
  * Manager for generating DID key-based Proof of Possession (PoP) JWTs.
@@ -36,7 +36,7 @@ fun interface DidKeyProofOfPossessionManager {
         alias: String,
         aud: String,
         nonce: String,
-        iss: String,
+        iss: String
     ): String
 }
 
@@ -55,14 +55,15 @@ fun interface DidKeyProofOfPossessionManager {
 class DidKeyProofOfPossessionManagerImpl(
     private val keyPairManager: KeyPairManager,
     private val popGenerator: ProofOfPossessionGenerator,
-    private val promptConfig: PromptConfig,
+    private val promptConfig: PromptConfig
 ) : DidKeyProofOfPossessionManager {
+
     override suspend fun generatePoP(
         authHandler: BiometricAuthHandler,
         alias: String,
         aud: String,
         nonce: String,
-        iss: String,
+        iss: String
     ): String {
         // Create Proof of Possession
         val kid = getDidKey(alias)
@@ -73,7 +74,7 @@ class DidKeyProofOfPossessionManagerImpl(
             keyPairManager.authenticateAndSign(
                 SignRequest(alias, unsignedPoPJwt.toByteArray()),
                 promptConfig = promptConfig,
-                authHandler = authHandler,
+                authHandler = authHandler
             )
         val signatureBytes = signedData.signature
         // Encode signature in Base64 configured with UrlSafe and no padding
@@ -88,12 +89,11 @@ class DidKeyProofOfPossessionManagerImpl(
         val base64Decoder = Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT)
         val xBytes = base64Decoder.decode(coordinates.first)
         val yBytes = base64Decoder.decode(coordinates.second)
-        val prefix =
-            if (yBytes.last().hasEvenParity()) {
-                EC_POINT_COMPRESSION_EVEN
-            } else {
-                EC_POINT_COMPRESSION_ODD
-            }
+        val prefix = if (yBytes.last().hasEvenParity()) {
+            EC_POINT_COMPRESSION_EVEN
+        } else {
+            EC_POINT_COMPRESSION_ODD
+        }
         val compressedKey = byteArrayOf(prefix.toByte()) + xBytes
         return DidKeyEncoder.encodeDidKey(compressedKey)
     }

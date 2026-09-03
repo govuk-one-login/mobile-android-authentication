@@ -8,7 +8,7 @@ package uk.gov.android.authentication.integrity.keymanager
  */
 data class SignedData(
     val keyAlias: String,
-    val signature: ByteArray,
+    val signature: ByteArray
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

@@ -8,13 +8,13 @@ import net.openid.appauth.AuthorizationException.TokenRequestErrors
 data class AuthenticationError(
     override val message: String,
     val type: ErrorType,
-    val status: Int = 0,
+    val status: Int = 0
 ) : Error() {
     enum class ErrorType {
         OAUTH,
         ACCESS_DENIED,
         SERVER_ERROR,
-        TOKEN_ERROR,
+        TOKEN_ERROR
     }
 
     companion object {
@@ -26,45 +26,39 @@ data class AuthenticationError(
             val status = exception?.code ?: 0
             val message = exception?.message ?: NULL_AUTH_MESSAGE
             return when (exception) {
-                null ->
-                    AuthenticationError(
-                        message = NULL_AUTH_MESSAGE,
-                        type = ErrorType.OAUTH,
-                        status = status,
-                    )
+                null -> AuthenticationError(
+                    message = NULL_AUTH_MESSAGE,
+                    type = ErrorType.OAUTH,
+                    status = status
+                )
 
-                AuthorizationRequestErrors.ACCESS_DENIED ->
-                    AuthenticationError(
-                        message = message,
-                        type = ErrorType.ACCESS_DENIED,
-                        status = status,
-                    )
+                AuthorizationRequestErrors.ACCESS_DENIED -> AuthenticationError(
+                    message = message,
+                    type = ErrorType.ACCESS_DENIED,
+                    status = status
+                )
 
-                AuthorizationRequestErrors.SERVER_ERROR ->
-                    AuthenticationError(
-                        message = message,
-                        type = ErrorType.SERVER_ERROR,
-                        status = status,
-                    )
+                AuthorizationRequestErrors.SERVER_ERROR -> AuthenticationError(
+                    message = message,
+                    type = ErrorType.SERVER_ERROR,
+                    status = status
+                )
 
                 TokenRequestErrors.INVALID_REQUEST,
                 TokenRequestErrors.UNSUPPORTED_GRANT_TYPE,
                 TokenRequestErrors.INVALID_GRANT,
                 TokenRequestErrors.INVALID_CLIENT,
-                TokenRequestErrors.UNAUTHORIZED_CLIENT,
-                ->
-                    AuthenticationError(
-                        message = message,
-                        type = ErrorType.TOKEN_ERROR,
-                        status = status,
-                    )
+                TokenRequestErrors.UNAUTHORIZED_CLIENT -> AuthenticationError(
+                    message = message,
+                    type = ErrorType.TOKEN_ERROR,
+                    status = status
+                )
 
-                else ->
-                    AuthenticationError(
-                        message = message,
-                        type = ErrorType.OAUTH,
-                        status = status,
-                    )
+                else -> AuthenticationError(
+                    message = message,
+                    type = ErrorType.OAUTH,
+                    status = status
+                )
             }
         }
     }

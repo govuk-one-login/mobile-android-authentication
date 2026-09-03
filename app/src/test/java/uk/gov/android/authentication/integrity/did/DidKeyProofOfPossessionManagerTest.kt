@@ -1,6 +1,11 @@
 package uk.gov.android.authentication.integrity.did
 
 import android.content.Context
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -20,11 +25,6 @@ import uk.gov.android.authentication.integrity.keymanager.SignRequest
 import uk.gov.android.authentication.integrity.keymanager.SignedData
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64
-import kotlin.io.encoding.Base64
-import kotlin.io.encoding.ExperimentalEncodingApi
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertNotEquals
 
 class DidKeyProofOfPossessionManagerTest {
     private val keyPairManager: KeyPairManager = mock()
@@ -52,7 +52,7 @@ class DidKeyProofOfPossessionManagerTest {
                     alias = "test-alias",
                     aud = "https://example.com",
                     nonce = "test-nonce",
-                    iss = ISS,
+                    iss = ISS
                 )
 
             val parts = result.split(".")
@@ -72,7 +72,7 @@ class DidKeyProofOfPossessionManagerTest {
                 alias = "test-alias",
                 aud = "https://example.com",
                 nonce = "test-nonce",
-                iss = ISS,
+                iss = ISS
             )
 
             verify(keyPairManager).getPublicKeyCoordinates("test-alias")
@@ -88,14 +88,14 @@ class DidKeyProofOfPossessionManagerTest {
                 alias = "test-alias",
                 aud = "https://example.com",
                 nonce = "test-nonce",
-                iss = ISS,
+                iss = ISS
             )
 
             verify(popGenerator).createBase64DidKeyPoP(
                 kid = any(),
                 nonce = eq("test-nonce"),
                 aud = eq("https://example.com"),
-                iss = eq(ISS),
+                iss = eq(ISS)
             )
         }
 
@@ -109,14 +109,14 @@ class DidKeyProofOfPossessionManagerTest {
                 alias = "test-alias",
                 aud = "https://example.com",
                 nonce = "test-nonce",
-                iss = ISS,
+                iss = ISS
             )
 
             val captor = argumentCaptor<Array<SignRequest>>()
             verify(keyPairManager).authenticateAndSign(
                 *captor.capture(),
                 promptConfig = any(),
-                authHandler = any(),
+                authHandler = any()
             )
             assertEquals("test-alias", captor.firstValue[0].keyAlias)
         }
@@ -132,7 +132,7 @@ class DidKeyProofOfPossessionManagerTest {
                     alias = "test-alias",
                     aud = "https://example.com",
                     nonce = "test-nonce",
-                    iss = ISS,
+                    iss = ISS
                 )
 
             val signature = result.split(".")[2]
@@ -151,35 +151,35 @@ class DidKeyProofOfPossessionManagerTest {
             given(keyPairManager.getPublicKeyCoordinates(any()))
                 .willReturn(Pair(encodeBase64(xBytes), encodeBase64(yBytes)))
             given(
-                popGenerator.createBase64DidKeyPoP(any(), any(), eq("https://example1.com"), any()),
-            ).willReturn("header1.payload1")
+                popGenerator.createBase64DidKeyPoP(any(), any(), eq("https://example1.com"), any())
+            )
+                .willReturn("header1.payload1")
             given(
-                popGenerator.createBase64DidKeyPoP(any(), any(), eq("https://example2.com"), any()),
-            ).willReturn("header2.payload2")
+                popGenerator.createBase64DidKeyPoP(any(), any(), eq("https://example2.com"), any())
+            )
+                .willReturn("header2.payload2")
             given(
                 keyPairManager.authenticateAndSign(
                     anyVararg(),
                     promptConfig = any(),
-                    authHandler = any(),
-                ),
+                    authHandler = any()
+                )
             ).willReturn(listOf(SignedData("test-alias", byteArrayOf(1, 2, 3, 4, 5))))
 
-            val result1 =
-                manager.generatePoP(
-                    authHandler,
-                    "test-alias",
-                    "https://example1.com",
-                    "nonce",
-                    ISS,
-                )
-            val result2 =
-                manager.generatePoP(
-                    authHandler,
-                    "test-alias",
-                    "https://example2.com",
-                    "nonce",
-                    ISS,
-                )
+            val result1 = manager.generatePoP(
+                authHandler,
+                "test-alias",
+                "https://example1.com",
+                "nonce",
+                ISS
+            )
+            val result2 = manager.generatePoP(
+                authHandler,
+                "test-alias",
+                "https://example2.com",
+                "nonce",
+                ISS
+            )
 
             assertNotEquals(result1, result2)
         }
@@ -200,26 +200,24 @@ class DidKeyProofOfPossessionManagerTest {
                 keyPairManager.authenticateAndSign(
                     anyVararg(),
                     promptConfig = any(),
-                    authHandler = any(),
-                ),
+                    authHandler = any()
+                )
             ).willReturn(listOf(SignedData("test-alias", byteArrayOf(1, 2, 3, 4, 5))))
 
-            val result1 =
-                manager.generatePoP(
-                    authHandler,
-                    "test-alias",
-                    "https://example.com",
-                    "nonce1",
-                    ISS,
-                )
-            val result2 =
-                manager.generatePoP(
-                    authHandler,
-                    "test-alias",
-                    "https://example.com",
-                    "nonce2",
-                    ISS,
-                )
+            val result1 = manager.generatePoP(
+                authHandler,
+                "test-alias",
+                "https://example.com",
+                "nonce1",
+                ISS
+            )
+            val result2 = manager.generatePoP(
+                authHandler,
+                "test-alias",
+                "https://example.com",
+                "nonce2",
+                ISS
+            )
 
             assertNotEquals(result1, result2)
         }
@@ -231,24 +229,23 @@ class DidKeyProofOfPossessionManagerTest {
             given(keyPairManager.getPublicKeyCoordinates(any()))
                 .willReturn(Pair(encodeBase64(ByteArray(32) { 1 }), encodeBase64(yBytesEven)))
             given(popGenerator.createBase64DidKeyPoP(any(), any(), any(), any())).willReturn(
-                "header.payload",
+                "header.payload"
             )
             given(
                 keyPairManager.authenticateAndSign(
                     anyVararg(),
                     promptConfig = any(),
-                    authHandler = any(),
-                ),
+                    authHandler = any()
+                )
             ).willReturn(listOf(SignedData("test-alias", byteArrayOf(1, 2, 3))))
 
-            val result =
-                manager.generatePoP(
-                    authHandler,
-                    "test-alias",
-                    "https://example.com",
-                    "nonce",
-                    ISS,
-                )
+            val result = manager.generatePoP(
+                authHandler,
+                "test-alias",
+                "https://example.com",
+                "nonce",
+                ISS
+            )
 
             assertNotNull(result)
             verify(keyPairManager).getPublicKeyCoordinates("test-alias")
@@ -261,24 +258,23 @@ class DidKeyProofOfPossessionManagerTest {
             given(keyPairManager.getPublicKeyCoordinates(any()))
                 .willReturn(Pair(encodeBase64(ByteArray(32) { 1 }), encodeBase64(yBytesOdd)))
             given(popGenerator.createBase64DidKeyPoP(any(), any(), any(), any())).willReturn(
-                "header.payload",
+                "header.payload"
             )
             given(
                 keyPairManager.authenticateAndSign(
                     anyVararg(),
                     promptConfig = any(),
-                    authHandler = any(),
-                ),
+                    authHandler = any()
+                )
             ).willReturn(listOf(SignedData("test-alias", byteArrayOf(1, 2, 3))))
 
-            val result =
-                manager.generatePoP(
-                    authHandler,
-                    "test-alias",
-                    "https://example.com",
-                    "nonce",
-                    ISS,
-                )
+            val result = manager.generatePoP(
+                authHandler,
+                "test-alias",
+                "https://example.com",
+                "nonce",
+                ISS
+            )
 
             assertNotNull(result)
             verify(keyPairManager).getPublicKeyCoordinates("test-alias")
@@ -293,14 +289,14 @@ class DidKeyProofOfPossessionManagerTest {
             given(keyPairManager.getPublicKeyCoordinates(any()))
                 .willReturn(Pair(encodeBase64(xBytes), encodeBase64(yBytesEven)))
             given(popGenerator.createBase64DidKeyPoP(any(), any(), any(), any())).willReturn(
-                "header.payload",
+                "header.payload"
             )
             given(
                 keyPairManager.authenticateAndSign(
                     anyVararg(),
                     promptConfig = any(),
-                    authHandler = any(),
-                ),
+                    authHandler = any()
+                )
             ).willReturn(listOf(SignedData("test-alias", byteArrayOf(1, 2, 3))))
 
             manager.generatePoP(authHandler, "test-alias", "https://example.com", "nonce", ISS)
@@ -314,7 +310,7 @@ class DidKeyProofOfPossessionManagerTest {
     fun `generatePoP throws exception when keyManager fails to get coordinates`() =
         runTest {
             given(keyPairManager.getPublicKeyCoordinates(any())).willThrow(
-                RuntimeException("Key not found"),
+                RuntimeException("Key not found")
             )
 
             assertThrows<RuntimeException> {
@@ -328,14 +324,14 @@ class DidKeyProofOfPossessionManagerTest {
             given(keyPairManager.getPublicKeyCoordinates(any()))
                 .willReturn(Pair(encodeBase64(ByteArray(32)), encodeBase64(ByteArray(32))))
             given(popGenerator.createBase64DidKeyPoP(any(), any(), any(), any())).willReturn(
-                "header.payload",
+                "header.payload"
             )
             given(
                 keyPairManager.authenticateAndSign(
                     anyVararg(),
                     promptConfig = any(),
-                    authHandler = any(),
-                ),
+                    authHandler = any()
+                )
             ).willThrow(RuntimeException("Signing failed"))
 
             assertThrows<RuntimeException> {
@@ -352,24 +348,23 @@ class DidKeyProofOfPossessionManagerTest {
             given(keyPairManager.getPublicKeyCoordinates(any()))
                 .willReturn(Pair(encodeBase64(ByteArray(32)), encodeBase64(ByteArray(32))))
             given(popGenerator.createBase64DidKeyPoP(any(), any(), any(), any())).willReturn(
-                unsignedJwt,
+                unsignedJwt
             )
             given(
                 keyPairManager.authenticateAndSign(
                     anyVararg(),
                     promptConfig = any(),
-                    authHandler = any(),
-                ),
+                    authHandler = any()
+                )
             ).willReturn(listOf(SignedData("test-alias", signature)))
 
-            val result =
-                manager.generatePoP(
-                    authHandler,
-                    "test-alias",
-                    "https://example.com",
-                    "nonce",
-                    ISS,
-                )
+            val result = manager.generatePoP(
+                authHandler,
+                "test-alias",
+                "https://example.com",
+                "nonce",
+                ISS
+            )
 
             assertTrue(result.startsWith(unsignedJwt))
             val parts = result.split(".")
@@ -388,14 +383,14 @@ class DidKeyProofOfPossessionManagerTest {
         given(keyPairManager.getPublicKeyCoordinates(any()))
             .willReturn(Pair(encodeBase64(xBytes), encodeBase64(yBytes)))
         given(popGenerator.createBase64DidKeyPoP(any(), any(), any(), any())).willReturn(
-            "header.payload",
+            "header.payload"
         )
         given(
             keyPairManager.authenticateAndSign(
                 anyVararg(),
                 promptConfig = any(),
-                authHandler = any(),
-            ),
+                authHandler = any()
+            )
         ).willReturn(listOf(SignedData("test-alias", byteArrayOf(1, 2, 3, 4, 5))))
     }
 

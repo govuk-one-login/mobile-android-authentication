@@ -99,8 +99,9 @@ open class LocalAuthManagerImpl(
         }
     }
 
-    override fun biometricsAvailable(): Boolean =
-        deviceBiometricsManager.getCredentialStatus() == DeviceBiometricsStatus.SUCCESS
+    override fun biometricsAvailable(): Boolean {
+        return deviceBiometricsManager.getCredentialStatus() == DeviceBiometricsStatus.SUCCESS
+    }
 
     override fun toggleBiometrics() {
         // Check if device secured

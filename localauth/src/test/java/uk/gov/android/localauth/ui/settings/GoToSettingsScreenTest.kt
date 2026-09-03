@@ -30,11 +30,10 @@ class GoToSettingsScreenTest : FragmentActivityTestCase(false) {
     private var onGoToSettings = false
     private var onDismiss = false
 
-    private val requiredParams =
-        RequiredParameters(
-            taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
-            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
-        )
+    private val requiredParams = RequiredParameters(
+        taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
+        taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
+    )
 
     @Test
     fun `test UI`() {

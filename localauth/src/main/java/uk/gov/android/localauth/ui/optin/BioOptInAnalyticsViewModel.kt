@@ -20,11 +20,10 @@ class BioOptInAnalyticsViewModel(
     private val walletScreenEvent = makeWalletScreenEvent(context)
     private val noWalletScreenEvent = makeNoWalletScreenEvent(context)
     private val closeIconEvent = makeCloseBackEvent(context)
-    private val biometricsBtnEvent =
-        makeButtonEvent(
-            context,
-            R.string.app_enableBiometricsButton,
-        )
+    private val biometricsBtnEvent = makeButtonEvent(
+        context,
+        R.string.app_enableBiometricsButton,
+    )
     private val passcodeBtnEvent =
         makeButtonEvent(
             context,
@@ -57,54 +56,46 @@ class BioOptInAnalyticsViewModel(
     }
 
     companion object {
-        internal fun makeWalletScreenEvent(context: Context) =
-            with(context) {
-                ViewEvent.Screen(
-                    name = getEnglishString(R.string.app_enableBiometricsTitle),
-                    id = getEnglishString(R.string.bio_opt_in_screen_wallet_page_id),
-                    params = requiredParams,
-                )
-            }
+        internal fun makeWalletScreenEvent(context: Context) = with(context) {
+            ViewEvent.Screen(
+                name = getEnglishString(R.string.app_enableBiometricsTitle),
+                id = getEnglishString(R.string.bio_opt_in_screen_wallet_page_id),
+                params = requiredParams,
+            )
+        }
 
-        internal fun makeNoWalletScreenEvent(context: Context) =
-            with(context) {
-                ViewEvent.Screen(
-                    name = getEnglishString(R.string.app_enableBiometricsTitle),
-                    id = getEnglishString(R.string.bio_opt_in_screen_no_wallet_page_id),
-                    params = requiredParams,
-                )
-            }
+        internal fun makeNoWalletScreenEvent(context: Context) = with(context) {
+            ViewEvent.Screen(
+                name = getEnglishString(R.string.app_enableBiometricsTitle),
+                id = getEnglishString(R.string.bio_opt_in_screen_no_wallet_page_id),
+                params = requiredParams,
+            )
+        }
 
-        internal fun makeButtonEvent(
-            context: Context,
-            text: Int,
-        ) = with(context) {
+        internal fun makeButtonEvent(context: Context, text: Int) = with(context) {
             TrackEvent.Button(
                 text = getEnglishString(text),
                 params = requiredParams,
             )
         }
 
-        internal fun makeCloseBackEvent(context: Context) =
-            with(context) {
-                TrackEvent.Icon(
-                    text = getEnglishString(componentsR.string.close_icon_button),
-                    params = requiredParams,
-                )
-            }
-
-        internal fun makeBackButtonEvent(context: Context) =
-            with(context) {
-                TrackEvent.Button(
-                    text = getEnglishString(R.string.system_backButton),
-                    params = requiredParams,
-                )
-            }
-
-        private val requiredParams =
-            RequiredParameters(
-                taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
-                taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
+        internal fun makeCloseBackEvent(context: Context) = with(context) {
+            TrackEvent.Icon(
+                text = getEnglishString(componentsR.string.close_icon_button),
+                params = requiredParams,
             )
+        }
+
+        internal fun makeBackButtonEvent(context: Context) = with(context) {
+            TrackEvent.Button(
+                text = getEnglishString(R.string.system_backButton),
+                params = requiredParams,
+            )
+        }
+
+        private val requiredParams = RequiredParameters(
+            taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
+            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
+        )
     }
 }

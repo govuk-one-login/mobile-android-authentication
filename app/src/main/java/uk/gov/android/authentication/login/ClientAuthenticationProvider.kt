@@ -6,7 +6,7 @@ fun interface ClientAuthenticationProvider {
     fun setCustomClientAuthentication(
         clientAttestation: String?,
         proofOfPossession: String?,
-        dpop: String?,
+        dpop: String?
     ): ClientAuthentication
 }
 
@@ -14,18 +14,20 @@ class ClientAuthenticationProviderImpl : ClientAuthenticationProvider {
     override fun setCustomClientAuthentication(
         clientAttestation: String?,
         proofOfPossession: String?,
-        dpop: String?,
-    ): ClientAuthentication =
-        object : ClientAuthentication {
+        dpop: String?
+    ): ClientAuthentication {
+        return object : ClientAuthentication {
             override fun getRequestHeaders(clientId: String): MutableMap<String, String> =
                 mutableMapOf(
                     Pair(CLIENT_ATTESTATION, clientAttestation ?: ""),
                     Pair(PROOF_OF_POSSESSION, proofOfPossession ?: ""),
-                    Pair(DEMONSTRATING_PROOF_OF_POSSESSION, dpop ?: ""),
+                    Pair(DEMONSTRATING_PROOF_OF_POSSESSION, dpop ?: "")
                 )
 
-            override fun getRequestParameters(clientId: String): MutableMap<String, String> = mutableMapOf()
+            override fun getRequestParameters(clientId: String): MutableMap<String, String> =
+                mutableMapOf()
         }
+    }
 
     companion object {
         private const val CLIENT_ATTESTATION = "OAuth-Client-Attestation"

@@ -1,5 +1,13 @@
 package uk.gov.android.authentication.integrity.pop
 
+import java.time.Instant
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
+import kotlin.test.assertTrue
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -11,14 +19,6 @@ import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator.ge
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator.isPopExpired
 import uk.gov.android.authentication.json.jwk.JWK
-import java.time.Instant
-import kotlin.io.encoding.Base64
-import kotlin.io.encoding.ExperimentalEncodingApi
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertNotEquals
-import kotlin.test.assertTrue
 
 class ProofOfPossessionGeneratorTest {
     // createBase64PoP tests
@@ -70,13 +70,12 @@ class ProofOfPossessionGeneratorTest {
     @Test
     fun `createBase64DPoP generates expected JWT structure`() {
         val expectedResult = ClassLoader.getSystemResource("bodyDPoPBase64.txt").readText()
-        val result =
-            createBase64DPoP(
-                JWK.generateJwk("x", "y"),
-                "test",
-                "0",
-                0,
-            )
+        val result = createBase64DPoP(
+            JWK.generateJwk("x", "y"),
+            "test",
+            "0",
+            0
+        )
 
         assertEquals(expectedResult, result)
     }
@@ -121,13 +120,12 @@ class ProofOfPossessionGeneratorTest {
     @Test
     fun `createBase64DPoP handles different URL formats`() {
         val jwk = JWK.generateJwk("x", "y")
-        val urls =
-            listOf(
-                "https://example.com",
-                "https://example.com/path",
-                "https://example.com/path?query=value",
-                "https://example.com:8080/path",
-            )
+        val urls = listOf(
+            "https://example.com",
+            "https://example.com/path",
+            "https://example.com/path?query=value",
+            "https://example.com:8080/path"
+        )
 
         urls.forEach { url ->
             val result = createBase64DPoP(jwk, url, "jti", 1234567890L)
@@ -139,13 +137,12 @@ class ProofOfPossessionGeneratorTest {
     // createBase64DidKeyPoP tests
     @Test
     fun `createBase64DidKeyPoP contains correct header and payload fields`() {
-        val result =
-            createBase64DidKeyPoP(
-                kid = "did:key:z6MkTestKeyId123",
-                nonce = "unique-nonce-12345",
-                aud = "https://issuer.example.com",
-                iss = ISS,
-            )
+        val result = createBase64DidKeyPoP(
+            kid = "did:key:z6MkTestKeyId123",
+            nonce = "unique-nonce-12345",
+            aud = "https://issuer.example.com",
+            iss = ISS
+        )
 
         val parts = result.split(".")
         assertEquals(2, parts.size)
@@ -166,13 +163,12 @@ class ProofOfPossessionGeneratorTest {
     fun `createBase64DidKeyPoP generates current timestamp for iat`() {
         val beforeTime = System.currentTimeMillis() / CONVERT_TO_SECONDS
 
-        val result =
-            createBase64DidKeyPoP(
-                kid = "did:key:z6MkTest",
-                nonce = "test-nonce",
-                aud = "https://example.com",
-                iss = ISS,
-            )
+        val result = createBase64DidKeyPoP(
+            kid = "did:key:z6MkTest",
+            nonce = "test-nonce",
+            aud = "https://example.com",
+            iss = ISS
+        )
 
         val afterTime = System.currentTimeMillis() / CONVERT_TO_SECONDS
         val payload = decodeJsonObject(result.split(".")[1])
@@ -183,15 +179,14 @@ class ProofOfPossessionGeneratorTest {
 
     @Test
     fun `createBase64DidKeyPoP handles special characters and edge cases`() {
-        val testCases =
-            listOf(
-                Triple(
-                    "did:key:z6Mk!@#$%^&*()",
-                    "nonce-with-special-chars-!@#$%",
-                    "https://example.com/path?param=value&other=test",
-                ),
-                Triple("did:key:z6MkTest", "", "https://example.com"),
-            )
+        val testCases = listOf(
+            Triple(
+                "did:key:z6Mk!@#$%^&*()",
+                "nonce-with-special-chars-!@#$%",
+                "https://example.com/path?param=value&other=test"
+            ),
+            Triple("did:key:z6MkTest", "", "https://example.com")
+        )
 
         testCases.forEach { (kid, nonce, aud) ->
             val result = createBase64DidKeyPoP(kid, nonce, aud, ISS)
@@ -209,12 +204,11 @@ class ProofOfPossessionGeneratorTest {
     @Test
     fun `all factory methods use URL-safe base64 encoding without padding`() {
         val jwk = JWK.generateJwk("x", "y")
-        val results =
-            listOf(
-                createBase64PoP("iss", "aud", 1234567890L, "jti"),
-                createBase64DPoP(jwk, "https://example.com", "jti", 1234567890L),
-                createBase64DidKeyPoP("did:key:z6MkTest", "nonce", "https://example.com", ISS),
-            )
+        val results = listOf(
+            createBase64PoP("iss", "aud", 1234567890L, "jti"),
+            createBase64DPoP(jwk, "https://example.com", "jti", 1234567890L),
+            createBase64DidKeyPoP("did:key:z6MkTest", "nonce", "https://example.com", ISS)
+        )
 
         results.forEach { result ->
             assertFalse(result.contains("+"), "Should not contain + character")

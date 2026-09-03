@@ -40,11 +40,10 @@ fun GoToSettingsScreen(
     onDismiss: () -> Unit,
 ) {
     val context = LocalContext.current
-    val analyticsViewModel =
-        GoToSettingsAnalyticsViewModel(
-            context,
-            analyticsLogger,
-        )
+    val analyticsViewModel = GoToSettingsAnalyticsViewModel(
+        context,
+        analyticsLogger,
+    )
     analyticsViewModel.trackScreen()
     FullScreenDialogue(
         onDismissRequest = {
@@ -71,12 +70,13 @@ fun GoToSettingsScreen(
 }
 
 @Composable
-private fun GoToSettingsContent(onGoToSettings: () -> Unit) {
-    val body =
-        persistentListOf(
-            stringResource(R.string.app_localAuthManagerErrorBody1),
-            stringResource(R.string.app_localAuthManagerErrorBody2),
-        )
+private fun GoToSettingsContent(
+    onGoToSettings: () -> Unit,
+) {
+    val body = persistentListOf(
+        stringResource(R.string.app_localAuthManagerErrorBody1),
+        stringResource(R.string.app_localAuthManagerErrorBody2),
+    )
     val numberedListTitle = stringResource(R.string.app_localAuthManagerErrorBody3)
     val numberedListStep1 = stringResource(R.string.app_localAuthManagerErrorNumberedList1)
     val numberedListStep2 = stringResource(R.string.app_localAuthManagerErrorNumberedList2)
@@ -107,12 +107,11 @@ private fun GoToSettingsContent(onGoToSettings: () -> Unit) {
             }
             item {
                 GdsNumberedList(
-                    numberedListItems =
-                        persistentListOf(
-                            ListItem(numberedListStep1),
-                            ListItem(numberedListStep2),
-                            ListItem(numberedListStep3),
-                        ),
+                    numberedListItems = persistentListOf(
+                        ListItem(numberedListStep1),
+                        ListItem(numberedListStep2),
+                        ListItem(numberedListStep3),
+                    ),
                     title = ListTitle(numberedListTitle, TitleType.Heading),
                     modifier = Modifier.padding(horizontal = horizontalPadding),
                 )

@@ -9,6 +9,14 @@ import android.security.keystore.KeyProperties.KEY_ALGORITHM_EC
 import android.security.keystore.KeyProperties.PURPOSE_SIGN
 import android.security.keystore.KeyProperties.PURPOSE_VERIFY
 import androidx.annotation.VisibleForTesting
+import java.security.KeyPair
+import java.security.KeyPairGenerator
+import java.security.KeyStore
+import java.security.Signature
+import java.security.interfaces.ECPublicKey
+import java.security.spec.ECGenParameterSpec
+import kotlin.coroutines.resumeWithException
+import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -20,14 +28,6 @@ import uk.gov.android.authentication.integrity.keymanager.BiometricAuthHandler.R
 import uk.gov.android.authentication.integrity.keymanager.KeyPairManager.Companion.convertSignatureToASN1
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64
 import uk.gov.logging.api.Logger
-import java.security.KeyPair
-import java.security.KeyPairGenerator
-import java.security.KeyStore
-import java.security.Signature
-import java.security.interfaces.ECPublicKey
-import java.security.spec.ECGenParameterSpec
-import kotlin.coroutines.resumeWithException
-import kotlin.io.encoding.ExperimentalEncodingApi
 
 @Suppress("TooManyFunctions")
 class AndroidKeyPairManager private constructor(
@@ -35,23 +35,23 @@ class AndroidKeyPairManager private constructor(
     private val userAuthRequired: Boolean,
     private val keyStore: KeyStore,
     private val keyPairGenerator: KeyPairGenerator,
-    private val mainDispatcher: CoroutineDispatcher,
+    private val mainDispatcher: CoroutineDispatcher
 ) : KeyPairManager {
     constructor(
         logger: Logger,
-        userAuthRequired: Boolean,
+        userAuthRequired: Boolean
     ) : this(
         logger = logger,
         userAuthRequired = userAuthRequired,
         keyStore = KeyStore.getInstance(KEYSTORE).apply { load(null) },
         keyPairGenerator = KeyPairGenerator.getInstance(KEY_ALGORITHM_EC, KEYSTORE),
-        mainDispatcher = Dispatchers.Main,
+        mainDispatcher = Dispatchers.Main
     )
 
     override suspend fun authenticateAndSign(
         vararg requests: SignRequest,
         promptConfig: BiometricAuthHandler.PromptConfig,
-        authHandler: BiometricAuthHandler,
+        authHandler: BiometricAuthHandler
     ): List<SignedData> =
         withContext(mainDispatcher) {
             // Ensure keys are configured with user authentication for secure signing
@@ -63,30 +63,29 @@ class AndroidKeyPairManager private constructor(
                             accessControlLevel = AccessControlLevel.PASSCODE_AND_BIOMETRICS,
                             promptConfig = promptConfig,
                             callback =
-                                Callback(
-                                    onSuccess = {
-                                        continuation.resumeWith(
-                                            runCatching {
-                                                requests.toList().map { request ->
-                                                    SignedData(
-                                                        keyAlias = request.keyAlias,
-                                                        signature =
-                                                            sign(
-                                                                request.keyAlias,
-                                                                request.data,
-                                                            ),
+                            Callback(
+                                onSuccess = {
+                                    continuation.resumeWith(
+                                        runCatching {
+                                            requests.toList().map { request ->
+                                                SignedData(
+                                                    keyAlias = request.keyAlias,
+                                                    signature = sign(
+                                                        request.keyAlias,
+                                                        request.data
                                                     )
-                                                }
-                                            },
-                                        )
-                                    },
-                                    onError = { code, msg ->
-                                        continuation.resumeWithException(
-                                            BiometricAuthException(code, msg),
-                                        )
-                                    },
-                                ),
-                        ),
+                                                )
+                                            }
+                                        }
+                                    )
+                                },
+                                onError = { code, msg ->
+                                    continuation.resumeWithException(
+                                        BiometricAuthException(code, msg)
+                                    )
+                                }
+                            )
+                        )
                     )
                 }
             }
@@ -135,7 +134,7 @@ class AndroidKeyPairManager private constructor(
 
     override fun sign(
         alias: String,
-        data: ByteArray,
+        data: ByteArray
     ): ByteArray =
         runCatching {
             val privateKey = getPrivateKeyEntry(alias).privateKey
@@ -156,7 +155,7 @@ class AndroidKeyPairManager private constructor(
 
     private fun getKeyGenParameterSpec(
         alias: String,
-        isStrongBoxBacked: Boolean,
+        isStrongBoxBacked: Boolean
     ): KeyGenParameterSpec {
         val spec = KeyGenParameterSpec.Builder(alias, PURPOSE_SIGN or PURPOSE_VERIFY)
         with(spec) {
@@ -196,7 +195,7 @@ class AndroidKeyPairManager private constructor(
     private fun createKeyPair(
         keyPairGenerator: KeyPairGenerator,
         alias: String,
-        isStrongBoxBacked: Boolean,
+        isStrongBoxBacked: Boolean
     ): KeyPair? =
         runCatching {
             keyPairGenerator.initialize(getKeyGenParameterSpec(alias, isStrongBoxBacked))
@@ -243,14 +242,14 @@ class AndroidKeyPairManager private constructor(
             userAuthRequired: Boolean,
             keyStore: KeyStore,
             keyPairGenerator: KeyPairGenerator,
-            mainDispatcher: CoroutineDispatcher,
+            mainDispatcher: CoroutineDispatcher
         ): AndroidKeyPairManager =
             AndroidKeyPairManager(
                 logger,
                 userAuthRequired,
                 keyStore,
                 keyPairGenerator,
-                mainDispatcher,
+                mainDispatcher
             )
     }
 }

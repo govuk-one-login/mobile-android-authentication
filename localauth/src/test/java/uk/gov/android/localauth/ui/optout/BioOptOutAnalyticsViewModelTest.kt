@@ -39,11 +39,10 @@ class BioOptOutAnalyticsViewModelTest {
     fun setup() {
         val context: Context = ApplicationProvider.getApplicationContext()
         logger = mock()
-        requiredParameters =
-            RequiredParameters(
-                taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
-                taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
-            )
+        requiredParameters = RequiredParameters(
+            taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
+            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
+        )
         title = context.getEnglishString(R.string.app_optOutBiometricsTitle)
         id = context.getEnglishString(R.string.bio_opt_out_screen_page_id)
         reason = context.getString(R.string.app_optOutBiometricsErrorReason)
@@ -55,15 +54,14 @@ class BioOptOutAnalyticsViewModelTest {
 
     @Test
     fun trackBioOptOutScreenEvent() {
-        val event =
-            ViewEvent.Error(
-                name = title,
-                id = id,
-                endpoint = "",
-                status = "",
-                reason = reason,
-                params = requiredParameters,
-            )
+        val event = ViewEvent.Error(
+            name = title,
+            id = id,
+            endpoint = "",
+            status = "",
+            reason = reason,
+            params = requiredParameters,
+        )
         viewModel.trackBioOptOutScreen()
 
         verify(logger).logEventV3Dot1(event)
@@ -98,11 +96,10 @@ class BioOptOutAnalyticsViewModelTest {
 
     @Test
     fun trackCloseIconButton() {
-        val event =
-            TrackEvent.Icon(
-                text = icon,
-                params = requiredParameters,
-            )
+        val event = TrackEvent.Icon(
+            text = icon,
+            params = requiredParameters,
+        )
 
         viewModel.trackCloseIconButton()
 

@@ -67,10 +67,9 @@ fun BioOptInScreen(
             GdsTopAppBar(
                 title = null,
                 navigationButton = GdsIconButtonDefaults.defaultCloseContent(),
-                modifier =
-                    Modifier.semantics(true) {
-                        this.traversalIndex = CLOSE_INDEX
-                    },
+                modifier = Modifier.semantics(true) {
+                    this.traversalIndex = CLOSE_INDEX
+                },
                 onClick = {
                     analyticsViewModel.trackCloseIconButton()
                     onBiometricsOptOut()
@@ -109,17 +108,17 @@ private fun BioOptInContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier =
-            Modifier
-                .padding(smallPadding)
-                .fillMaxSize(),
+        Modifier
+            .padding(smallPadding)
+            .fillMaxSize(),
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
             modifier =
-                Modifier
-                    .fillMaxHeight()
-                    .weight(1f)
-                    .verticalScroll(rememberScrollState()),
+            Modifier
+                .fillMaxHeight()
+                .weight(1f)
+                .verticalScroll(rememberScrollState()),
         ) {
             Text()
         }
@@ -151,10 +150,9 @@ fun BioOptInScreen(
         topAppBar = {
             GdsTopAppBar(
                 navigationButton = GdsIconButtonDefaults.defaultCloseContent(),
-                modifier =
-                    Modifier.semantics(true) {
-                        this.traversalIndex = CLOSE_INDEX
-                    },
+                modifier = Modifier.semantics(true) {
+                    this.traversalIndex = CLOSE_INDEX
+                },
                 onClick = {
                     analyticsViewModel.trackCloseIconButton()
                     onBiometricsOptOut()
@@ -199,17 +197,17 @@ private fun BioOptInContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier =
-            Modifier
-                .padding(smallPadding)
-                .fillMaxSize(),
+        Modifier
+            .padding(smallPadding)
+            .fillMaxSize(),
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
             modifier =
-                Modifier
-                    .fillMaxHeight()
-                    .weight(1f)
-                    .verticalScroll(rememberScrollState()),
+            Modifier
+                .fillMaxHeight()
+                .weight(1f)
+                .verticalScroll(rememberScrollState()),
         ) {
             if (walletEnabled) {
                 Text()
@@ -230,11 +228,10 @@ private fun Text() {
     Header()
     GdsBulletedList(
         title = ListTitle(text = title, titleType = TitleType.Text),
-        bulletListItems =
-            persistentListOf(
-                ListItem(bulletItemOne),
-                ListItem(bulletItemTwo),
-            ),
+        bulletListItems = persistentListOf(
+            ListItem(bulletItemOne),
+            ListItem(bulletItemTwo),
+        ),
         modifier = Modifier.padding(bottom = smallPadding),
     )
     CustomText(text = stringResource(R.string.app_enableBiometricsBody2), CONTENT1_INDEX)
@@ -258,19 +255,17 @@ private fun Header() {
         contentDescription = null,
         contentScale = ContentScale.Fit,
         colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
-        modifier =
-            Modifier
-                .padding(vertical = smallPadding)
-                .fillMaxWidth()
-                .testTag(stringResource(R.string.app_enableBiometricsImageTestTag)),
+        modifier = Modifier
+            .padding(vertical = smallPadding)
+            .fillMaxWidth()
+            .testTag(stringResource(R.string.app_enableBiometricsImageTestTag)),
     )
     GdsHeading(
         text = stringResource(R.string.app_enableBiometricsTitle),
         style = GdsHeadingStyle.Title1,
-        modifier =
-            Modifier
-                .padding(bottom = smallPadding)
-                .semantics { this.traversalIndex = TITLE_INDEX },
+        modifier = Modifier
+            .padding(bottom = smallPadding)
+            .semantics { this.traversalIndex = TITLE_INDEX },
     )
 }
 
@@ -299,18 +294,13 @@ private fun BioOptInButtons(
 }
 
 @Composable
-private fun CustomText(
-    text: String,
-    accessibilityIndex: Float,
-) {
+private fun CustomText(text: String, accessibilityIndex: Float) {
     Text(
         text = text,
         color = MaterialTheme.colorScheme.onBackground,
-        modifier =
-            Modifier
-                .padding(bottom = smallPadding)
-                .fillMaxWidth()
-                .semantics { this.traversalIndex = accessibilityIndex },
+        modifier = Modifier.padding(bottom = smallPadding)
+            .fillMaxWidth()
+            .semantics { this.traversalIndex = accessibilityIndex },
         textAlign = TextAlign.Center,
     )
 }

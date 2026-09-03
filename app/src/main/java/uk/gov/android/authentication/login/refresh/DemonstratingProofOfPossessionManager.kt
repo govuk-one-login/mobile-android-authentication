@@ -1,9 +1,9 @@
 package uk.gov.android.authentication.login.refresh
 
+import java.security.SignatureException
 import uk.gov.android.authentication.integrity.FirebaseAppIntegrityManager.Companion.SIGN_ERROR
 import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
 import uk.gov.android.authentication.json.jwk.JWK
-import java.security.SignatureException
 
 /**
  * Component allowing to create a signed Demonstrating Proof of Possession that can be used in the token exchange and retrieve a refresh token
@@ -23,7 +23,7 @@ fun interface DemonstratingProofOfPossessionManager {
  * @param config - Provides all components required to log and create the JWT
  */
 class DemonstratingProofOfPossessionManagerImpl(
-    private val config: DemonstratingProofOfPossessionConfig,
+    private val config: DemonstratingProofOfPossessionConfig
 ) : DemonstratingProofOfPossessionManager {
     private val keyStoreManager: KeyStoreManager = config.keyStoreManager
     private val popGenerator = config.popGenerator
@@ -48,7 +48,7 @@ class DemonstratingProofOfPossessionManagerImpl(
             logger.error(
                 e.javaClass.simpleName,
                 e.message ?: SIGN_ERROR,
-                e,
+                e
             )
             SignedDPoP.Failure(e.message ?: SIGN_ERROR, e)
         }

@@ -88,15 +88,14 @@ internal object Base58 {
         var outputStart = encoded.size
         var inputStart = zeros
         while (inputStart < inputCopy.size) {
-            encoded[--outputStart] =
-                ALPHABET[
-                    divmod(
-                        inputCopy,
-                        inputStart.toUInt(),
-                        BASE_256,
-                        BASE_58,
-                    ).toInt(),
-                ]
+            encoded[--outputStart] = ALPHABET[
+                divmod(
+                    inputCopy,
+                    inputStart.toUInt(),
+                    BASE_256,
+                    BASE_58
+                ).toInt()
+            ]
             if (inputCopy[inputStart].toInt() == 0) ++inputStart
         }
 
@@ -121,7 +120,7 @@ internal object Base58 {
         number: ByteArray,
         firstDigit: UInt,
         base: UInt,
-        divisor: UInt,
+        divisor: UInt
     ): Byte {
         var remainder = 0.toUInt()
         for (i in firstDigit.toInt() until number.size) {

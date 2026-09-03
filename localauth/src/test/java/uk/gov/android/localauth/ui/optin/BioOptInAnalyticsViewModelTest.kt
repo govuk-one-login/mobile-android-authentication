@@ -37,11 +37,10 @@ class BioOptInAnalyticsViewModelTest {
     fun setup() {
         val context: Context = ApplicationProvider.getApplicationContext()
         logger = mock()
-        requiredParameters =
-            RequiredParameters(
-                taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
-                taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
-            )
+        requiredParameters = RequiredParameters(
+            taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
+            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
+        )
         name = context.getEnglishString(R.string.app_enableBiometricsTitle)
         id = context.getEnglishString(R.string.bio_opt_in_screen_wallet_page_id)
         passcodeBtn = context.getEnglishString(R.string.app_enablePasscodeOrPatternButton)
@@ -52,12 +51,11 @@ class BioOptInAnalyticsViewModelTest {
 
     @Test
     fun trackBioOptInWalletScreen() {
-        val event =
-            ViewEvent.Screen(
-                name = name,
-                id = id,
-                params = requiredParameters,
-            )
+        val event = ViewEvent.Screen(
+            name = name,
+            id = id,
+            params = requiredParameters,
+        )
 
         viewModel.trackBioOptInWalletScreen()
 
@@ -99,12 +97,11 @@ class BioOptInAnalyticsViewModelTest {
 
     @Test
     fun trackBackButton() {
-        val event =
-            ViewEvent.Screen(
-                name = name,
-                id = id,
-                params = requiredParameters,
-            )
+        val event = ViewEvent.Screen(
+            name = name,
+            id = id,
+            params = requiredParameters,
+        )
 
         viewModel.trackBioOptInWalletScreen()
 
