@@ -47,12 +47,13 @@ abstract class BaseScreenshotTest(nightMode: NightMode = NOTNIGHT) {
     companion object {
 
         @JvmStatic
-        fun <T : Any> applyNightMode(result: MutableList<Pair<T, NightMode>>): (
+        fun <T : Any> applyNightMode(
+            result: MutableList<Pair<T, NightMode>>
+        ): (
             T
-        ) -> Unit =
-            { parameters ->
-                result.add(parameters to NOTNIGHT)
-                result.add(parameters to NIGHT)
-            }
+        ) -> Unit = { parameters ->
+            result.add(parameters to NOTNIGHT)
+            result.add(parameters to NIGHT)
+        }
     }
 }

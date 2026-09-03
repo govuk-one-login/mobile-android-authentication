@@ -148,7 +148,10 @@ class AndroidKeyPairManager private constructor(
         throw KeySigningException(alias, exception)
     }
 
-    private fun getKeyGenParameterSpec(alias: String, isStrongBoxBacked: Boolean): KeyGenParameterSpec {
+    private fun getKeyGenParameterSpec(
+        alias: String,
+        isStrongBoxBacked: Boolean
+    ): KeyGenParameterSpec {
         val spec = KeyGenParameterSpec.Builder(alias, PURPOSE_SIGN or PURPOSE_VERIFY)
         with(spec) {
             setAlgorithmParameterSpec(ECGenParameterSpec(EC_DOMAIN_STANDARD_NAME))
@@ -184,12 +187,15 @@ class AndroidKeyPairManager private constructor(
         logger.debug(TAG, "alias: $alias - KeyPair generated using $backingType KeyStore")
     }
 
-    private fun createKeyPair(keyPairGenerator: KeyPairGenerator, alias: String, isStrongBoxBacked: Boolean): KeyPair? =
-        runCatching {
-            keyPairGenerator.initialize(getKeyGenParameterSpec(alias, isStrongBoxBacked))
-            keyPairGenerator.generateKeyPair()
-        }.onFailure { e -> logger.nonFatal(e) }
-            .getOrNull()
+    private fun createKeyPair(
+        keyPairGenerator: KeyPairGenerator,
+        alias: String,
+        isStrongBoxBacked: Boolean
+    ): KeyPair? = runCatching {
+        keyPairGenerator.initialize(getKeyGenParameterSpec(alias, isStrongBoxBacked))
+        keyPairGenerator.generateKeyPair()
+    }.onFailure { e -> logger.nonFatal(e) }
+        .getOrNull()
 
     /**
      * Logs a non-fatal throwable for both debugging and Crashlytics reporting.

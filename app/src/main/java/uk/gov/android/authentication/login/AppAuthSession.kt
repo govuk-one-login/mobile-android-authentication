@@ -33,7 +33,10 @@ class AppAuthSession : LoginSession {
     }
 
     @OptIn(ExperimentalEphemeralBrowsing::class)
-    override fun present(launcher: ActivityResultLauncher<Intent>, configuration: LoginSessionConfiguration) {
+    override fun present(
+        launcher: ActivityResultLauncher<Intent>,
+        configuration: LoginSessionConfiguration
+    ) {
         val customEphemeralTabIntent = CustomTabsIntent.Builder()
             .setEphemeralBrowsingEnabled(true)
             .setShareState(CustomTabsIntent.SHARE_STATE_OFF)

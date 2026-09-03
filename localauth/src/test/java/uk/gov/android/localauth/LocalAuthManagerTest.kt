@@ -80,31 +80,32 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         }
 
     @Test
-    fun `DEPRECATED - device secure - first time user - biometrics enabled - opt in bio - required`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-        whenever(deviceBiometricsManager.getCredentialStatus())
-            .thenReturn(DeviceBiometricsStatus.SUCCESS)
+    fun `DEPRECATED - device secure - first time user - biometrics enabled - opt in bio - required`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+            whenever(deviceBiometricsManager.getCredentialStatus())
+                .thenReturn(DeviceBiometricsStatus.SUCCESS)
 
-        composeTestRule.apply {
-            localAuthManager.enforceAndSet(
-                walletEnabled = false,
-                localAuthRequired = true,
-                activity = activity,
-                callbackHandler = callbackHandler
-            )
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
-            ).isDisplayed()
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsButton)
-            ).performClick()
+            composeTestRule.apply {
+                localAuthManager.enforceAndSet(
+                    walletEnabled = false,
+                    localAuthRequired = true,
+                    activity = activity,
+                    callbackHandler = callbackHandler
+                )
+                onNodeWithText(
+                    context.getString(R.string.app_enableBiometricsTitle)
+                ).isDisplayed()
+                onNodeWithText(
+                    context.getString(R.string.app_enableBiometricsButton)
+                ).performClick()
+            }
+
+            verify(callbackHandler).onSuccess(false)
+            verify(localAuthPreferenceRepository).getLocalAuthPref()
+            verify(localAuthPreferenceRepository)
+                .setLocalAuthPref(LocalAuthPreference.Enabled(true))
         }
-
-        verify(callbackHandler).onSuccess(false)
-        verify(localAuthPreferenceRepository).getLocalAuthPref()
-        verify(localAuthPreferenceRepository)
-            .setLocalAuthPref(LocalAuthPreference.Enabled(true))
-    }
 
     @Test
     fun `DEPRECATED - device secure - first time user - biometrics enabled - opt out bio - LA not required`() =
@@ -256,47 +257,49 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         }
 
     @Test
-    fun `DEPRECATED - device secure - first time user - biometrics enabled - back press - required`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-        whenever(deviceBiometricsManager.getCredentialStatus())
-            .thenReturn(DeviceBiometricsStatus.SUCCESS)
+    fun `DEPRECATED - device secure - first time user - biometrics enabled - back press - required`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+            whenever(deviceBiometricsManager.getCredentialStatus())
+                .thenReturn(DeviceBiometricsStatus.SUCCESS)
 
-        composeTestRule.apply {
+            composeTestRule.apply {
+                localAuthManager.enforceAndSet(
+                    walletEnabled = false,
+                    localAuthRequired = true,
+                    activity = activity,
+                    callbackHandler = callbackHandler
+                )
+                onNodeWithText(
+                    context.getString(R.string.app_enableBiometricsTitle)
+                ).isDisplayed()
+                Espresso.pressBack()
+            }
+
+            verify(callbackHandler).onFailure(true)
+            verify(localAuthPreferenceRepository).getLocalAuthPref()
+            verify(localAuthPreferenceRepository)
+                .setLocalAuthPref(LocalAuthPreference.Disabled)
+        }
+
+    @Test
+    fun `DEPRECATED - device secure - first time user - DeviceBiometricsStatus == NO_HARDWARE`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+            whenever(deviceBiometricsManager.getCredentialStatus())
+                .thenReturn(DeviceBiometricsStatus.NO_HARDWARE)
+
             localAuthManager.enforceAndSet(
                 walletEnabled = false,
-                localAuthRequired = true,
+                localAuthRequired = false,
                 activity = activity,
                 callbackHandler = callbackHandler
             )
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
-            ).isDisplayed()
-            Espresso.pressBack()
+
+            verify(callbackHandler).onSuccess(false)
+            verify(localAuthPreferenceRepository)
+                .setLocalAuthPref(LocalAuthPreference.Enabled(false))
         }
-
-        verify(callbackHandler).onFailure(true)
-        verify(localAuthPreferenceRepository).getLocalAuthPref()
-        verify(localAuthPreferenceRepository)
-            .setLocalAuthPref(LocalAuthPreference.Disabled)
-    }
-
-    @Test
-    fun `DEPRECATED - device secure - first time user - DeviceBiometricsStatus == NO_HARDWARE`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-        whenever(deviceBiometricsManager.getCredentialStatus())
-            .thenReturn(DeviceBiometricsStatus.NO_HARDWARE)
-
-        localAuthManager.enforceAndSet(
-            walletEnabled = false,
-            localAuthRequired = false,
-            activity = activity,
-            callbackHandler = callbackHandler
-        )
-
-        verify(callbackHandler).onSuccess(false)
-        verify(localAuthPreferenceRepository)
-            .setLocalAuthPref(LocalAuthPreference.Enabled(false))
-    }
 
     @Test
     fun `DEPRECATED - device secure - first time user - DeviceBiometricsStatus == HARDWARE_UNAVAILABLE`() =
@@ -318,40 +321,42 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         }
 
     @Test
-    fun `DEPRECATED - device secure - first time user - DeviceBiometricsStatus == NOT_ENROLLED`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-        whenever(deviceBiometricsManager.getCredentialStatus())
-            .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
+    fun `DEPRECATED - device secure - first time user - DeviceBiometricsStatus == NOT_ENROLLED`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+            whenever(deviceBiometricsManager.getCredentialStatus())
+                .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
 
-        localAuthManager.enforceAndSet(
-            walletEnabled = false,
-            localAuthRequired = false,
-            activity = activity,
-            callbackHandler = callbackHandler
-        )
+            localAuthManager.enforceAndSet(
+                walletEnabled = false,
+                localAuthRequired = false,
+                activity = activity,
+                callbackHandler = callbackHandler
+            )
 
-        verify(callbackHandler).onSuccess(false)
-        verify(localAuthPreferenceRepository)
-            .setLocalAuthPref(LocalAuthPreference.Enabled(false))
-    }
+            verify(callbackHandler).onSuccess(false)
+            verify(localAuthPreferenceRepository)
+                .setLocalAuthPref(LocalAuthPreference.Enabled(false))
+        }
 
     @Test
-    fun `DEPRECATED - device secure - first time user - DeviceBiometricsStatus == UNKNOWN`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-        whenever(deviceBiometricsManager.getCredentialStatus())
-            .thenReturn(DeviceBiometricsStatus.UNKNOWN)
+    fun `DEPRECATED - device secure - first time user - DeviceBiometricsStatus == UNKNOWN`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+            whenever(deviceBiometricsManager.getCredentialStatus())
+                .thenReturn(DeviceBiometricsStatus.UNKNOWN)
 
-        localAuthManager.enforceAndSet(
-            walletEnabled = false,
-            localAuthRequired = false,
-            activity = activity,
-            callbackHandler = callbackHandler
-        )
+            localAuthManager.enforceAndSet(
+                walletEnabled = false,
+                localAuthRequired = false,
+                activity = activity,
+                callbackHandler = callbackHandler
+            )
 
-        verify(callbackHandler).onSuccess(false)
-        verify(localAuthPreferenceRepository)
-            .setLocalAuthPref(LocalAuthPreference.Enabled(false))
-    }
+            verify(callbackHandler).onSuccess(false)
+            verify(localAuthPreferenceRepository)
+                .setLocalAuthPref(LocalAuthPreference.Enabled(false))
+        }
 
     @Test
     fun `DEPRECATED - device secure - returning user - no local auth & bio enabled - required local auth`() =
@@ -385,70 +390,73 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         }
 
     @Test
-    fun `DEPRECATED - device secure - returning user - no local auth & bio enabled - not required`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-        whenever(deviceBiometricsManager.getCredentialStatus())
-            .thenReturn(DeviceBiometricsStatus.SUCCESS)
-        whenever(localAuthPreferenceRepository.getLocalAuthPref())
-            .thenReturn(LocalAuthPreference.Disabled)
+    fun `DEPRECATED - device secure - returning user - no local auth & bio enabled - not required`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+            whenever(deviceBiometricsManager.getCredentialStatus())
+                .thenReturn(DeviceBiometricsStatus.SUCCESS)
+            whenever(localAuthPreferenceRepository.getLocalAuthPref())
+                .thenReturn(LocalAuthPreference.Disabled)
 
-        composeTestRule.apply {
+            composeTestRule.apply {
+                localAuthManager.enforceAndSet(
+                    walletEnabled = false,
+                    localAuthRequired = false,
+                    activity = activity,
+                    callbackHandler = callbackHandler
+                )
+                onNodeWithText(
+                    context.getString(R.string.app_enableBiometricsTitle)
+                ).isDisplayed()
+                onNodeWithText(
+                    context.getString(R.string.app_enablePasscodeOrPatternButton)
+                ).performClick()
+            }
+
+            verify(callbackHandler).onSuccess(false)
+            verify(localAuthPreferenceRepository)
+                .setLocalAuthPref(LocalAuthPreference.Disabled)
+        }
+
+    @Test
+    fun `DEPRECATED - device secure - returning user - no local auth & passcode enabled - required`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+            whenever(deviceBiometricsManager.getCredentialStatus())
+                .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
+            whenever(localAuthPreferenceRepository.getLocalAuthPref())
+                .thenReturn(LocalAuthPreference.Disabled)
+
+            localAuthManager.enforceAndSet(
+                walletEnabled = false,
+                localAuthRequired = true,
+                activity = activity,
+                callbackHandler = callbackHandler
+            )
+
+            verify(localAuthPreferenceRepository)
+                .setLocalAuthPref(LocalAuthPreference.Enabled(false))
+            verify(callbackHandler).onSuccess(false)
+        }
+
+    @Test
+    fun `DEPRECATED - device secure - returning user - no local auth - local auth not required`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+            whenever(deviceBiometricsManager.getCredentialStatus())
+                .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
+            whenever(localAuthPreferenceRepository.getLocalAuthPref())
+                .thenReturn(LocalAuthPreference.Disabled)
+
             localAuthManager.enforceAndSet(
                 walletEnabled = false,
                 localAuthRequired = false,
                 activity = activity,
                 callbackHandler = callbackHandler
             )
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
-            ).isDisplayed()
-            onNodeWithText(
-                context.getString(R.string.app_enablePasscodeOrPatternButton)
-            ).performClick()
+
+            verify(callbackHandler).onSuccess(false)
         }
-
-        verify(callbackHandler).onSuccess(false)
-        verify(localAuthPreferenceRepository)
-            .setLocalAuthPref(LocalAuthPreference.Disabled)
-    }
-
-    @Test
-    fun `DEPRECATED - device secure - returning user - no local auth & passcode enabled - required`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-        whenever(deviceBiometricsManager.getCredentialStatus())
-            .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
-        whenever(localAuthPreferenceRepository.getLocalAuthPref())
-            .thenReturn(LocalAuthPreference.Disabled)
-
-        localAuthManager.enforceAndSet(
-            walletEnabled = false,
-            localAuthRequired = true,
-            activity = activity,
-            callbackHandler = callbackHandler
-        )
-
-        verify(localAuthPreferenceRepository)
-            .setLocalAuthPref(LocalAuthPreference.Enabled(false))
-        verify(callbackHandler).onSuccess(false)
-    }
-
-    @Test
-    fun `DEPRECATED - device secure - returning user - no local auth - local auth not required`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-        whenever(deviceBiometricsManager.getCredentialStatus())
-            .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
-        whenever(localAuthPreferenceRepository.getLocalAuthPref())
-            .thenReturn(LocalAuthPreference.Disabled)
-
-        localAuthManager.enforceAndSet(
-            walletEnabled = false,
-            localAuthRequired = false,
-            activity = activity,
-            callbackHandler = callbackHandler
-        )
-
-        verify(callbackHandler).onSuccess(false)
-    }
 
     @Test
     fun `DEPRECATED - device unsecure - first time user - local auth not required`() = runBlocking {
@@ -489,183 +497,190 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
     }
 
     @Test
-    fun `DEPRECATED - device unsecure - first time user - local auth required - back press`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(false)
+    fun `DEPRECATED - device unsecure - first time user - local auth required - back press`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(false)
 
-        composeTestRule.apply {
-            localAuthManager.enforceAndSet(
-                walletEnabled = false,
-                localAuthRequired = true,
-                activity = activity,
-                callbackHandler = callbackHandler
-            )
-            onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorTitle)
-            ).isDisplayed()
-            Espresso.pressBack()
+            composeTestRule.apply {
+                localAuthManager.enforceAndSet(
+                    walletEnabled = false,
+                    localAuthRequired = true,
+                    activity = activity,
+                    callbackHandler = callbackHandler
+                )
+                onNodeWithText(
+                    context.getString(R.string.app_localAuthManagerErrorTitle)
+                ).isDisplayed()
+                Espresso.pressBack()
+            }
+
+            verify(callbackHandler).onFailure(true)
+            verify(localAuthPreferenceRepository).setLocalAuthPref(LocalAuthPreference.Disabled)
         }
-
-        verify(callbackHandler).onFailure(true)
-        verify(localAuthPreferenceRepository).setLocalAuthPref(LocalAuthPreference.Disabled)
-    }
 
     @Test
-    fun `DEPRECATED - device unsecure - returning user - local auth required - back press`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(false)
+    fun `DEPRECATED - device unsecure - returning user - local auth required - back press`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(false)
 
-        composeTestRule.apply {
-            localAuthManager.enforceAndSet(
-                walletEnabled = false,
-                localAuthRequired = true,
-                activity = activity,
-                callbackHandler = callbackHandler
-            )
-            onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorTitle)
-            ).isDisplayed()
-            Espresso.pressBack()
+            composeTestRule.apply {
+                localAuthManager.enforceAndSet(
+                    walletEnabled = false,
+                    localAuthRequired = true,
+                    activity = activity,
+                    callbackHandler = callbackHandler
+                )
+                onNodeWithText(
+                    context.getString(R.string.app_localAuthManagerErrorTitle)
+                ).isDisplayed()
+                Espresso.pressBack()
+            }
+
+            verify(callbackHandler).onFailure(true)
+            verify(localAuthPreferenceRepository).setLocalAuthPref(LocalAuthPreference.Disabled)
         }
-
-        verify(callbackHandler).onFailure(true)
-        verify(localAuthPreferenceRepository).setLocalAuthPref(LocalAuthPreference.Disabled)
-    }
 
     @Test
-    fun `device secure - first time user - biometrics enabled - opt in bio - not required`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-        whenever(deviceBiometricsManager.getCredentialStatus())
-            .thenReturn(DeviceBiometricsStatus.SUCCESS)
+    fun `device secure - first time user - biometrics enabled - opt in bio - not required`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+            whenever(deviceBiometricsManager.getCredentialStatus())
+                .thenReturn(DeviceBiometricsStatus.SUCCESS)
 
-        composeTestRule.apply {
-            localAuthManager.enforceAndSet(
-                localAuthRequired = false,
-                activity = activity,
-                callbackHandler = callbackHandler
-            )
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
-            ).isDisplayed()
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsButton)
-            ).performClick()
+            composeTestRule.apply {
+                localAuthManager.enforceAndSet(
+                    localAuthRequired = false,
+                    activity = activity,
+                    callbackHandler = callbackHandler
+                )
+                onNodeWithText(
+                    context.getString(R.string.app_enableBiometricsTitle)
+                ).isDisplayed()
+                onNodeWithText(
+                    context.getString(R.string.app_enableBiometricsButton)
+                ).performClick()
+            }
+
+            verify(callbackHandler).onSuccess(false)
+            verify(localAuthPreferenceRepository).getLocalAuthPref()
+            verify(localAuthPreferenceRepository)
+                .setLocalAuthPref(LocalAuthPreference.Enabled(true))
         }
-
-        verify(callbackHandler).onSuccess(false)
-        verify(localAuthPreferenceRepository).getLocalAuthPref()
-        verify(localAuthPreferenceRepository)
-            .setLocalAuthPref(LocalAuthPreference.Enabled(true))
-    }
 
     @Test
-    fun `device secure - first time user - biometrics enabled - opt in bio - required`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-        whenever(deviceBiometricsManager.getCredentialStatus())
-            .thenReturn(DeviceBiometricsStatus.SUCCESS)
+    fun `device secure - first time user - biometrics enabled - opt in bio - required`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+            whenever(deviceBiometricsManager.getCredentialStatus())
+                .thenReturn(DeviceBiometricsStatus.SUCCESS)
 
-        composeTestRule.apply {
-            localAuthManager.enforceAndSet(
-                localAuthRequired = true,
-                activity = activity,
-                callbackHandler = callbackHandler
-            )
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
-            ).isDisplayed()
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsButton)
-            ).performClick()
+            composeTestRule.apply {
+                localAuthManager.enforceAndSet(
+                    localAuthRequired = true,
+                    activity = activity,
+                    callbackHandler = callbackHandler
+                )
+                onNodeWithText(
+                    context.getString(R.string.app_enableBiometricsTitle)
+                ).isDisplayed()
+                onNodeWithText(
+                    context.getString(R.string.app_enableBiometricsButton)
+                ).performClick()
+            }
+
+            verify(callbackHandler).onSuccess(false)
+            verify(localAuthPreferenceRepository).getLocalAuthPref()
+            verify(localAuthPreferenceRepository)
+                .setLocalAuthPref(LocalAuthPreference.Enabled(true))
         }
-
-        verify(callbackHandler).onSuccess(false)
-        verify(localAuthPreferenceRepository).getLocalAuthPref()
-        verify(localAuthPreferenceRepository)
-            .setLocalAuthPref(LocalAuthPreference.Enabled(true))
-    }
 
     @Test
-    fun `device secure - first time user - biometrics enabled - opt out bio - LA not required`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-        whenever(deviceBiometricsManager.getCredentialStatus())
-            .thenReturn(DeviceBiometricsStatus.SUCCESS)
+    fun `device secure - first time user - biometrics enabled - opt out bio - LA not required`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+            whenever(deviceBiometricsManager.getCredentialStatus())
+                .thenReturn(DeviceBiometricsStatus.SUCCESS)
 
-        composeTestRule.apply {
-            localAuthManager.enforceAndSet(
-                localAuthRequired = false,
-                activity = activity,
-                callbackHandler = callbackHandler
-            )
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
-            ).isDisplayed()
-            onNodeWithText(
-                context.getString(R.string.app_enablePasscodeOrPatternButton)
-            ).performClick()
+            composeTestRule.apply {
+                localAuthManager.enforceAndSet(
+                    localAuthRequired = false,
+                    activity = activity,
+                    callbackHandler = callbackHandler
+                )
+                onNodeWithText(
+                    context.getString(R.string.app_enableBiometricsTitle)
+                ).isDisplayed()
+                onNodeWithText(
+                    context.getString(R.string.app_enablePasscodeOrPatternButton)
+                ).performClick()
+            }
+
+            verify(callbackHandler).onSuccess(false)
+            verify(localAuthPreferenceRepository).getLocalAuthPref()
+            verify(localAuthPreferenceRepository)
+                .setLocalAuthPref(LocalAuthPreference.Disabled)
         }
-
-        verify(callbackHandler).onSuccess(false)
-        verify(localAuthPreferenceRepository).getLocalAuthPref()
-        verify(localAuthPreferenceRepository)
-            .setLocalAuthPref(LocalAuthPreference.Disabled)
-    }
 
     @Test
-    fun `device secure - first time user - biometrics enabled - opt out bio - LA required`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-        whenever(deviceBiometricsManager.getCredentialStatus())
-            .thenReturn(DeviceBiometricsStatus.SUCCESS)
+    fun `device secure - first time user - biometrics enabled - opt out bio - LA required`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+            whenever(deviceBiometricsManager.getCredentialStatus())
+                .thenReturn(DeviceBiometricsStatus.SUCCESS)
 
-        composeTestRule.apply {
-            localAuthManager.enforceAndSet(
-                localAuthRequired = true,
-                activity = activity,
-                callbackHandler = callbackHandler
-            )
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
-            ).isDisplayed()
-            onNodeWithText(
-                context.getString(R.string.app_enablePasscodeOrPatternButton)
-            ).performClick()
-            onNodeWithText(
-                context.getString(R.string.app_optOutBiometricsTitle)
-            ).assertIsDisplayed()
+            composeTestRule.apply {
+                localAuthManager.enforceAndSet(
+                    localAuthRequired = true,
+                    activity = activity,
+                    callbackHandler = callbackHandler
+                )
+                onNodeWithText(
+                    context.getString(R.string.app_enableBiometricsTitle)
+                ).isDisplayed()
+                onNodeWithText(
+                    context.getString(R.string.app_enablePasscodeOrPatternButton)
+                ).performClick()
+                onNodeWithText(
+                    context.getString(R.string.app_optOutBiometricsTitle)
+                ).assertIsDisplayed()
+            }
+
+            verify(localAuthPreferenceRepository)
+                .setLocalAuthPref(LocalAuthPreference.Disabled)
         }
-
-        verify(localAuthPreferenceRepository)
-            .setLocalAuthPref(LocalAuthPreference.Disabled)
-    }
 
     @Test
-    fun `device secure - first time user - biometrics enabled - opt out bio then opt in - LA required`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-        whenever(deviceBiometricsManager.getCredentialStatus())
-            .thenReturn(DeviceBiometricsStatus.SUCCESS)
+    fun `device secure - first time user - biometrics enabled - opt out bio then opt in - LA required`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+            whenever(deviceBiometricsManager.getCredentialStatus())
+                .thenReturn(DeviceBiometricsStatus.SUCCESS)
 
-        composeTestRule.apply {
-            localAuthManager.enforceAndSet(
-                localAuthRequired = true,
-                activity = activity,
-                callbackHandler = callbackHandler
-            )
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
-            ).isDisplayed()
-            onNodeWithText(
-                context.getString(R.string.app_enablePasscodeOrPatternButton)
-            ).performClick()
-            onNodeWithText(
-                context.getString(R.string.app_optOutBiometricsTitle)
-            ).assertIsDisplayed()
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsButton)
-            ).performClick()
+            composeTestRule.apply {
+                localAuthManager.enforceAndSet(
+                    localAuthRequired = true,
+                    activity = activity,
+                    callbackHandler = callbackHandler
+                )
+                onNodeWithText(
+                    context.getString(R.string.app_enableBiometricsTitle)
+                ).isDisplayed()
+                onNodeWithText(
+                    context.getString(R.string.app_enablePasscodeOrPatternButton)
+                ).performClick()
+                onNodeWithText(
+                    context.getString(R.string.app_optOutBiometricsTitle)
+                ).assertIsDisplayed()
+                onNodeWithText(
+                    context.getString(R.string.app_enableBiometricsButton)
+                ).performClick()
+            }
+
+            verify(callbackHandler).onSuccess(false)
+            verify(localAuthPreferenceRepository).getLocalAuthPref()
+            verify(localAuthPreferenceRepository)
+                .setLocalAuthPref(LocalAuthPreference.Enabled(true))
         }
-
-        verify(callbackHandler).onSuccess(false)
-        verify(localAuthPreferenceRepository).getLocalAuthPref()
-        verify(localAuthPreferenceRepository)
-            .setLocalAuthPref(LocalAuthPreference.Enabled(true))
-    }
 
     @Test
     fun `device secure - first time user - biometrics enabled - opt out bio then go back - LA required`() =
@@ -699,52 +714,54 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         }
 
     @Test
-    fun `device secure - first time user - biometrics enabled - back press - not required`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-        whenever(deviceBiometricsManager.getCredentialStatus())
-            .thenReturn(DeviceBiometricsStatus.SUCCESS)
+    fun `device secure - first time user - biometrics enabled - back press - not required`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+            whenever(deviceBiometricsManager.getCredentialStatus())
+                .thenReturn(DeviceBiometricsStatus.SUCCESS)
 
-        composeTestRule.apply {
-            localAuthManager.enforceAndSet(
-                localAuthRequired = false,
-                activity = activity,
-                callbackHandler = callbackHandler
-            )
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
-            ).isDisplayed()
-            Espresso.pressBack()
+            composeTestRule.apply {
+                localAuthManager.enforceAndSet(
+                    localAuthRequired = false,
+                    activity = activity,
+                    callbackHandler = callbackHandler
+                )
+                onNodeWithText(
+                    context.getString(R.string.app_enableBiometricsTitle)
+                ).isDisplayed()
+                Espresso.pressBack()
+            }
+
+            verify(callbackHandler).onSuccess(true)
+            verify(localAuthPreferenceRepository).getLocalAuthPref()
+            verify(localAuthPreferenceRepository)
+                .setLocalAuthPref(LocalAuthPreference.Disabled)
         }
-
-        verify(callbackHandler).onSuccess(true)
-        verify(localAuthPreferenceRepository).getLocalAuthPref()
-        verify(localAuthPreferenceRepository)
-            .setLocalAuthPref(LocalAuthPreference.Disabled)
-    }
 
     @Test
-    fun `device secure - first time user - biometrics enabled - back press - required`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-        whenever(deviceBiometricsManager.getCredentialStatus())
-            .thenReturn(DeviceBiometricsStatus.SUCCESS)
+    fun `device secure - first time user - biometrics enabled - back press - required`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+            whenever(deviceBiometricsManager.getCredentialStatus())
+                .thenReturn(DeviceBiometricsStatus.SUCCESS)
 
-        composeTestRule.apply {
-            localAuthManager.enforceAndSet(
-                localAuthRequired = true,
-                activity = activity,
-                callbackHandler = callbackHandler
-            )
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
-            ).isDisplayed()
-            Espresso.pressBack()
+            composeTestRule.apply {
+                localAuthManager.enforceAndSet(
+                    localAuthRequired = true,
+                    activity = activity,
+                    callbackHandler = callbackHandler
+                )
+                onNodeWithText(
+                    context.getString(R.string.app_enableBiometricsTitle)
+                ).isDisplayed()
+                Espresso.pressBack()
+            }
+
+            verify(callbackHandler).onFailure(true)
+            verify(localAuthPreferenceRepository).getLocalAuthPref()
+            verify(localAuthPreferenceRepository)
+                .setLocalAuthPref(LocalAuthPreference.Disabled)
         }
-
-        verify(callbackHandler).onFailure(true)
-        verify(localAuthPreferenceRepository).getLocalAuthPref()
-        verify(localAuthPreferenceRepository)
-            .setLocalAuthPref(LocalAuthPreference.Disabled)
-    }
 
     @Test
     fun `device secure - first time user - DeviceBiometricsStatus == NO_HARDWARE`() = runBlocking {
@@ -764,21 +781,22 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
     }
 
     @Test
-    fun `device secure - first time user - DeviceBiometricsStatus == HARDWARE_UNAVAILABLE`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-        whenever(deviceBiometricsManager.getCredentialStatus())
-            .thenReturn(DeviceBiometricsStatus.HARDWARE_UNAVAILABLE)
+    fun `device secure - first time user - DeviceBiometricsStatus == HARDWARE_UNAVAILABLE`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+            whenever(deviceBiometricsManager.getCredentialStatus())
+                .thenReturn(DeviceBiometricsStatus.HARDWARE_UNAVAILABLE)
 
-        localAuthManager.enforceAndSet(
-            localAuthRequired = false,
-            activity = activity,
-            callbackHandler = callbackHandler
-        )
+            localAuthManager.enforceAndSet(
+                localAuthRequired = false,
+                activity = activity,
+                callbackHandler = callbackHandler
+            )
 
-        verify(callbackHandler).onSuccess(false)
-        verify(localAuthPreferenceRepository)
-            .setLocalAuthPref(LocalAuthPreference.Enabled(false))
-    }
+            verify(callbackHandler).onSuccess(false)
+            verify(localAuthPreferenceRepository)
+                .setLocalAuthPref(LocalAuthPreference.Enabled(false))
+        }
 
     @Test
     fun `device secure - first time user - DeviceBiometricsStatus == NOT_ENROLLED`() = runBlocking {
@@ -815,79 +833,82 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
     }
 
     @Test
-    fun `device secure - returning user - no local auth & bio enabled - required local auth`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-        whenever(deviceBiometricsManager.getCredentialStatus())
-            .thenReturn(DeviceBiometricsStatus.SUCCESS)
-        whenever(localAuthPreferenceRepository.getLocalAuthPref())
-            .thenReturn(LocalAuthPreference.Disabled)
+    fun `device secure - returning user - no local auth & bio enabled - required local auth`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+            whenever(deviceBiometricsManager.getCredentialStatus())
+                .thenReturn(DeviceBiometricsStatus.SUCCESS)
+            whenever(localAuthPreferenceRepository.getLocalAuthPref())
+                .thenReturn(LocalAuthPreference.Disabled)
 
-        composeTestRule.apply {
+            composeTestRule.apply {
+                localAuthManager.enforceAndSet(
+                    localAuthRequired = true,
+                    activity = activity,
+                    callbackHandler = callbackHandler
+                )
+                onNodeWithText(
+                    context.getString(R.string.app_enableBiometricsTitle)
+                ).isDisplayed()
+                onNodeWithText(
+                    context.getString(R.string.app_enablePasscodeOrPatternButton)
+                ).performClick()
+                onNodeWithText(
+                    context.getString(R.string.app_optOutBiometricsTitle)
+                ).assertIsDisplayed()
+            }
+
+            verify(localAuthPreferenceRepository)
+                .setLocalAuthPref(LocalAuthPreference.Disabled)
+        }
+
+    @Test
+    fun `device secure - returning user - no local auth & bio enabled - not required`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+            whenever(deviceBiometricsManager.getCredentialStatus())
+                .thenReturn(DeviceBiometricsStatus.SUCCESS)
+            whenever(localAuthPreferenceRepository.getLocalAuthPref())
+                .thenReturn(LocalAuthPreference.Disabled)
+
+            composeTestRule.apply {
+                localAuthManager.enforceAndSet(
+                    localAuthRequired = false,
+                    activity = activity,
+                    callbackHandler = callbackHandler
+                )
+                onNodeWithText(
+                    context.getString(R.string.app_enableBiometricsTitle)
+                ).isDisplayed()
+                onNodeWithText(
+                    context.getString(R.string.app_enablePasscodeOrPatternButton)
+                ).performClick()
+            }
+
+            verify(callbackHandler).onSuccess(false)
+            verify(localAuthPreferenceRepository)
+                .setLocalAuthPref(LocalAuthPreference.Disabled)
+        }
+
+    @Test
+    fun `device secure - returning user - no local auth & passcode enabled - required`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+            whenever(deviceBiometricsManager.getCredentialStatus())
+                .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
+            whenever(localAuthPreferenceRepository.getLocalAuthPref())
+                .thenReturn(LocalAuthPreference.Disabled)
+
             localAuthManager.enforceAndSet(
                 localAuthRequired = true,
                 activity = activity,
                 callbackHandler = callbackHandler
             )
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
-            ).isDisplayed()
-            onNodeWithText(
-                context.getString(R.string.app_enablePasscodeOrPatternButton)
-            ).performClick()
-            onNodeWithText(
-                context.getString(R.string.app_optOutBiometricsTitle)
-            ).assertIsDisplayed()
+
+            verify(localAuthPreferenceRepository)
+                .setLocalAuthPref(LocalAuthPreference.Enabled(false))
+            verify(callbackHandler).onSuccess(false)
         }
-
-        verify(localAuthPreferenceRepository)
-            .setLocalAuthPref(LocalAuthPreference.Disabled)
-    }
-
-    @Test
-    fun `device secure - returning user - no local auth & bio enabled - not required`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-        whenever(deviceBiometricsManager.getCredentialStatus())
-            .thenReturn(DeviceBiometricsStatus.SUCCESS)
-        whenever(localAuthPreferenceRepository.getLocalAuthPref())
-            .thenReturn(LocalAuthPreference.Disabled)
-
-        composeTestRule.apply {
-            localAuthManager.enforceAndSet(
-                localAuthRequired = false,
-                activity = activity,
-                callbackHandler = callbackHandler
-            )
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
-            ).isDisplayed()
-            onNodeWithText(
-                context.getString(R.string.app_enablePasscodeOrPatternButton)
-            ).performClick()
-        }
-
-        verify(callbackHandler).onSuccess(false)
-        verify(localAuthPreferenceRepository)
-            .setLocalAuthPref(LocalAuthPreference.Disabled)
-    }
-
-    @Test
-    fun `device secure - returning user - no local auth & passcode enabled - required`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-        whenever(deviceBiometricsManager.getCredentialStatus())
-            .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
-        whenever(localAuthPreferenceRepository.getLocalAuthPref())
-            .thenReturn(LocalAuthPreference.Disabled)
-
-        localAuthManager.enforceAndSet(
-            localAuthRequired = true,
-            activity = activity,
-            callbackHandler = callbackHandler
-        )
-
-        verify(localAuthPreferenceRepository)
-            .setLocalAuthPref(LocalAuthPreference.Enabled(false))
-        verify(callbackHandler).onSuccess(false)
-    }
 
     @Test
     fun `device secure - returning user - no local auth - local auth not required`() = runBlocking {
@@ -1075,16 +1096,17 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
     }
 
     @Test
-    fun `device secure - toggle biometrics - biometrics unavailable - NOT ENROLLED`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-        whenever(deviceBiometricsManager.getCredentialStatus())
-            .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
+    fun `device secure - toggle biometrics - biometrics unavailable - NOT ENROLLED`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+            whenever(deviceBiometricsManager.getCredentialStatus())
+                .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
 
-        localAuthManager.toggleBiometrics()
+            localAuthManager.toggleBiometrics()
 
-        verify(localAuthPreferenceRepository)
-            .setLocalAuthPref(LocalAuthPreference.Enabled(false))
-    }
+            verify(localAuthPreferenceRepository)
+                .setLocalAuthPref(LocalAuthPreference.Enabled(false))
+        }
 
     @Test
     fun `device not secure - toggle biometrics`() = runBlocking {

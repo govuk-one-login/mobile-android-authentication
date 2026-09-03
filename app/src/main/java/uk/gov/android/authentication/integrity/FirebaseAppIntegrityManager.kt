@@ -87,7 +87,8 @@ class FirebaseAppIntegrityManager(
         return jwk["x"].asString == x && jwk["y"].asString == y
     }
 
-    override fun getExpiry(attestation: String): Long? = extractFieldFrom(attestation, "exp")?.toLongOrNull()
+    override fun getExpiry(attestation: String): Long? =
+        extractFieldFrom(attestation, "exp")?.toLongOrNull()
 
     @Suppress("TooGenericExceptionCaught")
     private fun extractFieldFrom(attestation: String, field: String): String? = try {

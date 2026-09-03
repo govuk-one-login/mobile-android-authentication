@@ -22,8 +22,9 @@ fun interface DemonstratingProofOfPossessionManager {
  *
  * @param config - Provides all components required to log and create the JWT
  */
-class DemonstratingProofOfPossessionManagerImpl(private val config: DemonstratingProofOfPossessionConfig) :
-    DemonstratingProofOfPossessionManager {
+class DemonstratingProofOfPossessionManagerImpl(
+    private val config: DemonstratingProofOfPossessionConfig
+) : DemonstratingProofOfPossessionManager {
     private val keyStoreManager: KeyStoreManager = config.keyStoreManager
     private val popGenerator = config.popGenerator
     private val logger = config.logger

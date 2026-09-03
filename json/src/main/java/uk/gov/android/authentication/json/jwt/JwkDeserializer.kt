@@ -9,7 +9,11 @@ import org.jose4j.jwk.JsonWebKey
 import org.jose4j.lang.JoseException
 
 class JwkDeserializer : JsonDeserializer<JsonWebKey> {
-    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): JsonWebKey {
+    override fun deserialize(
+        json: JsonElement?,
+        typeOfT: Type?,
+        context: JsonDeserializationContext?
+    ): JsonWebKey {
         val jwkParameters: Map<String, Any> = context?.deserialize(
             json,
             LinkedHashMap::class.java

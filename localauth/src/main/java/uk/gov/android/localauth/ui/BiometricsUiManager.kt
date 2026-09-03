@@ -11,7 +11,8 @@ import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 
 interface DialogUiManager {
     @Deprecated(
-        message = "Please use screen that does not allow for walletEnabled - will be removed 7th of March",
+        message = "Please use screen that does not allow for walletEnabled - " +
+            "will be removed 7th of March",
         level = DeprecationLevel.WARNING
     )
     fun displayBioOptIn(
@@ -29,14 +30,23 @@ interface DialogUiManager {
         onBiometricsOptOut: () -> Unit
     )
 
-    fun displayGoToSettingsPage(activity: FragmentActivity, onBack: () -> Unit, onGoToSettings: () -> Unit)
+    fun displayGoToSettingsPage(
+        activity: FragmentActivity,
+        onBack: () -> Unit,
+        onGoToSettings: () -> Unit
+    )
 
-    fun displayBioOptOut(activity: FragmentActivity, onBack: () -> Unit, onBiometricsOptIn: () -> Unit)
+    fun displayBioOptOut(
+        activity: FragmentActivity,
+        onBack: () -> Unit,
+        onBiometricsOptIn: () -> Unit
+    )
 }
 
 class BiometricsUiManager(private val analyticsLogger: AnalyticsLogger) : DialogUiManager {
     @Deprecated(
-        "Please use screen that does not allow for walletEnabled - will be removed 7th of March",
+        "Please use screen that does not allow for walletEnabled - " +
+            "will be removed 7th of March",
         level = DeprecationLevel.WARNING
     )
     override fun displayBioOptIn(
@@ -101,7 +111,11 @@ class BiometricsUiManager(private val analyticsLogger: AnalyticsLogger) : Dialog
         )
     }
 
-    override fun displayGoToSettingsPage(activity: FragmentActivity, onBack: () -> Unit, onGoToSettings: () -> Unit) {
+    override fun displayGoToSettingsPage(
+        activity: FragmentActivity,
+        onBack: () -> Unit,
+        onGoToSettings: () -> Unit
+    ) {
         val dialogView =
             ComposeView(activity).apply {
                 setContent {
@@ -121,7 +135,11 @@ class BiometricsUiManager(private val analyticsLogger: AnalyticsLogger) : Dialog
         )
     }
 
-    override fun displayBioOptOut(activity: FragmentActivity, onBack: () -> Unit, onBiometricsOptIn: () -> Unit) {
+    override fun displayBioOptOut(
+        activity: FragmentActivity,
+        onBack: () -> Unit,
+        onBiometricsOptIn: () -> Unit
+    ) {
         val dialogView = ComposeView(activity).apply {
             setContent {
                 GdsTheme {

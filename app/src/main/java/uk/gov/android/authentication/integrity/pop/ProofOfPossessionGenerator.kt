@@ -68,7 +68,12 @@ object ProofOfPossessionGenerator {
      * @return Base64URL-encoded JWT string (header.payload) without signature
      */
     @OptIn(ExperimentalUuidApi::class)
-    fun createBase64PoP(iss: String, aud: String, exp: Long, jti: String = Uuid.random().toString()): String {
+    fun createBase64PoP(
+        iss: String,
+        aud: String,
+        exp: Long,
+        jti: String = Uuid.random().toString()
+    ): String {
         val headerJson = buildJsonObject {
             put("alg", ALG)
             put("typ", APP_INTEGRITY_TYP)
@@ -250,8 +255,9 @@ object ProofOfPossessionGenerator {
      * @param input Byte array to encode
      * @return Base64URL-encoded string without padding
      */
-    fun getUrlSafeNoPaddingBase64(input: ByteArray): String = Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT)
-        .encode(input)
+    fun getUrlSafeNoPaddingBase64(input: ByteArray): String =
+        Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT)
+            .encode(input)
 
     /**
      * Checks if a Proof of Possession token has expired.

@@ -18,10 +18,11 @@ internal fun LoginSessionConfiguration.createBuilder() = AuthorizationRequest.Bu
     redirectUri
 )
 
-internal fun LoginSessionConfiguration.createAuthorizationServiceConfiguration() = AuthorizationServiceConfiguration(
-    authorizeEndpoint,
-    tokenEndpoint
-)
+internal fun LoginSessionConfiguration.createAuthorizationServiceConfiguration() =
+    AuthorizationServiceConfiguration(
+        authorizeEndpoint,
+        tokenEndpoint
+    )
 
 internal val LoginSessionConfiguration.scopeValues: List<String>
     get() = scopes.map { it.value }

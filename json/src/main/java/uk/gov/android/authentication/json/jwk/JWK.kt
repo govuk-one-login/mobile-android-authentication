@@ -42,11 +42,18 @@ object JWK {
      * @param key - ECPublicKey
      * @return [org.jose4j.jwk.JsonWebKey]
      */
-    fun generateJwk(key: Key): org.jose4j.jwk.JsonWebKey = org.jose4j.jwk.JsonWebKey.Factory.newJwk(key)
+    fun generateJwk(key: Key): org.jose4j.jwk.JsonWebKey =
+        org.jose4j.jwk.JsonWebKey.Factory.newJwk(key)
 
     @Serializable
     data class JsonWebKey(val jwk: JsonWebKeyFormat)
 
     @Serializable
-    data class JsonWebKeyFormat(val kty: String, val use: String, val crv: String, val x: String, val y: String)
+    data class JsonWebKeyFormat(
+        val kty: String,
+        val use: String,
+        val crv: String,
+        val x: String,
+        val y: String
+    )
 }

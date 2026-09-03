@@ -218,29 +218,30 @@ class AndroidKeyPairManagerTest {
     }
 
     @Test
-    fun `authenticateAndSign - throws IllegalArgumentException when userAuthRequired is false`() = runTest {
-        val keyPairManagerNoAuth =
-            AndroidKeyPairManager.createForTesting(
-                logger = logger,
-                userAuthRequired = false,
-                keyStore = keyStore,
-                keyPairGenerator = keyPairGenerator,
-                mainDispatcher = testDispatcher
-            )
-        val authHandler: BiometricAuthHandler = mock()
-        val promptConfig = PromptConfig("Title", "Close")
-
-        val exception =
-            assertThrows<IllegalArgumentException> {
-                keyPairManagerNoAuth.authenticateAndSign(
-                    SignRequest("test-alias", "test-data".toByteArray()),
-                    promptConfig = promptConfig,
-                    authHandler = authHandler
+    fun `authenticateAndSign - throws IllegalArgumentException when userAuthRequired is false`() =
+        runTest {
+            val keyPairManagerNoAuth =
+                AndroidKeyPairManager.createForTesting(
+                    logger = logger,
+                    userAuthRequired = false,
+                    keyStore = keyStore,
+                    keyPairGenerator = keyPairGenerator,
+                    mainDispatcher = testDispatcher
                 )
-            }
+            val authHandler: BiometricAuthHandler = mock()
+            val promptConfig = PromptConfig("Title", "Close")
 
-        assertEquals("Authentication required for signing operations", exception.message)
-    }
+            val exception =
+                assertThrows<IllegalArgumentException> {
+                    keyPairManagerNoAuth.authenticateAndSign(
+                        SignRequest("test-alias", "test-data".toByteArray()),
+                        promptConfig = promptConfig,
+                        authHandler = authHandler
+                    )
+                }
+
+            assertEquals("Authentication required for signing operations", exception.message)
+        }
 
     @Test
     fun `sign - throws KeySigningException when signing fails`() {

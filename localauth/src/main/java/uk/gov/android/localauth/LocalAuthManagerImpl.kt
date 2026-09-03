@@ -38,7 +38,8 @@ open class LocalAuthManagerImpl(
         get() = localAuthPrefRepo.getLocalAuthPref()
 
     @Deprecated(
-        message = "Please use screen that does not allow for walletEnabled - will be removed 7th of March",
+        message = "Please use screen that does not allow for walletEnabled - " +
+            "will be removed 7th of March",
         level = DeprecationLevel.WARNING
     )
     override suspend fun enforceAndSet(
@@ -141,7 +142,8 @@ open class LocalAuthManagerImpl(
     }
 
     @Deprecated(
-        message = "Please use screen that does not allow for walletEnabled - will be removed 7th of March",
+        message = "Please use screen that does not allow for walletEnabled - " +
+            "will be removed 7th of March",
         level = DeprecationLevel.WARNING
     )
     private fun handleSecureDevice(
@@ -234,7 +236,10 @@ open class LocalAuthManagerImpl(
         }
     }
 
-    private fun setLocalAuthBehaviour(isLocalAuthRequired: Boolean, callbackHandler: LocalAuthManagerCallbackHandler) {
+    private fun setLocalAuthBehaviour(
+        isLocalAuthRequired: Boolean,
+        callbackHandler: LocalAuthManagerCallbackHandler
+    ) {
         if (isLocalAuthRequired) {
             callbackHandler.onFailure(backButtonPressed = true)
         } else {

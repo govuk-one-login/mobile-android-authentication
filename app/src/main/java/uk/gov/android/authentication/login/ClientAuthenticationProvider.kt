@@ -22,7 +22,8 @@ class ClientAuthenticationProviderImpl : ClientAuthenticationProvider {
             Pair(DEMONSTRATING_PROOF_OF_POSSESSION, dpop ?: "")
         )
 
-        override fun getRequestParameters(clientId: String): MutableMap<String, String> = mutableMapOf()
+        override fun getRequestParameters(clientId: String): MutableMap<String, String> =
+            mutableMapOf()
     }
 
     companion object {

@@ -13,7 +13,8 @@ import uk.gov.logging.api.v3dot1.model.RequiredParameters
 import uk.gov.logging.api.v3dot1.model.TrackEvent
 import uk.gov.logging.api.v3dot1.model.ViewEvent
 
-class BioOptInAnalyticsViewModel(context: Context, private val analyticsLogger: AnalyticsLogger) : ViewModel() {
+class BioOptInAnalyticsViewModel(context: Context, private val analyticsLogger: AnalyticsLogger) :
+    ViewModel() {
     private val walletScreenEvent = makeWalletScreenEvent(context)
     private val noWalletScreenEvent = makeNoWalletScreenEvent(context)
     private val closeIconEvent = makeCloseBackEvent(context)

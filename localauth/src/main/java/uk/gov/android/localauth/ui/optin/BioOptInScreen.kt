@@ -122,7 +122,8 @@ private fun BioOptInContent(onBiometricsOptIn: () -> Unit, onBiometricsOptOut: (
 }
 
 @Deprecated(
-    message = "Please use screen that does not allow for walletEnabled - will be removed 7th of March",
+    message = "Please use screen that does not allow for walletEnabled - " +
+        "will be removed 7th of March",
     level = DeprecationLevel.WARNING
 )
 @OptIn(ExperimentalMaterial3Api::class)
@@ -179,11 +180,16 @@ fun BioOptInScreen(
 }
 
 @Deprecated(
-    message = "Please use screen that does not allow for walletEnabled - will be removed 7th of March",
+    message = "Please use screen that does not allow for walletEnabled - " +
+        "will be removed 7th of March",
     level = DeprecationLevel.WARNING
 )
 @Composable
-private fun BioOptInContent(walletEnabled: Boolean, onBiometricsOptIn: () -> Unit, onBiometricsOptOut: () -> Unit) {
+private fun BioOptInContent(
+    walletEnabled: Boolean,
+    onBiometricsOptIn: () -> Unit,
+    onBiometricsOptOut: () -> Unit
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,

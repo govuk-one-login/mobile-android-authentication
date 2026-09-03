@@ -12,7 +12,10 @@ import uk.gov.logging.api.v3dot1.model.RequiredParameters
 import uk.gov.logging.api.v3dot1.model.TrackEvent
 import uk.gov.logging.api.v3dot1.model.ViewEvent
 
-class GoToSettingsAnalyticsViewModel(context: Context, private val analyticsLogger: AnalyticsLogger) : ViewModel() {
+class GoToSettingsAnalyticsViewModel(
+    context: Context,
+    private val analyticsLogger: AnalyticsLogger
+) : ViewModel() {
     private val screenEvent = makeScreenEvent(context)
     private val goToSettingsBtnEvent = makeButtonEvent(
         context,
