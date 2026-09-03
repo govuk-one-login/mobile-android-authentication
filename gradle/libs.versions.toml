@@ -47,7 +47,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3",
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 # Needed for BackHandler
 androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version = "2.9.8"}
-kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version = "0.5.1" }
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version = "0.5.2" }
 
 # Gds
 componentsv2 = { group = "uk.gov.android", name = "componentsv2", version.ref = "govuk-ui" }
