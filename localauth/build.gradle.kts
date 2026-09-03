@@ -13,10 +13,6 @@ android {
     buildFeatures {
         compose = true
     }
-
-    ktlint {
-        version = libs.versions.ktlint.cli.get()
-    }
 }
 
 dependencies {
@@ -55,9 +51,10 @@ mavenPublishingConfig {
 
 // https://govukverify.atlassian.net/browse/DCMAW-11888
 // https://github.com/Kotlin/dokka/issues/2956
-tasks.matching { task ->
-    task.name.contains("javaDocReleaseGeneration") ||
-        task.name.contains("javaDocDebugGeneration")
-}.configureEach {
-    enabled = false
-}
+tasks
+    .matching { task ->
+        task.name.contains("javaDocReleaseGeneration") ||
+            task.name.contains("javaDocDebugGeneration")
+    }.configureEach {
+        enabled = false
+    }

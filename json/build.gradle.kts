@@ -9,10 +9,6 @@ android {
     setNamespace(".json")
 }
 
-ktlint {
-    version = libs.versions.ktlint.cli.get()
-}
-
 dependencies {
     implementation(libs.androidx.core.core.ktx)
     implementation(libs.kotlinx.serialization.json)
