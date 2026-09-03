@@ -7,6 +7,8 @@ import androidx.compose.ui.test.performClick
 import androidx.fragment.app.FragmentActivity
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -24,8 +26,6 @@ import uk.gov.android.localauth.preference.LocalAuthPreferenceRepository
 import uk.gov.android.localauth.utils.FragmentActivityTestCase
 import uk.gov.android.localauth.utils.TestActivity
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 @RunWith(AndroidJUnit4::class)
 @Suppress("LargeClass")
@@ -46,7 +46,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         localAuthManager = LocalAuthManagerImpl(
             localAuthPreferenceRepository,
             deviceBiometricsManager,
-            analyticsLogger,
+            analyticsLogger
         )
         activity = TestActivity()
     }
@@ -63,13 +63,13 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                     walletEnabled = false,
                     localAuthRequired = false,
                     activity = activity,
-                    callbackHandler = callbackHandler,
+                    callbackHandler = callbackHandler
                 )
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsTitle),
+                    context.getString(R.string.app_enableBiometricsTitle)
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsButton),
+                    context.getString(R.string.app_enableBiometricsButton)
                 ).performClick()
             }
 
@@ -91,13 +91,13 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                     walletEnabled = false,
                     localAuthRequired = true,
                     activity = activity,
-                    callbackHandler = callbackHandler,
+                    callbackHandler = callbackHandler
                 )
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsTitle),
+                    context.getString(R.string.app_enableBiometricsTitle)
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsButton),
+                    context.getString(R.string.app_enableBiometricsButton)
                 ).performClick()
             }
 
@@ -119,13 +119,13 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                     walletEnabled = false,
                     localAuthRequired = false,
                     activity = activity,
-                    callbackHandler = callbackHandler,
+                    callbackHandler = callbackHandler
                 )
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsTitle),
+                    context.getString(R.string.app_enableBiometricsTitle)
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.app_enablePasscodeOrPatternButton),
+                    context.getString(R.string.app_enablePasscodeOrPatternButton)
                 ).performClick()
             }
 
@@ -147,16 +147,16 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                     walletEnabled = false,
                     localAuthRequired = true,
                     activity = activity,
-                    callbackHandler = callbackHandler,
+                    callbackHandler = callbackHandler
                 )
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsTitle),
+                    context.getString(R.string.app_enableBiometricsTitle)
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.app_enablePasscodeOrPatternButton),
+                    context.getString(R.string.app_enablePasscodeOrPatternButton)
                 ).performClick()
                 onNodeWithText(
-                    context.getString(R.string.app_optOutBiometricsTitle),
+                    context.getString(R.string.app_optOutBiometricsTitle)
                 ).assertIsDisplayed()
             }
 
@@ -176,19 +176,19 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                     walletEnabled = false,
                     localAuthRequired = true,
                     activity = activity,
-                    callbackHandler = callbackHandler,
+                    callbackHandler = callbackHandler
                 )
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsTitle),
+                    context.getString(R.string.app_enableBiometricsTitle)
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.app_enablePasscodeOrPatternButton),
+                    context.getString(R.string.app_enablePasscodeOrPatternButton)
                 ).performClick()
                 onNodeWithText(
-                    context.getString(R.string.app_optOutBiometricsTitle),
+                    context.getString(R.string.app_optOutBiometricsTitle)
                 ).assertIsDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsButton),
+                    context.getString(R.string.app_enableBiometricsButton)
                 ).performClick()
             }
 
@@ -210,16 +210,16 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                     walletEnabled = false,
                     localAuthRequired = true,
                     activity = activity,
-                    callbackHandler = callbackHandler,
+                    callbackHandler = callbackHandler
                 )
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsTitle),
+                    context.getString(R.string.app_enableBiometricsTitle)
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.app_enablePasscodeOrPatternButton),
+                    context.getString(R.string.app_enablePasscodeOrPatternButton)
                 ).performClick()
                 onNodeWithText(
-                    context.getString(R.string.app_optOutBiometricsTitle),
+                    context.getString(R.string.app_optOutBiometricsTitle)
                 ).assertIsDisplayed()
                 Espresso.pressBack()
             }
@@ -242,10 +242,10 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                     walletEnabled = false,
                     localAuthRequired = false,
                     activity = activity,
-                    callbackHandler = callbackHandler,
+                    callbackHandler = callbackHandler
                 )
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsTitle),
+                    context.getString(R.string.app_enableBiometricsTitle)
                 ).isDisplayed()
                 Espresso.pressBack()
             }
@@ -268,10 +268,10 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                     walletEnabled = false,
                     localAuthRequired = true,
                     activity = activity,
-                    callbackHandler = callbackHandler,
+                    callbackHandler = callbackHandler
                 )
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsTitle),
+                    context.getString(R.string.app_enableBiometricsTitle)
                 ).isDisplayed()
                 Espresso.pressBack()
             }
@@ -293,7 +293,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 walletEnabled = false,
                 localAuthRequired = false,
                 activity = activity,
-                callbackHandler = callbackHandler,
+                callbackHandler = callbackHandler
             )
 
             verify(callbackHandler).onSuccess(false)
@@ -312,7 +312,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 walletEnabled = false,
                 localAuthRequired = false,
                 activity = activity,
-                callbackHandler = callbackHandler,
+                callbackHandler = callbackHandler
             )
 
             verify(callbackHandler).onSuccess(false)
@@ -331,7 +331,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 walletEnabled = false,
                 localAuthRequired = false,
                 activity = activity,
-                callbackHandler = callbackHandler,
+                callbackHandler = callbackHandler
             )
 
             verify(callbackHandler).onSuccess(false)
@@ -350,7 +350,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 walletEnabled = false,
                 localAuthRequired = false,
                 activity = activity,
-                callbackHandler = callbackHandler,
+                callbackHandler = callbackHandler
             )
 
             verify(callbackHandler).onSuccess(false)
@@ -372,16 +372,16 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                     walletEnabled = false,
                     localAuthRequired = true,
                     activity = activity,
-                    callbackHandler = callbackHandler,
+                    callbackHandler = callbackHandler
                 )
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsTitle),
+                    context.getString(R.string.app_enableBiometricsTitle)
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.app_enablePasscodeOrPatternButton),
+                    context.getString(R.string.app_enablePasscodeOrPatternButton)
                 ).performClick()
                 onNodeWithText(
-                    context.getString(R.string.app_optOutBiometricsTitle),
+                    context.getString(R.string.app_optOutBiometricsTitle)
                 ).assertIsDisplayed()
             }
 
@@ -403,13 +403,13 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                     walletEnabled = false,
                     localAuthRequired = false,
                     activity = activity,
-                    callbackHandler = callbackHandler,
+                    callbackHandler = callbackHandler
                 )
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsTitle),
+                    context.getString(R.string.app_enableBiometricsTitle)
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.app_enablePasscodeOrPatternButton),
+                    context.getString(R.string.app_enablePasscodeOrPatternButton)
                 ).performClick()
             }
 
@@ -431,7 +431,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 walletEnabled = false,
                 localAuthRequired = true,
                 activity = activity,
-                callbackHandler = callbackHandler,
+                callbackHandler = callbackHandler
             )
 
             verify(localAuthPreferenceRepository)
@@ -452,7 +452,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 walletEnabled = false,
                 localAuthRequired = false,
                 activity = activity,
-                callbackHandler = callbackHandler,
+                callbackHandler = callbackHandler
             )
 
             verify(callbackHandler).onSuccess(false)
@@ -466,7 +466,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             walletEnabled = false,
             localAuthRequired = false,
             activity = activity,
-            callbackHandler = callbackHandler,
+            callbackHandler = callbackHandler
         )
 
         verify(callbackHandler).onSuccess(false)
@@ -482,13 +482,13 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 walletEnabled = false,
                 localAuthRequired = true,
                 activity = activity,
-                callbackHandler = callbackHandler,
+                callbackHandler = callbackHandler
             )
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorTitle),
+                context.getString(R.string.app_localAuthManagerErrorTitle)
             ).isDisplayed()
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton),
+                context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton)
             ).performClick()
         }
 
@@ -497,46 +497,48 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
     }
 
     @Test
-    fun `DEPRECATED - device unsecure - first time user - local auth required - back press`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(false)
+    fun `DEPRECATED - device unsecure - first time user - local auth required - back press`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(false)
 
-        composeTestRule.apply {
-            localAuthManager.enforceAndSet(
-                walletEnabled = false,
-                localAuthRequired = true,
-                activity = activity,
-                callbackHandler = callbackHandler,
-            )
-            onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorTitle),
-            ).isDisplayed()
-            Espresso.pressBack()
+            composeTestRule.apply {
+                localAuthManager.enforceAndSet(
+                    walletEnabled = false,
+                    localAuthRequired = true,
+                    activity = activity,
+                    callbackHandler = callbackHandler
+                )
+                onNodeWithText(
+                    context.getString(R.string.app_localAuthManagerErrorTitle)
+                ).isDisplayed()
+                Espresso.pressBack()
+            }
+
+            verify(callbackHandler).onFailure(true)
+            verify(localAuthPreferenceRepository).setLocalAuthPref(LocalAuthPreference.Disabled)
         }
-
-        verify(callbackHandler).onFailure(true)
-        verify(localAuthPreferenceRepository).setLocalAuthPref(LocalAuthPreference.Disabled)
-    }
 
     @Test
-    fun `DEPRECATED - device unsecure - returning user - local auth required - back press`() = runBlocking {
-        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(false)
+    fun `DEPRECATED - device unsecure - returning user - local auth required - back press`() =
+        runBlocking {
+            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(false)
 
-        composeTestRule.apply {
-            localAuthManager.enforceAndSet(
-                walletEnabled = false,
-                localAuthRequired = true,
-                activity = activity,
-                callbackHandler = callbackHandler,
-            )
-            onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorTitle),
-            ).isDisplayed()
-            Espresso.pressBack()
+            composeTestRule.apply {
+                localAuthManager.enforceAndSet(
+                    walletEnabled = false,
+                    localAuthRequired = true,
+                    activity = activity,
+                    callbackHandler = callbackHandler
+                )
+                onNodeWithText(
+                    context.getString(R.string.app_localAuthManagerErrorTitle)
+                ).isDisplayed()
+                Espresso.pressBack()
+            }
+
+            verify(callbackHandler).onFailure(true)
+            verify(localAuthPreferenceRepository).setLocalAuthPref(LocalAuthPreference.Disabled)
         }
-
-        verify(callbackHandler).onFailure(true)
-        verify(localAuthPreferenceRepository).setLocalAuthPref(LocalAuthPreference.Disabled)
-    }
 
     @Test
     fun `device secure - first time user - biometrics enabled - opt in bio - not required`() =
@@ -549,13 +551,13 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 localAuthManager.enforceAndSet(
                     localAuthRequired = false,
                     activity = activity,
-                    callbackHandler = callbackHandler,
+                    callbackHandler = callbackHandler
                 )
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsTitle),
+                    context.getString(R.string.app_enableBiometricsTitle)
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsButton),
+                    context.getString(R.string.app_enableBiometricsButton)
                 ).performClick()
             }
 
@@ -576,13 +578,13 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 localAuthManager.enforceAndSet(
                     localAuthRequired = true,
                     activity = activity,
-                    callbackHandler = callbackHandler,
+                    callbackHandler = callbackHandler
                 )
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsTitle),
+                    context.getString(R.string.app_enableBiometricsTitle)
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsButton),
+                    context.getString(R.string.app_enableBiometricsButton)
                 ).performClick()
             }
 
@@ -603,13 +605,13 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 localAuthManager.enforceAndSet(
                     localAuthRequired = false,
                     activity = activity,
-                    callbackHandler = callbackHandler,
+                    callbackHandler = callbackHandler
                 )
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsTitle),
+                    context.getString(R.string.app_enableBiometricsTitle)
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.app_enablePasscodeOrPatternButton),
+                    context.getString(R.string.app_enablePasscodeOrPatternButton)
                 ).performClick()
             }
 
@@ -630,16 +632,16 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 localAuthManager.enforceAndSet(
                     localAuthRequired = true,
                     activity = activity,
-                    callbackHandler = callbackHandler,
+                    callbackHandler = callbackHandler
                 )
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsTitle),
+                    context.getString(R.string.app_enableBiometricsTitle)
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.app_enablePasscodeOrPatternButton),
+                    context.getString(R.string.app_enablePasscodeOrPatternButton)
                 ).performClick()
                 onNodeWithText(
-                    context.getString(R.string.app_optOutBiometricsTitle),
+                    context.getString(R.string.app_optOutBiometricsTitle)
                 ).assertIsDisplayed()
             }
 
@@ -658,19 +660,19 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 localAuthManager.enforceAndSet(
                     localAuthRequired = true,
                     activity = activity,
-                    callbackHandler = callbackHandler,
+                    callbackHandler = callbackHandler
                 )
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsTitle),
+                    context.getString(R.string.app_enableBiometricsTitle)
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.app_enablePasscodeOrPatternButton),
+                    context.getString(R.string.app_enablePasscodeOrPatternButton)
                 ).performClick()
                 onNodeWithText(
-                    context.getString(R.string.app_optOutBiometricsTitle),
+                    context.getString(R.string.app_optOutBiometricsTitle)
                 ).assertIsDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsButton),
+                    context.getString(R.string.app_enableBiometricsButton)
                 ).performClick()
             }
 
@@ -691,16 +693,16 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 localAuthManager.enforceAndSet(
                     localAuthRequired = true,
                     activity = activity,
-                    callbackHandler = callbackHandler,
+                    callbackHandler = callbackHandler
                 )
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsTitle),
+                    context.getString(R.string.app_enableBiometricsTitle)
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.app_enablePasscodeOrPatternButton),
+                    context.getString(R.string.app_enablePasscodeOrPatternButton)
                 ).performClick()
                 onNodeWithText(
-                    context.getString(R.string.app_optOutBiometricsTitle),
+                    context.getString(R.string.app_optOutBiometricsTitle)
                 ).assertIsDisplayed()
                 Espresso.pressBack()
             }
@@ -722,10 +724,10 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 localAuthManager.enforceAndSet(
                     localAuthRequired = false,
                     activity = activity,
-                    callbackHandler = callbackHandler,
+                    callbackHandler = callbackHandler
                 )
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsTitle),
+                    context.getString(R.string.app_enableBiometricsTitle)
                 ).isDisplayed()
                 Espresso.pressBack()
             }
@@ -747,10 +749,10 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 localAuthManager.enforceAndSet(
                     localAuthRequired = true,
                     activity = activity,
-                    callbackHandler = callbackHandler,
+                    callbackHandler = callbackHandler
                 )
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsTitle),
+                    context.getString(R.string.app_enableBiometricsTitle)
                 ).isDisplayed()
                 Espresso.pressBack()
             }
@@ -762,22 +764,21 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         }
 
     @Test
-    fun `device secure - first time user - DeviceBiometricsStatus == NO_HARDWARE`() =
-        runBlocking {
-            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-            whenever(deviceBiometricsManager.getCredentialStatus())
-                .thenReturn(DeviceBiometricsStatus.NO_HARDWARE)
+    fun `device secure - first time user - DeviceBiometricsStatus == NO_HARDWARE`() = runBlocking {
+        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+        whenever(deviceBiometricsManager.getCredentialStatus())
+            .thenReturn(DeviceBiometricsStatus.NO_HARDWARE)
 
-            localAuthManager.enforceAndSet(
-                localAuthRequired = false,
-                activity = activity,
-                callbackHandler = callbackHandler,
-            )
+        localAuthManager.enforceAndSet(
+            localAuthRequired = false,
+            activity = activity,
+            callbackHandler = callbackHandler
+        )
 
-            verify(callbackHandler).onSuccess(false)
-            verify(localAuthPreferenceRepository)
-                .setLocalAuthPref(LocalAuthPreference.Enabled(false))
-        }
+        verify(callbackHandler).onSuccess(false)
+        verify(localAuthPreferenceRepository)
+            .setLocalAuthPref(LocalAuthPreference.Enabled(false))
+    }
 
     @Test
     fun `device secure - first time user - DeviceBiometricsStatus == HARDWARE_UNAVAILABLE`() =
@@ -789,7 +790,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             localAuthManager.enforceAndSet(
                 localAuthRequired = false,
                 activity = activity,
-                callbackHandler = callbackHandler,
+                callbackHandler = callbackHandler
             )
 
             verify(callbackHandler).onSuccess(false)
@@ -798,40 +799,38 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         }
 
     @Test
-    fun `device secure - first time user - DeviceBiometricsStatus == NOT_ENROLLED`() =
-        runBlocking {
-            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-            whenever(deviceBiometricsManager.getCredentialStatus())
-                .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
+    fun `device secure - first time user - DeviceBiometricsStatus == NOT_ENROLLED`() = runBlocking {
+        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+        whenever(deviceBiometricsManager.getCredentialStatus())
+            .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
 
-            localAuthManager.enforceAndSet(
-                localAuthRequired = false,
-                activity = activity,
-                callbackHandler = callbackHandler,
-            )
+        localAuthManager.enforceAndSet(
+            localAuthRequired = false,
+            activity = activity,
+            callbackHandler = callbackHandler
+        )
 
-            verify(callbackHandler).onSuccess(false)
-            verify(localAuthPreferenceRepository)
-                .setLocalAuthPref(LocalAuthPreference.Enabled(false))
-        }
+        verify(callbackHandler).onSuccess(false)
+        verify(localAuthPreferenceRepository)
+            .setLocalAuthPref(LocalAuthPreference.Enabled(false))
+    }
 
     @Test
-    fun `device secure - first time user - DeviceBiometricsStatus == UNKNOWN`() =
-        runBlocking {
-            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-            whenever(deviceBiometricsManager.getCredentialStatus())
-                .thenReturn(DeviceBiometricsStatus.UNKNOWN)
+    fun `device secure - first time user - DeviceBiometricsStatus == UNKNOWN`() = runBlocking {
+        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+        whenever(deviceBiometricsManager.getCredentialStatus())
+            .thenReturn(DeviceBiometricsStatus.UNKNOWN)
 
-            localAuthManager.enforceAndSet(
-                localAuthRequired = false,
-                activity = activity,
-                callbackHandler = callbackHandler,
-            )
+        localAuthManager.enforceAndSet(
+            localAuthRequired = false,
+            activity = activity,
+            callbackHandler = callbackHandler
+        )
 
-            verify(callbackHandler).onSuccess(false)
-            verify(localAuthPreferenceRepository)
-                .setLocalAuthPref(LocalAuthPreference.Enabled(false))
-        }
+        verify(callbackHandler).onSuccess(false)
+        verify(localAuthPreferenceRepository)
+            .setLocalAuthPref(LocalAuthPreference.Enabled(false))
+    }
 
     @Test
     fun `device secure - returning user - no local auth & bio enabled - required local auth`() =
@@ -846,16 +845,16 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 localAuthManager.enforceAndSet(
                     localAuthRequired = true,
                     activity = activity,
-                    callbackHandler = callbackHandler,
+                    callbackHandler = callbackHandler
                 )
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsTitle),
+                    context.getString(R.string.app_enableBiometricsTitle)
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.app_enablePasscodeOrPatternButton),
+                    context.getString(R.string.app_enablePasscodeOrPatternButton)
                 ).performClick()
                 onNodeWithText(
-                    context.getString(R.string.app_optOutBiometricsTitle),
+                    context.getString(R.string.app_optOutBiometricsTitle)
                 ).assertIsDisplayed()
             }
 
@@ -876,13 +875,13 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 localAuthManager.enforceAndSet(
                     localAuthRequired = false,
                     activity = activity,
-                    callbackHandler = callbackHandler,
+                    callbackHandler = callbackHandler
                 )
                 onNodeWithText(
-                    context.getString(R.string.app_enableBiometricsTitle),
+                    context.getString(R.string.app_enableBiometricsTitle)
                 ).isDisplayed()
                 onNodeWithText(
-                    context.getString(R.string.app_enablePasscodeOrPatternButton),
+                    context.getString(R.string.app_enablePasscodeOrPatternButton)
                 ).performClick()
             }
 
@@ -903,7 +902,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             localAuthManager.enforceAndSet(
                 localAuthRequired = true,
                 activity = activity,
-                callbackHandler = callbackHandler,
+                callbackHandler = callbackHandler
             )
 
             verify(localAuthPreferenceRepository)
@@ -912,22 +911,21 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         }
 
     @Test
-    fun `device secure - returning user - no local auth - local auth not required`() =
-        runBlocking {
-            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-            whenever(deviceBiometricsManager.getCredentialStatus())
-                .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
-            whenever(localAuthPreferenceRepository.getLocalAuthPref())
-                .thenReturn(LocalAuthPreference.Disabled)
+    fun `device secure - returning user - no local auth - local auth not required`() = runBlocking {
+        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+        whenever(deviceBiometricsManager.getCredentialStatus())
+            .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
+        whenever(localAuthPreferenceRepository.getLocalAuthPref())
+            .thenReturn(LocalAuthPreference.Disabled)
 
-            localAuthManager.enforceAndSet(
-                localAuthRequired = false,
-                activity = activity,
-                callbackHandler = callbackHandler,
-            )
+        localAuthManager.enforceAndSet(
+            localAuthRequired = false,
+            activity = activity,
+            callbackHandler = callbackHandler
+        )
 
-            verify(callbackHandler).onSuccess(false)
-        }
+        verify(callbackHandler).onSuccess(false)
+    }
 
     @Test
     fun `device unsecure - first time user - local auth not required`() = runBlocking {
@@ -936,7 +934,7 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         localAuthManager.enforceAndSet(
             localAuthRequired = false,
             activity = activity,
-            callbackHandler = callbackHandler,
+            callbackHandler = callbackHandler
         )
 
         verify(callbackHandler).onSuccess(false)
@@ -951,13 +949,13 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             localAuthManager.enforceAndSet(
                 localAuthRequired = true,
                 activity = activity,
-                callbackHandler = callbackHandler,
+                callbackHandler = callbackHandler
             )
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorTitle),
+                context.getString(R.string.app_localAuthManagerErrorTitle)
             ).isDisplayed()
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton),
+                context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton)
             ).performClick()
         }
 
@@ -973,10 +971,10 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             localAuthManager.enforceAndSet(
                 localAuthRequired = true,
                 activity = activity,
-                callbackHandler = callbackHandler,
+                callbackHandler = callbackHandler
             )
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorTitle),
+                context.getString(R.string.app_localAuthManagerErrorTitle)
             ).isDisplayed()
             Espresso.pressBack()
         }
@@ -993,10 +991,10 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
             localAuthManager.enforceAndSet(
                 localAuthRequired = true,
                 activity = activity,
-                callbackHandler = callbackHandler,
+                callbackHandler = callbackHandler
             )
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorTitle),
+                context.getString(R.string.app_localAuthManagerErrorTitle)
             ).isDisplayed()
             Espresso.pressBack()
         }

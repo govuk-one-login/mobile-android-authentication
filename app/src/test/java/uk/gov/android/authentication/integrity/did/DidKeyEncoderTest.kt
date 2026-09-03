@@ -126,10 +126,7 @@ class DidKeyEncoderTest {
 
     @ParameterizedTest
     @MethodSource("provideHexToVarintHexTestCases")
-    fun `hexToVarintHex converts hex to varint hex correctly`(
-        input: String,
-        expected: String
-    ) {
+    fun `hexToVarintHex converts hex to varint hex correctly`(input: String, expected: String) {
         val result = DidKeyEncoder.hexToVarintHex(input)
         assertEquals(expected, result)
     }
@@ -158,10 +155,7 @@ class DidKeyEncoderTest {
 
     @ParameterizedTest
     @MethodSource("provideParseHexTestCases")
-    fun `parseHex converts hex string to byte array correctly`(
-        input: String,
-        expected: ByteArray
-    ) {
+    fun `parseHex converts hex string to byte array correctly`(input: String, expected: ByteArray) {
         val result = DidKeyEncoder.parseHex(input)
         assertArrayEquals(expected, result)
     }
@@ -245,10 +239,7 @@ class DidKeyEncoderTest {
 
     @ParameterizedTest
     @MethodSource("provideRoundTripTestCases")
-    fun `parseHex correctly parses hex strings`(
-        hexString: String,
-        expectedBytes: ByteArray
-    ) {
+    fun `parseHex correctly parses hex strings`(hexString: String, expectedBytes: ByteArray) {
         val result = DidKeyEncoder.parseHex(hexString)
         assertArrayEquals(expectedBytes, result)
     }
@@ -275,40 +266,37 @@ class DidKeyEncoderTest {
 
     companion object {
         @JvmStatic
-        fun provideHexToVarintHexTestCases(): Stream<Arguments> =
-            Stream.of(
-                Arguments.of("1200", "8024"),
-                Arguments.of("00", "00"),
-                Arguments.of("01", "01"),
-                Arguments.of("7F", "7F"),
-                Arguments.of("80", "8001"),
-                Arguments.of("FF", "FF01"),
-                Arguments.of("100", "8002"),
-                Arguments.of("4000", "808001"),
-                Arguments.of("FFFF", "FFFF03"),
-                Arguments.of("10000", "808004"),
-                Arguments.of("FFFFFF", "FFFFFF07")
-            )
+        fun provideHexToVarintHexTestCases(): Stream<Arguments> = Stream.of(
+            Arguments.of("1200", "8024"),
+            Arguments.of("00", "00"),
+            Arguments.of("01", "01"),
+            Arguments.of("7F", "7F"),
+            Arguments.of("80", "8001"),
+            Arguments.of("FF", "FF01"),
+            Arguments.of("100", "8002"),
+            Arguments.of("4000", "808001"),
+            Arguments.of("FFFF", "FFFF03"),
+            Arguments.of("10000", "808004"),
+            Arguments.of("FFFFFF", "FFFFFF07")
+        )
 
         @JvmStatic
-        fun provideParseHexTestCases(): Stream<Arguments> =
-            Stream.of(
-                Arguments.of("00", byteArrayOf(0)),
-                Arguments.of("01", byteArrayOf(1)),
-                Arguments.of("FF", byteArrayOf(-1)),
-                Arguments.of("0001", byteArrayOf(0, 1)),
-                Arguments.of("8024", byteArrayOf(-128, 36)),
-                Arguments.of("DEADBEEF", byteArrayOf(-34, -83, -66, -17)),
-                Arguments.of("00112233", byteArrayOf(0, 17, 34, 51))
-            )
+        fun provideParseHexTestCases(): Stream<Arguments> = Stream.of(
+            Arguments.of("00", byteArrayOf(0)),
+            Arguments.of("01", byteArrayOf(1)),
+            Arguments.of("FF", byteArrayOf(-1)),
+            Arguments.of("0001", byteArrayOf(0, 1)),
+            Arguments.of("8024", byteArrayOf(-128, 36)),
+            Arguments.of("DEADBEEF", byteArrayOf(-34, -83, -66, -17)),
+            Arguments.of("00112233", byteArrayOf(0, 17, 34, 51))
+        )
 
         @JvmStatic
-        fun provideRoundTripTestCases(): Stream<Arguments> =
-            Stream.of(
-                Arguments.of("1200", byteArrayOf(18, 0)),
-                Arguments.of("ABCD", byteArrayOf(-85, -51)),
-                Arguments.of("0F0F", byteArrayOf(15, 15)),
-                Arguments.of("F0F0", byteArrayOf(-16, -16))
-            )
+        fun provideRoundTripTestCases(): Stream<Arguments> = Stream.of(
+            Arguments.of("1200", byteArrayOf(18, 0)),
+            Arguments.of("ABCD", byteArrayOf(-85, -51)),
+            Arguments.of("0F0F", byteArrayOf(15, 15)),
+            Arguments.of("F0F0", byteArrayOf(-16, -16))
+        )
     }
 }

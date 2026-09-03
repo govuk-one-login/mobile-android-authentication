@@ -52,17 +52,16 @@ class AndroidKeyPairManager private constructor(
         vararg requests: SignRequest,
         promptConfig: BiometricAuthHandler.PromptConfig,
         authHandler: BiometricAuthHandler
-    ): List<SignedData> =
-        withContext(mainDispatcher) {
-            // Ensure keys are configured with user authentication for secure signing
-            require(userAuthRequired) { "Authentication required for signing operations" }
-            suspendCancellableCoroutine { continuation ->
-                authHandler.use {
-                    it.authenticate(
-                        Request(
-                            accessControlLevel = AccessControlLevel.PASSCODE_AND_BIOMETRICS,
-                            promptConfig = promptConfig,
-                            callback =
+    ): List<SignedData> = withContext(mainDispatcher) {
+        // Ensure keys are configured with user authentication for secure signing
+        require(userAuthRequired) { "Authentication required for signing operations" }
+        suspendCancellableCoroutine { continuation ->
+            authHandler.use {
+                it.authenticate(
+                    Request(
+                        accessControlLevel = AccessControlLevel.PASSCODE_AND_BIOMETRICS,
+                        promptConfig = promptConfig,
+                        callback =
                             Callback(
                                 onSuccess = {
                                     continuation.resumeWith(
@@ -85,11 +84,11 @@ class AndroidKeyPairManager private constructor(
                                     )
                                 }
                             )
-                        )
                     )
-                }
+                )
             }
         }
+    }
 
     override fun deleteAllKeysWithPrefix(prefix: String) {
         val aliases = keyStore.aliases()
@@ -132,26 +131,22 @@ class AndroidKeyPairManager private constructor(
         return Pair(x, y)
     }
 
-    override fun sign(
-        alias: String,
-        data: ByteArray
-    ): ByteArray =
-        runCatching {
-            val privateKey = getPrivateKeyEntry(alias).privateKey
+    override fun sign(alias: String, data: ByteArray): ByteArray = runCatching {
+        val privateKey = getPrivateKeyEntry(alias).privateKey
 
-            val signature =
-                Signature.getInstance(ALG).run {
-                    initSign(privateKey)
-                    update(data)
-                    sign()
-                }
+        val signature =
+            Signature.getInstance(ALG).run {
+                initSign(privateKey)
+                update(data)
+                sign()
+            }
 
-            val ecSpec = getPublicKey(alias).params
-            convertSignatureToASN1(signature, ecSpec)
-        }.getOrElse { exception ->
-            logger.nonFatal(exception)
-            throw KeySigningException(alias, exception)
-        }
+        val ecSpec = getPublicKey(alias).params
+        convertSignatureToASN1(signature, ecSpec)
+    }.getOrElse { exception ->
+        logger.nonFatal(exception)
+        throw KeySigningException(alias, exception)
+    }
 
     private fun getKeyGenParameterSpec(
         alias: String,
@@ -196,12 +191,11 @@ class AndroidKeyPairManager private constructor(
         keyPairGenerator: KeyPairGenerator,
         alias: String,
         isStrongBoxBacked: Boolean
-    ): KeyPair? =
-        runCatching {
-            keyPairGenerator.initialize(getKeyGenParameterSpec(alias, isStrongBoxBacked))
-            keyPairGenerator.generateKeyPair()
-        }.onFailure { e -> logger.nonFatal(e) }
-            .getOrNull()
+    ): KeyPair? = runCatching {
+        keyPairGenerator.initialize(getKeyGenParameterSpec(alias, isStrongBoxBacked))
+        keyPairGenerator.generateKeyPair()
+    }.onFailure { e -> logger.nonFatal(e) }
+        .getOrNull()
 
     /**
      * Logs a non-fatal throwable for both debugging and Crashlytics reporting.
@@ -243,13 +237,12 @@ class AndroidKeyPairManager private constructor(
             keyStore: KeyStore,
             keyPairGenerator: KeyPairGenerator,
             mainDispatcher: CoroutineDispatcher
-        ): AndroidKeyPairManager =
-            AndroidKeyPairManager(
-                logger,
-                userAuthRequired,
-                keyStore,
-                keyPairGenerator,
-                mainDispatcher
-            )
+        ): AndroidKeyPairManager = AndroidKeyPairManager(
+            logger,
+            userAuthRequired,
+            keyStore,
+            keyPairGenerator,
+            mainDispatcher
+        )
     }
 }

@@ -1,7 +1,7 @@
 package uk.gov.android.authentication.json.jwk
 
-import kotlinx.serialization.Serializable
 import java.security.Key
+import kotlinx.serialization.Serializable
 
 /**
  * Object to create a JWK following the required format:
@@ -15,9 +15,9 @@ import java.security.Key
  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 object JWK {
-    private const val keyTypeValue = "EC"
-    private const val useValue = "sig"
-    private const val curveValue = "P-256"
+    private const val KEY_TYPE_VALUE = "EC"
+    private const val USE_VALUE = "sig"
+    private const val CURVE_VALUE = "P-256"
 
     /**
      * Method to get a PublicKey in JWK format that includes "use" field.
@@ -26,17 +26,15 @@ object JWK {
      * @param y - ECPoint in Base64Url format with no padding - 32 bits
      * @return [JsonWebKey]
      */
-    fun generateJwk(x: String, y: String): JsonWebKey {
-        return JsonWebKey(
-            jwk = JsonWebKeyFormat(
-                keyTypeValue,
-                useValue,
-                curveValue,
-                x,
-                y,
-            ),
+    fun generateJwk(x: String, y: String): JsonWebKey = JsonWebKey(
+        jwk = JsonWebKeyFormat(
+            KEY_TYPE_VALUE,
+            USE_VALUE,
+            CURVE_VALUE,
+            x,
+            y
         )
-    }
+    )
 
     /**
      * Method to get a PublicKey in JWK format that uses the Jose library.
@@ -44,14 +42,11 @@ object JWK {
      * @param key - ECPublicKey
      * @return [org.jose4j.jwk.JsonWebKey]
      */
-    fun generateJwk(key: Key): org.jose4j.jwk.JsonWebKey {
-        return org.jose4j.jwk.JsonWebKey.Factory.newJwk(key)
-    }
+    fun generateJwk(key: Key): org.jose4j.jwk.JsonWebKey =
+        org.jose4j.jwk.JsonWebKey.Factory.newJwk(key)
 
     @Serializable
-    data class JsonWebKey(
-        val jwk: JsonWebKeyFormat,
-    )
+    data class JsonWebKey(val jwk: JsonWebKeyFormat)
 
     @Serializable
     data class JsonWebKeyFormat(
@@ -59,6 +54,6 @@ object JWK {
         val use: String,
         val crv: String,
         val x: String,
-        val y: String,
+        val y: String
     )
 }

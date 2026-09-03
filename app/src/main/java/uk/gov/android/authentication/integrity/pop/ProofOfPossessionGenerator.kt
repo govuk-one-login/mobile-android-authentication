@@ -190,12 +190,7 @@ object ProofOfPossessionGenerator {
      * @return Base64URL-encoded JWT string (header.payload) without signature
      * @see [OpenID4VCI Specification](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html)
      */
-    fun createBase64DidKeyPoP(
-        kid: String,
-        nonce: String,
-        aud: String,
-        iss: String
-    ): String {
+    fun createBase64DidKeyPoP(kid: String, nonce: String, aud: String, iss: String): String {
         val headerJson = buildJsonObject {
             put("alg", ALG)
             put("typ", OPENID4VCI_TYP)
@@ -249,9 +244,7 @@ object ProofOfPossessionGenerator {
      *
      * @return Current Unix epoch timestamp in seconds
      */
-    fun getIssueTime(): Long {
-        return Instant.now().epochSecond
-    }
+    fun getIssueTime(): Long = Instant.now().epochSecond
 
     /**
      * Encodes a byte array to Base64URL format without padding.
@@ -262,10 +255,9 @@ object ProofOfPossessionGenerator {
      * @param input Byte array to encode
      * @return Base64URL-encoded string without padding
      */
-    fun getUrlSafeNoPaddingBase64(input: ByteArray): String {
-        return Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT)
+    fun getUrlSafeNoPaddingBase64(input: ByteArray): String =
+        Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT)
             .encode(input)
-    }
 
     /**
      * Checks if a Proof of Possession token has expired.
@@ -273,9 +265,7 @@ object ProofOfPossessionGenerator {
      * @param exp Expiration timestamp in Unix epoch seconds
      * @return `true` if the token has expired or is expiring now, `false` otherwise
      */
-    fun isPopExpired(exp: Long): Boolean {
-        return exp <= Instant.now().epochSecond
-    }
+    fun isPopExpired(exp: Long): Boolean = exp <= Instant.now().epochSecond
 
     private const val ALG = "ES256"
     private const val APP_INTEGRITY_TYP = "oauth-client-attestation-pop+jwt"

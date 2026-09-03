@@ -11,13 +11,12 @@ internal fun LoginSessionConfiguration.createRequest(): AuthorizationRequest = c
     .setAdditionalParameters(createAdditionalParameters())
     .build()
 
-internal fun LoginSessionConfiguration.createBuilder() =
-    AuthorizationRequest.Builder(
-        createAuthorizationServiceConfiguration(),
-        clientId,
-        responseType.value,
-        redirectUri
-    )
+internal fun LoginSessionConfiguration.createBuilder() = AuthorizationRequest.Builder(
+    createAuthorizationServiceConfiguration(),
+    clientId,
+    responseType.value,
+    redirectUri
+)
 
 internal fun LoginSessionConfiguration.createAuthorizationServiceConfiguration() =
     AuthorizationServiceConfiguration(

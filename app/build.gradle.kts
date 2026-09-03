@@ -6,8 +6,6 @@ plugins {
     id("uk.gov.android.authentication.android-lib-config")
 }
 
-apply(from = "${rootProject.extra["configDir"]}/ktlint/config.gradle")
-
 android {
     setNamespace(".impl")
 

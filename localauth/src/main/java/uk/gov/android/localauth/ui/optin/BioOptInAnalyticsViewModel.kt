@@ -3,6 +3,7 @@ package uk.gov.android.localauth.ui.optin
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import uk.gov.android.authentication.localauth.R
+import uk.gov.android.ui.componentsv2.R as componentsR
 import uk.gov.logging.api.analytics.extensions.getEnglishString
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 import uk.gov.logging.api.analytics.parameters.data.TaxonomyLevel2
@@ -11,23 +12,20 @@ import uk.gov.logging.api.v3dot1.logger.logEventV3Dot1
 import uk.gov.logging.api.v3dot1.model.RequiredParameters
 import uk.gov.logging.api.v3dot1.model.TrackEvent
 import uk.gov.logging.api.v3dot1.model.ViewEvent
-import uk.gov.android.ui.componentsv2.R as componentsR
 
-class BioOptInAnalyticsViewModel(
-    context: Context,
-    private val analyticsLogger: AnalyticsLogger,
-) : ViewModel() {
+class BioOptInAnalyticsViewModel(context: Context, private val analyticsLogger: AnalyticsLogger) :
+    ViewModel() {
     private val walletScreenEvent = makeWalletScreenEvent(context)
     private val noWalletScreenEvent = makeNoWalletScreenEvent(context)
     private val closeIconEvent = makeCloseBackEvent(context)
     private val biometricsBtnEvent = makeButtonEvent(
         context,
-        R.string.app_enableBiometricsButton,
+        R.string.app_enableBiometricsButton
     )
     private val passcodeBtnEvent =
         makeButtonEvent(
             context,
-            R.string.app_enablePasscodeOrPatternButton,
+            R.string.app_enablePasscodeOrPatternButton
         )
     private val backBtnEvent = makeBackButtonEvent(context)
 
@@ -60,7 +58,7 @@ class BioOptInAnalyticsViewModel(
             ViewEvent.Screen(
                 name = getEnglishString(R.string.app_enableBiometricsTitle),
                 id = getEnglishString(R.string.bio_opt_in_screen_wallet_page_id),
-                params = requiredParams,
+                params = requiredParams
             )
         }
 
@@ -68,34 +66,34 @@ class BioOptInAnalyticsViewModel(
             ViewEvent.Screen(
                 name = getEnglishString(R.string.app_enableBiometricsTitle),
                 id = getEnglishString(R.string.bio_opt_in_screen_no_wallet_page_id),
-                params = requiredParams,
+                params = requiredParams
             )
         }
 
         internal fun makeButtonEvent(context: Context, text: Int) = with(context) {
             TrackEvent.Button(
                 text = getEnglishString(text),
-                params = requiredParams,
+                params = requiredParams
             )
         }
 
         internal fun makeCloseBackEvent(context: Context) = with(context) {
             TrackEvent.Icon(
                 text = getEnglishString(componentsR.string.close_icon_button),
-                params = requiredParams,
+                params = requiredParams
             )
         }
 
         internal fun makeBackButtonEvent(context: Context) = with(context) {
             TrackEvent.Button(
                 text = getEnglishString(R.string.system_backButton),
-                params = requiredParams,
+                params = requiredParams
             )
         }
 
         private val requiredParams = RequiredParameters(
             taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
-            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
+            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED
         )
     }
 }

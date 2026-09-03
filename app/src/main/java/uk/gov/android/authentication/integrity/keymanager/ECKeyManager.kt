@@ -56,9 +56,7 @@ class ECKeyManager : KeyStoreManager {
         return Pair(x, y)
     }
 
-    override fun getPublicKey(): ECPublicKey {
-        return appCheckPublicKey
-    }
+    override fun getPublicKey(): ECPublicKey = appCheckPublicKey
 
     override fun sign(input: ByteArray): ByteArray {
         val ecSpec = appCheckPublicKey.params

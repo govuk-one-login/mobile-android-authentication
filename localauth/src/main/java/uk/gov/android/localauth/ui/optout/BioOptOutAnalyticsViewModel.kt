@@ -12,16 +12,14 @@ import uk.gov.logging.api.v3dot1.model.RequiredParameters
 import uk.gov.logging.api.v3dot1.model.TrackEvent
 import uk.gov.logging.api.v3dot1.model.ViewEvent
 
-class BioOptOutAnalyticsViewModel(
-    context: Context,
-    private val analyticsLogger: AnalyticsLogger,
-) : ViewModel() {
+class BioOptOutAnalyticsViewModel(context: Context, private val analyticsLogger: AnalyticsLogger) :
+    ViewModel() {
 
     private val screenEvent = makeScreenEvent(context)
     private val closeIconEvent = makeCloseBackEvent(context)
     private val biometricsBtnEvent = makeButtonEvent(
         context,
-        R.string.app_optOutBiometricsButton,
+        R.string.app_optOutBiometricsButton
     )
     private val backBtnEvent = makeBackButtonEvent(context)
 
@@ -49,34 +47,34 @@ class BioOptOutAnalyticsViewModel(
                 endpoint = "",
                 status = "",
                 reason = getString(R.string.app_optOutBiometricsErrorReason),
-                params = requiredParams,
+                params = requiredParams
             )
         }
 
         internal fun makeButtonEvent(context: Context, text: Int) = with(context) {
             TrackEvent.Button(
                 text = getEnglishString(text),
-                params = requiredParams,
+                params = requiredParams
             )
         }
 
         internal fun makeCloseBackEvent(context: Context) = with(context) {
             TrackEvent.Icon(
                 text = getEnglishString(uk.gov.android.ui.componentsv2.R.string.close_icon_button),
-                params = requiredParams,
+                params = requiredParams
             )
         }
 
         internal fun makeBackButtonEvent(context: Context) = with(context) {
             TrackEvent.Button(
                 text = getEnglishString(R.string.system_backButton),
-                params = requiredParams,
+                params = requiredParams
             )
         }
 
         private val requiredParams = RequiredParameters(
             taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
-            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
+            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED
         )
     }
 }

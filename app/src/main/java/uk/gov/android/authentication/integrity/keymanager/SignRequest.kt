@@ -6,10 +6,7 @@ package uk.gov.android.authentication.integrity.keymanager
  * @property keyAlias The alias of the key in the KeyStore to use for signing
  * @property data The data to be signed
  */
-data class SignRequest(
-    val keyAlias: String,
-    val data: ByteArray
-) {
+data class SignRequest(val keyAlias: String, val data: ByteArray) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is SignRequest) return false

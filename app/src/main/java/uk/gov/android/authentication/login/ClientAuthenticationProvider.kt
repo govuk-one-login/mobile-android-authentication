@@ -15,18 +15,15 @@ class ClientAuthenticationProviderImpl : ClientAuthenticationProvider {
         clientAttestation: String?,
         proofOfPossession: String?,
         dpop: String?
-    ): ClientAuthentication {
-        return object : ClientAuthentication {
-            override fun getRequestHeaders(clientId: String): MutableMap<String, String> =
-                mutableMapOf(
-                    Pair(CLIENT_ATTESTATION, clientAttestation ?: ""),
-                    Pair(PROOF_OF_POSSESSION, proofOfPossession ?: ""),
-                    Pair(DEMONSTRATING_PROOF_OF_POSSESSION, dpop ?: "")
-                )
+    ): ClientAuthentication = object : ClientAuthentication {
+        override fun getRequestHeaders(clientId: String): MutableMap<String, String> = mutableMapOf(
+            Pair(CLIENT_ATTESTATION, clientAttestation ?: ""),
+            Pair(PROOF_OF_POSSESSION, proofOfPossession ?: ""),
+            Pair(DEMONSTRATING_PROOF_OF_POSSESSION, dpop ?: "")
+        )
 
-            override fun getRequestParameters(clientId: String): MutableMap<String, String> =
-                mutableMapOf()
-        }
+        override fun getRequestParameters(clientId: String): MutableMap<String, String> =
+            mutableMapOf()
     }
 
     companion object {

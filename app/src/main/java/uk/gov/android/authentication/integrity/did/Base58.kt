@@ -116,12 +116,7 @@ internal object Base58 {
      * @param divisor the number to divide by (up to 256)
      * @return the remainder of the division operation
      */
-    private fun divmod(
-        number: ByteArray,
-        firstDigit: UInt,
-        base: UInt,
-        divisor: UInt
-    ): Byte {
+    private fun divmod(number: ByteArray, firstDigit: UInt, base: UInt, divisor: UInt): Byte {
         var remainder = 0.toUInt()
         for (i in firstDigit.toInt() until number.size) {
             val digit = number[i].toUByte()
