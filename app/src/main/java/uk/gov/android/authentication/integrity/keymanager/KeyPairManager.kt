@@ -26,7 +26,7 @@ interface KeyPairManager {
     suspend fun authenticateAndSign(
         vararg requests: SignRequest,
         promptConfig: PromptConfig,
-        authHandler: BiometricAuthHandler
+        authHandler: BiometricAuthHandler,
     ): List<SignedData>
 
     /**

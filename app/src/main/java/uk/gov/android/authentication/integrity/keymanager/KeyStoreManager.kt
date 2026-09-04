@@ -10,7 +10,7 @@ import uk.gov.android.authentication.integrity.AppIntegrityUtils
 
 @Deprecated(
     message = "Use KeyPairManager instead",
-    replaceWith = ReplaceWith("KeyPairManager")
+    replaceWith = ReplaceWith("KeyPairManager"),
 )
 interface KeyStoreManager {
     fun getPublicKeyCoordinates(): Pair<String, String>

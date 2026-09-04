@@ -15,13 +15,13 @@ internal fun LoginSessionConfiguration.createBuilder() = AuthorizationRequest.Bu
     createAuthorizationServiceConfiguration(),
     clientId,
     responseType.value,
-    redirectUri
+    redirectUri,
 )
 
 internal fun LoginSessionConfiguration.createAuthorizationServiceConfiguration() =
     AuthorizationServiceConfiguration(
         authorizeEndpoint,
-        tokenEndpoint
+        tokenEndpoint,
     )
 
 internal val LoginSessionConfiguration.scopeValues: List<String>

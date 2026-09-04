@@ -93,8 +93,8 @@ internal object Base58 {
                     inputCopy,
                     inputStart.toUInt(),
                     BASE_256,
-                    BASE_58
-                ).toInt()
+                    BASE_58,
+                ).toInt(),
             ]
             if (inputCopy[inputStart].toInt() == 0) ++inputStart
         }

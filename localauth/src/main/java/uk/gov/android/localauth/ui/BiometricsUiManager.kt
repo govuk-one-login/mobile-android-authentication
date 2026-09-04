@@ -13,33 +13,33 @@ interface DialogUiManager {
     @Deprecated(
         message = "Please use screen that does not allow for walletEnabled - " +
             "will be removed 7th of March",
-        level = DeprecationLevel.WARNING
+        level = DeprecationLevel.WARNING,
     )
     fun displayBioOptIn(
         activity: FragmentActivity,
         walletEnabled: Boolean,
         onBack: () -> Unit,
         onBiometricsOptIn: () -> Unit,
-        onBiometricsOptOut: () -> Unit
+        onBiometricsOptOut: () -> Unit,
     )
 
     fun displayBioOptIn(
         activity: FragmentActivity,
         onBack: () -> Unit,
         onBiometricsOptIn: () -> Unit,
-        onBiometricsOptOut: () -> Unit
+        onBiometricsOptOut: () -> Unit,
     )
 
     fun displayGoToSettingsPage(
         activity: FragmentActivity,
         onBack: () -> Unit,
-        onGoToSettings: () -> Unit
+        onGoToSettings: () -> Unit,
     )
 
     fun displayBioOptOut(
         activity: FragmentActivity,
         onBack: () -> Unit,
-        onBiometricsOptIn: () -> Unit
+        onBiometricsOptIn: () -> Unit,
     )
 }
 
@@ -47,14 +47,14 @@ class BiometricsUiManager(private val analyticsLogger: AnalyticsLogger) : Dialog
     @Deprecated(
         "Please use screen that does not allow for walletEnabled - " +
             "will be removed 7th of March",
-        level = DeprecationLevel.WARNING
+        level = DeprecationLevel.WARNING,
     )
     override fun displayBioOptIn(
         activity: FragmentActivity,
         walletEnabled: Boolean,
         onBack: () -> Unit,
         onBiometricsOptIn: () -> Unit,
-        onBiometricsOptOut: () -> Unit
+        onBiometricsOptOut: () -> Unit,
     ) {
         val dialogView =
             ComposeView(activity).apply {
@@ -65,7 +65,7 @@ class BiometricsUiManager(private val analyticsLogger: AnalyticsLogger) : Dialog
                             walletEnabled,
                             onBack,
                             onBiometricsOptIn,
-                            onBiometricsOptOut
+                            onBiometricsOptOut,
                         ) {
                             (parent as? ViewGroup)?.removeView(this)
                         }
@@ -76,8 +76,8 @@ class BiometricsUiManager(private val analyticsLogger: AnalyticsLogger) : Dialog
             dialogView,
             ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
+                ViewGroup.LayoutParams.MATCH_PARENT,
+            ),
         )
     }
 
@@ -85,7 +85,7 @@ class BiometricsUiManager(private val analyticsLogger: AnalyticsLogger) : Dialog
         activity: FragmentActivity,
         onBack: () -> Unit,
         onBiometricsOptIn: () -> Unit,
-        onBiometricsOptOut: () -> Unit
+        onBiometricsOptOut: () -> Unit,
     ) {
         val dialogView =
             ComposeView(activity).apply {
@@ -95,7 +95,7 @@ class BiometricsUiManager(private val analyticsLogger: AnalyticsLogger) : Dialog
                             analyticsLogger,
                             onBack,
                             onBiometricsOptIn,
-                            onBiometricsOptOut
+                            onBiometricsOptOut,
                         ) {
                             (parent as? ViewGroup)?.removeView(this)
                         }
@@ -106,15 +106,15 @@ class BiometricsUiManager(private val analyticsLogger: AnalyticsLogger) : Dialog
             dialogView,
             ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
+                ViewGroup.LayoutParams.MATCH_PARENT,
+            ),
         )
     }
 
     override fun displayGoToSettingsPage(
         activity: FragmentActivity,
         onBack: () -> Unit,
-        onGoToSettings: () -> Unit
+        onGoToSettings: () -> Unit,
     ) {
         val dialogView =
             ComposeView(activity).apply {
@@ -130,15 +130,15 @@ class BiometricsUiManager(private val analyticsLogger: AnalyticsLogger) : Dialog
             dialogView,
             ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
+                ViewGroup.LayoutParams.MATCH_PARENT,
+            ),
         )
     }
 
     override fun displayBioOptOut(
         activity: FragmentActivity,
         onBack: () -> Unit,
-        onBiometricsOptIn: () -> Unit
+        onBiometricsOptIn: () -> Unit,
     ) {
         val dialogView = ComposeView(activity).apply {
             setContent {
@@ -153,8 +153,8 @@ class BiometricsUiManager(private val analyticsLogger: AnalyticsLogger) : Dialog
             dialogView,
             ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
+                ViewGroup.LayoutParams.MATCH_PARENT,
+            ),
         )
     }
 }

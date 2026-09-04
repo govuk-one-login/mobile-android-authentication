@@ -32,8 +32,8 @@ object JWK {
             USE_VALUE,
             CURVE_VALUE,
             x,
-            y
-        )
+            y,
+        ),
     )
 
     /**
@@ -54,6 +54,6 @@ object JWK {
         val use: String,
         val crv: String,
         val x: String,
-        val y: String
+        val y: String,
     )
 }

@@ -26,25 +26,25 @@ dependencies {
         libs.appcompat,
         libs.bundles.gov.uk,
         libs.kotlinx.collections.immutable,
-        libs.material
+        libs.material,
     ).forEach(::implementation)
 
     listOf(
         libs.androidx.compose.ui.tooling,
-        libs.androidx.compose.ui.test.manifest
+        libs.androidx.compose.ui.test.manifest,
     ).forEach(::debugImplementation)
 }
 
 mavenPublishingConfig {
     mavenConfigBlock {
         name.set(
-            "Local Authentication (secure device) module for Android Devices"
+            "Local Authentication (secure device) module for Android Devices",
         )
         description.set(
             """
             A Gradle module which implements the local authentication (passcode/ biometrics) based on
             a combination of device security and privacy settings and user choice of how to secure the application.
-            """.trimIndent()
+            """.trimIndent(),
         )
     }
 }

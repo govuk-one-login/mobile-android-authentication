@@ -21,33 +21,33 @@ object TestUtils {
 
     internal fun executeTrackEventTestCase(
         testCases: TrackEventTestCase,
-        requiredParameters: RequiredParameters
+        requiredParameters: RequiredParameters,
     ) = when (testCases) {
         is TrackEventTestCase.Link ->
             TrackEvent.Link(
                 isExternal = false,
                 domain = testCases.domain,
                 text = testCases.text,
-                params = requiredParameters
+                params = requiredParameters,
             )
 
         is TrackEventTestCase.Button ->
             TrackEvent.Button(
                 text = testCases.text,
-                params = requiredParameters
+                params = requiredParameters,
             )
 
         is TrackEventTestCase.Icon ->
             TrackEvent.Icon(
                 text = testCases.text,
-                params = requiredParameters
+                params = requiredParameters,
             )
 
         is TrackEventTestCase.Screen ->
             ViewEvent.Screen(
                 name = testCases.name,
                 id = testCases.id,
-                params = requiredParameters
+                params = requiredParameters,
             )
     }.also { testCases.runTrackFunction() }
 }

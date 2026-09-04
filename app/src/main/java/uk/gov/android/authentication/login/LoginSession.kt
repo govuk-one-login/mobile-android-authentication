@@ -31,6 +31,6 @@ interface LoginSession {
         appIntegrity: AppIntegrityParameters,
         httpServiceDomain: String,
         onSuccess: (tokens: TokenResponse) -> Unit,
-        onFailure: (error: Throwable) -> Unit
+        onFailure: (error: Throwable) -> Unit,
     )
 }
