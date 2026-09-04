@@ -74,7 +74,7 @@ class ProofOfPossessionGeneratorTest {
             JWK.generateJwk("x", "y"),
             "test",
             "0",
-            0
+            0,
         )
 
         assertEquals(expectedResult, result)
@@ -124,7 +124,7 @@ class ProofOfPossessionGeneratorTest {
             "https://example.com",
             "https://example.com/path",
             "https://example.com/path?query=value",
-            "https://example.com:8080/path"
+            "https://example.com:8080/path",
         )
 
         urls.forEach { url ->
@@ -141,7 +141,7 @@ class ProofOfPossessionGeneratorTest {
             kid = "did:key:z6MkTestKeyId123",
             nonce = "unique-nonce-12345",
             aud = "https://issuer.example.com",
-            iss = ISS
+            iss = ISS,
         )
 
         val parts = result.split(".")
@@ -167,7 +167,7 @@ class ProofOfPossessionGeneratorTest {
             kid = "did:key:z6MkTest",
             nonce = "test-nonce",
             aud = "https://example.com",
-            iss = ISS
+            iss = ISS,
         )
 
         val afterTime = System.currentTimeMillis() / CONVERT_TO_SECONDS
@@ -183,9 +183,9 @@ class ProofOfPossessionGeneratorTest {
             Triple(
                 "did:key:z6Mk!@#$%^&*()",
                 "nonce-with-special-chars-!@#$%",
-                "https://example.com/path?param=value&other=test"
+                "https://example.com/path?param=value&other=test",
             ),
-            Triple("did:key:z6MkTest", "", "https://example.com")
+            Triple("did:key:z6MkTest", "", "https://example.com"),
         )
 
         testCases.forEach { (kid, nonce, aud) ->
@@ -207,7 +207,7 @@ class ProofOfPossessionGeneratorTest {
         val results = listOf(
             createBase64PoP("iss", "aud", 1234567890L, "jti"),
             createBase64DPoP(jwk, "https://example.com", "jti", 1234567890L),
-            createBase64DidKeyPoP("did:key:z6MkTest", "nonce", "https://example.com", ISS)
+            createBase64DidKeyPoP("did:key:z6MkTest", "nonce", "https://example.com", ISS),
         )
 
         results.forEach { result ->

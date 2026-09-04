@@ -73,7 +73,7 @@ class AppAuthSessionTest {
         // When calling present
         appAuthSession.present(
             launcher = launcher,
-            configuration = loginSessionConfig
+            configuration = loginSessionConfig,
         )
         // Then create the AuthorisationIntent and launch
         verify(launcher).launch(any())
@@ -92,7 +92,7 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> t = error }
+            { error -> t = error },
         )
 
         assertThat("Thrown error is not IllegalArgumentException", t is IllegalArgumentException)
@@ -106,12 +106,12 @@ class AppAuthSessionTest {
             AuthorizationRequestErrors.ACCESS_DENIED.error,
             AuthorizationRequestErrors.ACCESS_DENIED.errorDescription,
             AuthorizationRequestErrors.ACCESS_DENIED.errorUri,
-            AuthorizationRequestErrors.ACCESS_DENIED.cause
+            AuthorizationRequestErrors.ACCESS_DENIED.cause,
         )
         // Given an intent with a malformed (empty) response data JSON extra
         val intent = Intent().putExtra(
             AuthorizationException.EXTRA_EXCEPTION,
-            exception.toJsonString()
+            exception.toJsonString(),
         )
         // When calling finaliseWithDPoP
         var t: Throwable? = null
@@ -121,7 +121,7 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> t = error }
+            { error -> t = error },
         )
 
         // Then throw an IllegalArgumentException
@@ -142,7 +142,7 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> t = error }
+            { error -> t = error },
         )
 
         // Then throw an AuthenticationError
@@ -164,7 +164,7 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            {}
+            {},
         )
     }
 
@@ -182,11 +182,11 @@ class AppAuthSessionTest {
             ACCESS_TOKEN,
             EXPIRATION_TIME,
             ID_TOKEN,
-            REFRESH_TOKEN
+            REFRESH_TOKEN,
         )
 
         whenever(demonstratingProofOfPossessionManager.generateDPoP(any())).thenReturn(
-            SignedDPoP.Success("success")
+            SignedDPoP.Success("success"),
         )
         whenever(authService.performTokenRequest(any(), any(), any()))
             .thenAnswer {
@@ -199,7 +199,7 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             { tr -> actualTokenResponse = tr },
-            {}
+            {},
         )
 
         assertEquals(expectedTokenResponse, actualTokenResponse)
@@ -218,16 +218,16 @@ class AppAuthSessionTest {
             "server_error",
             null,
             null,
-            null
+            null,
         )
         val expectedException = AuthenticationError(
             message = NULL_AUTH_MESSAGE,
             type = ErrorType.SERVER_ERROR,
-            status = 1005
+            status = 1005,
         )
 
         whenever(demonstratingProofOfPossessionManager.generateDPoP(any())).thenReturn(
-            SignedDPoP.Success("success")
+            SignedDPoP.Success("success"),
         )
         whenever(authService.performTokenRequest(any(), any(), any()))
             .thenAnswer {
@@ -240,7 +240,7 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> actualException = error }
+            { error -> actualException = error },
         )
 
         assertEquals(expectedException, actualException)
@@ -263,7 +263,7 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> actualException = error }
+            { error -> actualException = error },
         )
 
         assertEquals(exp, actualException)
@@ -280,7 +280,7 @@ class AppAuthSessionTest {
         val auTokenResponse = buildTokenResponse(accessToken = null)
 
         whenever(demonstratingProofOfPossessionManager.generateDPoP(any())).thenReturn(
-            SignedDPoP.Success("success")
+            SignedDPoP.Success("success"),
         )
         whenever(authService.performTokenRequest(any(), any(), any()))
             .thenAnswer {
@@ -293,12 +293,12 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> actualException = error }
+            { error -> actualException = error },
         )
 
         assertThat(
             "Exception thrown is not IllegalArgumentException",
-            actualException is IllegalArgumentException
+            actualException is IllegalArgumentException,
         )
     }
 
@@ -310,14 +310,14 @@ class AppAuthSessionTest {
         // When calling finaliseWithDPoP
         var actualException: Throwable? = null
         whenever(demonstratingProofOfPossessionManager.generateDPoP(any())).thenReturn(
-            SignedDPoP.Failure("Failure")
+            SignedDPoP.Failure("Failure"),
         )
         appAuthSession.finalise(
             intent,
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> actualException = error }
+            { error -> actualException = error },
         )
 
         assertEquals(AppAuthSession.Companion.DPoPManagerError("Failure"), actualException)
@@ -327,7 +327,7 @@ class AppAuthSessionTest {
         val clientId = "id"
         val tokenRequest = TokenRequest.Builder(
             AuthorizationServiceConfiguration(Uri.EMPTY, Uri.EMPTY),
-            clientId
+            clientId,
         ).setGrantType("grantType").build()
         return net.openid.appauth.TokenResponse.Builder(tokenRequest)
             .setRefreshToken(REFRESH_TOKEN)

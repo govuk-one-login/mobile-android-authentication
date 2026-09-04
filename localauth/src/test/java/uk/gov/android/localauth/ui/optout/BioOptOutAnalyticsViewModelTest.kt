@@ -41,7 +41,7 @@ class BioOptOutAnalyticsViewModelTest {
         logger = mock()
         requiredParameters = RequiredParameters(
             taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
-            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED
+            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
         )
         title = context.getEnglishString(R.string.app_optOutBiometricsTitle)
         id = context.getEnglishString(R.string.bio_opt_out_screen_page_id)
@@ -60,7 +60,7 @@ class BioOptOutAnalyticsViewModelTest {
             endpoint = "",
             status = "",
             reason = reason,
-            params = requiredParameters
+            params = requiredParameters,
         )
         viewModel.trackBioOptOutScreen()
 
@@ -68,7 +68,7 @@ class BioOptOutAnalyticsViewModelTest {
 
         assertThat(
             IS_ERROR_REASON_TRUE,
-            GAUtils.containsIsError(event, TRUE)
+            GAUtils.containsIsError(event, TRUE),
         )
     }
 
@@ -79,14 +79,14 @@ class BioOptOutAnalyticsViewModelTest {
                 trackFunction = {
                     viewModel.trackBiometricsButton()
                 },
-                text = biometricsBtn
+                text = biometricsBtn,
             ),
             TestUtils.TrackEventTestCase.Button(
                 trackFunction = {
                     viewModel.trackBackButton()
                 },
-                text = backBtn
-            )
+                text = backBtn,
+            ),
         ).forEach {
             val result = TestUtils.executeTrackEventTestCase(it, requiredParameters)
 
@@ -98,7 +98,7 @@ class BioOptOutAnalyticsViewModelTest {
     fun trackCloseIconButton() {
         val event = TrackEvent.Icon(
             text = icon,
-            params = requiredParameters
+            params = requiredParameters,
         )
 
         viewModel.trackCloseIconButton()

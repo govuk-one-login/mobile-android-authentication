@@ -37,12 +37,12 @@ fun GoToSettingsScreen(
     analyticsLogger: AnalyticsLogger,
     onBack: () -> Unit,
     onGoToSettings: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     val context = LocalContext.current
     val analyticsViewModel = GoToSettingsAnalyticsViewModel(
         context,
-        analyticsLogger
+        analyticsLogger,
     )
     analyticsViewModel.trackScreen()
     FullScreenDialogue(
@@ -65,7 +65,7 @@ fun GoToSettingsScreen(
                 context.startActivity(intent)
                 onDismiss()
             }
-        }
+        },
     )
 }
 
@@ -73,7 +73,7 @@ fun GoToSettingsScreen(
 private fun GoToSettingsContent(onGoToSettings: () -> Unit) {
     val body = persistentListOf(
         stringResource(R.string.app_localAuthManagerErrorBody1),
-        stringResource(R.string.app_localAuthManagerErrorBody2)
+        stringResource(R.string.app_localAuthManagerErrorBody2),
     )
     val numberedListTitle = stringResource(R.string.app_localAuthManagerErrorBody3)
     val numberedListStep1 = stringResource(R.string.app_localAuthManagerErrorNumberedList1)
@@ -85,13 +85,13 @@ private fun GoToSettingsContent(onGoToSettings: () -> Unit) {
                 image = ImageVector.vectorResource(patternsR.drawable.ic_warning_error),
                 contentDescription = stringResource(patternsR.string.error_icon_description),
                 color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         },
         title = { horizontalPadding ->
             GdsHeading(
                 text = stringResource(R.string.app_localAuthManagerErrorTitle),
-                modifier = Modifier.padding(horizontal = horizontalPadding)
+                modifier = Modifier.padding(horizontal = horizontalPadding),
             )
         },
         modifier = Modifier.fillMaxSize(),
@@ -100,7 +100,7 @@ private fun GoToSettingsContent(onGoToSettings: () -> Unit) {
                 Text(
                     text = body[index],
                     modifier = Modifier.padding(horizontal = horizontalPadding),
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
             }
             item {
@@ -108,10 +108,10 @@ private fun GoToSettingsContent(onGoToSettings: () -> Unit) {
                     numberedListItems = persistentListOf(
                         ListItem(numberedListStep1),
                         ListItem(numberedListStep2),
-                        ListItem(numberedListStep3)
+                        ListItem(numberedListStep3),
                     ),
                     title = ListTitle(numberedListTitle, TitleType.Heading),
-                    modifier = Modifier.padding(horizontal = horizontalPadding)
+                    modifier = Modifier.padding(horizontal = horizontalPadding),
                 )
             }
         },
@@ -120,9 +120,9 @@ private fun GoToSettingsContent(onGoToSettings: () -> Unit) {
                 text = stringResource(R.string.app_localAuthManagerErrorGoToSettingsButton),
                 buttonType = ButtonTypeV2.Primary(),
                 onClick = onGoToSettings,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
-        }
+        },
     )
 }
 

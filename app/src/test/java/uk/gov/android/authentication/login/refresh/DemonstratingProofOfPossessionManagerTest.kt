@@ -25,7 +25,7 @@ class DemonstratingProofOfPossessionManagerTest {
         val config = DemonstratingProofOfPossessionConfig(
             logger = mockLogger,
             popGenerator = mockPopGenerator,
-            keyStoreManager = mockKeyStoreManager
+            keyStoreManager = mockKeyStoreManager,
         )
 
         dPoPManager = DemonstratingProofOfPossessionManagerImpl(config)
@@ -35,13 +35,13 @@ class DemonstratingProofOfPossessionManagerTest {
     fun testGenerateDPoPSuccess() {
         val mockSignatureByte = "Success".toByteArray()
         val mockSignatureBase64 = ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(
-            mockSignatureByte
+            mockSignatureByte,
         )
 
         whenever(mockKeyStoreManager.getPublicKeyCoordinates())
             .thenReturn(Pair("Success", "Success"))
         whenever(mockPopGenerator.createBase64DPoP(any(), any(), any(), any())).thenReturn(
-            expectedDPoP
+            expectedDPoP,
         )
         whenever(mockPopGenerator.getUrlSafeNoPaddingBase64(any())).thenReturn(mockSignatureBase64)
         whenever(mockKeyStoreManager.sign(any())).thenReturn(mockSignatureByte)
@@ -56,7 +56,7 @@ class DemonstratingProofOfPossessionManagerTest {
         val exp = SignatureException("Filed signing dpop!")
 
         whenever(mockPopGenerator.createBase64DPoP(any(), any(), any(), any())).thenReturn(
-            expectedDPoP
+            expectedDPoP,
         )
         whenever(mockKeyStoreManager.getPublicKeyCoordinates())
             .thenReturn(Pair("Success", "Success"))

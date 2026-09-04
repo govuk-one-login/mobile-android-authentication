@@ -19,7 +19,7 @@ import uk.gov.logging.api.Logger
 class FirebaseAppIntegrityManager(
     private val logger: Logger,
     config: AppIntegrityConfiguration,
-    private val popGenerator: ProofOfPossessionGenerator = ProofOfPossessionGenerator
+    private val popGenerator: ProofOfPossessionGenerator = ProofOfPossessionGenerator,
 ) : AppIntegrityManager {
     private val appChecker: AppChecker = config.appChecker
     private val attestationCaller: AttestationCaller = config.attestationCaller
@@ -36,7 +36,7 @@ class FirebaseAppIntegrityManager(
         return if (token is AppCheckToken) {
             attestationCaller.call(
                 token.jwt,
-                jwk
+                jwk,
             )
             // If unsuccessful -> return the failure
         } else {
@@ -62,12 +62,12 @@ class FirebaseAppIntegrityManager(
                 logger.error(
                     POP_TAG,
                     POP_ERROR_MSG,
-                    Exception(POP_ERROR_MSG)
+                    Exception(POP_ERROR_MSG),
                 )
             } else {
                 logger.info(
                     POP_TAG,
-                    POP_INFO_MSG
+                    POP_INFO_MSG,
                 )
             }
             SignedPoP.Success(signedPop)
@@ -94,7 +94,7 @@ class FirebaseAppIntegrityManager(
     private fun extractFieldFrom(attestation: String, field: String): String? = try {
         val body = String(
             Base64.withPadding(Base64.PaddingOption.ABSENT)
-                .decode(attestation.split(".")[1])
+                .decode(attestation.split(".")[1]),
         )
         JsonParser.parseString(body).asJsonObject[field]?.toString()
     } catch (e: Exception) {

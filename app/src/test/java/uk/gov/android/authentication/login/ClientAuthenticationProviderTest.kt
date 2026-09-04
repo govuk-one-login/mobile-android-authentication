@@ -11,7 +11,7 @@ class ClientAuthenticationProviderTest {
         val result = sut.setCustomClientAuthentication(
             ATTESTATION,
             POP,
-            DPOP
+            DPOP,
         )
 
         assertEquals(expected, result.getRequestHeaders(""))
@@ -33,12 +33,12 @@ class ClientAuthenticationProviderTest {
         private val expected = mutableMapOf(
             Pair("OAuth-Client-Attestation", ATTESTATION),
             Pair("OAuth-Client-Attestation-PoP", POP),
-            Pair("DPoP", DPOP)
+            Pair("DPoP", DPOP),
         )
         private val expectedWhenNull = mutableMapOf(
             Pair("OAuth-Client-Attestation", ""),
             Pair("OAuth-Client-Attestation-PoP", ""),
-            Pair("DPoP", "")
+            Pair("DPoP", ""),
         )
     }
 }
