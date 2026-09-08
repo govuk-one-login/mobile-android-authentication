@@ -28,20 +28,13 @@ class FirebaseAppIntegrityManager(
     override suspend fun getAttestation(): AttestationResponse {
         // Get Firebase token
         val token = appChecker.getAppCheckToken().getOrElse { err ->
-            AttestationResponse.Failure(err.toString(), err)
+            return AttestationResponse.Failure(err.toString(), err)
         }
-        // If successful -> functionality to get signed attestation from Mobile back-end
+
+        // Get signed attestation from back-end
         val pubKeyECCoord = keyStoreManager.getPublicKeyCoordinates()
         val jwk = JWK.generateJwk(x = pubKeyECCoord.first, y = pubKeyECCoord.second)
-        return if (token is AppCheckToken) {
-            attestationCaller.call(
-                token.jwt,
-                jwk
-            )
-            // If unsuccessful -> return the failure
-        } else {
-            token as AttestationResponse.Failure
-        }
+        return attestationCaller.call(token.jwt, jwk)
     }
 
     override fun generatePoP(iss: String, aud: String): SignedPoP {
