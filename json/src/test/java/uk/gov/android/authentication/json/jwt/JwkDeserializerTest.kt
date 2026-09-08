@@ -26,7 +26,7 @@ class JwkDeserializerTest {
             sut.deserialize(
                 json = jsonValidObj,
                 typeOfT = JsonWebKey::class.java,
-                context = null
+                context = null,
             )
         }
     }
@@ -39,14 +39,14 @@ class JwkDeserializerTest {
                 "kid" to "key-0",
                 "kty" to "AES",
                 "x" to "hc8mJ6fcZikhWM4ofHGSwXTkdqXM8GbPtRzPa7LttA=",
-                "y" to "OIhg/7rhWfmnWQEgAXzU8fCTggGrS3zj5x76a0lrzJM="
-            )
+                "y" to "OIhg/7rhWfmnWQEgAXzU8fCTggGrS3zj5x76a0lrzJM=",
+            ),
         )
         assertThrows<JsonParseException> {
             sut.deserialize(
                 json = jsonValidObj,
                 typeOfT = JsonWebKey::class.java,
-                context = context
+                context = context,
             )
         }
     }

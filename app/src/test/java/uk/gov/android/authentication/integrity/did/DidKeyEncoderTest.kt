@@ -120,7 +120,7 @@ class DidKeyEncoderTest {
         assertEquals(
             33,
             codec.compressedKeyLength,
-            "P-256 compressed public key should be 33 bytes"
+            "P-256 compressed public key should be 33 bytes",
         )
     }
 
@@ -277,7 +277,7 @@ class DidKeyEncoderTest {
             Arguments.of("4000", "808001"),
             Arguments.of("FFFF", "FFFF03"),
             Arguments.of("10000", "808004"),
-            Arguments.of("FFFFFF", "FFFFFF07")
+            Arguments.of("FFFFFF", "FFFFFF07"),
         )
 
         @JvmStatic
@@ -288,7 +288,7 @@ class DidKeyEncoderTest {
             Arguments.of("0001", byteArrayOf(0, 1)),
             Arguments.of("8024", byteArrayOf(-128, 36)),
             Arguments.of("DEADBEEF", byteArrayOf(-34, -83, -66, -17)),
-            Arguments.of("00112233", byteArrayOf(0, 17, 34, 51))
+            Arguments.of("00112233", byteArrayOf(0, 17, 34, 51)),
         )
 
         @JvmStatic
@@ -296,7 +296,7 @@ class DidKeyEncoderTest {
             Arguments.of("1200", byteArrayOf(18, 0)),
             Arguments.of("ABCD", byteArrayOf(-85, -51)),
             Arguments.of("0F0F", byteArrayOf(15, 15)),
-            Arguments.of("F0F0", byteArrayOf(-16, -16))
+            Arguments.of("F0F0", byteArrayOf(-16, -16)),
         )
     }
 }

@@ -32,13 +32,13 @@ interface LocalAuthManager {
     @Deprecated(
         message = "Please use screen that does not allow for walletEnabled - " +
             "will be removed 7th of March",
-        level = DeprecationLevel.WARNING
+        level = DeprecationLevel.WARNING,
     )
     suspend fun enforceAndSet(
         walletEnabled: Boolean,
         localAuthRequired: Boolean,
         activity: FragmentActivity,
-        callbackHandler: LocalAuthManagerCallbackHandler
+        callbackHandler: LocalAuthManagerCallbackHandler,
     )
 
     /**
@@ -55,7 +55,7 @@ interface LocalAuthManager {
     suspend fun enforceAndSet(
         localAuthRequired: Boolean,
         activity: FragmentActivity,
-        callbackHandler: LocalAuthManagerCallbackHandler
+        callbackHandler: LocalAuthManagerCallbackHandler,
     )
 
     /**

@@ -22,7 +22,7 @@ class AppAuthSession : LoginSession {
 
     constructor(
         context: Context,
-        demonstratingProofOfPossessionManager: DemonstratingProofOfPossessionManager
+        demonstratingProofOfPossessionManager: DemonstratingProofOfPossessionManager,
     ) {
         authService = AuthorizationService(context)
         this.demonstratingProofOfPossessionManager = demonstratingProofOfPossessionManager
@@ -35,7 +35,7 @@ class AppAuthSession : LoginSession {
     @OptIn(ExperimentalEphemeralBrowsing::class)
     override fun present(
         launcher: ActivityResultLauncher<Intent>,
-        configuration: LoginSessionConfiguration
+        configuration: LoginSessionConfiguration,
     ) {
         val customEphemeralTabIntent = CustomTabsIntent.Builder()
             .setEphemeralBrowsingEnabled(true)
@@ -43,7 +43,7 @@ class AppAuthSession : LoginSession {
             .build()
         val intent = authService.getAuthorizationRequestIntent(
             configuration.createRequest(),
-            customEphemeralTabIntent
+            customEphemeralTabIntent,
         )
         launcher.launch(intent)
     }
@@ -54,7 +54,7 @@ class AppAuthSession : LoginSession {
         appIntegrity: AppIntegrityParameters,
         httpServiceDomain: String,
         onSuccess: (tokens: TokenResponse) -> Unit,
-        onFailure: (error: Throwable) -> Unit
+        onFailure: (error: Throwable) -> Unit,
     ) {
         try {
             val authResponse = AuthorizationResponse.fromIntent(intent)
@@ -73,7 +73,7 @@ class AppAuthSession : LoginSession {
                             clientAuthenticationProvider.setCustomClientAuthentication(
                                 appIntegrity.attestation,
                                 appIntegrity.pop,
-                                signedDPoP.popJwt
+                                signedDPoP.popJwt,
                             )
 
                         // Create the standard request
@@ -83,12 +83,12 @@ class AppAuthSession : LoginSession {
                             request = request,
                             clientAuthentication = clientAuthenticationWithExtraHeaders,
                             onSuccess = { tokens -> onSuccess(tokens) },
-                            onFailure = { error -> onFailure(error) }
+                            onFailure = { error -> onFailure(error) },
                         )
                     }
 
                     is SignedDPoP.Failure -> onFailure(
-                        signedDPoP.error ?: DPoPManagerError(signedDPoP.reason)
+                        signedDPoP.error ?: DPoPManagerError(signedDPoP.reason),
                     )
                 }
             } ?: onFailure(DPoPManagerError())
@@ -102,11 +102,11 @@ class AppAuthSession : LoginSession {
         request: TokenRequest,
         clientAuthentication: ClientAuthentication,
         onSuccess: (tokens: TokenResponse) -> Unit,
-        onFailure: (error: Throwable) -> Unit
+        onFailure: (error: Throwable) -> Unit,
     ) {
         authService.performTokenRequest(
             request,
-            clientAuthentication
+            clientAuthentication,
         ) { response, exception ->
             try {
                 val tokenResponse = response?.toTokenResponse()

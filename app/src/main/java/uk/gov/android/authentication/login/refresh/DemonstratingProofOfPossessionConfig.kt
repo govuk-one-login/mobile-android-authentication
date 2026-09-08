@@ -10,5 +10,5 @@ import uk.gov.logging.api.Logger
 data class DemonstratingProofOfPossessionConfig(
     val logger: Logger,
     val popGenerator: ProofOfPossessionGenerator,
-    val keyStoreManager: KeyStoreManager
+    val keyStoreManager: KeyStoreManager,
 )

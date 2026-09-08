@@ -71,17 +71,17 @@ object TestValues {
         get() {
             try {
                 return AuthorizationServiceDiscovery(
-                    JSONObject(TEST_JSON)
+                    JSONObject(TEST_JSON),
                 )
             } catch (ex: JSONException) {
                 throw RuntimeException(
                     "Unable to create test authorization service discover document",
-                    ex
+                    ex,
                 )
             } catch (ex: AuthorizationServiceDiscovery.MissingArgumentException) {
                 throw RuntimeException(
                     "Unable to create test authorization service discover document",
-                    ex
+                    ex,
                 )
             }
         }

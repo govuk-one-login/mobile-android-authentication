@@ -36,7 +36,7 @@ class AndroidKeyPairManagerTest {
             userAuthRequired = true,
             keyStore = keyStore,
             keyPairGenerator = keyPairGenerator,
-            mainDispatcher = testDispatcher
+            mainDispatcher = testDispatcher,
         )
 
     @Test
@@ -65,7 +65,7 @@ class AndroidKeyPairManagerTest {
 
         assertTrue(logger.contains("alias: $alias - create new POP key"))
         assertTrue(
-            logger.contains("alias: $alias - KeyPair generated using software-backed KeyStore")
+            logger.contains("alias: $alias - KeyPair generated using software-backed KeyStore"),
         )
         assertTrue(logger.contains("alias: $alias - get public key"))
     }
@@ -174,7 +174,7 @@ class AndroidKeyPairManagerTest {
             keyPairManager.authenticateAndSign(
                 SignRequest(alias, data),
                 promptConfig = promptConfig,
-                authHandler = authHandler
+                authHandler = authHandler,
             )
 
         assertTrue(result.isNotEmpty())
@@ -209,7 +209,7 @@ class AndroidKeyPairManagerTest {
                 keyPairManager.authenticateAndSign(
                     SignRequest(alias, data),
                     promptConfig = promptConfig,
-                    authHandler = authHandler
+                    authHandler = authHandler,
                 )
             }
 
@@ -226,7 +226,7 @@ class AndroidKeyPairManagerTest {
                     userAuthRequired = false,
                     keyStore = keyStore,
                     keyPairGenerator = keyPairGenerator,
-                    mainDispatcher = testDispatcher
+                    mainDispatcher = testDispatcher,
                 )
             val authHandler: BiometricAuthHandler = mock()
             val promptConfig = PromptConfig("Title", "Close")
@@ -236,7 +236,7 @@ class AndroidKeyPairManagerTest {
                     keyPairManagerNoAuth.authenticateAndSign(
                         SignRequest("test-alias", "test-data".toByteArray()),
                         promptConfig = promptConfig,
-                        authHandler = authHandler
+                        authHandler = authHandler,
                     )
                 }
 

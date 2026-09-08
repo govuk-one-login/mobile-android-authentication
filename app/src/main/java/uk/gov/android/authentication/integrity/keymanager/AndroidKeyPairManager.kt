@@ -35,23 +35,23 @@ class AndroidKeyPairManager private constructor(
     private val userAuthRequired: Boolean,
     private val keyStore: KeyStore,
     private val keyPairGenerator: KeyPairGenerator,
-    private val mainDispatcher: CoroutineDispatcher
+    private val mainDispatcher: CoroutineDispatcher,
 ) : KeyPairManager {
     constructor(
         logger: Logger,
-        userAuthRequired: Boolean
+        userAuthRequired: Boolean,
     ) : this(
         logger = logger,
         userAuthRequired = userAuthRequired,
         keyStore = KeyStore.getInstance(KEYSTORE).apply { load(null) },
         keyPairGenerator = KeyPairGenerator.getInstance(KEY_ALGORITHM_EC, KEYSTORE),
-        mainDispatcher = Dispatchers.Main
+        mainDispatcher = Dispatchers.Main,
     )
 
     override suspend fun authenticateAndSign(
         vararg requests: SignRequest,
         promptConfig: BiometricAuthHandler.PromptConfig,
-        authHandler: BiometricAuthHandler
+        authHandler: BiometricAuthHandler,
     ): List<SignedData> = withContext(mainDispatcher) {
         // Ensure keys are configured with user authentication for secure signing
         require(userAuthRequired) { "Authentication required for signing operations" }
@@ -71,20 +71,20 @@ class AndroidKeyPairManager private constructor(
                                                     keyAlias = request.keyAlias,
                                                     signature = sign(
                                                         request.keyAlias,
-                                                        request.data
-                                                    )
+                                                        request.data,
+                                                    ),
                                                 )
                                             }
-                                        }
+                                        },
                                     )
                                 },
                                 onError = { code, msg ->
                                     continuation.resumeWithException(
-                                        BiometricAuthException(code, msg)
+                                        BiometricAuthException(code, msg),
                                     )
-                                }
-                            )
-                    )
+                                },
+                            ),
+                    ),
                 )
             }
         }
@@ -150,7 +150,7 @@ class AndroidKeyPairManager private constructor(
 
     private fun getKeyGenParameterSpec(
         alias: String,
-        isStrongBoxBacked: Boolean
+        isStrongBoxBacked: Boolean,
     ): KeyGenParameterSpec {
         val spec = KeyGenParameterSpec.Builder(alias, PURPOSE_SIGN or PURPOSE_VERIFY)
         with(spec) {
@@ -190,7 +190,7 @@ class AndroidKeyPairManager private constructor(
     private fun createKeyPair(
         keyPairGenerator: KeyPairGenerator,
         alias: String,
-        isStrongBoxBacked: Boolean
+        isStrongBoxBacked: Boolean,
     ): KeyPair? = runCatching {
         keyPairGenerator.initialize(getKeyGenParameterSpec(alias, isStrongBoxBacked))
         keyPairGenerator.generateKeyPair()
@@ -236,13 +236,13 @@ class AndroidKeyPairManager private constructor(
             userAuthRequired: Boolean,
             keyStore: KeyStore,
             keyPairGenerator: KeyPairGenerator,
-            mainDispatcher: CoroutineDispatcher
+            mainDispatcher: CoroutineDispatcher,
         ): AndroidKeyPairManager = AndroidKeyPairManager(
             logger,
             userAuthRequired,
             keyStore,
             keyPairGenerator,
-            mainDispatcher
+            mainDispatcher,
         )
     }
 }

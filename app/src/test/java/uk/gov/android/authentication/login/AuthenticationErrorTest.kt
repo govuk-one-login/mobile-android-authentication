@@ -42,7 +42,7 @@ class AuthenticationErrorTest {
             AuthorizationRequestErrors.ACCESS_DENIED.error,
             nonNullMessage,
             AuthorizationRequestErrors.ACCESS_DENIED.errorUri,
-            AuthorizationRequestErrors.ACCESS_DENIED.cause
+            AuthorizationRequestErrors.ACCESS_DENIED.cause,
         )
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
@@ -62,7 +62,7 @@ class AuthenticationErrorTest {
             AuthorizationRequestErrors.INVALID_SCOPE.error,
             nonNullMessage,
             AuthorizationRequestErrors.INVALID_SCOPE.errorUri,
-            AuthorizationRequestErrors.INVALID_SCOPE.cause
+            AuthorizationRequestErrors.INVALID_SCOPE.cause,
         )
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
@@ -82,7 +82,7 @@ class AuthenticationErrorTest {
             AuthorizationRequestErrors.UNSUPPORTED_RESPONSE_TYPE.error,
             nonNullMessage,
             AuthorizationRequestErrors.UNSUPPORTED_RESPONSE_TYPE.errorUri,
-            AuthorizationRequestErrors.UNSUPPORTED_RESPONSE_TYPE.cause
+            AuthorizationRequestErrors.UNSUPPORTED_RESPONSE_TYPE.cause,
         )
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
@@ -102,7 +102,7 @@ class AuthenticationErrorTest {
             AuthorizationRequestErrors.UNAUTHORIZED_CLIENT.error,
             nonNullMessage,
             AuthorizationRequestErrors.UNAUTHORIZED_CLIENT.errorUri,
-            AuthorizationRequestErrors.UNAUTHORIZED_CLIENT.cause
+            AuthorizationRequestErrors.UNAUTHORIZED_CLIENT.cause,
         )
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
@@ -122,7 +122,7 @@ class AuthenticationErrorTest {
             AuthorizationRequestErrors.INVALID_REQUEST.error,
             nonNullMessage,
             AuthorizationRequestErrors.INVALID_REQUEST.errorUri,
-            AuthorizationRequestErrors.INVALID_REQUEST.cause
+            AuthorizationRequestErrors.INVALID_REQUEST.cause,
         )
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
@@ -141,7 +141,7 @@ class AuthenticationErrorTest {
             AuthorizationRequestErrors.ACCESS_DENIED.error,
             AuthorizationRequestErrors.ACCESS_DENIED.errorDescription,
             AuthorizationRequestErrors.ACCESS_DENIED.errorUri,
-            AuthorizationRequestErrors.ACCESS_DENIED.cause
+            AuthorizationRequestErrors.ACCESS_DENIED.cause,
         )
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
@@ -160,7 +160,7 @@ class AuthenticationErrorTest {
             AuthorizationRequestErrors.SERVER_ERROR.error,
             nonNullMessage,
             AuthorizationRequestErrors.SERVER_ERROR.errorUri,
-            AuthorizationRequestErrors.SERVER_ERROR.cause
+            AuthorizationRequestErrors.SERVER_ERROR.cause,
         )
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
@@ -179,7 +179,7 @@ class AuthenticationErrorTest {
             TokenRequestErrors.INVALID_REQUEST.error,
             TokenRequestErrors.INVALID_REQUEST.message,
             TokenRequestErrors.INVALID_REQUEST.errorUri,
-            TokenRequestErrors.INVALID_REQUEST.cause
+            TokenRequestErrors.INVALID_REQUEST.cause,
         )
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
@@ -198,7 +198,7 @@ class AuthenticationErrorTest {
             TokenRequestErrors.INVALID_REQUEST.error,
             message,
             TokenRequestErrors.INVALID_REQUEST.errorUri,
-            TokenRequestErrors.INVALID_REQUEST.cause
+            TokenRequestErrors.INVALID_REQUEST.cause,
         )
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
@@ -217,7 +217,7 @@ class AuthenticationErrorTest {
             TokenRequestErrors.UNSUPPORTED_GRANT_TYPE.error,
             TokenRequestErrors.UNSUPPORTED_GRANT_TYPE.message,
             TokenRequestErrors.UNSUPPORTED_GRANT_TYPE.errorUri,
-            TokenRequestErrors.UNSUPPORTED_GRANT_TYPE.cause
+            TokenRequestErrors.UNSUPPORTED_GRANT_TYPE.cause,
         )
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
@@ -236,7 +236,7 @@ class AuthenticationErrorTest {
             TokenRequestErrors.UNSUPPORTED_GRANT_TYPE.error,
             message,
             TokenRequestErrors.UNSUPPORTED_GRANT_TYPE.errorUri,
-            TokenRequestErrors.UNSUPPORTED_GRANT_TYPE.cause
+            TokenRequestErrors.UNSUPPORTED_GRANT_TYPE.cause,
         )
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
@@ -255,7 +255,7 @@ class AuthenticationErrorTest {
             TokenRequestErrors.INVALID_GRANT.error,
             TokenRequestErrors.INVALID_GRANT.message,
             TokenRequestErrors.INVALID_GRANT.errorUri,
-            TokenRequestErrors.INVALID_GRANT.cause
+            TokenRequestErrors.INVALID_GRANT.cause,
         )
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
@@ -274,7 +274,7 @@ class AuthenticationErrorTest {
             TokenRequestErrors.INVALID_GRANT.error,
             message,
             TokenRequestErrors.INVALID_GRANT.errorUri,
-            TokenRequestErrors.INVALID_GRANT.cause
+            TokenRequestErrors.INVALID_GRANT.cause,
         )
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
@@ -293,7 +293,7 @@ class AuthenticationErrorTest {
             TokenRequestErrors.INVALID_CLIENT.error,
             TokenRequestErrors.INVALID_CLIENT.message,
             TokenRequestErrors.INVALID_CLIENT.errorUri,
-            TokenRequestErrors.INVALID_CLIENT.cause
+            TokenRequestErrors.INVALID_CLIENT.cause,
         )
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
@@ -312,7 +312,7 @@ class AuthenticationErrorTest {
             TokenRequestErrors.INVALID_CLIENT.error,
             message,
             TokenRequestErrors.INVALID_CLIENT.errorUri,
-            TokenRequestErrors.INVALID_CLIENT.cause
+            TokenRequestErrors.INVALID_CLIENT.cause,
         )
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
@@ -331,7 +331,7 @@ class AuthenticationErrorTest {
             TokenRequestErrors.UNAUTHORIZED_CLIENT.error,
             TokenRequestErrors.UNAUTHORIZED_CLIENT.message,
             TokenRequestErrors.UNAUTHORIZED_CLIENT.errorUri,
-            TokenRequestErrors.UNAUTHORIZED_CLIENT.cause
+            TokenRequestErrors.UNAUTHORIZED_CLIENT.cause,
         )
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
@@ -350,7 +350,7 @@ class AuthenticationErrorTest {
             TokenRequestErrors.UNAUTHORIZED_CLIENT.error,
             message,
             TokenRequestErrors.UNAUTHORIZED_CLIENT.errorUri,
-            TokenRequestErrors.UNAUTHORIZED_CLIENT.cause
+            TokenRequestErrors.UNAUTHORIZED_CLIENT.cause,
         )
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)
@@ -369,7 +369,7 @@ class AuthenticationErrorTest {
             AuthorizationRequestErrors.SERVER_ERROR.error,
             AuthorizationRequestErrors.SERVER_ERROR.errorDescription,
             AuthorizationRequestErrors.SERVER_ERROR.errorUri,
-            AuthorizationRequestErrors.SERVER_ERROR.cause
+            AuthorizationRequestErrors.SERVER_ERROR.cause,
         )
         // When calling the from mapping method
         val actual = AuthenticationError.Companion.from(exception)

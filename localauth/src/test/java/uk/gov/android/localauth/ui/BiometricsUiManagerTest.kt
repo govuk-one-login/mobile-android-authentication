@@ -50,35 +50,35 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
                 walletEnabled = true,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
-                onBiometricsOptOut = { onBioOptOut = !onBioOptOut }
+                onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
             )
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
+                context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBody1)
+                context.getString(R.string.app_wallet_enableBiometricsBody1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBullet1)
+                context.getString(R.string.app_wallet_enableBiometricsBullet1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBullet2)
+                context.getString(R.string.app_wallet_enableBiometricsBullet2),
             ).performScrollTo().assertExists()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsButton)
+                context.getString(R.string.app_enableBiometricsButton),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_enablePasscodeOrPatternButton)
+                context.getString(R.string.app_enablePasscodeOrPatternButton),
             )
 
             onNodeWithTag(
-                context.getString(R.string.app_enableBiometricsImageTestTag)
+                context.getString(R.string.app_enableBiometricsImageTestTag),
             ).assertIsDisplayed()
         }
 
@@ -93,34 +93,34 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
                 walletEnabled = false,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
-                onBiometricsOptOut = { onBioOptOut = !onBioOptOut }
+                onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
             )
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
+                context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsBody1)
+                context.getString(R.string.app_enableBiometricsBody1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsBody2)
+                context.getString(R.string.app_enableBiometricsBody2),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsBody3)
+                context.getString(R.string.app_enableBiometricsBody3),
             ).performScrollTo().assertExists()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsButton)
+                context.getString(R.string.app_enableBiometricsButton),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_enablePasscodeOrPatternButton)
+                context.getString(R.string.app_enablePasscodeOrPatternButton),
             )
 
             onNodeWithTag(
-                context.getString(R.string.app_enableBiometricsImageTestTag)
+                context.getString(R.string.app_enableBiometricsImageTestTag),
             ).assertIsDisplayed()
         }
 
@@ -135,15 +135,15 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
                 walletEnabled = false,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
-                onBiometricsOptOut = { onBioOptOut = !onBioOptOut }
+                onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
             )
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsButton)
+                context.getString(R.string.app_enableBiometricsButton),
             ).performClick()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
+                context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsNotDisplayed()
 
             assertTrue(onBioOptIn)
@@ -158,15 +158,15 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
                 walletEnabled = false,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
-                onBiometricsOptOut = { onBioOptOut = !onBioOptOut }
+                onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
             )
 
             onNodeWithText(
-                context.getString(R.string.app_enablePasscodeOrPatternButton)
+                context.getString(R.string.app_enablePasscodeOrPatternButton),
             ).performClick()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
+                context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsNotDisplayed()
 
             assertTrue(onBioOptOut)
@@ -181,17 +181,17 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
                 walletEnabled = false,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
-                onBiometricsOptOut = { onBioOptOut = !onBioOptOut }
+                onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
             )
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
+                context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsDisplayed()
 
             Espresso.pressBack()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
+                context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsNotDisplayed()
 
             assertTrue(onBack)
@@ -206,11 +206,11 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
                 walletEnabled = false,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
-                onBiometricsOptOut = { onBioOptOut = !onBioOptOut }
+                onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
             )
 
             onNodeWithContentDescription(
-                context.getString(uk.gov.android.ui.componentsv2.R.string.close_icon_button)
+                context.getString(uk.gov.android.ui.componentsv2.R.string.close_icon_button),
             ).assertIsDisplayed().performClick()
         }
 
@@ -225,35 +225,35 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
                 activity,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
-                onBiometricsOptOut = { onBioOptOut = !onBioOptOut }
+                onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
             )
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
+                context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBody1)
+                context.getString(R.string.app_wallet_enableBiometricsBody1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBullet1)
+                context.getString(R.string.app_wallet_enableBiometricsBullet1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBullet2)
+                context.getString(R.string.app_wallet_enableBiometricsBullet2),
             ).performScrollTo().assertExists()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsButton)
+                context.getString(R.string.app_enableBiometricsButton),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_enablePasscodeOrPatternButton)
+                context.getString(R.string.app_enablePasscodeOrPatternButton),
             )
 
             onNodeWithTag(
-                context.getString(R.string.app_enableBiometricsImageTestTag)
+                context.getString(R.string.app_enableBiometricsImageTestTag),
             ).assertIsDisplayed()
         }
 
@@ -267,15 +267,15 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
                 activity,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
-                onBiometricsOptOut = { onBioOptOut = !onBioOptOut }
+                onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
             )
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsButton)
+                context.getString(R.string.app_enableBiometricsButton),
             ).performClick()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
+                context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsNotDisplayed()
 
             assertTrue(onBioOptIn)
@@ -289,15 +289,15 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
                 activity,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
-                onBiometricsOptOut = { onBioOptOut = !onBioOptOut }
+                onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
             )
 
             onNodeWithText(
-                context.getString(R.string.app_enablePasscodeOrPatternButton)
+                context.getString(R.string.app_enablePasscodeOrPatternButton),
             ).performClick()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
+                context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsNotDisplayed()
 
             assertTrue(onBioOptOut)
@@ -311,17 +311,17 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
                 activity,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
-                onBiometricsOptOut = { onBioOptOut = !onBioOptOut }
+                onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
             )
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
+                context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsDisplayed()
 
             Espresso.pressBack()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
+                context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsNotDisplayed()
 
             assertTrue(onBack)
@@ -335,11 +335,11 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
                 activity,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
-                onBiometricsOptOut = { onBioOptOut = !onBioOptOut }
+                onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
             )
 
             onNodeWithContentDescription(
-                context.getString(uk.gov.android.ui.componentsv2.R.string.close_icon_button)
+                context.getString(uk.gov.android.ui.componentsv2.R.string.close_icon_button),
             ).assertIsDisplayed().performClick()
         }
 
@@ -353,39 +353,39 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
             uiManager.displayGoToSettingsPage(
                 activity,
                 onBack = { onBack = !onBack },
-                onGoToSettings = { onGoToSettings = !onGoToSettings }
+                onGoToSettings = { onGoToSettings = !onGoToSettings },
             )
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorTitle)
+                context.getString(R.string.app_localAuthManagerErrorTitle),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorBody1)
+                context.getString(R.string.app_localAuthManagerErrorBody1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorBody2)
+                context.getString(R.string.app_localAuthManagerErrorBody2),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorBody3)
+                context.getString(R.string.app_localAuthManagerErrorBody3),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorNumberedList1)
+                context.getString(R.string.app_localAuthManagerErrorNumberedList1),
             ).performScrollTo().assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorNumberedList2)
+                context.getString(R.string.app_localAuthManagerErrorNumberedList2),
             ).performScrollTo().assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorNumberedList3)
+                context.getString(R.string.app_localAuthManagerErrorNumberedList3),
             ).performScrollTo().assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton)
+                context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton),
             ).assertIsDisplayed()
         }
     }
@@ -396,15 +396,15 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
             uiManager.displayGoToSettingsPage(
                 activity,
                 onBack = { onBack = !onBack },
-                onGoToSettings = { onGoToSettings = !onGoToSettings }
+                onGoToSettings = { onGoToSettings = !onGoToSettings },
             )
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton)
+                context.getString(R.string.app_localAuthManagerErrorGoToSettingsButton),
             ).performClick()
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorTitle)
+                context.getString(R.string.app_localAuthManagerErrorTitle),
             ).assertIsNotDisplayed()
 
             assertTrue(onGoToSettings)
@@ -417,17 +417,17 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
             uiManager.displayGoToSettingsPage(
                 activity,
                 onBack = { onBack = !onBack },
-                onGoToSettings = { onGoToSettings = !onGoToSettings }
+                onGoToSettings = { onGoToSettings = !onGoToSettings },
             )
 
             onNodeWithText(
-                context.getString(R.string.app_localAuthManagerErrorTitle)
+                context.getString(R.string.app_localAuthManagerErrorTitle),
             ).assertIsDisplayed()
 
             Espresso.pressBack()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
+                context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsNotDisplayed()
 
             assertTrue(onBack)
@@ -444,27 +444,27 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
                 },
                 onBiometricsOptIn = {
                     onBioOptIn = !onBioOptIn
-                }
+                },
             )
 
             onNodeWithText(
-                context.getString(R.string.app_optOutBiometricsTitle)
+                context.getString(R.string.app_optOutBiometricsTitle),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_optOutBiometricsBody1)
+                context.getString(R.string.app_optOutBiometricsBody1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_optOutBiometricsBody2)
+                context.getString(R.string.app_optOutBiometricsBody2),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_optOutBiometricsBody3)
+                context.getString(R.string.app_optOutBiometricsBody3),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_optOutBiometricsButton)
+                context.getString(R.string.app_optOutBiometricsButton),
             ).assertIsDisplayed()
         }
     }
@@ -480,11 +480,11 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
                 },
                 onBiometricsOptIn = {
                     onBioOptIn = !onBioOptIn
-                }
+                },
             )
 
             onNodeWithText(
-                context.getString(R.string.app_optOutBiometricsButton)
+                context.getString(R.string.app_optOutBiometricsButton),
             )
                 .assertIsDisplayed()
                 .performClick()
@@ -504,7 +504,7 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
                 },
                 onBiometricsOptIn = {
                     onBioOptIn = !onBioOptIn
-                }
+                },
             )
 
             Espresso.pressBack()
@@ -524,11 +524,11 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
                 },
                 onBiometricsOptIn = {
                     onBioOptIn = !onBioOptIn
-                }
+                },
             )
 
             onNodeWithContentDescription(
-                context.getString(uk.gov.android.ui.componentsv2.R.string.close_icon_button)
+                context.getString(uk.gov.android.ui.componentsv2.R.string.close_icon_button),
             ).assertIsDisplayed().performClick()
 
             assertTrue(onBack)

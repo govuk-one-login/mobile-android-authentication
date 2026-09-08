@@ -72,7 +72,7 @@ object ProofOfPossessionGenerator {
         iss: String,
         aud: String,
         exp: Long,
-        jti: String = Uuid.random().toString()
+        jti: String = Uuid.random().toString(),
     ): String {
         val headerJson = buildJsonObject {
             put("alg", ALG)
@@ -133,7 +133,7 @@ object ProofOfPossessionGenerator {
         jwk: JWK.JsonWebKey,
         htu: String,
         jti: String = Uuid.random().toString(),
-        iat: Long = getIssueTime()
+        iat: Long = getIssueTime(),
     ): String {
         val headerJson = buildJsonObject {
             put("alg", ALG)
@@ -219,7 +219,7 @@ object ProofOfPossessionGenerator {
      */
     private fun encodeJwtParts(
         header: kotlinx.serialization.json.JsonObject,
-        payload: kotlinx.serialization.json.JsonObject
+        payload: kotlinx.serialization.json.JsonObject,
     ): String {
         val headerBase64 = getUrlSafeNoPaddingBase64(header.toString().toByteArray())
         val payloadBase64 = getUrlSafeNoPaddingBase64(payload.toString().toByteArray())

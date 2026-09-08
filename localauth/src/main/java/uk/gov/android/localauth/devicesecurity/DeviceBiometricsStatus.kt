@@ -7,7 +7,7 @@ enum class DeviceBiometricsStatus {
     NO_HARDWARE,
     HARDWARE_UNAVAILABLE,
     NOT_ENROLLED,
-    UNKNOWN
+    UNKNOWN,
     ;
 
     companion object {

@@ -14,5 +14,5 @@ internal fun AppAuthTokenResponse.toTokenResponse(): TokenResponse = TokenRespon
         NULL_TOKEN_EXPIRY_MESSAGE
     },
     idToken = requireNotNull(idToken) { NULL_ID_TOKEN_MESSAGE },
-    refreshToken = refreshToken
+    refreshToken = refreshToken,
 )

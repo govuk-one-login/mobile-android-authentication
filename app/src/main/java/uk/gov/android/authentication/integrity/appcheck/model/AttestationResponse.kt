@@ -11,7 +11,7 @@ sealed class AttestationResponse {
         @JsonNames("client_attestation")
         val attestationJwt: String,
         @JsonNames("expires_in")
-        val expiresIn: Int
+        val expiresIn: Int,
     ) : AttestationResponse()
     data class Failure(val reason: String, val error: Throwable) : AttestationResponse()
 }

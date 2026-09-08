@@ -15,7 +15,7 @@ class TokenResponseTest {
             "sampleAccessToken",
             3600,
             "sampleIdToken",
-            "sampleRefreshToken"
+            "sampleRefreshToken",
         )
         val expectedJson = "{\"tokenType\":\"bearer\",\"accessToken\":\"sampleAccessToken\"," +
             "\"accessTokenExpirationTime\":3600,\"idToken\":\"sampleIdToken\"," +
@@ -29,7 +29,7 @@ class TokenResponseTest {
             "bearer",
             "sampleAccessToken",
             3600,
-            "sampleIdToken"
+            "sampleIdToken",
         )
         val expectedJson = "{\"tokenType\":\"bearer\",\"accessToken\":\"sampleAccessToken\"," +
             "\"accessTokenExpirationTime\":3600,\"idToken\":\"sampleIdToken\"}"
@@ -46,7 +46,7 @@ class TokenResponseTest {
             "sampleAccessToken",
             3600,
             "sampleIdToken",
-            "sampleRefreshToken"
+            "sampleRefreshToken",
         )
         assertEquals(expectedTokenResponse, jsonDeserialize(json))
     }
@@ -59,7 +59,7 @@ class TokenResponseTest {
             "bearer",
             "sampleAccessToken",
             3600,
-            "sampleIdToken"
+            "sampleIdToken",
         )
         assertEquals(expectedTokenResponse, jsonDeserialize(json))
     }

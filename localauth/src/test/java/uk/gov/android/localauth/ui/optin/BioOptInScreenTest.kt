@@ -40,31 +40,31 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
         setup()
         composeTestRule.apply {
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
+                context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBody1)
+                context.getString(R.string.app_wallet_enableBiometricsBody1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBullet1)
+                context.getString(R.string.app_wallet_enableBiometricsBullet1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBullet2)
+                context.getString(R.string.app_wallet_enableBiometricsBullet2),
             ).performScrollTo().assertExists()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsButton)
+                context.getString(R.string.app_enableBiometricsButton),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_enablePasscodeOrPatternButton)
+                context.getString(R.string.app_enablePasscodeOrPatternButton),
             )
 
             onNodeWithTag(
-                context.getString(R.string.app_enableBiometricsImageTestTag)
+                context.getString(R.string.app_enableBiometricsImageTestTag),
             ).assertIsDisplayed()
         }
 
@@ -77,7 +77,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
         val text = R.string.app_enableBiometricsButton
         composeTestRule.apply {
             onNodeWithText(
-                context.getString(text)
+                context.getString(text),
             ).performClick()
 
             assertTrue(onBioOptIn)
@@ -104,7 +104,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
         setup()
         composeTestRule.apply {
             onNodeWithContentDescription(
-                context.getString(componentsR.string.close_icon_button)
+                context.getString(componentsR.string.close_icon_button),
             ).assertIsDisplayed().performClick()
         }
 
@@ -128,31 +128,31 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
         deprecatedSetupWallet()
         composeTestRule.apply {
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
+                context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBody1)
+                context.getString(R.string.app_wallet_enableBiometricsBody1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBullet1)
+                context.getString(R.string.app_wallet_enableBiometricsBullet1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBullet2)
+                context.getString(R.string.app_wallet_enableBiometricsBullet2),
             ).performScrollTo().assertExists()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsButton)
+                context.getString(R.string.app_enableBiometricsButton),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_enablePasscodeOrPatternButton)
+                context.getString(R.string.app_enablePasscodeOrPatternButton),
             )
 
             onNodeWithTag(
-                context.getString(R.string.app_enableBiometricsImageTestTag)
+                context.getString(R.string.app_enableBiometricsImageTestTag),
             ).assertIsDisplayed()
         }
 
@@ -164,31 +164,31 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
         deprecatedSetupNoWallet()
         composeTestRule.apply {
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
+                context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsBody1)
+                context.getString(R.string.app_enableBiometricsBody1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsBody2)
+                context.getString(R.string.app_enableBiometricsBody2),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsBody3)
+                context.getString(R.string.app_enableBiometricsBody3),
             ).performScrollTo().assertExists()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsButton)
+                context.getString(R.string.app_enableBiometricsButton),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_enablePasscodeOrPatternButton)
+                context.getString(R.string.app_enablePasscodeOrPatternButton),
             )
 
             onNodeWithTag(
-                context.getString(R.string.app_enableBiometricsImageTestTag)
+                context.getString(R.string.app_enableBiometricsImageTestTag),
             ).assertIsDisplayed()
         }
 
@@ -201,7 +201,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
         val text = R.string.app_enableBiometricsButton
         composeTestRule.apply {
             onNodeWithText(
-                context.getString(text)
+                context.getString(text),
             ).performClick()
 
             assertTrue(onBioOptIn)
@@ -228,7 +228,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
         deprecatedSetupWallet()
         composeTestRule.apply {
             onNodeWithContentDescription(
-                context.getString(componentsR.string.close_icon_button)
+                context.getString(componentsR.string.close_icon_button),
             ).assertIsDisplayed().performClick()
         }
 
@@ -254,31 +254,31 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
                 DeprecatedBioOptInPreviewWallet()
             }
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
+                context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBody1)
+                context.getString(R.string.app_wallet_enableBiometricsBody1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBullet1)
+                context.getString(R.string.app_wallet_enableBiometricsBullet1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBullet2)
+                context.getString(R.string.app_wallet_enableBiometricsBullet2),
             ).assertExists()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsButton)
+                context.getString(R.string.app_enableBiometricsButton),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_enablePasscodeOrPatternButton)
+                context.getString(R.string.app_enablePasscodeOrPatternButton),
             ).assertIsDisplayed()
 
             onNodeWithTag(
-                context.getString(R.string.app_enableBiometricsImageTestTag)
+                context.getString(R.string.app_enableBiometricsImageTestTag),
             ).assertIsDisplayed()
         }
     }
@@ -291,31 +291,31 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
             }
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
+                context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsBody1)
+                context.getString(R.string.app_enableBiometricsBody1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsBody2)
+                context.getString(R.string.app_enableBiometricsBody2),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsBody3)
+                context.getString(R.string.app_enableBiometricsBody3),
             ).performScrollTo().assertExists()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsButton)
+                context.getString(R.string.app_enableBiometricsButton),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_enablePasscodeOrPatternButton)
+                context.getString(R.string.app_enablePasscodeOrPatternButton),
             )
 
             onNodeWithTag(
-                context.getString(R.string.app_enableBiometricsImageTestTag)
+                context.getString(R.string.app_enableBiometricsImageTestTag),
             ).assertIsDisplayed()
         }
     }
@@ -327,31 +327,31 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
                 BioOptInPreview()
             }
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle)
+                context.getString(R.string.app_enableBiometricsTitle),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBody1)
+                context.getString(R.string.app_wallet_enableBiometricsBody1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBullet1)
+                context.getString(R.string.app_wallet_enableBiometricsBullet1),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_wallet_enableBiometricsBullet2)
+                context.getString(R.string.app_wallet_enableBiometricsBullet2),
             ).assertExists()
 
             onNodeWithText(
-                context.getString(R.string.app_enableBiometricsButton)
+                context.getString(R.string.app_enableBiometricsButton),
             ).assertIsDisplayed()
 
             onNodeWithText(
-                context.getString(R.string.app_enablePasscodeOrPatternButton)
+                context.getString(R.string.app_enablePasscodeOrPatternButton),
             ).assertIsDisplayed()
 
             onNodeWithTag(
-                context.getString(R.string.app_enableBiometricsImageTestTag)
+                context.getString(R.string.app_enableBiometricsImageTestTag),
             ).assertIsDisplayed()
         }
     }
@@ -363,7 +363,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
                 onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
-                onDismiss = { onDismiss++ }
+                onDismiss = { onDismiss++ },
             )
         }
     }
@@ -376,7 +376,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
                 onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
                 onDismiss = { onDismiss++ },
-                walletEnabled = true
+                walletEnabled = true,
             )
         }
     }
@@ -389,7 +389,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
                 onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
                 onDismiss = { onDismiss++ },
-                walletEnabled = false
+                walletEnabled = false,
             )
         }
     }
@@ -399,7 +399,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
             ViewEvent.Screen(
                 name = getEnglishString(R.string.app_enableBiometricsTitle),
                 id = getEnglishString(R.string.bio_opt_in_screen_wallet_page_id),
-                params = requiredParams
+                params = requiredParams,
             )
         }
 
@@ -407,34 +407,34 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
             ViewEvent.Screen(
                 name = getEnglishString(R.string.app_enableBiometricsTitle),
                 id = getEnglishString(R.string.bio_opt_in_screen_no_wallet_page_id),
-                params = requiredParams
+                params = requiredParams,
             )
         }
 
         internal fun makeButtonEvent(context: Context, text: Int) = with(context) {
             TrackEvent.Button(
                 text = getEnglishString(text),
-                params = requiredParams
+                params = requiredParams,
             )
         }
 
         internal fun makeCloseBackEvent(context: Context) = with(context) {
             TrackEvent.Icon(
                 text = getEnglishString(uk.gov.android.ui.componentsv2.R.string.close_icon_button),
-                params = requiredParams
+                params = requiredParams,
             )
         }
 
         internal fun makeBackButtonEvent(context: Context) = with(context) {
             TrackEvent.Button(
                 text = getEnglishString(R.string.system_backButton),
-                params = requiredParams
+                params = requiredParams,
             )
         }
 
         private val requiredParams = RequiredParameters(
             taxonomyLevel2 = TaxonomyLevel2.LOCAL_AUTH_MANAGER,
-            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED
+            taxonomyLevel3 = TaxonomyLevel3.UNDEFINED,
         )
     }
 }

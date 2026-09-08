@@ -23,7 +23,7 @@ fun interface DemonstratingProofOfPossessionManager {
  * @param config - Provides all components required to log and create the JWT
  */
 class DemonstratingProofOfPossessionManagerImpl(
-    private val config: DemonstratingProofOfPossessionConfig
+    private val config: DemonstratingProofOfPossessionConfig,
 ) : DemonstratingProofOfPossessionManager {
     private val keyStoreManager: KeyStoreManager = config.keyStoreManager
     private val popGenerator = config.popGenerator
@@ -48,7 +48,7 @@ class DemonstratingProofOfPossessionManagerImpl(
             logger.error(
                 e.javaClass.simpleName,
                 e.message ?: SIGN_ERROR,
-                e
+                e,
             )
             SignedDPoP.Failure(e.message ?: SIGN_ERROR, e)
         }

@@ -34,7 +34,7 @@ fun BioOptOutScreen(
     analyticsLogger: AnalyticsLogger,
     onBack: () -> Unit,
     onBiometricsOptIn: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     val analyticsViewModel = BioOptOutAnalyticsViewModel(LocalContext.current, analyticsLogger)
     analyticsViewModel.trackBioOptOutScreen()
@@ -46,7 +46,7 @@ fun BioOptOutScreen(
                     onBack()
                     analyticsViewModel.trackCloseIconButton()
                     onDismiss()
-                }
+                },
             ) {
                 // Nothing here (no title)
             }
@@ -62,7 +62,7 @@ fun BioOptOutScreen(
                 analyticsViewModel.trackBiometricsButton()
                 onDismiss()
             })
-        }
+        },
     )
 }
 
@@ -71,7 +71,7 @@ private fun BioOptOutContent(onBiometricsOptIn: () -> Unit) {
     val body = persistentListOf(
         stringResource(R.string.app_optOutBiometricsBody1),
         stringResource(R.string.app_optOutBiometricsBody2),
-        stringResource(R.string.app_optOutBiometricsBody3)
+        stringResource(R.string.app_optOutBiometricsBody3),
     )
     ErrorScreen(
         icon = {
@@ -79,13 +79,13 @@ private fun BioOptOutContent(onBiometricsOptIn: () -> Unit) {
                 image = ImageVector.vectorResource(patternsR.drawable.ic_warning_error),
                 contentDescription = stringResource(patternsR.string.error_icon_description),
                 color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         },
         title = { horizontalPadding ->
             GdsHeading(
                 text = stringResource(R.string.app_optOutBiometricsTitle),
-                modifier = Modifier.fillMaxWidth().padding(horizontal = horizontalPadding)
+                modifier = Modifier.fillMaxWidth().padding(horizontal = horizontalPadding),
 
             )
         },
@@ -94,7 +94,7 @@ private fun BioOptOutContent(onBiometricsOptIn: () -> Unit) {
                 Text(
                     text = body[index],
                     modifier = Modifier.fillMaxWidth().padding(horizontal = horizontalPadding),
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
             }
         },
@@ -103,9 +103,9 @@ private fun BioOptOutContent(onBiometricsOptIn: () -> Unit) {
                 text = stringResource(R.string.app_optOutBiometricsButton),
                 buttonType = ButtonTypeV2.Primary(),
                 onClick = onBiometricsOptIn,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
-        }
+        },
     )
 }
 
@@ -118,13 +118,13 @@ internal fun BioOptOutPreview() {
         FullScreenDialogue(
             topAppBar = {
                 GdsTopAppBar(
-                    navigationButton = GdsIconButtonDefaults.defaultCloseContent()
+                    navigationButton = GdsIconButtonDefaults.defaultCloseContent(),
                 )
             },
             onBack = {},
             content = {
                 BioOptOutContent(onBiometricsOptIn = {})
-            }
+            },
         )
     }
 }

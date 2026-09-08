@@ -15,7 +15,7 @@ class LoginSessionConfigurationUtilTest {
     private val scopes = listOf(
         LoginSessionConfiguration.Scope.OPENID,
         LoginSessionConfiguration.Scope.PHONE,
-        LoginSessionConfiguration.Scope.EMAIL
+        LoginSessionConfiguration.Scope.EMAIL,
     )
     private val locale = LoginSessionConfiguration.Locale.EN
     private val clientId = "clientId.Test"
@@ -39,7 +39,7 @@ class LoginSessionConfigurationUtilTest {
             scopes = scopes,
             tokenEndpoint = tokenEndpoint,
             vectorsOfTrust = vectorsOfTrust,
-            persistentSessionId = persistentSessionId
+            persistentSessionId = persistentSessionId,
         )
     }
 

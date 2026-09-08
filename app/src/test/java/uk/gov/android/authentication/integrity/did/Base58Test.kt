@@ -87,7 +87,7 @@ class Base58Test {
     @Test
     fun `encode with value that produces leading 1 in encoded output`() {
         val result = Base58.encode(
-            byteArrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)
+            byteArrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
         )
         assertTrue(result.startsWith("1"))
     }
@@ -122,7 +122,7 @@ class Base58Test {
             Arguments.of(byteArrayOf(0, 0, 1, 2, 3), "11Ldp"),
             Arguments.of("Hello World".toByteArray(), "JxF12TrwUP45BMd"),
             Arguments.of("test".toByteArray(), "3yZe7d"),
-            Arguments.of(BigInteger.valueOf(3471844090L).toByteArray(), "16Ho7Hs")
+            Arguments.of(BigInteger.valueOf(3471844090L).toByteArray(), "16Ho7Hs"),
         )
 
         @JvmStatic
@@ -135,7 +135,7 @@ class Base58Test {
             Arguments.of("5Q", byteArrayOf(-1)),
             Arguments.of("11Ldp", byteArrayOf(0, 0, 1, 2, 3)),
             Arguments.of("JxF12TrwUP45BMd", "Hello World".toByteArray()),
-            Arguments.of("3yZe7d", "test".toByteArray())
+            Arguments.of("3yZe7d", "test".toByteArray()),
         )
 
         @JvmStatic
@@ -150,7 +150,7 @@ class Base58Test {
             Arguments.of("Hello World".toByteArray()),
             Arguments.of("The quick brown fox jumps over the lazy dog".toByteArray()),
             Arguments.of(byteArrayOf(0xAA.toByte(), 0x55, 0xAA.toByte(), 0x55)),
-            Arguments.of(BigInteger.valueOf(3471844090L).toByteArray())
+            Arguments.of(BigInteger.valueOf(3471844090L).toByteArray()),
         )
     }
 }

@@ -36,7 +36,7 @@ fun interface DidKeyProofOfPossessionManager {
         alias: String,
         aud: String,
         nonce: String,
-        iss: String
+        iss: String,
     ): String
 }
 
@@ -55,7 +55,7 @@ fun interface DidKeyProofOfPossessionManager {
 class DidKeyProofOfPossessionManagerImpl(
     private val keyPairManager: KeyPairManager,
     private val popGenerator: ProofOfPossessionGenerator,
-    private val promptConfig: PromptConfig
+    private val promptConfig: PromptConfig,
 ) : DidKeyProofOfPossessionManager {
 
     override suspend fun generatePoP(
@@ -63,7 +63,7 @@ class DidKeyProofOfPossessionManagerImpl(
         alias: String,
         aud: String,
         nonce: String,
-        iss: String
+        iss: String,
     ): String {
         // Create Proof of Possession
         val kid = getDidKey(alias)
@@ -74,7 +74,7 @@ class DidKeyProofOfPossessionManagerImpl(
             keyPairManager.authenticateAndSign(
                 SignRequest(alias, unsignedPoPJwt.toByteArray()),
                 promptConfig = promptConfig,
-                authHandler = authHandler
+                authHandler = authHandler,
             )
         val signatureBytes = signedData.signature
         // Encode signature in Base64 configured with UrlSafe and no padding
