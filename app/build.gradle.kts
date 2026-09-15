@@ -18,6 +18,7 @@ dependencies {
     listOf(
         libs.androidx.uiautomator,
         libs.logging.test,
+        testFixtures(libs.logging.api),
     ).forEach(::androidTestImplementation)
 
     listOf(
@@ -40,6 +41,7 @@ dependencies {
         libs.kotlinx.coroutines.test,
         libs.logging.test,
         libs.mockito.inline,
+        testFixtures(libs.logging.api),
     ).forEach(::testImplementation)
 }
 

@@ -27,7 +27,7 @@ import uk.gov.android.authentication.integrity.keymanager.BiometricAuthHandler.C
 import uk.gov.android.authentication.integrity.keymanager.BiometricAuthHandler.Request
 import uk.gov.android.authentication.integrity.keymanager.KeyPairManager.Companion.convertSignatureToASN1
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64
-import uk.gov.logging.api.Logger
+import uk.gov.logging.api.v3.Logger
 
 @Suppress("TooManyFunctions")
 class AndroidKeyPairManager private constructor(

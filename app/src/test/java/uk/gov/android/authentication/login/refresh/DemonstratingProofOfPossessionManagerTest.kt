@@ -9,7 +9,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
-import uk.gov.logging.api.Logger
+import uk.gov.logging.api.v3.Logger
 
 class DemonstratingProofOfPossessionManagerTest {
     private val expectedDPoP = ClassLoader.getSystemResource("bodyDPoPBase64.txt")
