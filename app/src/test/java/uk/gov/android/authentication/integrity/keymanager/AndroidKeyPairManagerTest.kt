@@ -22,12 +22,12 @@ import org.mockito.kotlin.given
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import uk.gov.android.authentication.integrity.keymanager.BiometricAuthHandler.PromptConfig
-import uk.gov.logging.testdouble.SystemLogger
+import uk.gov.logging.api.v3.MemorisedLogger
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AndroidKeyPairManagerTest {
     private val testDispatcher = UnconfinedTestDispatcher()
-    private val logger = SystemLogger()
+    private val logger = MemorisedLogger()
     private val keyStore: KeyStore = mock()
     private val keyPairGenerator: KeyPairGenerator = mock()
     private val keyPairManager =

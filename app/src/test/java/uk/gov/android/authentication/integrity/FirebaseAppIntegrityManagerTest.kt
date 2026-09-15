@@ -25,7 +25,7 @@ import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
 import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 import uk.gov.android.authentication.integrity.pop.SignedPoP
-import uk.gov.logging.api.Logger
+import uk.gov.logging.api.v3.Logger
 
 class FirebaseAppIntegrityManagerTest {
     private val expectedResult = ClassLoader.getSystemResource("bodyPoPBase64.txt")

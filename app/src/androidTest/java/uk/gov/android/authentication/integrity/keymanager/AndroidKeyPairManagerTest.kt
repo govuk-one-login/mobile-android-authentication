@@ -13,14 +13,14 @@ import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Test
 import uk.gov.android.authentication.integrity.keymanager.AndroidKeyPairManager.Companion.KEYSTORE
-import uk.gov.logging.testdouble.SystemLogger
+import uk.gov.logging.api.v3.MemorisedLogger
 
 @OptIn(ExperimentalEncodingApi::class)
 class AndroidKeyPairManagerTest {
     private val uiDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
     private lateinit var keyStore: KeyStore
     private lateinit var keyPairManager: AndroidKeyPairManager
-    private val logger = SystemLogger()
+    private val logger = MemorisedLogger()
     private lateinit var keyguardManager: KeyguardManager
     private var isTestLockScreenEnabled: Boolean = false
 
