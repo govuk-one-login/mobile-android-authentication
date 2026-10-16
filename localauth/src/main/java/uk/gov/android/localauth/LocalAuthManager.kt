@@ -2,6 +2,7 @@ package uk.gov.android.localauth
 
 import androidx.fragment.app.FragmentActivity
 import uk.gov.android.localauth.preference.LocalAuthPreference
+import uk.gov.android.localauth.ui.BiometricsUiManager
 
 /**
  * [LocalAuthManager] provides functionality for checking if a device is secured (using any form of
@@ -15,31 +16,6 @@ import uk.gov.android.localauth.preference.LocalAuthPreference
  */
 interface LocalAuthManager {
     val localAuthPreference: LocalAuthPreference?
-
-    /**
-     * This method allows to checks if local authentication is available on the device and saves the
-     * local auth preference.
-     *
-     * @param walletEnabled if the consumer has access to Wallet, it is used to display the
-     *   correct [BioOptInScreen] copy
-     * @param localAuthRequired enforces local authentication on the device - when this is set
-     *   to true, it requires the device to be secure.
-     * @param activity is required to allow the [BiometricsUiManager] to display dialogs on top
-     *   of the consumer underlying activity
-     * @param callbackHandler allows the consumer to provide implementation for success or
-     *   failure results/ outcomes
-     */
-    @Deprecated(
-        message = "Please use screen that does not allow for walletEnabled - " +
-            "will be removed 7th of March",
-        level = DeprecationLevel.WARNING,
-    )
-    suspend fun enforceAndSet(
-        walletEnabled: Boolean,
-        localAuthRequired: Boolean,
-        activity: FragmentActivity,
-        callbackHandler: LocalAuthManagerCallbackHandler,
-    )
 
     /**
      * This method allows to checks if local authentication is available on the device and saves
