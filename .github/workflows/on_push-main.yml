@@ -25,6 +25,6 @@ jobs:
       - name: Run deployment workflow
         uses: ./mobile-android-pipelines
         with:
-          sonar_token: ${{ secrets.SONAR_TOKEN }}
+          sonar_token: ${{ secrets.SONAR_PROJECT_SCANNING_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           gradle_cache_disabled: ${{ 'true' }}
