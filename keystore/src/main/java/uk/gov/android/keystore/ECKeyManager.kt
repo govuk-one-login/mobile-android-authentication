@@ -21,7 +21,7 @@ class ECKeyManager : KeyStoreManager {
 
     private val parameterSpec: KeyGenParameterSpec = KeyGenParameterSpec.Builder(
         ALIAS,
-        KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY
+        KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY,
     ).run {
         setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA512)
         setAlgorithmParameterSpec(ECGenParameterSpec("secp256r1"))
@@ -57,9 +57,7 @@ class ECKeyManager : KeyStoreManager {
         return Pair(x, y)
     }
 
-    override fun getPublicKey(): ECPublicKey {
-        return appCheckPublicKey
-    }
+    override fun getPublicKey(): ECPublicKey = appCheckPublicKey
 
     override fun sign(input: ByteArray): ByteArray {
         val ecSpec = appCheckPublicKey.params
@@ -75,7 +73,7 @@ class ECKeyManager : KeyStoreManager {
     private fun createNewKeys() {
         KeyPairGenerator.getInstance(
             KeyProperties.KEY_ALGORITHM_EC,
-            KEYSTORE
+            KEYSTORE,
         ).apply {
             initialize(parameterSpec)
             generateKeyPair()

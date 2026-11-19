@@ -15,7 +15,7 @@ import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 @Deprecated(
     message = "Replaced by ECKeyManager in the keystore module - will be removed in Jan 2026",
     replaceWith = ReplaceWith("java/uk/gov/android/keystore/ECKeyManager.kt"),
-    level = DeprecationLevel.WARNING
+    level = DeprecationLevel.WARNING,
 )
 @ExperimentalEncodingApi
 @Suppress("MemberVisibilityCanBePrivate")
