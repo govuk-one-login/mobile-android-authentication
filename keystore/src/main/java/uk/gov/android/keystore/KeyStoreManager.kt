@@ -6,6 +6,7 @@ import java.security.spec.ECParameterSpec
 import org.bouncycastle.asn1.ASN1InputStream
 import org.bouncycastle.asn1.ASN1Integer
 import org.bouncycastle.asn1.ASN1Sequence
+import uk.gov.android.keystore.Utils.toFixedLengthBytes
 
 interface KeyStoreManager {
     fun getPublicKeyCoordinates(): Pair<String, String>
@@ -22,8 +23,8 @@ interface KeyStoreManager {
             // Get the required length for the keys r and s
             val keySizeBytes = spec.order.bitLength() / TO_BYTE
             // Generate ByteArrays in correct format for r and s
-            val rBytes = Utils.toFixedLengthBytes(r, keySizeBytes)
-            val sBytes = Utils.toFixedLengthBytes(s, keySizeBytes)
+            val rBytes = r.toFixedLengthBytes(keySizeBytes)
+            val sBytes = s.toFixedLengthBytes(keySizeBytes)
             // Consolidate the two values into a ByteArray
             return rBytes + sBytes
         }

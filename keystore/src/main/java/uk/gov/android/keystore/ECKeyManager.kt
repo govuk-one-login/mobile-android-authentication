@@ -10,7 +10,8 @@ import java.security.Signature
 import java.security.interfaces.ECPublicKey
 import java.security.spec.ECGenParameterSpec
 import kotlin.io.encoding.ExperimentalEncodingApi
-import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
+import uk.gov.android.keystore.Utils.toFixedLengthBytes
+import uk.gov.android.keystore.Utils.toUrlSafeNoPaddingBase64
 
 @ExperimentalEncodingApi
 @Suppress("MemberVisibilityCanBePrivate")
@@ -48,12 +49,10 @@ class ECKeyManager : KeyStoreManager {
     override fun getPublicKeyCoordinates(): Pair<String, String> {
         val xByteArr = appCheckPublicKey.w.affineX
         val yByteArr = appCheckPublicKey.w.affineY
-        val xCheckedArray = Utils
-            .toFixedLengthBytes(xByteArr, EC_POINTS_LENGTH_REQUIREMENT)
-        val yCheckedArray = Utils
-            .toFixedLengthBytes(yByteArr, EC_POINTS_LENGTH_REQUIREMENT)
-        val x = ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(xCheckedArray)
-        val y = ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(yCheckedArray)
+        val xCheckedArray = xByteArr.toFixedLengthBytes(EC_POINTS_LENGTH_REQUIREMENT)
+        val yCheckedArray = yByteArr.toFixedLengthBytes(EC_POINTS_LENGTH_REQUIREMENT)
+        val x = xCheckedArray.toUrlSafeNoPaddingBase64()
+        val y = yCheckedArray.toUrlSafeNoPaddingBase64()
         return Pair(x, y)
     }
 

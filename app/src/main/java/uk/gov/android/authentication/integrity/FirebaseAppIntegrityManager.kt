@@ -5,7 +5,6 @@ import com.google.gson.JsonParser
 import java.security.SignatureException
 import kotlin.io.encoding.Base64
 import kotlin.text.split
-import uk.gov.android.authentication.integrity.appcheck.model.AppCheckToken
 import uk.gov.android.authentication.integrity.appcheck.model.AttestationResponse
 import uk.gov.android.authentication.integrity.appcheck.usecase.AppChecker
 import uk.gov.android.authentication.integrity.appcheck.usecase.AttestationCaller
