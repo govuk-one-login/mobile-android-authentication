@@ -3,7 +3,7 @@ package uk.gov.android.authentication.integrity
 import java.math.BigInteger
 
 @Deprecated(
-    message = "Replace with Utils from the keystore module - will be removed in Jan 2026",
+    message = "Replace with Utils from keystore module. To be removed 19th Jan 2027 (DCMAW-24882)",
     replaceWith = ReplaceWith("java/uk/gov/android/keystore/Utils"),
     level = DeprecationLevel.WARNING,
 )
