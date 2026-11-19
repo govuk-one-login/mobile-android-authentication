@@ -9,9 +9,8 @@ import org.bouncycastle.asn1.ASN1Sequence
 import uk.gov.android.authentication.integrity.AppIntegrityUtils
 
 @Deprecated(
-    message = "Replaced by KeyStoreManager in the keystore module - will be removed in Jan 2026",
-    replaceWith = ReplaceWith("java/uk/gov/android/keystore/KeyStoreManager.kt"),
-    level = DeprecationLevel.WARNING
+    message = "Use KeyPairManager instead",
+    replaceWith = ReplaceWith("KeyPairManager"),
 )
 interface KeyStoreManager {
     fun getPublicKeyCoordinates(): Pair<String, String>

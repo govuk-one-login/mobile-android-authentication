@@ -1,4 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 8.2.0" type="baseline" client="gradle" dependencies="false" name="AGP (8.2.0)" variant="all" version="8.2.0">
+<issues format="6" by="lint 8.13.2" type="baseline" client="gradle" dependencies="false" name="AGP (8.13.2)" variant="all" version="8.13.2">
+
+    <issue
+        id="ViewModelConstructorInComposable"
+        message="Constructing a view model in a composable"
+        errorLine1="    val analyticsViewModel = BioOptInAnalyticsViewModel(LocalContext.current, analyticsLogger)"
+        errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/uk/gov/android/localauth/ui/optin/BioOptInScreen.kt"
+            line="61"
+            column="30"/>
+    </issue>
+
+    <issue
+        id="ViewModelConstructorInComposable"
+        message="Constructing a view model in a composable"
+        errorLine1="    val analyticsViewModel = BioOptInAnalyticsViewModel(LocalContext.current, analyticsLogger)"
+        errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/uk/gov/android/localauth/ui/optin/BioOptInScreen.kt"
+            line="142"
+            column="30"/>
+    </issue>
+
+    <issue
+        id="ViewModelConstructorInComposable"
+        message="Constructing a view model in a composable"
+        errorLine1="    val analyticsViewModel = BioOptOutAnalyticsViewModel(LocalContext.current, analyticsLogger)"
+        errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/uk/gov/android/localauth/ui/optout/BioOptOutScreen.kt"
+            line="29"
+            column="30"/>
+    </issue>
+
+    <issue
+        id="ViewModelConstructorInComposable"
+        message="Constructing a view model in a composable"
+        errorLine1="    val analyticsViewModel = GoToSettingsAnalyticsViewModel("
+        errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/uk/gov/android/localauth/ui/settings/GoToSettingScreen.kt"
+            line="34"
+            column="30"/>
+    </issue>
 
 </issues>

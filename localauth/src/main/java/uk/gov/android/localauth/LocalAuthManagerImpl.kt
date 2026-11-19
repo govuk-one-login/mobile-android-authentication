@@ -38,7 +38,6 @@ open class LocalAuthManagerImpl(
         get() = localAuthPrefRepo.getLocalAuthPref()
 
     override suspend fun enforceAndSet(
-        walletEnabled: Boolean,
         localAuthRequired: Boolean,
         activity: FragmentActivity,
         callbackHandler: LocalAuthManagerCallbackHandler,
@@ -55,7 +54,6 @@ open class LocalAuthManagerImpl(
                     handleSecureDevice(
                         callbackHandler,
                         activity,
-                        walletEnabled,
                         localAuthRequired,
                     )
                 }
@@ -67,9 +65,8 @@ open class LocalAuthManagerImpl(
         }
     }
 
-    override fun biometricsAvailable(): Boolean {
-        return deviceBiometricsManager.getCredentialStatus() == DeviceBiometricsStatus.SUCCESS
-    }
+    override fun biometricsAvailable(): Boolean =
+        deviceBiometricsManager.getCredentialStatus() == DeviceBiometricsStatus.SUCCESS
 
     override fun toggleBiometrics() {
         // Check if device secured
@@ -112,14 +109,12 @@ open class LocalAuthManagerImpl(
     private fun handleSecureDevice(
         callbackHandler: LocalAuthManagerCallbackHandler,
         activity: FragmentActivity,
-        walletEnabled: Boolean,
         isLocalAuthRequired: Boolean,
     ) {
         when (deviceBiometricsManager.getCredentialStatus()) {
             DeviceBiometricsStatus.SUCCESS -> {
                 uiManager.displayBioOptIn(
                     activity = activity,
-                    walletEnabled = walletEnabled,
                     onBack = {
                         localAuthPrefRepo.setLocalAuthPref(
                             LocalAuthPreference.Disabled,

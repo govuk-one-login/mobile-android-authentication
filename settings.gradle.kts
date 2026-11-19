@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("${rootProject.projectDir}/build-logic")
     repositories {
         gradlePluginPortal()
         google()
@@ -24,6 +25,7 @@ dependencyResolutionManagement {
 rootProject.name = "mobile-android-authentication"
 
 include(":app")
+include(":json")
 include(":keystore")
 include(":localauth")
 

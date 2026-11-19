@@ -1,5 +1,8 @@
+@file:Suppress("TooManyFunctions")
+
 package uk.gov.android.localauth.ui.optin
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -29,52 +32,50 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.persistentListOf
 import uk.gov.android.authentication.localauth.R
-import uk.gov.android.ui.componentsv2.button.ButtonType
+import uk.gov.android.ui.componentsv2.button.ButtonTypeV2
 import uk.gov.android.ui.componentsv2.button.GdsButton
+import uk.gov.android.ui.componentsv2.button.GdsIconButtonDefaults
 import uk.gov.android.ui.componentsv2.heading.GdsHeading
 import uk.gov.android.ui.componentsv2.heading.GdsHeadingStyle
 import uk.gov.android.ui.componentsv2.list.GdsBulletedList
 import uk.gov.android.ui.componentsv2.list.ListItem
 import uk.gov.android.ui.componentsv2.list.ListTitle
 import uk.gov.android.ui.componentsv2.list.TitleType
+import uk.gov.android.ui.componentsv2.topappbar.GdsTopAppBar
 import uk.gov.android.ui.patterns.dialog.FullScreenDialogue
-import uk.gov.android.ui.patterns.dialog.FullScreenDialogueTopAppBar
 import uk.gov.android.ui.theme.m3.GdsTheme
 import uk.gov.android.ui.theme.meta.ScreenPreview
 import uk.gov.android.ui.theme.smallPadding
 import uk.gov.android.ui.theme.util.UnstableDesignSystemAPI
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 
+@SuppressLint("ViewModelConstructorInComposable")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BioOptInScreen(
     analyticsLogger: AnalyticsLogger,
-    walletEnabled: Boolean,
     onBack: () -> Unit,
     onBiometricsOptIn: () -> Unit,
     onBiometricsOptOut: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     val analyticsViewModel = BioOptInAnalyticsViewModel(LocalContext.current, analyticsLogger)
-    if (walletEnabled) {
-        analyticsViewModel.trackBioOptInWalletScreen()
-    } else {
-        analyticsViewModel.trackBioOptInNoWalletScreen()
-    }
+    analyticsViewModel.trackBioOptInWalletScreen()
+
     FullScreenDialogue(
         topAppBar = {
-            FullScreenDialogueTopAppBar(
+            GdsTopAppBar(
+                title = null,
+                navigationButton = GdsIconButtonDefaults.defaultCloseContent(),
                 modifier = Modifier.semantics(true) {
                     this.traversalIndex = CLOSE_INDEX
                 },
-                onCloseClick = {
+                onClick = {
                     analyticsViewModel.trackCloseIconButton()
                     onBiometricsOptOut()
                     onDismiss()
                 },
-            ) {
-                // Nothing here (no title)
-            }
+            )
         },
         onBack = {
             onBack()
@@ -83,7 +84,6 @@ fun BioOptInScreen(
         },
         content = {
             BioOptInContent(
-                walletEnabled = walletEnabled,
                 onBiometricsOptIn = {
                     onBiometricsOptIn()
                     analyticsViewModel.trackBiometricsButton()
@@ -100,32 +100,22 @@ fun BioOptInScreen(
 }
 
 @Composable
-private fun BioOptInContent(
-    walletEnabled: Boolean,
-    onBiometricsOptIn: () -> Unit,
-    onBiometricsOptOut: () -> Unit,
-) {
+private fun BioOptInContent(onBiometricsOptIn: () -> Unit, onBiometricsOptOut: () -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier =
-        Modifier
+        modifier = Modifier
             .padding(smallPadding)
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
+            .fillMaxSize(),
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
-            modifier =
-            Modifier
+            modifier = Modifier
                 .fillMaxHeight()
-                .weight(1f),
+                .weight(1f)
+                .verticalScroll(rememberScrollState()),
         ) {
-            if (walletEnabled) {
-                WalletCopyText()
-            } else {
-                NoWalletCopyText()
-            }
+            Text()
         }
         BioOptInButtons(onBiometricsOptIn, onBiometricsOptOut)
     }
@@ -133,7 +123,7 @@ private fun BioOptInContent(
 
 @OptIn(UnstableDesignSystemAPI::class)
 @Composable
-private fun WalletCopyText() {
+private fun Text() {
     val title = stringResource(R.string.app_wallet_enableBiometricsBody1)
     val bulletItemOne = stringResource(R.string.app_wallet_enableBiometricsBullet1)
     val bulletItemTwo = stringResource(R.string.app_wallet_enableBiometricsBullet2)
@@ -145,7 +135,6 @@ private fun WalletCopyText() {
             ListItem(bulletItemTwo),
         ),
         modifier = Modifier.padding(bottom = smallPadding),
-        accessibilityIndex = LIST_INDEX,
     )
     CustomText(text = stringResource(R.string.app_enableBiometricsBody2), CONTENT1_INDEX)
     CustomText(text = stringResource(R.string.app_enableBiometricsBody3), CONTENT2_INDEX)
@@ -183,23 +172,20 @@ private fun Header() {
 }
 
 @Composable
-private fun BioOptInButtons(
-    onBiometricsOptIn: () -> Unit,
-    onBiometricsOptOut: () -> Unit,
-) {
+private fun BioOptInButtons(onBiometricsOptIn: () -> Unit, onBiometricsOptOut: () -> Unit) {
     Column(
         verticalArrangement = Arrangement.Bottom,
         modifier = Modifier.padding(bottom = smallPadding),
     ) {
         GdsButton(
             text = stringResource(R.string.app_enableBiometricsButton),
-            buttonType = ButtonType.Primary,
+            buttonType = ButtonTypeV2.Primary(),
             onClick = onBiometricsOptIn,
             modifier = Modifier.fillMaxWidth(),
         )
         GdsButton(
             text = stringResource(R.string.app_enablePasscodeOrPatternButton),
-            buttonType = ButtonType.Quaternary,
+            buttonType = ButtonTypeV2.Quaternary(),
             onClick = onBiometricsOptOut,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -211,7 +197,8 @@ private fun CustomText(text: String, accessibilityIndex: Float) {
     Text(
         text = text,
         color = MaterialTheme.colorScheme.onBackground,
-        modifier = Modifier.padding(bottom = smallPadding)
+        modifier = Modifier
+            .padding(bottom = smallPadding)
             .fillMaxWidth()
             .semantics { this.traversalIndex = accessibilityIndex },
         textAlign = TextAlign.Center,
@@ -221,38 +208,19 @@ private fun CustomText(text: String, accessibilityIndex: Float) {
 @OptIn(ExperimentalMaterial3Api::class)
 @ScreenPreview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-internal fun BioOptInPreviewWallet() {
-    GdsTheme {
-        FullScreenDialogue(
-            topAppBar = {
-                FullScreenDialogueTopAppBar({}) {
-                    // Nothing here
-                }
-            },
-            onBack = {},
-            content = {
-                BioOptInContent(true, {}, {})
-            },
-        )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@ScreenPreview
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(locale = "CY")
 @Composable
 internal fun BioOptInPreview() {
     GdsTheme {
         FullScreenDialogue(
             topAppBar = {
-                FullScreenDialogueTopAppBar({}) {
-                    // Nothing here
-                }
+                GdsTopAppBar(
+                    navigationButton = GdsIconButtonDefaults.defaultCloseContent(),
+                )
             },
             onBack = {},
             content = {
-                BioOptInContent(false, {}, {})
+                BioOptInContent({}, {})
             },
         )
     }

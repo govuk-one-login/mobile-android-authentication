@@ -9,12 +9,15 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import uk.gov.android.authentication.localauth.R
 import uk.gov.android.localauth.utils.FragmentActivityTestCase
+import uk.gov.android.ui.componentsv2.R as componentsR
 import uk.gov.logging.api.analytics.extensions.getEnglishString
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 import uk.gov.logging.api.analytics.parameters.data.TaxonomyLevel2
@@ -23,9 +26,6 @@ import uk.gov.logging.api.v3dot1.logger.logEventV3Dot1
 import uk.gov.logging.api.v3dot1.model.RequiredParameters
 import uk.gov.logging.api.v3dot1.model.TrackEvent
 import uk.gov.logging.api.v3dot1.model.ViewEvent
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
-import uk.gov.android.ui.componentsv2.R as componentsR
 
 @RunWith(AndroidJUnit4::class)
 class BioOptInScreenTest : FragmentActivityTestCase(false) {
@@ -37,7 +37,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
 
     @Test
     fun `test UI with wallet`() {
-        setupWallet()
+        setup()
         composeTestRule.apply {
             onNodeWithText(
                 context.getString(R.string.app_enableBiometricsTitle),
@@ -72,44 +72,8 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
     }
 
     @Test
-    fun `test UI without wallet`() {
-        setupNoWallet()
-        composeTestRule.apply {
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle),
-            ).assertIsDisplayed()
-
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsBody1),
-            ).assertIsDisplayed()
-
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsBody2),
-            ).assertIsDisplayed()
-
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsBody3),
-            ).performScrollTo().assertExists()
-
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsButton),
-            ).assertIsDisplayed()
-
-            onNodeWithText(
-                context.getString(R.string.app_enablePasscodeOrPatternButton),
-            )
-
-            onNodeWithTag(
-                context.getString(R.string.app_enableBiometricsImageTestTag),
-            ).assertIsDisplayed()
-        }
-
-        verify(analyticsLogger).logEventV3Dot1(makeNoWalletScreenEvent(context))
-    }
-
-    @Test
     fun `test bio opt in button`() {
-        setupWallet()
+        setup()
         val text = R.string.app_enableBiometricsButton
         composeTestRule.apply {
             onNodeWithText(
@@ -124,7 +88,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
 
     @Test
     fun `test opt out button`() {
-        setupWallet()
+        setup()
         val text = R.string.app_enablePasscodeOrPatternButton
         composeTestRule.apply {
             onNodeWithText(context.getString(text)).performClick()
@@ -137,7 +101,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
 
     @Test
     fun `test close button`() {
-        setupWallet()
+        setup()
         composeTestRule.apply {
             onNodeWithContentDescription(
                 context.getString(componentsR.string.close_icon_button),
@@ -150,7 +114,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
 
     @Test
     fun `test back press`() {
-        setupWallet()
+        setup()
         composeTestRule.apply {
             Espresso.pressBack()
 
@@ -160,10 +124,10 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
     }
 
     @Test
-    fun `test wallet copy preview`() {
+    fun `test preview`() {
         composeTestRule.apply {
             setContent {
-                BioOptInPreviewWallet()
+                BioOptInPreview()
             }
             onNodeWithText(
                 context.getString(R.string.app_enableBiometricsTitle),
@@ -195,43 +159,7 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
         }
     }
 
-    @Test
-    fun `test no wallet copy preview`() {
-        composeTestRule.apply {
-            setContent {
-                BioOptInPreview()
-            }
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle),
-            ).assertIsDisplayed()
-
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsBody1),
-            ).assertIsDisplayed()
-
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsBody2),
-            ).assertIsDisplayed()
-
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsBody3),
-            ).performScrollTo().assertExists()
-
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsButton),
-            ).assertIsDisplayed()
-
-            onNodeWithText(
-                context.getString(R.string.app_enablePasscodeOrPatternButton),
-            )
-
-            onNodeWithTag(
-                context.getString(R.string.app_enableBiometricsImageTestTag),
-            ).assertIsDisplayed()
-        }
-    }
-
-    private fun setupWallet() {
+    private fun setup() {
         composeTestRule.setContent {
             BioOptInScreen(
                 analyticsLogger = analyticsLogger,
@@ -239,20 +167,6 @@ class BioOptInScreenTest : FragmentActivityTestCase(false) {
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
                 onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
                 onDismiss = { onDismiss++ },
-                walletEnabled = true,
-            )
-        }
-    }
-
-    private fun setupNoWallet() {
-        composeTestRule.setContent {
-            BioOptInScreen(
-                analyticsLogger = analyticsLogger,
-                onBack = { onBack = !onBack },
-                onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
-                onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
-                onDismiss = { onDismiss++ },
-                walletEnabled = false,
             )
         }
     }

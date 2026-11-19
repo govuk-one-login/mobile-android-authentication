@@ -14,7 +14,6 @@ import net.openid.appauth.AuthorizationService
 import net.openid.appauth.AuthorizationServiceConfiguration
 import net.openid.appauth.TokenRequest
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.Assert.assertThrows
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -74,7 +73,7 @@ class AppAuthSessionTest {
         // When calling present
         appAuthSession.present(
             launcher = launcher,
-            configuration = loginSessionConfig
+            configuration = loginSessionConfig,
         )
         // Then create the AuthorisationIntent and launch
         verify(launcher).launch(any())
@@ -93,7 +92,7 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> t = error }
+            { error -> t = error },
         )
 
         assertThat("Thrown error is not IllegalArgumentException", t is IllegalArgumentException)
@@ -107,12 +106,12 @@ class AppAuthSessionTest {
             AuthorizationRequestErrors.ACCESS_DENIED.error,
             AuthorizationRequestErrors.ACCESS_DENIED.errorDescription,
             AuthorizationRequestErrors.ACCESS_DENIED.errorUri,
-            AuthorizationRequestErrors.ACCESS_DENIED.cause
+            AuthorizationRequestErrors.ACCESS_DENIED.cause,
         )
         // Given an intent with a malformed (empty) response data JSON extra
         val intent = Intent().putExtra(
             AuthorizationException.EXTRA_EXCEPTION,
-            exception.toJsonString()
+            exception.toJsonString(),
         )
         // When calling finaliseWithDPoP
         var t: Throwable? = null
@@ -122,7 +121,7 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> t = error }
+            { error -> t = error },
         )
 
         // Then throw an IllegalArgumentException
@@ -143,7 +142,7 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> t = error }
+            { error -> t = error },
         )
 
         // Then throw an AuthenticationError
@@ -165,7 +164,7 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            {}
+            {},
         )
     }
 
@@ -183,11 +182,11 @@ class AppAuthSessionTest {
             ACCESS_TOKEN,
             EXPIRATION_TIME,
             ID_TOKEN,
-            REFRESH_TOKEN
+            REFRESH_TOKEN,
         )
 
         whenever(demonstratingProofOfPossessionManager.generateDPoP(any())).thenReturn(
-            SignedDPoP.Success("success")
+            SignedDPoP.Success("success"),
         )
         whenever(authService.performTokenRequest(any(), any(), any()))
             .thenAnswer {
@@ -200,7 +199,7 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             { tr -> actualTokenResponse = tr },
-            {}
+            {},
         )
 
         assertEquals(expectedTokenResponse, actualTokenResponse)
@@ -219,16 +218,16 @@ class AppAuthSessionTest {
             "server_error",
             null,
             null,
-            null
+            null,
         )
         val expectedException = AuthenticationError(
             message = NULL_AUTH_MESSAGE,
             type = ErrorType.SERVER_ERROR,
-            status = 1005
+            status = 1005,
         )
 
         whenever(demonstratingProofOfPossessionManager.generateDPoP(any())).thenReturn(
-            SignedDPoP.Success("success")
+            SignedDPoP.Success("success"),
         )
         whenever(authService.performTokenRequest(any(), any(), any()))
             .thenAnswer {
@@ -241,7 +240,7 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> actualException = error }
+            { error -> actualException = error },
         )
 
         assertEquals(expectedException, actualException)
@@ -264,7 +263,7 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> actualException = error }
+            { error -> actualException = error },
         )
 
         assertEquals(exp, actualException)
@@ -281,7 +280,7 @@ class AppAuthSessionTest {
         val auTokenResponse = buildTokenResponse(accessToken = null)
 
         whenever(demonstratingProofOfPossessionManager.generateDPoP(any())).thenReturn(
-            SignedDPoP.Success("success")
+            SignedDPoP.Success("success"),
         )
         whenever(authService.performTokenRequest(any(), any(), any()))
             .thenAnswer {
@@ -294,12 +293,12 @@ class AppAuthSessionTest {
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> actualException = error }
+            { error -> actualException = error },
         )
 
         assertThat(
             "Exception thrown is not IllegalArgumentException",
-            actualException is IllegalArgumentException
+            actualException is IllegalArgumentException,
         )
     }
 
@@ -311,81 +310,24 @@ class AppAuthSessionTest {
         // When calling finaliseWithDPoP
         var actualException: Throwable? = null
         whenever(demonstratingProofOfPossessionManager.generateDPoP(any())).thenReturn(
-            SignedDPoP.Failure("Failure")
+            SignedDPoP.Failure("Failure"),
         )
         appAuthSession.finalise(
             intent,
             AppIntegrityParameters(ATTESTATION, POP),
             "domain",
             {},
-            { error -> actualException = error }
+            { error -> actualException = error },
         )
 
         assertEquals(AppAuthSession.Companion.DPoPManagerError("Failure"), actualException)
-    }
-
-    @Test(expected = IllegalArgumentException::class)
-    fun deprecatedFinaliseThrowsIllegalArgumentExceptionForMalformedIntentResponse() {
-        // Given an intent with a malformed (empty) response data JSON extra
-        val intent = Intent().apply {
-            putExtra(AuthorizationResponse.EXTRA_RESPONSE, "{}")
-        }
-        // When calling finalise
-        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP)) {}
-        // Then throw an IllegalArgumentException
-    }
-
-    @Test
-    fun deprecatedFinaliseThrowsAuthenticationErrorOfAccessDenied() {
-        val exception = AuthorizationException(
-            AuthorizationException.TYPE_OAUTH_AUTHORIZATION_ERROR,
-            AuthorizationRequestErrors.ACCESS_DENIED.code,
-            AuthorizationRequestErrors.ACCESS_DENIED.error,
-            AuthorizationRequestErrors.ACCESS_DENIED.errorDescription,
-            AuthorizationRequestErrors.ACCESS_DENIED.errorUri,
-            AuthorizationRequestErrors.ACCESS_DENIED.cause
-        )
-        // Given an intent with a malformed (empty) response data JSON extra
-        val intent = Intent().putExtra(
-            AuthorizationException.EXTRA_EXCEPTION,
-            exception.toJsonString()
-        )
-        // When calling finalise
-        val result = assertThrows(AuthenticationError::class.java) {
-            appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP)) {}
-        }
-        // Then throw an IllegalArgumentException
-        assertEquals(AuthenticationError.ErrorType.ACCESS_DENIED, result.type)
-    }
-
-    @Test
-    fun deprecatedFinaliseThrowsAuthenticationErrorForIntentWithoutResponse() {
-        // Given an (empty) intent without a response data JSON extra
-        val intent = Intent()
-        // When calling finalise
-        val error = assertThrows(AuthenticationError::class.java) {
-            appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP)) {}
-        }
-        // Then throw an AuthenticationError
-        assertEquals(AuthenticationError.ErrorType.OAUTH, error.type)
-        assertEquals(AuthenticationError.Companion.NULL_AUTH_MESSAGE, error.message)
-    }
-
-    @Test
-    fun deprecatedFinaliseThrowsAuthenticationErrorForIntentWithValidResponse() {
-        // Given an intent without a response data JSON extra
-        val intent = Intent().apply {
-            putExtra(AuthorizationResponse.EXTRA_RESPONSE, authResponse)
-        }
-        // When calling finalise
-        appAuthSession.finalise(intent, AppIntegrityParameters(ATTESTATION, POP)) {}
     }
 
     private fun buildTokenResponse(accessToken: String?): net.openid.appauth.TokenResponse {
         val clientId = "id"
         val tokenRequest = TokenRequest.Builder(
             AuthorizationServiceConfiguration(Uri.EMPTY, Uri.EMPTY),
-            clientId
+            clientId,
         ).setGrantType("grantType").build()
         return net.openid.appauth.TokenResponse.Builder(tokenRequest)
             .setRefreshToken(REFRESH_TOKEN)

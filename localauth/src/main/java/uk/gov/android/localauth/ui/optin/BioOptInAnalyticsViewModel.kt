@@ -3,6 +3,7 @@ package uk.gov.android.localauth.ui.optin
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import uk.gov.android.authentication.localauth.R
+import uk.gov.android.ui.componentsv2.R as componentsR
 import uk.gov.logging.api.analytics.extensions.getEnglishString
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 import uk.gov.logging.api.analytics.parameters.data.TaxonomyLevel2
@@ -11,12 +12,9 @@ import uk.gov.logging.api.v3dot1.logger.logEventV3Dot1
 import uk.gov.logging.api.v3dot1.model.RequiredParameters
 import uk.gov.logging.api.v3dot1.model.TrackEvent
 import uk.gov.logging.api.v3dot1.model.ViewEvent
-import uk.gov.android.ui.componentsv2.R as componentsR
 
-class BioOptInAnalyticsViewModel(
-    context: Context,
-    private val analyticsLogger: AnalyticsLogger,
-) : ViewModel() {
+class BioOptInAnalyticsViewModel(context: Context, private val analyticsLogger: AnalyticsLogger) :
+    ViewModel() {
     private val walletScreenEvent = makeWalletScreenEvent(context)
     private val noWalletScreenEvent = makeNoWalletScreenEvent(context)
     private val closeIconEvent = makeCloseBackEvent(context)

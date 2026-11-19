@@ -10,9 +10,9 @@ import uk.gov.android.ui.theme.m3.GdsTheme
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 
 interface DialogUiManager {
+
     fun displayBioOptIn(
         activity: FragmentActivity,
-        walletEnabled: Boolean,
         onBack: () -> Unit,
         onBiometricsOptIn: () -> Unit,
         onBiometricsOptOut: () -> Unit,
@@ -31,12 +31,10 @@ interface DialogUiManager {
     )
 }
 
-class BiometricsUiManager(
-    private val analyticsLogger: AnalyticsLogger,
-) : DialogUiManager {
+class BiometricsUiManager(private val analyticsLogger: AnalyticsLogger) : DialogUiManager {
+
     override fun displayBioOptIn(
         activity: FragmentActivity,
-        walletEnabled: Boolean,
         onBack: () -> Unit,
         onBiometricsOptIn: () -> Unit,
         onBiometricsOptOut: () -> Unit,
@@ -47,7 +45,6 @@ class BiometricsUiManager(
                     GdsTheme {
                         BioOptInScreen(
                             analyticsLogger,
-                            walletEnabled,
                             onBack,
                             onBiometricsOptIn,
                             onBiometricsOptOut,

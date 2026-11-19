@@ -2,7 +2,6 @@ package uk.gov.android.authentication.integrity.keymanager
 
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
-import android.util.Log
 import java.security.KeyPairGenerator
 import java.security.KeyStore
 import java.security.KeyStore.PrivateKeyEntry
@@ -27,7 +26,7 @@ class ECKeyManager : KeyStoreManager {
 
     private val parameterSpec: KeyGenParameterSpec = KeyGenParameterSpec.Builder(
         ALIAS,
-        KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY
+        KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY,
     ).run {
         setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA512)
         setAlgorithmParameterSpec(ECGenParameterSpec("secp256r1"))
@@ -46,7 +45,6 @@ class ECKeyManager : KeyStoreManager {
 
     init {
         if (!hasAppCheckKeys) {
-            Log.d(this::class.simpleName, "Generating key pair")
             createNewKeys()
         }
     }
@@ -63,9 +61,7 @@ class ECKeyManager : KeyStoreManager {
         return Pair(x, y)
     }
 
-    override fun getPublicKey(): ECPublicKey {
-        return appCheckPublicKey
-    }
+    override fun getPublicKey(): ECPublicKey = appCheckPublicKey
 
     override fun sign(input: ByteArray): ByteArray {
         val ecSpec = appCheckPublicKey.params
@@ -81,7 +77,7 @@ class ECKeyManager : KeyStoreManager {
     private fun createNewKeys() {
         KeyPairGenerator.getInstance(
             KeyProperties.KEY_ALGORITHM_EC,
-            KEYSTORE
+            KEYSTORE,
         ).apply {
             initialize(parameterSpec)
             generateKeyPair()

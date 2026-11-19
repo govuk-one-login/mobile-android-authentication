@@ -15,7 +15,7 @@ class TokenResponseTest {
             "sampleAccessToken",
             3600,
             "sampleIdToken",
-            "sampleRefreshToken"
+            "sampleRefreshToken",
         )
         val expectedJson = "{\"tokenType\":\"bearer\",\"accessToken\":\"sampleAccessToken\"," +
             "\"accessTokenExpirationTime\":3600,\"idToken\":\"sampleIdToken\"," +
@@ -29,7 +29,7 @@ class TokenResponseTest {
             "bearer",
             "sampleAccessToken",
             3600,
-            "sampleIdToken"
+            "sampleIdToken",
         )
         val expectedJson = "{\"tokenType\":\"bearer\",\"accessToken\":\"sampleAccessToken\"," +
             "\"accessTokenExpirationTime\":3600,\"idToken\":\"sampleIdToken\"}"
@@ -46,7 +46,7 @@ class TokenResponseTest {
             "sampleAccessToken",
             3600,
             "sampleIdToken",
-            "sampleRefreshToken"
+            "sampleRefreshToken",
         )
         assertEquals(expectedTokenResponse, jsonDeserialize(json))
     }
@@ -59,7 +59,7 @@ class TokenResponseTest {
             "bearer",
             "sampleAccessToken",
             3600,
-            "sampleIdToken"
+            "sampleIdToken",
         )
         assertEquals(expectedTokenResponse, jsonDeserialize(json))
     }
@@ -80,11 +80,7 @@ class TokenResponseTest {
         }
     }
 
-    private fun jsonSerialize(obj: TokenResponse): String {
-        return Json.encodeToString(obj)
-    }
+    private fun jsonSerialize(obj: TokenResponse): String = Json.encodeToString(obj)
 
-    private fun jsonDeserialize(text: String): TokenResponse? {
-        return Json.decodeFromString(text)
-    }
+    private fun jsonDeserialize(text: String): TokenResponse? = Json.decodeFromString(text)
 }

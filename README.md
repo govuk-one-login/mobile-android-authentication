@@ -1,5 +1,8 @@
 # mobile-android-authentication
 
+[![On Branch Push (main)](https://github.com/govuk-one-login/mobile-android-authentication/actions/workflows/on_push-main.yml/badge.svg)](https://github.com/govuk-one-login/mobile-android-authentication/actions/workflows/on_push-main.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mobile-android-authentication&metric=alert_status&token=98ca94907f5822494cf7583a2352d8d99dd27c70)](https://sonarcloud.io/summary/new_code?id=mobile-android-authentication)
+
 Implementation of Authentication package
 
 ## Installation
@@ -38,7 +41,7 @@ dependencyResolutionManagement {
 }
 ```
 
-2. For local development, ensure you have a `github.properties` in the project's root which includes your username and an access token. **Do not commit this file to Version Control**
+2. For local development, make sure you have a `github.properties` in the project's root which includes your username and an access token. **Do not add this file to Version Control**
 3. Add `implementation("uk.gov.android:authentication:_")` for latest version and check packages for version information
 
 ## Package description
@@ -49,14 +52,14 @@ The Authentication package comprises three sub-packages:
 3. jwt - provides ability to verify a JWT with a public key adhering to the JWK specifications.
 4. localauth - provides functionality for checking the device security level/ type and saving this as a local authentication preference.
 
-The package integrates [openID](https://openid.net/developers/how-connect-works/) AppAuth and conforms to its standards, documentation can be found here [AppAuth](https://github.com/openid/AppAuth-Android)
+The package integrates [openID](https://openid.net/developers/how-connect-works/) AppAuth and conforms to its standards, documentation can be found here [AppAuth](https://github.com/openid/AppAuth-Android).
 
 ## Login
 ### Types
 
 #### LoginSessionConfiguration
 
-Handles creating the `config` found in `LoginSession`. It requires the following to be initialised:
+Handles creating the `config` found in `LoginSession`. It needs the following to be initialised:
 
 ```kotlin
 val authorizeEndpoint: Uri
@@ -74,7 +77,7 @@ val vectorsOfTrust: String = "[\"Cl.Cm.P0\"]"
 
 #### TokenResponse
 
-Holds the returned token values
+Holds the returned token values:
 
 ```kotlin
 val tokenType: String
@@ -125,7 +128,7 @@ loginSession.present(configuration)
 
 ```
 
-Ensure the request code has been registered by the Activity to handle the ActivityResult and call `finalise`
+Make sure the request code has been registered by the Activity to handle the ActivityResult and call `finalise`
 
 ```kotlin
 override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -250,7 +253,7 @@ class AttestationCallerImpl @Inject constructor(
 
 ### ProofOfPossessionGenerator and SignedPoP
 
-The ProofOfPossessionGenerator object creates a Proof of Possession (PoP) that will be used in the authentication call, as part of a header. It adheres to the following scheme and it is a signed JWT contained within the SignedPoP. This will be used and verified by the backend to ensure the app is genuine.
+The ProofOfPossessionGenerator object creates a Proof of Possession (PoP) that will be used in the authentication call, as part of a header. It adheres to the following scheme and it is a signed JWT contained within the SignedPoP. This will be used and verified by the backend to make sure the app is genuine.
 It adheres to the following requirements:
 
 _Header_
@@ -285,8 +288,8 @@ The AppIntegrityConfiguration provides the AttestationCaller, AppChecker, and Ke
 An example of the AppIntegrityManager and a possible implementation is available in the [FirebaseAppIntegrityManager](app/src/main/java/uk/gov/android/authentication/integrity/FirebaseAppIntegrityManager.kt)
 
 ## Local Authentication Manager
-The LocalAuthManager allows a consumer to check the device security level and what is **available** and **enabled** (e.g. biometrics, passcode, etc). Based on this, it will save preferences accordingly.
-It requires a `DeviceBiometricsManager` and a `LocalAuthPreferenceRepo` which allows for the device checks and storing/ updating the reference accordingly.
+The LocalAuthManager allows a consumer to check the device security level and what is **available** and **enabled** (for example biometrics, passcode, etc). Based on this, it will save preferences accordingly.
+It needs a `DeviceBiometricsManager` and a `LocalAuthPreferenceRepo` which allows for the device checks and storing/ updating the reference accordingly.
 
 ```kotlin
 val biometricManager = BiometricManager.from(context)
@@ -354,3 +357,15 @@ You can use the following command to check the SHA 256 checksum of a file
 ```bash
 shasum -a 256 gradle-8.10.2-bin.zip
 ```
+
+## Hotfix changes
+There are GitHub Actions workflows for a hotfix pull request and merging a hotfix to a temporary
+hotfix branch.
+
+The temporary hotfix branch is currently expected to be named "temp/hotfix". If a different name is
+desired please edit the value under "branches:" in `.github/workflows/on_push_hotfix.yml`.
+The hotfix branch name should be in the format "hotfix/M.m.p".
+
+Once the hotfix PR has been approved and the "Squash and merge" button pressed, the merge title
+must be in the format "Merge pull request #xxx from govuk-one-login/release/M.m.p" to let the
+correct version to be extracted and used as a tag.

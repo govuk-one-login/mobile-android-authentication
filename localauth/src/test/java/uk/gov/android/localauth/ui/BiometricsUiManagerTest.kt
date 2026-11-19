@@ -10,6 +10,7 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.fragment.app.FragmentActivity
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlin.test.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,7 +24,6 @@ import uk.gov.android.localauth.utils.FragmentActivityTestCase
 import uk.gov.android.localauth.utils.TestActivity
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 import uk.gov.logging.api.v3dot1.logger.logEventV3Dot1
-import kotlin.test.assertTrue
 
 @RunWith(AndroidJUnit4::class)
 class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
@@ -43,11 +43,10 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
     }
 
     @Test
-    fun `display bio opt in screen with wallet`() {
+    fun ` display bio opt in screen `() {
         composeTestRule.apply {
             uiManager.displayBioOptIn(
                 activity,
-                walletEnabled = true,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
                 onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
@@ -86,53 +85,10 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
     }
 
     @Test
-    fun `display bio opt in screen without wallet`() {
-        composeTestRule.apply {
-            uiManager.displayBioOptIn(
-                activity,
-                walletEnabled = false,
-                onBack = { onBack = !onBack },
-                onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
-                onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
-            )
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsTitle),
-            ).assertIsDisplayed()
-
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsBody1),
-            ).assertIsDisplayed()
-
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsBody2),
-            ).assertIsDisplayed()
-
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsBody3),
-            ).performScrollTo().assertExists()
-
-            onNodeWithText(
-                context.getString(R.string.app_enableBiometricsButton),
-            ).assertIsDisplayed()
-
-            onNodeWithText(
-                context.getString(R.string.app_enablePasscodeOrPatternButton),
-            )
-
-            onNodeWithTag(
-                context.getString(R.string.app_enableBiometricsImageTestTag),
-            ).assertIsDisplayed()
-        }
-
-        verify(analyticsLogger).logEventV3Dot1(makeNoWalletScreenEvent(context))
-    }
-
-    @Test
     fun `test bio opt in button`() {
         composeTestRule.apply {
             uiManager.displayBioOptIn(
                 activity,
-                walletEnabled = false,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
                 onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
@@ -155,7 +111,6 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
         composeTestRule.apply {
             uiManager.displayBioOptIn(
                 activity,
-                walletEnabled = false,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
                 onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
@@ -178,7 +133,6 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
         composeTestRule.apply {
             uiManager.displayBioOptIn(
                 activity,
-                walletEnabled = false,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
                 onBiometricsOptOut = { onBioOptOut = !onBioOptOut },
@@ -203,7 +157,6 @@ class BiometricsUiManagerTest : FragmentActivityTestCase(true) {
         composeTestRule.apply {
             uiManager.displayBioOptIn(
                 activity,
-                walletEnabled = false,
                 onBack = { onBack = !onBack },
                 onBiometricsOptIn = { onBioOptIn = !onBioOptIn },
                 onBiometricsOptOut = { onBioOptOut = !onBioOptOut },

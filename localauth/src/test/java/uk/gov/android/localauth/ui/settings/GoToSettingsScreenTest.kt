@@ -7,12 +7,14 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlin.test.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import uk.gov.android.authentication.localauth.R
 import uk.gov.android.localauth.utils.FragmentActivityTestCase
+import uk.gov.android.ui.componentsv2.R as ComponentsR
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 import uk.gov.logging.api.analytics.parameters.data.TaxonomyLevel2
 import uk.gov.logging.api.analytics.parameters.data.TaxonomyLevel3
@@ -20,8 +22,6 @@ import uk.gov.logging.api.v3dot1.logger.logEventV3Dot1
 import uk.gov.logging.api.v3dot1.model.RequiredParameters
 import uk.gov.logging.api.v3dot1.model.TrackEvent
 import uk.gov.logging.api.v3dot1.model.ViewEvent
-import kotlin.test.assertTrue
-import uk.gov.android.ui.componentsv2.R as ComponentsR
 
 @RunWith(AndroidJUnit4::class)
 class GoToSettingsScreenTest : FragmentActivityTestCase(false) {

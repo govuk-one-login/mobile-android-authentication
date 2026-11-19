@@ -25,7 +25,7 @@ import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 import uk.gov.android.authentication.integrity.pop.SignedPoP
 import uk.gov.android.keystore.KeyStoreManager
-import uk.gov.logging.api.Logger
+import uk.gov.logging.api.v3.Logger
 
 class FirebaseAppIntegrityManagerTest {
     private val expectedResult = ClassLoader.getSystemResource("bodyPoPBase64.txt")
@@ -53,7 +53,7 @@ class FirebaseAppIntegrityManagerTest {
         val config = AppIntegrityConfiguration(
             mockCaller,
             mockAppChecker,
-            mockKeyStoreManager
+            mockKeyStoreManager,
         )
 
         appIntegrityManager = FirebaseAppIntegrityManager(logger, config, mockPopGenerator)
@@ -67,8 +67,8 @@ class FirebaseAppIntegrityManagerTest {
             .thenReturn(
                 AttestationResponse.Success(
                     "Success",
-                    0
-                )
+                    0,
+                ),
             )
         whenever(mockKeyStoreManager.getPublicKeyCoordinates())
             .thenReturn(Pair("Success", "Success"))
@@ -76,14 +76,14 @@ class FirebaseAppIntegrityManagerTest {
 
         assertEquals(
             AttestationResponse.Success("Success", 0),
-            result
+            result,
         )
     }
 
     @Test
     fun check_failure_response_from_get_firebase_token() = runBlocking {
         whenever(mockAppChecker.getAppCheckToken()).thenReturn(
-            Result.failure(Exception("Error"))
+            Result.failure(Exception("Error")),
         )
         whenever(mockKeyStoreManager.getPublicKeyCoordinates())
             .thenReturn(Pair("Success", "Success"))
@@ -92,7 +92,7 @@ class FirebaseAppIntegrityManagerTest {
 
         assertEquals(
             Exception("Error").toString(),
-            (result as AttestationResponse.Failure).reason
+            (result as AttestationResponse.Failure).reason,
         )
     }
 
@@ -101,14 +101,14 @@ class FirebaseAppIntegrityManagerTest {
         whenever(mockAppChecker.getAppCheckToken())
             .thenReturn(Result.success(AppCheckToken("Success")))
         whenever(mockCaller.call(any(), any()))
-            .thenReturn(AttestationResponse.Failure("Error"))
+            .thenReturn(AttestationResponse.Failure("Error", Exception()))
         whenever(mockKeyStoreManager.getPublicKeyCoordinates())
             .thenReturn(Pair("Success", "Success"))
         val result = appIntegrityManager.getAttestation()
 
         assertEquals(
             "Error",
-            (result as AttestationResponse.Failure).reason
+            (result as AttestationResponse.Failure).reason,
         )
     }
 
@@ -119,7 +119,7 @@ class FirebaseAppIntegrityManagerTest {
         whenever(mockPopGenerator.createBase64PoP(any(), any(), any(), any()))
             .thenReturn(expectedResult)
         whenever(mockPopGenerator.getExpiryTime()).thenReturn(
-            java.time.Instant.now().toEpochMilli() + 180000
+            java.time.Instant.now().toEpochMilli() + 180000,
         )
         whenever(mockPopGenerator.isPopExpired(anyLong())).thenReturn(false)
         whenever(mockKeyStoreManager.sign(any())).thenReturn(mockSignatureByte)
@@ -173,8 +173,8 @@ class FirebaseAppIntegrityManagerTest {
         whenever(mockKeyStoreManager.getPublicKeyCoordinates()).thenReturn(
             Pair(
                 "efcYm7ywmJNVCVNcjRtbFnwcRzgbJ4Yuyyf_rux1IHw",
-                "APAEnudt_ASBEcA4gO1gFdjniAh4Md1qPnyYZTGXwwSH"
-            )
+                "APAEnudt_ASBEcA4gO1gFdjniAh4Md1qPnyYZTGXwwSH",
+            ),
         )
         val result =
             appIntegrityManager.verifyAttestationJwk(exampleAttestation)
@@ -187,8 +187,8 @@ class FirebaseAppIntegrityManagerTest {
         whenever(mockKeyStoreManager.getPublicKeyCoordinates()).thenReturn(
             Pair(
                 "wrong",
-                "APAEnudt_ASBEcA4gO1gFdjniAh4Md1qPnyYZTGXwwSH"
-            )
+                "APAEnudt_ASBEcA4gO1gFdjniAh4Md1qPnyYZTGXwwSH",
+            ),
         )
         val result =
             appIntegrityManager.verifyAttestationJwk(exampleAttestation)
@@ -201,8 +201,8 @@ class FirebaseAppIntegrityManagerTest {
         whenever(mockKeyStoreManager.getPublicKeyCoordinates()).thenReturn(
             Pair(
                 "efcYm7ywmJNVCVNcjRtbFnwcRzgbJ4Yuyyf_rux1IHw",
-                "wrong"
-            )
+                "wrong",
+            ),
         )
         val result =
             appIntegrityManager.verifyAttestationJwk(exampleAttestation)
@@ -215,8 +215,8 @@ class FirebaseAppIntegrityManagerTest {
         whenever(mockKeyStoreManager.getPublicKeyCoordinates()).thenReturn(
             Pair(
                 "efcYm7ywmJNVCVNcjRtbFnwcRzgbJ4Yuyyf_rux1IHw",
-                "wrong"
-            )
+                "wrong",
+            ),
         )
         val result =
             appIntegrityManager.verifyAttestationJwk("test")

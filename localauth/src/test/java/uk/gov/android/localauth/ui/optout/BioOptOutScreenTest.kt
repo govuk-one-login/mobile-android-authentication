@@ -7,6 +7,8 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
@@ -19,8 +21,6 @@ import uk.gov.android.localauth.ui.optout.BioOptOutAnalyticsViewModel.Companion.
 import uk.gov.android.localauth.utils.FragmentActivityTestCase
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
 import uk.gov.logging.api.v3dot1.logger.logEventV3Dot1
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 @RunWith(AndroidJUnit4::class)
 class BioOptOutScreenTest : FragmentActivityTestCase(false) {

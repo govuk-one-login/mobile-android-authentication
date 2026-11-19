@@ -7,6 +7,8 @@ import androidx.compose.ui.test.performClick
 import androidx.fragment.app.FragmentActivity
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -24,10 +26,9 @@ import uk.gov.android.localauth.preference.LocalAuthPreferenceRepository
 import uk.gov.android.localauth.utils.FragmentActivityTestCase
 import uk.gov.android.localauth.utils.TestActivity
 import uk.gov.logging.api.analytics.logging.AnalyticsLogger
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 @RunWith(AndroidJUnit4::class)
+@Suppress("LargeClass")
 class LocalAuthManagerTest : FragmentActivityTestCase(true) {
     private lateinit var localAuthPreferenceRepository: LocalAuthPreferenceRepository
     private lateinit var deviceBiometricsManager: DeviceBiometricsManager
@@ -51,6 +52,32 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
     }
 
     @Test
+    fun `first time user - biometrics enabled - opt in bio - not required`() = runBlocking {
+        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+        whenever(deviceBiometricsManager.getCredentialStatus())
+            .thenReturn(DeviceBiometricsStatus.SUCCESS)
+
+        composeTestRule.apply {
+            localAuthManager.enforceAndSet(
+                localAuthRequired = false,
+                activity = activity,
+                callbackHandler = callbackHandler,
+            )
+            onNodeWithText(
+                context.getString(R.string.app_enableBiometricsTitle),
+            ).isDisplayed()
+            onNodeWithText(
+                context.getString(R.string.app_enableBiometricsButton),
+            ).performClick()
+        }
+
+        verify(callbackHandler).onSuccess(false)
+        verify(localAuthPreferenceRepository).getLocalAuthPref()
+        verify(localAuthPreferenceRepository)
+            .setLocalAuthPref(LocalAuthPreference.Enabled(true))
+    }
+
+    @Test
     fun `device secure - first time user - biometrics enabled - opt in bio - not required`() =
         runBlocking {
             whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
@@ -59,7 +86,6 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
             composeTestRule.apply {
                 localAuthManager.enforceAndSet(
-                    walletEnabled = false,
                     localAuthRequired = false,
                     activity = activity,
                     callbackHandler = callbackHandler,
@@ -87,7 +113,6 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
             composeTestRule.apply {
                 localAuthManager.enforceAndSet(
-                    walletEnabled = false,
                     localAuthRequired = true,
                     activity = activity,
                     callbackHandler = callbackHandler,
@@ -115,7 +140,6 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
             composeTestRule.apply {
                 localAuthManager.enforceAndSet(
-                    walletEnabled = false,
                     localAuthRequired = false,
                     activity = activity,
                     callbackHandler = callbackHandler,
@@ -143,7 +167,6 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
             composeTestRule.apply {
                 localAuthManager.enforceAndSet(
-                    walletEnabled = false,
                     localAuthRequired = true,
                     activity = activity,
                     callbackHandler = callbackHandler,
@@ -172,7 +195,6 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
             composeTestRule.apply {
                 localAuthManager.enforceAndSet(
-                    walletEnabled = false,
                     localAuthRequired = true,
                     activity = activity,
                     callbackHandler = callbackHandler,
@@ -206,7 +228,6 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
             composeTestRule.apply {
                 localAuthManager.enforceAndSet(
-                    walletEnabled = false,
                     localAuthRequired = true,
                     activity = activity,
                     callbackHandler = callbackHandler,
@@ -238,7 +259,6 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
             composeTestRule.apply {
                 localAuthManager.enforceAndSet(
-                    walletEnabled = false,
                     localAuthRequired = false,
                     activity = activity,
                     callbackHandler = callbackHandler,
@@ -264,7 +284,6 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
             composeTestRule.apply {
                 localAuthManager.enforceAndSet(
-                    walletEnabled = false,
                     localAuthRequired = true,
                     activity = activity,
                     callbackHandler = callbackHandler,
@@ -282,23 +301,21 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         }
 
     @Test
-    fun `device secure - first time user - DeviceBiometricsStatus == NO_HARDWARE`() =
-        runBlocking {
-            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-            whenever(deviceBiometricsManager.getCredentialStatus())
-                .thenReturn(DeviceBiometricsStatus.NO_HARDWARE)
+    fun `device secure - first time user - DeviceBiometricsStatus == NO_HARDWARE`() = runBlocking {
+        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+        whenever(deviceBiometricsManager.getCredentialStatus())
+            .thenReturn(DeviceBiometricsStatus.NO_HARDWARE)
 
-            localAuthManager.enforceAndSet(
-                walletEnabled = false,
-                localAuthRequired = false,
-                activity = activity,
-                callbackHandler = callbackHandler,
-            )
+        localAuthManager.enforceAndSet(
+            localAuthRequired = false,
+            activity = activity,
+            callbackHandler = callbackHandler,
+        )
 
-            verify(callbackHandler).onSuccess(false)
-            verify(localAuthPreferenceRepository)
-                .setLocalAuthPref(LocalAuthPreference.Enabled(false))
-        }
+        verify(callbackHandler).onSuccess(false)
+        verify(localAuthPreferenceRepository)
+            .setLocalAuthPref(LocalAuthPreference.Enabled(false))
+    }
 
     @Test
     fun `device secure - first time user - DeviceBiometricsStatus == HARDWARE_UNAVAILABLE`() =
@@ -308,7 +325,6 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 .thenReturn(DeviceBiometricsStatus.HARDWARE_UNAVAILABLE)
 
             localAuthManager.enforceAndSet(
-                walletEnabled = false,
                 localAuthRequired = false,
                 activity = activity,
                 callbackHandler = callbackHandler,
@@ -320,42 +336,38 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         }
 
     @Test
-    fun `device secure - first time user - DeviceBiometricsStatus == NOT_ENROLLED`() =
-        runBlocking {
-            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-            whenever(deviceBiometricsManager.getCredentialStatus())
-                .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
+    fun `device secure - first time user - DeviceBiometricsStatus == NOT_ENROLLED`() = runBlocking {
+        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+        whenever(deviceBiometricsManager.getCredentialStatus())
+            .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
 
-            localAuthManager.enforceAndSet(
-                walletEnabled = false,
-                localAuthRequired = false,
-                activity = activity,
-                callbackHandler = callbackHandler,
-            )
+        localAuthManager.enforceAndSet(
+            localAuthRequired = false,
+            activity = activity,
+            callbackHandler = callbackHandler,
+        )
 
-            verify(callbackHandler).onSuccess(false)
-            verify(localAuthPreferenceRepository)
-                .setLocalAuthPref(LocalAuthPreference.Enabled(false))
-        }
+        verify(callbackHandler).onSuccess(false)
+        verify(localAuthPreferenceRepository)
+            .setLocalAuthPref(LocalAuthPreference.Enabled(false))
+    }
 
     @Test
-    fun `device secure - first time user - DeviceBiometricsStatus == UNKNOWN`() =
-        runBlocking {
-            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-            whenever(deviceBiometricsManager.getCredentialStatus())
-                .thenReturn(DeviceBiometricsStatus.UNKNOWN)
+    fun `device secure - first time user - DeviceBiometricsStatus == UNKNOWN`() = runBlocking {
+        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+        whenever(deviceBiometricsManager.getCredentialStatus())
+            .thenReturn(DeviceBiometricsStatus.UNKNOWN)
 
-            localAuthManager.enforceAndSet(
-                walletEnabled = false,
-                localAuthRequired = false,
-                activity = activity,
-                callbackHandler = callbackHandler,
-            )
+        localAuthManager.enforceAndSet(
+            localAuthRequired = false,
+            activity = activity,
+            callbackHandler = callbackHandler,
+        )
 
-            verify(callbackHandler).onSuccess(false)
-            verify(localAuthPreferenceRepository)
-                .setLocalAuthPref(LocalAuthPreference.Enabled(false))
-        }
+        verify(callbackHandler).onSuccess(false)
+        verify(localAuthPreferenceRepository)
+            .setLocalAuthPref(LocalAuthPreference.Enabled(false))
+    }
 
     @Test
     fun `device secure - returning user - no local auth & bio enabled - required local auth`() =
@@ -368,7 +380,6 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
             composeTestRule.apply {
                 localAuthManager.enforceAndSet(
-                    walletEnabled = false,
                     localAuthRequired = true,
                     activity = activity,
                     callbackHandler = callbackHandler,
@@ -399,7 +410,6 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
             composeTestRule.apply {
                 localAuthManager.enforceAndSet(
-                    walletEnabled = false,
                     localAuthRequired = false,
                     activity = activity,
                     callbackHandler = callbackHandler,
@@ -427,7 +437,6 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
                 .thenReturn(LocalAuthPreference.Disabled)
 
             localAuthManager.enforceAndSet(
-                walletEnabled = false,
                 localAuthRequired = true,
                 activity = activity,
                 callbackHandler = callbackHandler,
@@ -439,30 +448,27 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
         }
 
     @Test
-    fun `device secure - returning user - no local auth - local auth not required`() =
-        runBlocking {
-            whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
-            whenever(deviceBiometricsManager.getCredentialStatus())
-                .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
-            whenever(localAuthPreferenceRepository.getLocalAuthPref())
-                .thenReturn(LocalAuthPreference.Disabled)
+    fun `device secure - returning user - no local auth - local auth not required`() = runBlocking {
+        whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(true)
+        whenever(deviceBiometricsManager.getCredentialStatus())
+            .thenReturn(DeviceBiometricsStatus.NOT_ENROLLED)
+        whenever(localAuthPreferenceRepository.getLocalAuthPref())
+            .thenReturn(LocalAuthPreference.Disabled)
 
-            localAuthManager.enforceAndSet(
-                walletEnabled = false,
-                localAuthRequired = false,
-                activity = activity,
-                callbackHandler = callbackHandler,
-            )
+        localAuthManager.enforceAndSet(
+            localAuthRequired = false,
+            activity = activity,
+            callbackHandler = callbackHandler,
+        )
 
-            verify(callbackHandler).onSuccess(false)
-        }
+        verify(callbackHandler).onSuccess(false)
+    }
 
     @Test
     fun `device unsecure - first time user - local auth not required`() = runBlocking {
         whenever(deviceBiometricsManager.isDeviceSecure()).thenReturn(false)
         whenever(localAuthPreferenceRepository.getLocalAuthPref()).thenReturn(null)
         localAuthManager.enforceAndSet(
-            walletEnabled = false,
             localAuthRequired = false,
             activity = activity,
             callbackHandler = callbackHandler,
@@ -478,7 +484,6 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
         composeTestRule.apply {
             localAuthManager.enforceAndSet(
-                walletEnabled = false,
                 localAuthRequired = true,
                 activity = activity,
                 callbackHandler = callbackHandler,
@@ -501,7 +506,6 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
         composeTestRule.apply {
             localAuthManager.enforceAndSet(
-                walletEnabled = false,
                 localAuthRequired = true,
                 activity = activity,
                 callbackHandler = callbackHandler,
@@ -522,7 +526,6 @@ class LocalAuthManagerTest : FragmentActivityTestCase(true) {
 
         composeTestRule.apply {
             localAuthManager.enforceAndSet(
-                walletEnabled = false,
                 localAuthRequired = true,
                 activity = activity,
                 callbackHandler = callbackHandler,
