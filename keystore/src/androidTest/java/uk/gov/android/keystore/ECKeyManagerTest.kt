@@ -7,9 +7,9 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
 import kotlinx.serialization.json.Json
-import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 import uk.gov.android.authentication.json.jwk.JWK
 import uk.gov.android.authentication.json.jwt.Jose4jJwtVerifier
+import uk.gov.android.keystore.Utils.toUrlSafeNoPaddingBase64
 
 @OptIn(ExperimentalEncodingApi::class)
 class ECKeyManagerTest {
@@ -49,7 +49,7 @@ class ECKeyManagerTest {
         val result = ecKeyManager.sign(manuallyGeneratedTestJwtHeaderAndBody.toByteArray())
         // And creating the JWT
         val jwt = "$manuallyGeneratedTestJwtHeaderAndBody.${
-            ProofOfPossessionGenerator.getUrlSafeNoPaddingBase64(result)
+            result.toUrlSafeNoPaddingBase64()
         }"
 
         // And get public key in JWK format

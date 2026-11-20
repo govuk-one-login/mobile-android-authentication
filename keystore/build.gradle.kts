@@ -9,8 +9,12 @@ android {
 }
 
 dependencies {
+    implementation(libs.appcompat)
     implementation(libs.androidx.core.core.ktx)
     implementation(libs.bouncy.castle)
+
+    androidTestImplementation(projects.json)
+    androidTestImplementation(libs.kotlinx.serialization.json)
 }
 
 mavenPublishingConfig {
