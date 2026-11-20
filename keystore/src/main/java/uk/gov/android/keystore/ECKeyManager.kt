@@ -41,7 +41,6 @@ class ECKeyManager : KeyStoreManager {
 
     init {
         if (!hasAppCheckKeys) {
-            Log.d(this::class.simpleName, "Generating key pair")
             createNewKeys()
         }
     }
