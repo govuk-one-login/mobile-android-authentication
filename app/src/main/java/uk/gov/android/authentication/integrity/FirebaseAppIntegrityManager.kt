@@ -5,15 +5,14 @@ import com.google.gson.JsonParser
 import java.security.SignatureException
 import kotlin.io.encoding.Base64
 import kotlin.text.split
-import uk.gov.android.authentication.integrity.appcheck.model.AppCheckToken
 import uk.gov.android.authentication.integrity.appcheck.model.AttestationResponse
 import uk.gov.android.authentication.integrity.appcheck.usecase.AppChecker
 import uk.gov.android.authentication.integrity.appcheck.usecase.AttestationCaller
-import uk.gov.android.authentication.integrity.keymanager.KeyStoreManager
 import uk.gov.android.authentication.integrity.model.AppIntegrityConfiguration
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 import uk.gov.android.authentication.integrity.pop.SignedPoP
 import uk.gov.android.authentication.json.jwk.JWK
+import uk.gov.android.keystore.KeyStoreManager
 import uk.gov.logging.api.v3.Logger
 
 class FirebaseAppIntegrityManager(

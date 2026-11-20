@@ -23,8 +23,10 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "mobile-android-authentication"
+
 include(":app")
 include(":json")
+include(":keystore")
 include(":localauth")
 
 includeBuild("${rootProject.projectDir}/mobile-android-pipelines/buildLogic")

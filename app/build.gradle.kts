@@ -35,6 +35,7 @@ dependencies {
         libs.logging,
         platform(libs.kotlin.bom),
         projects.json,
+        projects.keystore,
     ).forEach(::implementation)
 
     listOf(

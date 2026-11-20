@@ -12,6 +12,11 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 import uk.gov.android.authentication.integrity.AppIntegrityUtils
 import uk.gov.android.authentication.integrity.pop.ProofOfPossessionGenerator
 
+@Deprecated(
+    message = "Move to ECKeyManager in keystore module. To be removed 19th Jan 2027 (DCMAW-24882)",
+    replaceWith = ReplaceWith("java/uk/gov/android/keystore/ECKeyManager.kt"),
+    level = DeprecationLevel.WARNING,
+)
 @ExperimentalEncodingApi
 @Suppress("MemberVisibilityCanBePrivate")
 class ECKeyManager : KeyStoreManager {
