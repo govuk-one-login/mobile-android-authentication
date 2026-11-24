@@ -2,7 +2,7 @@ package uk.gov.android.localauth.device
 
 import android.app.KeyguardManager
 import androidx.biometric.BiometricManager
-import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -41,41 +41,40 @@ class DeviceBiometricsManagerTest {
 
     @Test
     fun `biometrics available and enabled`() {
-        whenever(biometricsManager.canAuthenticate(eq(BIOMETRIC_STRONG)))
-            .thenReturn(BiometricManager.BIOMETRIC_SUCCESS)
+        mockBiometricManager(BiometricManager.BIOMETRIC_SUCCESS)
         val result = deviceBiometricsManager.getCredentialStatus()
         assertEquals(DeviceBiometricsStatus.SUCCESS, result)
     }
 
     @Test
     fun `biometrics unknown`() {
-        whenever(biometricsManager.canAuthenticate(eq(BIOMETRIC_STRONG)))
-            .thenReturn(BiometricManager.BIOMETRIC_STATUS_UNKNOWN)
+        mockBiometricManager(BiometricManager.BIOMETRIC_STATUS_UNKNOWN)
         val result = deviceBiometricsManager.getCredentialStatus()
         assertEquals(DeviceBiometricsStatus.UNKNOWN, result)
     }
 
     @Test
     fun `no hardware for biometrics`() {
-        whenever(biometricsManager.canAuthenticate(eq(BIOMETRIC_STRONG)))
-            .thenReturn(BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE)
+        mockBiometricManager(BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE)
         val result = deviceBiometricsManager.getCredentialStatus()
         assertEquals(DeviceBiometricsStatus.NO_HARDWARE, result)
     }
 
     @Test
     fun `biometrics hardware unavailable`() {
-        whenever(biometricsManager.canAuthenticate(eq(BIOMETRIC_STRONG)))
-            .thenReturn(BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE)
+        mockBiometricManager(BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE)
         val result = deviceBiometricsManager.getCredentialStatus()
         assertEquals(DeviceBiometricsStatus.HARDWARE_UNAVAILABLE, result)
     }
 
     @Test
     fun `biometrics not enrolled`() {
-        whenever(biometricsManager.canAuthenticate(eq(BIOMETRIC_STRONG)))
-            .thenReturn(BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED)
+        mockBiometricManager(BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED)
         val result = deviceBiometricsManager.getCredentialStatus()
         assertEquals(DeviceBiometricsStatus.NOT_ENROLLED, result)
+    }
+
+    private fun mockBiometricManager(code: Int) {
+        whenever(biometricsManager.canAuthenticate(eq(BIOMETRIC_WEAK))).thenReturn(code)
     }
 }
